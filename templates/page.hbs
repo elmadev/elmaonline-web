@@ -1,0 +1,33 @@
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+import { Link } from '@reach/router';
+
+const {{name}} = () => {
+  const [touches, setTouches] = useState(0);
+  const { data } = useStoreState(state => state.{{name}});
+  const { getData } = useStoreActions(actions => actions.{{name}});
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return (
+    <Container>
+      <Text>{data}</Text>
+      <Text onClick={() => setTouches(touches + 1)}>{touches}</Text>
+      <Link to="/">Home</Link>
+    </Container>
+  );
+};
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const Text = styled.div``;
+
+export default {{name}};
