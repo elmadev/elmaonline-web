@@ -39,8 +39,13 @@ module.exports = function (plop) {
     actions: [
       {
         type: 'add',
-        path: 'src/features/{{name}}.js',
+        path: 'src/features/{{name}}/index.js',
         templateFile: 'templates/feature.hbs',
+      },
+      {
+        type: 'add',
+        path: 'src/features/{{name}}/store.js',
+        templateFile: 'templates/store.hbs',
       },
     ],
   });
