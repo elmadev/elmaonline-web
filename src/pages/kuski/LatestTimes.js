@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DerpTable from 'components/Table/DerpTable';
-import { ListRow, ListCell } from 'styles/List';
+import { ListRow, ListCell } from 'components/List';
 import { Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import LocalTime from 'components/LocalTime';

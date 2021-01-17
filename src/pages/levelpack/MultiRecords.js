@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { ListCell, ListContainer, ListHeader, ListRow } from 'styles/List';
+import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';

@@ -6,8 +6,8 @@ import ClickToEdit from 'components/ClickToEdit';
 import Feedback from 'components/Feedback';
 import Loading from 'components/Loading';
 import { recordsTT } from 'utils/calcs';
-import LegacyIcon from 'styles/LegacyIcon';
-import { ListCell, ListContainer, ListHeader, ListRow } from 'styles/List';
+import LegacyIcon from 'components/LegacyIcon';
+import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import LevelPopup from './LevelPopup';
 
 const Personal = ({

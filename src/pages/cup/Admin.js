@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button, Checkbox, Grid } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { Paper } from 'styles/Paper';
+import { Paper } from 'components/Paper';
 import Field from 'components/Field';
 import FieldAutoComplete from 'components/FieldAutoComplete';
 import DerpTable from 'components/Table/DerpTable';
@@ -19,7 +19,7 @@ import Feedback from 'components/Feedback';
 import Header from 'components/Header';
 import { points } from 'utils/cups';
 import { format } from 'date-fns';
-import { ListRow, ListCell } from 'styles/List';
+import { ListRow, ListCell } from 'components/List';
 
 const schema = yup.object().shape({
   StartTime: yup.date().required(),

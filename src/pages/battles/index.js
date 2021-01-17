@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import BattleList from 'components/BattleList';
+import BattleList from 'features/BattleList';
 import { useNavigate } from "@reach/router";
 
 const Battles = props => {

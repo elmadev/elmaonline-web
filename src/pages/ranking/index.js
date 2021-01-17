@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Tabs, Tab, Grid } from '@material-ui/core';
 
 import Header from 'components/Header';
-import RankingTable from 'components/RankingTable';
+import RankingTable from 'features/RankingTable';
 import {
   Year,
   Month,

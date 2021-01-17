@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Container, Box } from '@material-ui/core';
-import ReplayList from 'components/ReplayList';
-import Upload from 'components/Upload';
+import ReplayList from 'features/ReplayList';
+import Upload from 'features/Upload';
 
 export default function Replays() {
   return (

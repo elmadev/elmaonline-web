@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import styled from 'styled-components';
 import Loading from 'components/Loading';
-import { ListCell, ListContainer, ListHeader, ListRow } from 'styles/List';
+import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 
 const Kinglist = ({ highlight, highlightWeeks, levelPackIndex }) => {
   const {

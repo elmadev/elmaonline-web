@@ -6,7 +6,7 @@ import {
   Settings as SettingsIcon,
   Close as CloseIcon,
 } from '@material-ui/icons';
-import { Paper } from 'styles/Paper';
+import { Paper } from 'components/Paper';
 import {
   Tabs,
   Tab,

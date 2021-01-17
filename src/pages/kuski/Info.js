@@ -6,7 +6,7 @@ import Header from 'components/Header';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { mod, admin } from 'utils/nick';
 import LocalTime from 'components/LocalTime';
-import { ListCell, ListRow, ListHeader, ListContainer } from 'styles/List';
+import { ListCell, ListRow, ListHeader, ListContainer } from 'components/List';
 import {
   Button,
   FormControl,

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ListContainer, ListHeader, ListCell, ListRow } from 'styles/List';
+import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
-import LegacyIcon from 'styles/LegacyIcon';
+import LegacyIcon from 'components/LegacyIcon';
 
 const TimeTable = ({ data, latestBattle, loading }) => {
   if (loading) return <Loading />;

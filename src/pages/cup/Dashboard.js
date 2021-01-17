@@ -11,8 +11,8 @@ import Dropzone from 'components/Dropzone';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import CupCurrent from 'components/CupCurrent';
-import { Paper } from 'styles/Paper';
-import { ListRow, ListCell } from 'styles/List';
+import { Paper } from 'components/Paper';
+import { ListRow, ListCell } from 'components/List';
 
 const Dashboard = props => {
   const { events, openEvent, openStandings, cup } = props;

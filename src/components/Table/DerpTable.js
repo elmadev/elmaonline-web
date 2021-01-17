@@ -6,8 +6,8 @@ import {
   TablePagination,
   CircularProgress,
 } from '@material-ui/core';
-import { Paper } from 'styles/Paper';
-import { ListContainer, ListHeader, ListCell } from 'styles/List';
+import { Paper } from 'components/Paper';
+import { ListContainer, ListHeader, ListCell } from 'components/List';
 import PaginationActions from 'components/Table/PaginationActions';
 
 class DerpTable extends React.Component {

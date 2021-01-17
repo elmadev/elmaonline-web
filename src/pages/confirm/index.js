@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Grid, CircularProgress } from '@material-ui/core';
-import { Paper } from 'styles/Paper';
+import { Paper } from 'components/Paper';
 import Link from 'components/Link';
 import styled from 'styled-components';
 

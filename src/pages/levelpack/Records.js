@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { ListCell, ListContainer, ListHeader, ListRow } from 'styles/List';
+import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
 import { recordsTT } from 'utils/calcs';
-import LegacyIcon from 'styles/LegacyIcon';
+import LegacyIcon from 'components/LegacyIcon';
 import LevelPopup from './LevelPopup';
 
 const Records = ({

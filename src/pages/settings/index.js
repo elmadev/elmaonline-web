@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Grid, Tabs, Tab, Checkbox, Drawer } from '@material-ui/core';
-import { Paper } from 'styles/Paper';
+import { Paper } from 'components/Paper';
 import { RemoveCircle, Info } from '@material-ui/icons';
 import Header from 'components/Header';
 import Feedback from 'components/Feedback';

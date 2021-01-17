@@ -8,16 +8,16 @@ import {
 } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
 import styled from 'styled-components';
-import { Paper } from 'styles/Paper';
+import { Paper } from 'components/Paper';
 
 import Recplayer from 'components/Recplayer';
 import { Level } from 'components/Names';
 import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
 import Link from 'components/Link';
-import RecList from 'components/RecList';
-import ReplayComments from 'components/ReplayComments';
-import ReplayRating from 'components/ReplayRating';
+import RecList from 'features/RecList';
+import ReplayComments from 'features/ReplayComments';
+import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment';
 import { useNavigate } from "@reach/router";
 import { useStoreState, useStoreActions } from 'easy-peasy';

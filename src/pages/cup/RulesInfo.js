@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { nickId } from 'utils/nick';
 import { TextField, Button, Grid } from '@material-ui/core';
-import { Paper } from 'styles/Paper';
+import { Paper } from 'components/Paper';
 import DerpTable from 'components/Table/DerpTable';
 import Header from 'components/Header';
-import { ListRow, ListCell } from 'styles/List';
+import { ListRow, ListCell } from 'components/List';
 import { points } from 'utils/cups';
 
 const RulesInfo = props => {

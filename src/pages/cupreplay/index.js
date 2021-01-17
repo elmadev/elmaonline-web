@@ -8,15 +8,15 @@ import Time from 'components/Time';
 import { Level } from 'components/Names';
 import Link from 'components/Link';
 import Download from 'components/Download';
-import { Paper } from 'styles/Paper';
-import { ListCell, ListContainer, ListHeader, ListRow } from 'styles/List';
+import { Paper } from 'components/Paper';
+import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import { useNavigate } from "@reach/router";
 import Loading from 'components/Loading';
 import config from 'config';
 /* import { Level } from 'components/Names';
-import RecList from 'components/RecList';
-import ReplayComments from 'components/ReplayComments';
-import ReplayRating from 'components/ReplayRating';
+import RecList from 'features/RecList';
+import ReplayComments from 'features/ReplayComments';
+import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment'; */
 
 const CupReplays = ({ ReplayIndex, Filename }) => {
@@ -74,7 +74,7 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
   }
 
   return (
-    <Container>
+    <Container >
       <RecBackground>
         <RecContainer>
           <Recplayer

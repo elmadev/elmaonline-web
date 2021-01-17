@@ -10,7 +10,7 @@ import {
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { ListCell, ListContainer, ListHeader } from 'styles/List';
+import { ListCell, ListContainer, ListHeader } from 'components/List';
 
 const Admin = ({ records, LevelPack }) => {
   const [search, setSearch] = useState('');

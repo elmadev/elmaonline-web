@@ -8,7 +8,7 @@ import Kuski from 'components/Kuski';
 import LocalTime from 'components/LocalTime';
 import { BattleType } from 'components/Names';
 import { sortResults } from 'utils/battle';
-import { ListCell, ListHeader, ListContainer, ListRow } from 'styles/List';
+import { ListCell, ListHeader, ListContainer, ListRow } from 'components/List';
 
 function DesignedBattles({ KuskiIndex }) {
   const navigate = useNavigate();

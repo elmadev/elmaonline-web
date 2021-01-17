@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Time from 'components/Time';
 import Loading from 'components/Loading';
-import { ListCell, ListContainer, ListHeader, ListRow } from 'styles/List';
+import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 
 const TotalTimes = ({ highlight, highlightWeeks, levelPackIndex }) => {
   const {

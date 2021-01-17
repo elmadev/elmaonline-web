@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Paper } from 'styles/Paper';
+import { Paper } from 'components/Paper';
 import { Button, TextField } from '@material-ui/core';
 import { useStoreActions } from 'easy-peasy';
 import { nickId } from 'utils/nick';

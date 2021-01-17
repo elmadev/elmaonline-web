@@ -11,12 +11,12 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
-import { Paper } from 'styles/Paper';
-import { ListContainer, ListHeader, ListCell, ListRow } from 'styles/List';
+import { Paper } from 'components/Paper';
+import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import { BattleType } from 'components/Names';
 import Time from 'components/Time';
 import Link from 'components/Link';
-import ChatView from 'components/ChatView';
+import ChatView from 'features/ChatView';
 import Kuski from 'components/Kuski';
 import Download from 'components/Download';
 import LocalTime from 'components/LocalTime';

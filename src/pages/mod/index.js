@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Grid, Tabs, Tab } from '@material-ui/core';
-import { Paper } from 'styles/Paper';
-import { ListRow, ListCell, ListHeader } from 'styles/List';
+import { Paper } from 'components/Paper';
+import { ListRow, ListCell, ListHeader } from 'components/List';
 import { mod } from 'utils/nick';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Kuski from 'components/Kuski';

@@ -20,7 +20,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import styled from 'styled-components';
 // import history from 'utils/history';
 
-import ChatView from 'components/ChatView';
+import ChatView from 'features/ChatView';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';
 
@@ -177,7 +177,7 @@ const ChatLog = props => {
   );
 
   const urlSync = keys => {
-    const sortOrder = [
+    /* const sortOrder = [
       'KuskiIds',
       'text',
       'start',
@@ -186,7 +186,7 @@ const ChatLog = props => {
       'count',
       'rpp',
       'page',
-    ];
+    ]; */
 
     /* history.replace({
       search: queryString.stringify(

@@ -1,16 +1,16 @@
 /* eslint-disable no-param-reassign */
 import { action } from 'easy-peasy';
-import ReplayComments from 'components/ReplayComments/store';
-import ReplayRating from 'components/ReplayRating/store';
-import ReplaysBy from 'components/ReplaysBy/store';
-import ChatView from 'components/ChatView/store';
-import RecList from 'components/RecList/store';
-import LevelMap from 'components/LevelMap/store';
+import ReplayComments from 'features/ReplayComments/store';
+import ReplayRating from 'features/ReplayRating/store';
+import ReplaysBy from 'features/ReplaysBy/store';
+import ChatView from 'features/ChatView/store';
+import RecList from 'features/RecList/store';
+import LevelMap from 'features/LevelMap/store';
 import Register from 'pages/register/store';
 import Login from 'pages/login/store';
-import RankingTable from 'components/RankingTable/store';
-import BattleList from 'components/BattleList/store';
-import Upload from 'components/Upload/store';
+import RankingTable from 'features/RankingTable/store';
+import BattleList from 'features/BattleList/store';
+import Upload from 'features/Upload/store';
 import Cups from 'pages/cups/store';
 import Cup from 'pages/cup/store';
 import KuskiMap from 'pages/map/store';
@@ -27,8 +27,8 @@ import Level from 'pages/level/store';
 import Mod from 'pages/mod/store';
 import Battle from 'pages/battle/store';
 import Levels from 'pages/levels/store';
-import News from 'components/News/store';
-import ReplayList from 'components/ReplayList/store';
+import News from 'features/News/store';
+import ReplayList from 'features/ReplayList/store';
 
 export default {
   ReplayComments,

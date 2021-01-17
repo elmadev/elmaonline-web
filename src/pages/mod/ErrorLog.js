@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Grid, TextField, Button } from '@material-ui/core';
-import { Paper } from 'styles/Paper';
-import { ListRow, ListCell, ListHeader } from 'styles/List';
+import { Paper } from 'components/Paper';
+import { ListRow, ListCell, ListHeader } from 'components/List';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';

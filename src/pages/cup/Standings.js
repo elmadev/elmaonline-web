@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DerpTable from 'components/Table/DerpTable';
-import { ListRow, ListCell } from 'styles/List';
+import { ListRow, ListCell } from 'components/List';
 import { Grid, IconButton } from '@material-ui/core';
 import Header from 'components/Header';
 import Kuski from 'components/Kuski';

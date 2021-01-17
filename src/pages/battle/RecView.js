@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { Checkbox, FormControlLabel, withStyles } from '@material-ui/core';
 import Recplayer from 'components/Recplayer';
-import Play from 'styles/Play';
+import Play from 'components/Play';
 import styled from 'styled-components';
 import config from 'config';
 

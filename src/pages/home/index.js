@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Container, Box } from '@material-ui/core';
 import { useStoreState } from 'easy-peasy';
-import News from 'components/News';
+import News from 'features/News';
 import WelcomeCard from './cards/WelcomeCard';
 import BattlesCard from './cards/BattlesCard';
 import ReplaysCard from './cards/ReplaysCard';

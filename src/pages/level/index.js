@@ -15,16 +15,16 @@ import {
 } from '@material-ui/core';
 import styled from 'styled-components';
 import { ExpandMore } from '@material-ui/icons';
-import { Paper } from 'styles/Paper';
+import { Paper } from 'components/Paper';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import Kuski from 'components/Kuski';
 import Download from 'components/Download';
 import Recplayer from 'components/Recplayer';
-import RecList from 'components/RecList';
+import RecList from 'features/RecList';
 import Loading from 'components/Loading';
 import Link from 'components/Link';
-import Play from 'styles/Play';
+import Play from 'components/Play';
 import LocalTime from 'components/LocalTime';
 import { useNavigate } from "@reach/router";
 import config from 'config';

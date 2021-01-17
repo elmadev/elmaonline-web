@@ -5,8 +5,8 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Link from 'components/Link';
-import LegacyIcon from 'styles/LegacyIcon';
-import { ListCell, ListContainer, ListHeader, ListRow } from 'styles/List';
+import LegacyIcon from 'components/LegacyIcon';
+import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 
 const LevelPopup = ({
   levelId,

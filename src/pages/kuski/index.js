@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import config from 'config';
 
 import Flag from 'components/Flag';
-import ReplaysBy from 'components/ReplaysBy';
+import ReplaysBy from 'features/ReplaysBy';
 import PlayedBattles from './PlayedBattles';
 import DesignedBattles from './DesignedBattles';
 import KuskiHeader from './KuskiHeader';

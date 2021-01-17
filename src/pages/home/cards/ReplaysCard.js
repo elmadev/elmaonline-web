@@ -4,7 +4,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import ReplayList from 'components/ReplayList';
+import ReplayList from 'features/ReplayList';
 import Link from 'components/Link';
 
 export default function ReplaysCard() {

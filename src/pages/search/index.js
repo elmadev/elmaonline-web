@@ -5,7 +5,7 @@ import LocalTime from 'components/LocalTime';
 import Link from 'components/Link';
 import Kuski from 'components/Kuski';
 import { Switch } from '@material-ui/core';
-import { ListRow, ListCell, ListContainer, ListHeader } from 'styles/List';
+import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import { mod } from 'utils/nick';
 import { forEach } from 'lodash';
 

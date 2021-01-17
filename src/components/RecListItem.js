@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ListCell, ListRow } from 'styles/List';
+import { ListCell, ListRow } from 'components/List';
 import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
