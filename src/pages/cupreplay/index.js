@@ -7,21 +7,20 @@ import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import { Level } from 'components/Names';
 import Link from 'components/Link';
+import Download from 'components/Download';
 import { Paper } from 'styles/Paper';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'styles/List';
-import historyRefresh from 'utils/historyRefresh';
+import { useNavigate } from "@reach/router";
 import Loading from 'components/Loading';
+import config from 'config';
 /* import { Level } from 'components/Names';
 import RecList from 'components/RecList';
 import ReplayComments from 'components/ReplayComments';
 import ReplayRating from 'components/ReplayRating';
 import AddComment from 'components/AddComment'; */
 
-const goToReplay = (index, filename) => {
-  historyRefresh.push(`/r/cup/${index}/${filename}`);
-};
-
 const CupReplays = ({ ReplayIndex, Filename }) => {
+  const navigate = useNavigate();
   const { replay, replayLoaded, otherReplays } = useStoreState(
     state => state.Replay,
   );
@@ -31,6 +30,10 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
   const { sideBarVisible } = useStoreState(state => state.Page);
   const { hideSideBar, showSideBar } = useStoreActions(actions => actions.Page);
   const [lastSideBar] = useState(sideBarVisible);
+
+  const goToReplay = (index, filename) => {
+    navigate(`/r/cup/${index}/${filename}`);
+  };
 
   useEffect(() => {
     hideSideBar();
@@ -75,8 +78,8 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
       <RecBackground>
         <RecContainer>
           <Recplayer
-            rec={`/dl/cupreplay/${ReplayIndex}/${Filename}`}
-            lev={`/dl/level/${replay.CupData.LevelIndex}`}
+            rec={`${config}cupreplay/${ReplayIndex}/${Filename}`}
+            lev={`${config}level/${replay.CupData.LevelIndex}`}
             controls
           />
         </RecContainer>
@@ -92,9 +95,9 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
             </Half>
             <Half>
               <Header h1 right>
-                <a href={`/dl/cupreplay/${ReplayIndex}/${Filename}`}>
+                <Download url={`cupreplay/${ReplayIndex}/${Filename}`}>
                   <Time time={replay.Time} />
-                </a>
+                </Download>
               </Header>
               <Header h3 right>
                 <Link to={`/levels/${replay.CupData.LevelIndex}`}>

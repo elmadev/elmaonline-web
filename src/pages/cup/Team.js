@@ -10,6 +10,7 @@ import Recplayer from 'components/Recplayer';
 import { getPrivateCupRecUri } from 'utils/cups';
 import PreviewRecButton from 'components/PreviewRecButton';
 import FieldBoolean from 'components/FieldBoolean';
+import config from 'config';
 
 const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
@@ -131,7 +132,7 @@ const Team = () => {
                               replay.Code,
                               getEventNumber(e.CupIndex),
                             )}
-                            lev={`/dl/level/${e.LevelIndex}`}
+                            lev={`${config.dlUrl}level/${e.LevelIndex}`}
                             height={400}
                             controls
                           />

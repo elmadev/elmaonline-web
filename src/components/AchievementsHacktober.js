@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { has } from 'lodash';
 import Header from 'components/Header';
-import code19 from '../../images/hacktober/code19.png';
-import code20 from '../../images/hacktober/code20.png';
+import code19 from 'images/hacktober/code19.png';
+import code20 from 'images/hacktober/code20.png';
 
 const images = {
   '19': code19,

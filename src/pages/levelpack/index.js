@@ -19,6 +19,7 @@ import {
 
 import { nick, nickId } from 'utils/nick';
 import FieldBoolean from 'components/FieldBoolean';
+import Download from 'components/Download';
 import Records from './Records';
 import TotalTimes from './TotalTimes';
 import Personal from './Personal';
@@ -101,9 +102,9 @@ const LevelPack = ({ name }) => {
       <LevelPackName>
         <ShortNameStyled>{levelPackInfo.LevelPackName}</ShortNameStyled>{' '}
         <LongNameStyled>{levelPackInfo.LevelPackLongName}</LongNameStyled>
-        <a href={`/dl/pack/${levelPackInfo.LevelPackName}`}>
-          <Download>Download</Download>
-        </a>
+        <Download url={`pack/${levelPackInfo.LevelPackName}`}>
+          <DownloadText>Download</DownloadText>
+        </Download>
       </LevelPackName>
       <DescriptionStyle>{levelPackInfo.LevelPackDesc}</DescriptionStyle>
       <Settings>
@@ -273,7 +274,7 @@ const DescriptionStyle = styled.div`
   font-size: 14px;
 `;
 
-const Download = styled.span`
+const DownloadText = styled.span`
   padding-left: 10px;
   cursor: pointer;
   font-size: 14px;

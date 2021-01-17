@@ -15,6 +15,7 @@ module.exports = override(
     constants: path.resolve(__dirname, "src/constants"),
     api: path.resolve(__dirname, "src/api"),
     globalStyle: path.resolve(__dirname, "src/globalStyle"),
-    muiTheme: path.resolve(__dirname, "src/muiTheme")
+    muiTheme: path.resolve(__dirname, "src/muiTheme"),
+    config: path.resolve(__dirname, "src/config")
   }),
 );

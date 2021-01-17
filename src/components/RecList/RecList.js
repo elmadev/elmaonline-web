@@ -4,13 +4,13 @@ import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { sortBy, filter } from 'lodash';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'styles/List';
-
 import RecListItem from 'components/RecListItem';
-import historyRefresh from 'utils/historyRefresh';
+import { useNavigate } from "@reach/router";
 
 const widths = { Replay: 200, Time: 100, Level: null, By: null };
 
 const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
+  const navigate = useNavigate();
   const isRehydrated = useStoreRehydrated();
   const {
     show: { showTAS, showDNF, showBug, showNitro },
@@ -34,7 +34,7 @@ const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
   };
 
   const handleOpenReplay = uuid => {
-    historyRefresh.push({
+    navigate({
       pathname: `/r/${uuid}`,
     });
   };

@@ -19,6 +19,7 @@ import { Paper } from 'styles/Paper';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import Kuski from 'components/Kuski';
+import Download from 'components/Download';
 import Recplayer from 'components/Recplayer';
 import RecList from 'components/RecList';
 import Loading from 'components/Loading';
@@ -26,6 +27,7 @@ import Link from 'components/Link';
 import Play from 'styles/Play';
 import LocalTime from 'components/LocalTime';
 import { useNavigate } from "@reach/router";
+import config from 'config';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
@@ -100,7 +102,7 @@ const Level = ({ LevelIndex }) => {
                 {isWindow &&
                   (battlesForLevel.length < 1 ||
                     battleStatus(battlesForLevel[0]) !== 'Queued') && (
-                    <Recplayer lev={`/dl/level/${LevelIndex}`} controls />
+                    <Recplayer lev={`${config.dlUrl}level/${LevelIndex}`} controls />
                   )}
               </>
             ) : (
@@ -119,7 +121,7 @@ const Level = ({ LevelIndex }) => {
               </AccordionSummary>
               <AccordionDetails>
                 <LevelDescription>
-                  <a href={`/dl/level/${LevelIndex}`}>{level.LevelName}.lev</a>
+                  <Download href={`level/${LevelIndex}`}>{level.LevelName}.lev</Download>
                   <LevelFullName>{level.LongName}</LevelFullName>
                   <br />
                   {'Level ID: '}

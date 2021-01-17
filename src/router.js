@@ -35,7 +35,7 @@ const Routes = () => {
   return (
     <Router>
       <Home path="/" />
-      <Battle path="battle/:BattleIndex" />
+      <Battle path="battles/:BattleIndex" />
       <Battles path="battles" />
       <ChatLog path="chatlog" />
       <Confirm path="confirm/:confirmCode" />
@@ -46,9 +46,9 @@ const Routes = () => {
       <Error path="error" />
       <ForgotPassword path="forgot" />
       <Help path="help" />
-      <Kuski path="kuski/:name" />
+      <Kuski path="kuskis/:name" />
       <Kuskis path="kuskis" />
-      <Level path="level/:LevelIndex" />
+      <Level path="levels/:LevelIndex" />
       <LevelPack path="levels/packs/:name" />
       <Levels path="levels" />
       <LevelsAdd path="levels/add" />

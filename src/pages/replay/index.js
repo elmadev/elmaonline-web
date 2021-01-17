@@ -19,10 +19,12 @@ import RecList from 'components/RecList';
 import ReplayComments from 'components/ReplayComments';
 import ReplayRating from 'components/ReplayRating';
 import AddComment from 'components/AddComment';
-import historyRefresh from 'utils/historyRefresh';
+import { useNavigate } from "@reach/router";
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import config from 'config';
 
 const Replay = props => {
+  const navigate = useNavigate();
   const { ReplayUuid } = props;
   const isWindow = typeof window !== 'undefined';
   let link = '';
@@ -40,9 +42,10 @@ const Replay = props => {
 
   if (isWindow) {
     link = `https://eol.ams3.digitaloceanspaces.com/${
-      window.App.s3SubFolder
+      config.s3SubFolder
     }replays/${replay.UUID}/${replay.RecFileName}`;
   }
+
   return (
     <Container>
       <PlayerContainer>
@@ -50,7 +53,7 @@ const Replay = props => {
           {isWindow && (
             <Recplayer
               rec={link}
-              lev={`/dl/level/${replay.LevelIndex}`}
+              lev={`${config.dlUrl}level/${replay.LevelIndex}`}
               controls
             />
           )}
@@ -127,7 +130,7 @@ const Replay = props => {
               <RecList
                 LevelIndex={replay.LevelIndex}
                 currentUUID={replay.UUID}
-                openReplay={uuid => historyRefresh.push(`/r/${uuid}`)}
+                openReplay={uuid => navigate(`/r/${uuid}`)}
                 columns={['Replay', 'Time', 'By']}
                 horizontalMargin={-24}
               />

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import history from 'utils/history';
+// import { useNavigate } from "@reach/router";
 import styled from 'styled-components';
 import { Button, Drawer, Hidden, IconButton } from '@material-ui/core';
 import { Info, Cancel } from '@material-ui/icons';
 
 const SearchBar = () => {
+  // const navigate = useNavigate();
   const [searchType, setType] = useState('');
   const [value, setValue] = useState('');
   const [info, openInfo] = useState(false);
@@ -65,7 +66,7 @@ const SearchBar = () => {
                 if (e.target.value === '') {
                   setType('');
                 } else {
-                  history.push(`/search?q=${e.target.value}&t=${searchType}`);
+                  // navigate(`/search?q=${e.target.value}&t=${searchType}`);
                 }
               }
               if (e.keyCode === 27) {

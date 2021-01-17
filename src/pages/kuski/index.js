@@ -3,6 +3,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import PropTypes from 'prop-types';
 import { Tabs, Tab } from '@material-ui/core';
 import styled from 'styled-components';
+import config from 'config';
 
 import Flag from 'components/Flag';
 import ReplaysBy from 'components/ReplaysBy';
@@ -30,7 +31,7 @@ const Kuski = props => {
     <Container>
       <Head>
         <Picture>
-          <img src={`/dl/shirt/${kuski.KuskiIndex}`} alt="shirt" />
+          <img src={`${config.dlUrl}/shirt/${kuski.KuskiIndex}`} alt="shirt" />
         </Picture>
         <Profile>
           <Name>

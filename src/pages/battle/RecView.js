@@ -4,6 +4,7 @@ import { Checkbox, FormControlLabel, withStyles } from '@material-ui/core';
 import Recplayer from 'components/Recplayer';
 import Play from 'styles/Play';
 import styled from 'styled-components';
+import config from 'config';
 
 const RecView = props => {
   const [play, setPlay] = useState(
@@ -29,8 +30,8 @@ const RecView = props => {
               <>
                 {isWindow && battleStatus !== 'Queued' && (
                   <Recplayer
-                    rec={`/dl/battlereplay/${BattleIndex}`}
-                    lev={`/dl/level/${levelIndex}`}
+                    rec={`${config}/battlereplay/${BattleIndex}`}
+                    lev={`${config}/level/${levelIndex}`}
                     autoPlay={autoPlayRecs ? 'if-visible' : 'no'}
                     controls
                   />

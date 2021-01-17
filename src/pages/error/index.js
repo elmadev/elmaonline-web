@@ -25,6 +25,7 @@ class ErrorPage extends React.Component {
 
   render() {
     const { error } = this.props;
+    // eslint-disable-next-line no-undef
     if (__DEV__ && error) {
       return (
         <div>

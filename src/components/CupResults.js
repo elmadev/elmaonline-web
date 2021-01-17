@@ -4,15 +4,16 @@ import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import DerpTable from 'components/Table/DerpTable';
 import { zeroPad } from 'utils/time';
-import history from 'utils/history';
+import { useNavigate } from "@reach/router";
 import { ListRow, ListCell } from 'styles/List';
 
-const goToReplay = (index, filename) => {
-  history.push(`/r/cup/${index}/${filename}`);
-};
-
 const CupResults = props => {
+  const navigate = useNavigate();
   const { results, ShortName, eventNo, CupIndex } = props;
+
+  const goToReplay = (index, filename) => {
+    navigate(`/r/cup/${index}/${filename}`);
+  };
 
   return (
     <Container>

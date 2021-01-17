@@ -2,16 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { has } from 'lodash';
 import Header from 'components/Header';
-import wc61st from '../../images/wc6/1st.png';
-import wc62nd from '../../images/wc6/2nd.png';
-import wc63rd from '../../images/wc6/3rd.png';
-import wc6finisher from '../../images/wc6/finisher.png';
-import wc6top10 from '../../images/wc6/top10.png';
-import wc71st from '../../images/wc7/1st.png';
-import wc72nd from '../../images/wc7/2nd.png';
-import wc73rd from '../../images/wc7/3rd.png';
-import wc7finisher from '../../images/wc7/finisher.png';
-import wc7top10 from '../../images/wc7/top10.png';
+import wc61st from 'images/wc6/1st.png';
+import wc62nd from 'images/wc6/2nd.png';
+import wc63rd from 'images/wc6/3rd.png';
+import wc6finisher from 'images/wc6/finisher.png';
+import wc6top10 from 'images/wc6/top10.png';
+import wc71st from 'images/wc7/1st.png';
+import wc72nd from 'images/wc7/2nd.png';
+import wc73rd from 'images/wc7/3rd.png';
+import wc7finisher from 'images/wc7/finisher.png';
+import wc7top10 from 'images/wc7/top10.png';
 
 const images = {
   '1st': wc61st,

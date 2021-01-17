@@ -9,7 +9,7 @@ export default function FeedCard() {
     <Card>
       <CardHeader title="Feed" />
       <CardContent>
-        <CupWidget ShortName="CPC" />
+        <CupWidget ShortName="Kopa" />
       </CardContent>
     </Card>
   );

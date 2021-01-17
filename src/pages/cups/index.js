@@ -28,7 +28,7 @@ const Cups = () => {
             .filter(c => c.Finished === 0)
             .map(c => (
               <Fragment key={c.ShortName}>
-                <Link to={`cup/${c.ShortName}`}>
+                <Link to={`/cup/${c.ShortName}`}>
                   <CupName>{c.CupName}</CupName>
                 </Link>
                 <Description
@@ -43,7 +43,7 @@ const Cups = () => {
             .filter(c => c.Finished === 1)
             .map(c => (
               <Fragment key={c.ShortName}>
-                <Link to={`cup/${c.ShortName}`}>
+                <Link to={`/cup/${c.ShortName}`}>
                   <CupName>{c.CupName}</CupName>
                 </Link>
                 <Description

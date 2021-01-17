@@ -18,6 +18,7 @@ import Time from 'components/Time';
 import Link from 'components/Link';
 import ChatView from 'components/ChatView';
 import Kuski from 'components/Kuski';
+import Download from 'components/Download';
 import LocalTime from 'components/LocalTime';
 import LeaderHistory from 'components/LeaderHistory';
 import { sortResults, battleStatus, getBattleType } from 'utils/battle';
@@ -98,10 +99,7 @@ const Battle = props => {
                   <BattleType type={battle.BattleType} />
                 </span>{' '}
                 battle in{' '}
-                <a href={`/dl/level/${battle.LevelIndex}`}>
-                  {battle.LevelData ? battle.LevelData.LevelName : '?'}
-                  .lev
-                </a>{' '}
+                <Download url={`level/${battle.LevelIndex}`}>{battle.LevelData ? battle.LevelData.LevelName : '?'}.lev</Download>{' '}
                 {battle.KuskiData.Kuski}
                 <div className="timeStamp">
                   Started{' '}
@@ -112,9 +110,7 @@ const Battle = props => {
                   />
                 </div>
                 <div className="timeStamp">
-                  <a href={`/dl/battlereplay/${BattleIndex}`}>
-                    Download replay
-                  </a>
+                  <Download url={`battlereplay/${BattleIndex}`}>Download replay</Download>
                 </div>
                 <br />
                 <Link to={`/levels/${battle.LevelIndex}`}>

@@ -1,5 +1,6 @@
 import { forEach, has } from 'lodash';
 import moment from 'moment';
+import config from 'config';
 import { zeroPad } from 'utils/time';
 
 export const admins = cup => {
@@ -327,7 +328,7 @@ export const getPrivateCupRecUri = (
   Code,
   levelNumber,
 ) => {
-  return `/dl/cupreplay/${CupTimeIndex}/${ShortName}${zeroPad(
+  return `${config.dlUrl}cupreplay/${CupTimeIndex}/${ShortName}${zeroPad(
     levelNumber,
     2,
   )}${Kuski.substring(0, 6)}/${Code}`;

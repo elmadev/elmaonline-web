@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
-import history from 'utils/history';
 import Kuski from 'components/Kuski';
 import styled from 'styled-components';
 import { BattleType } from 'components/Names';
@@ -10,8 +9,10 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import { toServerTime } from 'utils/time';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'styles/List';
+import { useNavigate } from "@reach/router";
 
 const BattleList = ({ start, end, limit = 250 }) => {
+  const navigate = useNavigate();
   const { battles } = useStoreState(state => state.BattleList);
   const { getBattles } = useStoreActions(actions => actions.BattleList);
   useEffect(() => {
@@ -40,7 +41,7 @@ const BattleList = ({ start, end, limit = 250 }) => {
               return (
                 <ListRow
                   key={b.BattleIndex}
-                  onClick={() => history.push(`battles/${b.BattleIndex}`)}
+                  onClick={() => navigate(`battles/${b.BattleIndex}`)}
                   bg={battleStatusBgColor(b)}
                 >
                   <ListCell width={100}>

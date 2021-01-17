@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { VariableSizeList } from 'react-window';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useDebounce } from 'use-debounce';
-import queryString from 'query-string';
+// import queryString from 'query-string';
 import {
   TextField,
   TablePagination,
@@ -18,7 +18,7 @@ import {
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import styled from 'styled-components';
-import history from 'utils/history';
+// import history from 'utils/history';
 
 import ChatView from 'components/ChatView';
 import Kuski from 'components/Kuski';
@@ -188,7 +188,7 @@ const ChatLog = props => {
       'page',
     ];
 
-    history.replace({
+    /* history.replace({
       search: queryString.stringify(
         {
           ...query,
@@ -200,7 +200,7 @@ const ChatLog = props => {
           sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
         },
       ),
-    });
+    }); */
   };
 
   const handleChangePage = (event, newPage) => {

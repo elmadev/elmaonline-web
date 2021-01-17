@@ -8,6 +8,8 @@ import Kuski from 'components/Kuski';
 import { Today, CheckBox, Timer } from '@material-ui/icons';
 import { Tabs, Tab, Grid } from '@material-ui/core';
 import Recplayer from 'components/Recplayer';
+import Download from 'components/Download';
+import config from 'config';
 import Interviews from './Interviews';
 import Leaders from './Leaders';
 
@@ -50,9 +52,9 @@ const Cups = props => {
             <EventNo>{i + 1}.</EventNo>
             <RightSide>
               <By>
-                <a href={`/dl/level/${e.LevelIndex}`}>
+                <Download url={`level/${e.LevelIndex}`}>
                   {e.Level ? e.Level.LevelName : ''}
-                </a>{' '}
+                </Download>{' '}
                 by <Kuski kuskiData={e.KuskiData} />
               </By>
               <div>
@@ -133,7 +135,7 @@ const Cups = props => {
           {tab === 1 && events[openEvent].StartTime < format(new Date(), 't') && (
             <PlayerContainer>
               <Recplayer
-                lev={`/dl/level/${events[openEvent].LevelIndex}`}
+                lev={`${config.dlUrl}level/${events[openEvent].LevelIndex}`}
                 controls
               />
             </PlayerContainer>
