@@ -1,70 +1,93 @@
-# Getting Started with Create React App
+# Elmaonline site web frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React based frontend for the [elmaonline site](https://elma.online). The backend is found in the [elmaonline-site repo](https://github.com/elmadev/elmaonline-site).
 
-## Available Scripts
+## Get started
 
-In the project directory, you can run:
+1. Install if needed nodejs and yarn
+2. Clone this repo
+3. Run `yarn` in terminal to install depedencies
+4. Run `yarn start` in terminal to start development server
 
-### `yarn start`
+- You can connect to the test server backend or run [elmaonline-site](https://github.com/elmadev/elmaonline-site) locally.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Run `yarn build` in terminal to make a production build.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Tech stack
 
-### `yarn test`
+- React 17 using [Create React App](https://github.com/facebook/create-react-app)
+- Styling with [styled-components](https://styled-components.com/) and [Material-UI](https://material-ui.com/)
+- Navigation using [@reach-router](https://reach.tech/router/)
+- Simplified redux using [easy-peasy](https://easy-peasy.now.sh/)
+- API calls using [apisauce](https://github.com/infinitered/apisauce) built on axios
+- Forms powered by [formal-web](https://www.npmjs.com/package/@kevinwolf/formal-web)
+- Basic helper tools such as lodash, date-fns, nanoid
+- Page and component generation from templates using plop (`yarn g`)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+If you don't know react it's worth checking out the official [tutorial](https://reactjs.org/tutorial/tutorial.html). Rest of the stack should be pretty easy to learn. If you are new to any of them, check out these quick introductions to the most important ones: [easy-peasy](https://easy-peasy.now.sh/docs/tutorials/quick-start.html), [styled-components](https://styled-components.com/docs/basics#getting-started), [reach-router](https://reach.tech/router/) and [formal-web](https://www.npmjs.com/package/@kevinwolf/formal-web#usage).
 
-### `yarn build`
+## Folder structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+.
+├── /                      # Various configuration files
+├── /public                # The .html file and favicons
+├── /src                   # This is where your code will be
+    ├── /components        # Smaller reusable components
+    ├── /constants         # Constants used in components
+    ├── /features          # Bigger reusable components
+    ├── /images            # Images files
+    ├── /pages             # Top level pages
+    ├── /stories           # Style guide for components
+    ├── /utils             # Pure js reusable functions
+    ├── /api.js            # API endpoints
+    ├── /app.js            # Where code is wrapped with router/store etc.
+    ├── /config.js         # Environment variables
+    ├── /easypeasy.js      # Store, update when adding new store.js files
+    ├── /globalStyle.js    # Global css
+    ├── /index.js          # Entry point
+    ├── /muiTheme.js       # Material UI theme changes
+    ├── /router.js         # Add new pages here
+├── /templates             # Templates for generating new files
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Developing on the project
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Use the generator to add new pages, features and components
+Run `yarn g` in terminal and follow the prompts
 
-### `yarn eject`
+Most styling should happen in components which should be mostly style and as little state as possible, no easypeasy, at most some react useState. Features will be built up of components and if applicable maintain some state and call api. Pages will be built of mostly of features and some layout components, these can also maintain state and call api.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Pages
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Run `yarn g page` in terminal
+- Type name of page in CamelCase
+- Add import in src/router.js
+- Add the component inside `<Router>` in src/router.js with a path param
+- Add store import at the top of src/easypeasy.js
+- Add store inside `export default {` in src/easypeasy.js
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Feature
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Run `yarn g feature` in terminal
+- Type name of component in CamelCase
+- Import in relevant pages
 
-## Learn More
+### component
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Run `yarn g component` in terminal
+- Type name of component in CamelCase
+- Import in relevant screens/features
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Setup editor
 
-### Code Splitting
+The project is configured to use eslint and prettier to ensure good coding practices. Make sure you install relevant plugins for your editor.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Visual Studio Code:
 
-### Analyzing the Bundle Size
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Communication
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Feel free to create issues here on github in order to discuss things related to the project. You can also join the [elma discord](https://discord.gg/j5WMFC6) #developers channel to chat.
