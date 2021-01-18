@@ -10,7 +10,7 @@ import Link from 'components/Link';
 import Download from 'components/Download';
 import { Paper } from 'components/Paper';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 import Loading from 'components/Loading';
 import config from 'config';
 /* import { Level } from 'components/Names';
@@ -74,7 +74,7 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
   }
 
   return (
-    <Container >
+    <Container>
       <RecBackground>
         <RecContainer>
           <Recplayer

@@ -4,7 +4,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Fab } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
 import Link from 'components/Link';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 
 const promote = 'Int';
 

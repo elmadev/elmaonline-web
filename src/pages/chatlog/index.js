@@ -187,7 +187,6 @@ const ChatLog = props => {
       'rpp',
       'page',
     ]; */
-
     /* history.replace({
       search: queryString.stringify(
         {

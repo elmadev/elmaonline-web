@@ -46,7 +46,8 @@
     "eject": "react-scripts eject",
     "g": "plop",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "prettier": "prettier --check src/**/*.js"
   },
   "eslintConfig": {
     "extends": [

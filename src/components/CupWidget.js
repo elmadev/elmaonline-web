@@ -3,7 +3,7 @@ import CupCurrent from 'components/CupCurrent';
 import Header from 'components/Header';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 
 const CupWidget = ({ ShortName }) => {
   const navigate = useNavigate();

@@ -26,7 +26,7 @@ import Loading from 'components/Loading';
 import Link from 'components/Link';
 import Play from 'components/Play';
 import LocalTime from 'components/LocalTime';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 import config from 'config';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
@@ -102,7 +102,10 @@ const Level = ({ LevelIndex }) => {
                 {isWindow &&
                   (battlesForLevel.length < 1 ||
                     battleStatus(battlesForLevel[0]) !== 'Queued') && (
-                    <Recplayer lev={`${config.dlUrl}level/${LevelIndex}`} controls />
+                    <Recplayer
+                      lev={`${config.dlUrl}level/${LevelIndex}`}
+                      controls
+                    />
                   )}
               </>
             ) : (
@@ -121,7 +124,9 @@ const Level = ({ LevelIndex }) => {
               </AccordionSummary>
               <AccordionDetails>
                 <LevelDescription>
-                  <Download href={`level/${LevelIndex}`}>{level.LevelName}.lev</Download>
+                  <Download href={`level/${LevelIndex}`}>
+                    {level.LevelName}.lev
+                  </Download>
                   <LevelFullName>{level.LongName}</LevelFullName>
                   <br />
                   {'Level ID: '}

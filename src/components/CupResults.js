@@ -4,7 +4,7 @@ import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import DerpTable from 'components/Table/DerpTable';
 import { zeroPad } from 'utils/time';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 import { ListRow, ListCell } from 'components/List';
 
 const CupResults = props => {

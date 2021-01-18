@@ -99,7 +99,9 @@ const Battle = props => {
                   <BattleType type={battle.BattleType} />
                 </span>{' '}
                 battle in{' '}
-                <Download url={`level/${battle.LevelIndex}`}>{battle.LevelData ? battle.LevelData.LevelName : '?'}.lev</Download>{' '}
+                <Download url={`level/${battle.LevelIndex}`}>
+                  {battle.LevelData ? battle.LevelData.LevelName : '?'}.lev
+                </Download>{' '}
                 {battle.KuskiData.Kuski}
                 <div className="timeStamp">
                   Started{' '}
@@ -110,7 +112,9 @@ const Battle = props => {
                   />
                 </div>
                 <div className="timeStamp">
-                  <Download url={`battlereplay/${BattleIndex}`}>Download replay</Download>
+                  <Download url={`battlereplay/${BattleIndex}`}>
+                    Download replay
+                  </Download>
                 </div>
                 <br />
                 <Link to={`/levels/${battle.LevelIndex}`}>

@@ -11,20 +11,9 @@ import Link from 'components/Link';
 import { nickId } from 'utils/nick';
 
 const schema = yup.object().shape({
-  LevelPackName: yup
-    .string()
-    .required()
-    .min(2)
-    .max(16),
-  LevelPackLongName: yup
-    .string()
-    .required()
-    .min(2)
-    .max(30),
-  LevelPackDesc: yup
-    .string()
-    .required()
-    .max(255),
+  LevelPackName: yup.string().required().min(2).max(16),
+  LevelPackLongName: yup.string().required().min(2).max(30),
+  LevelPackDesc: yup.string().required().max(255),
 });
 
 const LevelsAdd = () => {

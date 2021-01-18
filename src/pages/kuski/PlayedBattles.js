@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { TablePagination } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';

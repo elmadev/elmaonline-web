@@ -5,17 +5,17 @@ import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Link from 'components/Link';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 
 const RecListItem = ({ replay, selected, columns, openReplay }) => {
   const navigate = useNavigate();
-  const handleOpenReplay = (uuid) => {
+  const handleOpenReplay = uuid => {
     if (openReplay) {
       openReplay(uuid);
     } else {
       navigate(`/r/${uuid}`);
     }
-  }
+  };
 
   return (
     <ListRow
@@ -40,9 +40,7 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
             <span style={{ color: 'gray' }}>(DNF) </span>
           )}
           {replay.Bug === 1 && <span style={{ color: 'brown' }}>(Bug) </span>}
-          {replay.Nitro === 1 && (
-            <span style={{ color: 'blue' }}>(Mod) </span>
-          )}
+          {replay.Nitro === 1 && <span style={{ color: 'blue' }}>(Mod) </span>}
           <Time thousands time={replay.ReplayTime} />
         </ListCell>
       )}
@@ -57,7 +55,7 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
       )}
     </ListRow>
   );
-}
+};
 
 RecListItem.propTypes = {
   replay: PropTypes.shape({

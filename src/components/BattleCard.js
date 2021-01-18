@@ -28,9 +28,7 @@ const BattleCard = props => {
   };
 
   const getEnd = (started, duration) => {
-    return toLocalTime(started, 'X')
-      .add(duration, 'minutes')
-      .format('X');
+    return toLocalTime(started, 'X').add(duration, 'minutes').format('X');
   };
 
   const getNow = () => {

@@ -9,7 +9,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import { toServerTime } from 'utils/time';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 
 const BattleList = ({ start, end, limit = 250 }) => {
   const navigate = useNavigate();

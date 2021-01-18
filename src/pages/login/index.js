@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { useStoreActions } from 'easy-peasy';
 import { Button, Container, Box } from '@material-ui/core';
 import Field from 'components/Field';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 import MuiAlert from '@material-ui/lab/Alert';
 import Link from 'components/Link';
 

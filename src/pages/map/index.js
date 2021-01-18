@@ -61,8 +61,9 @@ const Map = () => {
           >
             {markerList.map(m => (
               <Marker
-                title={`${m.KuskiData !== null &&
-                  m.KuskiData.Kuski} (Added: ${format(
+                title={`${
+                  m.KuskiData !== null && m.KuskiData.Kuski
+                } (Added: ${format(
                   new Date(m.LastUpdated * 1000),
                   'd LLL y',
                 )})`}

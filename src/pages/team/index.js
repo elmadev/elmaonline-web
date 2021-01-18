@@ -4,7 +4,7 @@ import Header from 'components/Header';
 import Kuski from 'components/Kuski';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListCell, ListContainer, ListRow } from 'components/List';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 
 const Team = ({ TeamName }) => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as ReachLink } from "@reach/router"
+import { Link as ReachLink } from '@reach/router';
 
 const Link = ({ to, children, ...props }) => {
   /* let navTo = to;
@@ -7,7 +7,9 @@ const Link = ({ to, children, ...props }) => {
     navTo = navTo.subtring(1, navTo.length);
   } */
   return (
-    <ReachLink to={to} {...props}>{children}</ReachLink>
+    <ReachLink to={to} {...props}>
+      {children}
+    </ReachLink>
   );
 };
 

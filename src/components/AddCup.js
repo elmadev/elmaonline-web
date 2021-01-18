@@ -8,29 +8,11 @@ import { Button } from '@material-ui/core';
 import { nickId } from 'utils/nick';
 
 const schema = yup.object().shape({
-  CupName: yup
-    .string()
-    .required()
-    .max(32),
-  Description: yup
-    .string()
-    .required()
-    .max(65535),
-  ShortName: yup
-    .string()
-    .required()
-    .min(2)
-    .max(4),
-  Skips: yup
-    .number()
-    .required()
-    .min(0)
-    .max(9),
-  Events: yup
-    .number()
-    .required()
-    .min(1)
-    .max(99),
+  CupName: yup.string().required().max(32),
+  Description: yup.string().required().max(65535),
+  ShortName: yup.string().required().min(2).max(4),
+  Skips: yup.number().required().min(0).max(9),
+  Events: yup.number().required().min(1).max(99),
 });
 
 const AddCup = props => {

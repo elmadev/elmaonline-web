@@ -1,10 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk, persist } from 'easy-peasy';
-import {
-  GetAllBattleTimes,
-  BattleResults,
-  RankingHistoryByBattle,
-} from 'api';
+import { GetAllBattleTimes, BattleResults, RankingHistoryByBattle } from 'api';
 
 export default {
   settings: persist(

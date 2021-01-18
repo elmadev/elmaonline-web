@@ -19,7 +19,7 @@ import RecList from 'features/RecList';
 import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import config from 'config';
 
@@ -41,9 +41,7 @@ const Replay = props => {
   if (!replay) return null;
 
   if (isWindow) {
-    link = `https://eol.ams3.digitaloceanspaces.com/${
-      config.s3SubFolder
-    }replays/${replay.UUID}/${replay.RecFileName}`;
+    link = `https://eol.ams3.digitaloceanspaces.com/${config.s3SubFolder}replays/${replay.UUID}/${replay.RecFileName}`;
   }
 
   return (

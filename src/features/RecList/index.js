@@ -5,7 +5,7 @@ import { sortBy, filter } from 'lodash';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import RecListItem from 'components/RecListItem';
-import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 
 const widths = { Replay: 200, Time: 100, Level: null, By: null };
 

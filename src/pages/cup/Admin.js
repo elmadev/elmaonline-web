@@ -23,15 +23,9 @@ import { ListRow, ListCell } from 'components/List';
 
 const schema = yup.object().shape({
   StartTime: yup.date().required(),
-  StartHour: yup
-    .number()
-    .min(0)
-    .max(23),
+  StartHour: yup.number().min(0).max(23),
   EndTime: yup.date().required(),
-  EndHour: yup
-    .number()
-    .min(0)
-    .max(23),
+  EndHour: yup.number().min(0).max(23),
   Designer: yup.string().max(15),
 });
 
