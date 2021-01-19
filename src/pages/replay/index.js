@@ -9,7 +9,7 @@ import {
 import { ExpandMore } from '@material-ui/icons';
 import styled from 'styled-components';
 import { Paper } from 'components/Paper';
-
+import Layout from 'components/Layout';
 import Recplayer from 'components/Recplayer';
 import { Level } from 'components/Names';
 import LocalTime from 'components/LocalTime';
@@ -45,7 +45,7 @@ const Replay = props => {
   }
 
   return (
-    <Container>
+    <Layout>
       <PlayerContainer>
         <Player>
           {isWindow && (
@@ -159,17 +159,9 @@ const Replay = props => {
           <ReplayComments ReplayIndex={replay.ReplayIndex} />
         </BattleDescriptionPaper>
       </LevelStatsContainer>
-    </Container>
+    </Layout>
   );
 };
-
-const Container = styled.div`
-  padding: 7px;
-  @media (max-width: 768px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
-`;
 
 const PlayerContainer = styled.div`
   width: 70%;

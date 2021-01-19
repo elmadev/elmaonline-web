@@ -10,6 +10,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from 'components/Header';
+import Layout from 'components/Layout';
 import FourOFour0 from '../../images/404_0.png';
 import FourOFour1 from '../../images/404_1.png';
 import FourOFour2 from '../../images/404_2.png';
@@ -19,23 +20,23 @@ const images = [FourOFour0, FourOFour1, FourOFour2];
 class NotFound extends React.Component {
   render() {
     return (
-      <Container>
-        <Header>Not Found</Header>
-        <div>Sorry, the page you were trying to view does not exist.</div>
-        <Image>
-          <img
-            src={images[Math.floor(Math.random() * images.length)]}
-            alt="Not found.."
-          />
-        </Image>
-      </Container>
+      <Layout>
+        <Container>
+          <Header>Not Found</Header>
+          <div>Sorry, the page you were trying to view does not exist.</div>
+          <Image>
+            <img
+              src={images[Math.floor(Math.random() * images.length)]}
+              alt="Not found.."
+            />
+          </Image>
+        </Container>
+      </Layout>
     );
   }
 }
 
 const Container = styled.div`
-  padding-left: 20px;
-  padding-right: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;

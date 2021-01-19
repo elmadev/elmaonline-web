@@ -7,7 +7,7 @@ import TopBar from 'components/TopBar';
 import SideBar from 'components/SideBar';
 import GlobalStyle from 'globalStyle';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, edge }) => {
   const { sideBarVisible } = useStoreState(state => state.Page);
   return (
     <>
@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
       <Container expanded={sideBarVisible}>
         <TopBar />
         <SideBar />
-        <ChildrenCon>{children}</ChildrenCon>
+        <ChildrenCon edge={edge}>{children}</ChildrenCon>
       </Container>
     </>
   );
@@ -24,9 +24,10 @@ const Layout = ({ children }) => {
 const ChildrenCon = styled.div`
   min-height: 100%;
   margin-top: -50px;
-  padding-top: 50px;
   box-sizing: border-box;
   background: #f1f1f1;
+  padding: ${p => (p.edge ? 0 : '24px')};
+  padding-top: ${p => (p.edge ? '50px' : '74px')};
 `;
 
 const Container = styled.div`

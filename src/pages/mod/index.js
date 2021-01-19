@@ -9,6 +9,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';
 import { Check, Clear } from '@material-ui/icons';
+import Layout from 'components/Layout';
 import Bans from './Bans';
 import ErrorLog from './ErrorLog';
 import ActionLog from './ActionLog';
@@ -25,7 +26,7 @@ const Mod = () => {
   }, []);
 
   return (
-    <>
+    <Layout edge>
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
@@ -80,7 +81,7 @@ const Mod = () => {
           <div>You are not a mod or not logged in.</div>
         )}
       </Container>
-    </>
+    </Layout>
   );
 };
 

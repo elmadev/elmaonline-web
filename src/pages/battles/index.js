@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
+import Layout from 'components/Layout';
 import BattleList from 'features/BattleList';
 import queryString from 'query-string';
 import { useNavigate, useLocation } from '@reach/router';
@@ -23,28 +24,30 @@ const Battles = props => {
   }, [date]);
 
   const next = () => {
-    navigate(`battles?date=${start.add(1, 'days').format('YYYY-MM-DD')}`);
+    navigate(`/battles?date=${start.add(1, 'days').format('YYYY-MM-DD')}`);
   };
 
   const previous = () => {
-    navigate(`battles?date=${start.subtract(1, 'days').format('YYYY-MM-DD')}`);
+    navigate(`/battles?date=${start.subtract(1, 'days').format('YYYY-MM-DD')}`);
   };
 
   if (!start || !end) return null;
 
   return (
-    <Container>
-      <Datepicker>
-        <button onClick={previous} type="button">
-          &lt;
-        </button>
-        <SelectedDate>{start.format('ddd DD.MM.YYYY')}</SelectedDate>
-        <button onClick={next} type="button">
-          &gt;
-        </button>
-      </Datepicker>
-      <BattleList start={start.clone()} end={end.clone()} />
-    </Container>
+    <Layout edge>
+      <Container>
+        <Datepicker>
+          <button onClick={previous} type="button">
+            &lt;
+          </button>
+          <SelectedDate>{start.format('ddd DD.MM.YYYY')}</SelectedDate>
+          <button onClick={next} type="button">
+            &gt;
+          </button>
+        </Datepicker>
+        <BattleList start={start.clone()} end={end.clone()} />
+      </Container>
+    </Layout>
   );
 };
 

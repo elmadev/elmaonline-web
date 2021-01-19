@@ -1,4 +1,5 @@
 import React from 'react';
+import Layout from 'components/Layout';
 // import LevelEditorGui from 'level-editor-gui';
 
 class Editor extends React.Component {
@@ -15,13 +16,15 @@ class Editor extends React.Component {
 
   render() {
     return (
-      <div
-        id="level-editor"
-        style={{
-          width: '100%',
-          height: '100%',
-        }}
-      />
+      <Layout>
+        <div
+          id="level-editor"
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+        />
+      </Layout>
     );
   }
 }

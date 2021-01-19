@@ -14,10 +14,10 @@ import {
   Tab,
 } from '@material-ui/core';
 import styled from 'styled-components';
+import Layout from 'components/Layout';
 import { ExpandMore } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-
 import Kuski from 'components/Kuski';
 import Download from 'components/Download';
 import Recplayer from 'components/Recplayer';
@@ -85,14 +85,14 @@ const Level = ({ LevelIndex }) => {
 
   const goToBattle = battleIndex => {
     if (!Number.isNaN(battleIndex)) {
-      navigate(`battles/${battleIndex}`);
+      navigate(`/battles/${battleIndex}`);
     }
   };
 
   const isWindow = typeof window !== 'undefined';
 
   return (
-    <Container>
+    <Layout>
       <PlayerContainer>
         {loading && <Loading />}
         {!loading && (
@@ -264,7 +264,7 @@ const Level = ({ LevelIndex }) => {
           )}
         </Paper>
       </ResultsContainer>
-    </Container>
+    </Layout>
   );
 };
 
@@ -316,10 +316,6 @@ const RightBarContainer = styled.div`
   width: 40%;
   padding: 7px;
   box-sizing: border-box;
-`;
-
-const Container = styled.div`
-  padding: 7px;
 `;
 
 const PlayerContainer = styled.div`

@@ -56,7 +56,7 @@ const PlayedBattles = ({ KuskiIndex }) => {
           );
           return (
             <ListRow
-              onClick={() => navigate(`battles/${b.BattleIndex}`)}
+              onClick={() => navigate(`/battles/${b.BattleIndex}`)}
               key={b.BattleIndex}
             >
               <ListCell width={130}>

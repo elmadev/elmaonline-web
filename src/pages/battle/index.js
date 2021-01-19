@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Layout from 'components/Layout';
 import {
   Typography,
   Accordion,
@@ -76,10 +77,10 @@ const Battle = props => {
 
   const isWindow = typeof window !== 'undefined';
 
-  if (!battle) return <Root>Battle is unfinished</Root>;
+  if (!battle) return <Layout>Battle is unfinished</Layout>;
 
   return (
-    <Root>
+    <Layout>
       <RecView
         isWindow={isWindow}
         BattleIndex={BattleIndex}
@@ -223,17 +224,13 @@ const Battle = props => {
           )}
         </Paper>
       </LevelStatsContainer>
-    </Root>
+    </Layout>
   );
 };
 
 Battle.propTypes = {
   BattleIndex: PropTypes.number.isRequired,
 };
-
-const Root = styled.div`
-  padding: 7px;
-`;
 
 const RightBarContainer = styled.div`
   float: right;

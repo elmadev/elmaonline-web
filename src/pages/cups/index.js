@@ -4,6 +4,7 @@ import { Typography, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import Link from 'components/Link';
 import AddCup from 'components/AddCup';
+import Layout from 'components/Layout';
 
 const Cups = () => {
   const { cupList, addSuccess } = useStoreState(state => state.Cups);
@@ -18,7 +19,7 @@ const Cups = () => {
   }
 
   return (
-    <Container>
+    <Layout>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
           <Typography variant="h3" gutterBottom>
@@ -63,13 +64,9 @@ const Cups = () => {
           )}
         </Grid>
       </Grid>
-    </Container>
+    </Layout>
   );
 };
-
-const Container = styled.div`
-  padding: 20px;
-`;
 
 const CupName = styled.div`
   font-weight: 500;

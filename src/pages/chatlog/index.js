@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { VariableSizeList } from 'react-window';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useDebounce } from 'use-debounce';
+import Layout from 'components/Layout';
 import queryString from 'query-string';
 import {
   TextField,
@@ -200,19 +201,6 @@ const ChatLog = props => {
       )}`,
       { replace: true },
     );
-    /* history.replace({
-      search: queryString.stringify(
-        {
-          ...query,
-          ...keys,
-        },
-        {
-          arrayFormat: 'comma',
-          skipEmptyString: true,
-          sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
-        },
-      ),
-    }); */
   };
 
   const handleChangePage = (event, newPage) => {
@@ -233,7 +221,7 @@ const ChatLog = props => {
   const acClasses = useStyles();
 
   return (
-    <Container>
+    <Layout>
       <Header h2>Chat Log Filter</Header>
       <ChatFilter container spacing={2} alignItems="center">
         <Grid item xs={12} sm={6} lg={3}>
@@ -384,13 +372,9 @@ const ChatLog = props => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       )}
-    </Container>
+    </Layout>
   );
 };
-
-const Container = styled.div`
-  padding: 10px;
-`;
 
 const ChatFilter = styled(Grid)`
   padding-bottom: 10px;

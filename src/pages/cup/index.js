@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Header from 'components/Header';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { nickId } from 'utils/nick';
+import Layout from 'components/Layout';
 import { admins } from 'utils/cups';
 import Events from './Events';
 import Standings from './Standings';
@@ -34,7 +35,7 @@ const Cups = props => {
   }
 
   return (
-    <>
+    <Layout edge>
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
@@ -103,7 +104,7 @@ const Cups = props => {
       {tab === 5 && <Personal />}
       {tab === 6 && <Team />}
       {tab === 7 && <Admin />}
-    </>
+    </Layout>
   );
 };
 

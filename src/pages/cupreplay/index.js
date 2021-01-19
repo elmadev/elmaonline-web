@@ -5,6 +5,7 @@ import Recplayer from 'components/Recplayer';
 import Header from 'components/Header';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import Layout from 'components/Layout';
 import { Level } from 'components/Names';
 import Link from 'components/Link';
 import Download from 'components/Download';
@@ -74,92 +75,94 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
   }
 
   return (
-    <Container>
-      <RecBackground>
-        <RecContainer>
-          <Recplayer
-            rec={`${config}cupreplay/${ReplayIndex}/${Filename}`}
-            lev={`${config}level/${replay.CupData.LevelIndex}`}
-            controls
-          />
-        </RecContainer>
-      </RecBackground>
-      <PaperCon>
-        <Paper style={{ width: '100%' }}>
-          <Info>
-            <Half>
-              <Header h1>{Filename}.rec</Header>
-              <Header h3>
-                <Kuski kuskiData={replay.KuskiData} team flag />
-              </Header>
-            </Half>
-            <Half>
-              <Header h1 right>
-                <Download url={`cupreplay/${ReplayIndex}/${Filename}`}>
-                  <Time time={replay.Time} />
-                </Download>
-              </Header>
-              <Header h3 right>
-                <Link to={`/levels/${replay.CupData.LevelIndex}`}>
-                  <Level LevelData={replay.CupData.Level} />
-                  .lev
-                </Link>
-              </Header>
-            </Half>
-            {/* <ReplayRating ReplayIndex={getReplayByUuid.ReplayIndex} /> */}
-          </Info>
-        </Paper>
-      </PaperCon>
-      <PaperCon>
-        <Left>
-          <Paper>
-            <ListContainer>
-              <ListHeader>
-                <ListCell>Filename</ListCell>
-                <ListCell>Player</ListCell>
-                <ListCell>Time</ListCell>
-              </ListHeader>
-              {others.length > 0 && (
-                <>
-                  {others.map(t => (
-                    <ListRow
-                      key={t.CupTimeIndex}
-                      selected={t.CupTimeIndex === replay.CupTimeIndex}
-                      onClick={() =>
-                        goToReplay(
-                          t.CupTimeIndex,
-                          `${recName}${t.KuskiData.Kuski.substring(0, 6)}`,
-                        )
-                      }
-                    >
-                      <ListCell>
-                        {recName}
-                        {t.KuskiData.Kuski.substring(0, 6)}
-                      </ListCell>
-                      <ListCell>
-                        <Kuski kuskiData={t.KuskiData} />
-                      </ListCell>
-                      <ListCell>
-                        <Time apples={-1} time={t.Time} />
-                      </ListCell>
-                    </ListRow>
-                  ))}
-                </>
-              )}
-            </ListContainer>
+    <Layout edge>
+      <Container>
+        <RecBackground>
+          <RecContainer>
+            <Recplayer
+              rec={`${config}cupreplay/${ReplayIndex}/${Filename}`}
+              lev={`${config}level/${replay.CupData.LevelIndex}`}
+              controls
+            />
+          </RecContainer>
+        </RecBackground>
+        <PaperCon>
+          <Paper style={{ width: '100%' }}>
+            <Info>
+              <Half>
+                <Header h1>{Filename}.rec</Header>
+                <Header h3>
+                  <Kuski kuskiData={replay.KuskiData} team flag />
+                </Header>
+              </Half>
+              <Half>
+                <Header h1 right>
+                  <Download url={`cupreplay/${ReplayIndex}/${Filename}`}>
+                    <Time time={replay.Time} />
+                  </Download>
+                </Header>
+                <Header h3 right>
+                  <Link to={`/levels/${replay.CupData.LevelIndex}`}>
+                    <Level LevelData={replay.CupData.Level} />
+                    .lev
+                  </Link>
+                </Header>
+              </Half>
+              {/* <ReplayRating ReplayIndex={getReplayByUuid.ReplayIndex} /> */}
+            </Info>
           </Paper>
-        </Left>
-        <Right />
-      </PaperCon>
-      <Paper>
-        {/* <AddComment
-          add={() => {}}
-          type="replay"
-          index={getReplayByUuid.ReplayIndex}
-        />
-        <ReplayComments ReplayIndex={getReplayByUuid.ReplayIndex} /> */}
-      </Paper>
-    </Container>
+        </PaperCon>
+        <PaperCon>
+          <Left>
+            <Paper>
+              <ListContainer>
+                <ListHeader>
+                  <ListCell>Filename</ListCell>
+                  <ListCell>Player</ListCell>
+                  <ListCell>Time</ListCell>
+                </ListHeader>
+                {others.length > 0 && (
+                  <>
+                    {others.map(t => (
+                      <ListRow
+                        key={t.CupTimeIndex}
+                        selected={t.CupTimeIndex === replay.CupTimeIndex}
+                        onClick={() =>
+                          goToReplay(
+                            t.CupTimeIndex,
+                            `${recName}${t.KuskiData.Kuski.substring(0, 6)}`,
+                          )
+                        }
+                      >
+                        <ListCell>
+                          {recName}
+                          {t.KuskiData.Kuski.substring(0, 6)}
+                        </ListCell>
+                        <ListCell>
+                          <Kuski kuskiData={t.KuskiData} />
+                        </ListCell>
+                        <ListCell>
+                          <Time apples={-1} time={t.Time} />
+                        </ListCell>
+                      </ListRow>
+                    ))}
+                  </>
+                )}
+              </ListContainer>
+            </Paper>
+          </Left>
+          <Right />
+        </PaperCon>
+        <Paper>
+          {/* <AddComment
+            add={() => {}}
+            type="replay"
+            index={getReplayByUuid.ReplayIndex}
+          />
+          <ReplayComments ReplayIndex={getReplayByUuid.ReplayIndex} /> */}
+        </Paper>
+      </Container>
+    </Layout>
   );
 };
 

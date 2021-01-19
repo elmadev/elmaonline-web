@@ -5,6 +5,7 @@ import { Fab } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
 import Link from 'components/Link';
 import { useNavigate } from '@reach/router';
+import Layout from 'components/Layout';
 
 const promote = 'Int';
 
@@ -16,37 +17,39 @@ const Levels = () => {
     getLevelpacks();
   }, []);
   return (
-    <Container>
-      {levelpacks.length > 0 &&
-        levelpacks
-          .sort((a, b) => {
-            if (a.LevelPackName === promote) return -1;
-            if (b.LevelPackName === promote) return 1;
-            return a.LevelPackName.toLowerCase().localeCompare(
-              b.LevelPackName.toLowerCase(),
-            );
-          })
-          .map(p => (
-            <LevelPackContainer
-              promote={p.LevelPackName === promote}
-              key={p.LevelPackIndex}
-            >
-              <Link to={`/levels/packs/${p.LevelPackName}`}>
-                <ShortName>{p.LevelPackName}</ShortName>
-                <LongName>{p.LevelPackLongName}</LongName>
-              </Link>
-            </LevelPackContainer>
-          ))}
-      <FabCon>
-        <Fab
-          color="primary"
-          aria-label="Add"
-          onClick={() => navigate(`levels/add`)}
-        >
-          <AddIcon />
-        </Fab>
-      </FabCon>
-    </Container>
+    <Layout edge>
+      <Container>
+        {levelpacks.length > 0 &&
+          levelpacks
+            .sort((a, b) => {
+              if (a.LevelPackName === promote) return -1;
+              if (b.LevelPackName === promote) return 1;
+              return a.LevelPackName.toLowerCase().localeCompare(
+                b.LevelPackName.toLowerCase(),
+              );
+            })
+            .map(p => (
+              <LevelPackContainer
+                promote={p.LevelPackName === promote}
+                key={p.LevelPackIndex}
+              >
+                <Link to={`/levels/packs/${p.LevelPackName}`}>
+                  <ShortName>{p.LevelPackName}</ShortName>
+                  <LongName>{p.LevelPackLongName}</LongName>
+                </Link>
+              </LevelPackContainer>
+            ))}
+        <FabCon>
+          <Fab
+            color="primary"
+            aria-label="Add"
+            onClick={() => navigate(`/levels/add`)}
+          >
+            <AddIcon />
+          </Fab>
+        </FabCon>
+      </Container>
+    </Layout>
   );
 };
 

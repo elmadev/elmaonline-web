@@ -44,7 +44,7 @@ function DesignedBattles({ KuskiIndex }) {
           const sorted = [...b.Results].sort(sortResults(b.BattleType));
           return (
             <ListRow
-              onClick={() => navigate(`battles/${b.BattleIndex}`)}
+              onClick={() => navigate(`/battles/${b.BattleIndex}`)}
               key={b.BattleIndex}
             >
               <ListCell width={130}>

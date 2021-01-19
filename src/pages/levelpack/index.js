@@ -16,7 +16,7 @@ import {
   Radio,
   FormControl,
 } from '@material-ui/core';
-
+import Layout from 'components/Layout';
 import { nick, nickId } from 'utils/nick';
 import FieldBoolean from 'components/FieldBoolean';
 import Download from 'components/Download';
@@ -85,164 +85,166 @@ const LevelPack = ({ name }) => {
   if (!isRehydrated) return null;
   if (!levelPackInfo.LevelPackIndex) return null;
   return (
-    <RootStyle>
-      <Tabs
-        variant="scrollable"
-        scrollButtons="auto"
-        value={tab}
-        onChange={(e, t) => setTab(t)}
-      >
-        <Tab label="Records" />
-        <Tab label="Total Times" />
-        <Tab label="King list" />
-        <Tab label="Personal" />
-        <Tab label="Multi records" />
-        {nickId() === levelPackInfo.KuskiIndex && <Tab label="Admin" />}
-      </Tabs>
-      <LevelPackName>
-        <ShortNameStyled>{levelPackInfo.LevelPackName}</ShortNameStyled>{' '}
-        <LongNameStyled>{levelPackInfo.LevelPackLongName}</LongNameStyled>
-        <Download url={`pack/${levelPackInfo.LevelPackName}`}>
-          <DownloadText>Download</DownloadText>
-        </Download>
-      </LevelPackName>
-      <DescriptionStyle>{levelPackInfo.LevelPackDesc}</DescriptionStyle>
-      <Settings>
-        {openSettings ? (
-          <ClickAwayListener onClickAway={() => setOpenSettings(false)}>
-            <Paper>
-              <SettingsHeader>
-                <ClickCloseIcon onClick={() => setOpenSettings(false)} />
-                <SettingsHeadline>Settings</SettingsHeadline>
-              </SettingsHeader>
-              <FormControl component="fieldset" focused={false}>
-                <RadioButtonContainer>
-                  <RadioButtonItem>
-                    <FormLabel component="legend">
-                      Highlight times newer than{' '}
-                    </FormLabel>
-                  </RadioButtonItem>
-                  <RadioButtonItem>
-                    <RadioGroup
-                      aria-label="highlightWeeks"
-                      value={highlightWeeks}
-                      onChange={n => setHighlightWeeks(n.target.value)}
-                      name="weeks"
-                      row
-                    >
-                      <FormControlLabel
-                        value={0}
-                        checked={highlightWeeks === '0'}
-                        label="0"
-                        control={<Radio size="small" />}
+    <Layout edge>
+      <RootStyle>
+        <Tabs
+          variant="scrollable"
+          scrollButtons="auto"
+          value={tab}
+          onChange={(e, t) => setTab(t)}
+        >
+          <Tab label="Records" />
+          <Tab label="Total Times" />
+          <Tab label="King list" />
+          <Tab label="Personal" />
+          <Tab label="Multi records" />
+          {nickId() === levelPackInfo.KuskiIndex && <Tab label="Admin" />}
+        </Tabs>
+        <LevelPackName>
+          <ShortNameStyled>{levelPackInfo.LevelPackName}</ShortNameStyled>{' '}
+          <LongNameStyled>{levelPackInfo.LevelPackLongName}</LongNameStyled>
+          <Download url={`pack/${levelPackInfo.LevelPackName}`}>
+            <DownloadText>Download</DownloadText>
+          </Download>
+        </LevelPackName>
+        <DescriptionStyle>{levelPackInfo.LevelPackDesc}</DescriptionStyle>
+        <Settings>
+          {openSettings ? (
+            <ClickAwayListener onClickAway={() => setOpenSettings(false)}>
+              <Paper>
+                <SettingsHeader>
+                  <ClickCloseIcon onClick={() => setOpenSettings(false)} />
+                  <SettingsHeadline>Settings</SettingsHeadline>
+                </SettingsHeader>
+                <FormControl component="fieldset" focused={false}>
+                  <RadioButtonContainer>
+                    <RadioButtonItem>
+                      <FormLabel component="legend">
+                        Highlight times newer than{' '}
+                      </FormLabel>
+                    </RadioButtonItem>
+                    <RadioButtonItem>
+                      <RadioGroup
+                        aria-label="highlightWeeks"
+                        value={highlightWeeks}
+                        onChange={n => setHighlightWeeks(n.target.value)}
+                        name="weeks"
+                        row
+                      >
+                        <FormControlLabel
+                          value={0}
+                          checked={highlightWeeks === '0'}
+                          label="0"
+                          control={<Radio size="small" />}
+                        />
+                        <FormControlLabel
+                          value={1}
+                          checked={highlightWeeks === '1'}
+                          label="1"
+                          control={<Radio size="small" />}
+                        />
+                        <FormControlLabel
+                          value={2}
+                          checked={highlightWeeks === '2'}
+                          label="2"
+                          control={<Radio size="small" />}
+                        />
+                        <FormControlLabel
+                          value={3}
+                          checked={highlightWeeks === '3'}
+                          label="3"
+                          control={<Radio size="small" />}
+                        />
+                        <FormControlLabel
+                          value={4}
+                          checked={highlightWeeks === '4'}
+                          label="4"
+                          control={<Radio size="small" />}
+                        />
+                      </RadioGroup>
+                    </RadioButtonItem>
+                    <RadioButtonItem>
+                      <FormLabel component="legend">weeks</FormLabel>
+                    </RadioButtonItem>
+                  </RadioButtonContainer>
+                </FormControl>
+                {levelPackInfo.Legacy === 1 && (
+                  <>
+                    <SettingItem>
+                      <FieldBoolean
+                        value={showLegacyIcon}
+                        label="Show icon on legacy times"
+                        onChange={() => toggleShowLegacyIcon()}
                       />
-                      <FormControlLabel
-                        value={1}
-                        checked={highlightWeeks === '1'}
-                        label="1"
-                        control={<Radio size="small" />}
+                    </SettingItem>
+                    <SettingItem>
+                      <FieldBoolean
+                        value={showLegacy}
+                        label="Show legacy times"
+                        onChange={() => toggleShowLegacy()}
                       />
-                      <FormControlLabel
-                        value={2}
-                        checked={highlightWeeks === '2'}
-                        label="2"
-                        control={<Radio size="small" />}
-                      />
-                      <FormControlLabel
-                        value={3}
-                        checked={highlightWeeks === '3'}
-                        label="3"
-                        control={<Radio size="small" />}
-                      />
-                      <FormControlLabel
-                        value={4}
-                        checked={highlightWeeks === '4'}
-                        label="4"
-                        control={<Radio size="small" />}
-                      />
-                    </RadioGroup>
-                  </RadioButtonItem>
-                  <RadioButtonItem>
-                    <FormLabel component="legend">weeks</FormLabel>
-                  </RadioButtonItem>
-                </RadioButtonContainer>
-              </FormControl>
-              {levelPackInfo.Legacy === 1 && (
-                <>
-                  <SettingItem>
-                    <FieldBoolean
-                      value={showLegacyIcon}
-                      label="Show icon on legacy times"
-                      onChange={() => toggleShowLegacyIcon()}
-                    />
-                  </SettingItem>
-                  <SettingItem>
-                    <FieldBoolean
-                      value={showLegacy}
-                      label="Show legacy times"
-                      onChange={() => toggleShowLegacy()}
-                    />
-                  </SettingItem>
-                </>
-              )}
-            </Paper>
-          </ClickAwayListener>
-        ) : (
-          <ClickSettingsIcon onClick={() => setOpenSettings(true)} />
+                    </SettingItem>
+                  </>
+                )}
+              </Paper>
+            </ClickAwayListener>
+          ) : (
+            <ClickSettingsIcon onClick={() => setOpenSettings(true)} />
+          )}
+        </Settings>
+        {tab === 0 && (
+          <Records
+            records={records}
+            highlight={highlight}
+            highlightWeeks={highlightWeeks}
+            recordsLoading={recordsLoading}
+            showLegacyIcon={showLegacyIcon}
+          />
         )}
-      </Settings>
-      {tab === 0 && (
-        <Records
-          records={records}
-          highlight={highlight}
-          highlightWeeks={highlightWeeks}
-          recordsLoading={recordsLoading}
-          showLegacyIcon={showLegacyIcon}
-        />
-      )}
-      {tab === 1 && (
-        <TotalTimes
-          levelPackIndex={levelPackInfo.LevelPackIndex}
-          highlight={highlight}
-          highlightWeeks={highlightWeeks}
-        />
-      )}
-      {tab === 2 && (
-        <Kinglist
-          levelPackIndex={levelPackInfo.LevelPackIndex}
-          highlight={highlight}
-          highlightWeeks={highlightWeeks}
-        />
-      )}
-      {tab === 3 && (
-        <Personal
-          timesError={timesError}
-          setError={e => setError(e)}
-          getTimes={newKuski =>
-            getPersonalTimes({
-              PersonalKuskiIndex: newKuski,
-              name,
-              eolOnly: showLegacy ? 0 : 1,
-            })
-          }
-          times={personalTimes}
-          highlight={highlight}
-          highlightWeeks={highlightWeeks}
-          records={records}
-          setPersonalTimesLoading={setPersonalTimesLoading}
-          showLegacyIcon={showLegacyIcon}
-          kuski={personalKuski}
-        />
-      )}
-      {tab === 4 && (
-        <MultiRecords
-          name={name}
-          highlight={highlight}
-          highlightWeeks={highlightWeeks}
-        />
-      )}
-      {tab === 5 && <Admin records={records} LevelPack={levelPackInfo} />}
-    </RootStyle>
+        {tab === 1 && (
+          <TotalTimes
+            levelPackIndex={levelPackInfo.LevelPackIndex}
+            highlight={highlight}
+            highlightWeeks={highlightWeeks}
+          />
+        )}
+        {tab === 2 && (
+          <Kinglist
+            levelPackIndex={levelPackInfo.LevelPackIndex}
+            highlight={highlight}
+            highlightWeeks={highlightWeeks}
+          />
+        )}
+        {tab === 3 && (
+          <Personal
+            timesError={timesError}
+            setError={e => setError(e)}
+            getTimes={newKuski =>
+              getPersonalTimes({
+                PersonalKuskiIndex: newKuski,
+                name,
+                eolOnly: showLegacy ? 0 : 1,
+              })
+            }
+            times={personalTimes}
+            highlight={highlight}
+            highlightWeeks={highlightWeeks}
+            records={records}
+            setPersonalTimesLoading={setPersonalTimesLoading}
+            showLegacyIcon={showLegacyIcon}
+            kuski={personalKuski}
+          />
+        )}
+        {tab === 4 && (
+          <MultiRecords
+            name={name}
+            highlight={highlight}
+            highlightWeeks={highlightWeeks}
+          />
+        )}
+        {tab === 5 && <Admin records={records} LevelPack={levelPackInfo} />}
+      </RootStyle>
+    </Layout>
   );
 };
 

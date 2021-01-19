@@ -2,7 +2,7 @@ import React from 'react';
 import m from 'moment';
 import styled from 'styled-components';
 import { Tabs, Tab, Grid } from '@material-ui/core';
-
+import Layout from 'components/Layout';
 import Header from 'components/Header';
 import RankingTable from 'features/RankingTable';
 import {
@@ -57,7 +57,7 @@ class Ranking extends React.Component {
   render() {
     const { tab, year, month, week, day, battleType, min } = this.state;
     return (
-      <>
+      <Layout edge>
         <Tabs
           value={tab}
           onChange={(e, value) => this.setState({ tab: value })}
@@ -183,7 +183,7 @@ class Ranking extends React.Component {
             </Grid>
           </Grid>
         </Container>
-      </>
+      </Layout>
     );
   }
 }

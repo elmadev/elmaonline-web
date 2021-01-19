@@ -41,7 +41,7 @@ const BattleList = ({ start, end, limit = 250 }) => {
               return (
                 <ListRow
                   key={b.BattleIndex}
-                  onClick={() => navigate(`battles/${b.BattleIndex}`)}
+                  onClick={() => navigate(`/battles/${b.BattleIndex}`)}
                   bg={battleStatusBgColor(b)}
                 >
                   <ListCell width={100}>

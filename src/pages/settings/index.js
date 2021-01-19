@@ -8,6 +8,7 @@ import Header from 'components/Header';
 import Feedback from 'components/Feedback';
 import { nickId } from 'utils/nick';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import Layout from 'components/Layout';
 import Setting from './Setting';
 
 const Settings = () => {
@@ -61,7 +62,7 @@ const Settings = () => {
   };
 
   return (
-    <>
+    <Layout edge>
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
@@ -212,7 +213,7 @@ const Settings = () => {
           </InfoBox>
         </Drawer>
       </Container>
-    </>
+    </Layout>
   );
 };
 
