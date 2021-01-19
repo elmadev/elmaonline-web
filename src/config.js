@@ -7,4 +7,5 @@ module.exports = {
   s3SubFolder: 'test/',
   dlUrl: `${url}dl/`,
   api: `${url}api/`,
+  maps: 'AIzaSyDE8Prt4OybzNNxo1MzIn1XYNGxm9rI8Zk',
 };

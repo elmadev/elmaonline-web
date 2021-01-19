@@ -12,6 +12,7 @@ import GoogleMapReact from 'google-map-react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
 import { nickId } from 'utils/nick';
+import config from 'config';
 import MarkerBike from '../../images/marker-bike.png';
 
 const Map = () => {
@@ -49,7 +50,7 @@ const Map = () => {
       <MapContainer>
         {isWindow && (
           <GoogleMapReact
-            bootstrapURLKeys={{ key: window.App.google.maps }}
+            bootstrapURLKeys={{ key: config.maps }}
             defaultCenter={{ lat: 51, lng: 15 }}
             defaultZoom={4}
             onClick={({ lat, lng }) => {
