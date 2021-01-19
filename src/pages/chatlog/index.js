@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { VariableSizeList } from 'react-window';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useDebounce } from 'use-debounce';
-// import queryString from 'query-string';
+import queryString from 'query-string';
 import {
   TextField,
   TablePagination,
@@ -18,8 +18,7 @@ import {
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import styled from 'styled-components';
-// import history from 'utils/history';
-
+import { useLocation, useNavigate } from '@reach/router';
 import ChatView from 'features/ChatView';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';
@@ -122,9 +121,9 @@ const renderGroup = params => [
 ];
 
 const ChatLog = props => {
-  const {
-    context: { query = {} }, // Search query params
-  } = props;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const query = queryString.parse(location.search);
 
   const queryIds = query.KuskiIds
     ? query.KuskiIds.split(',').map(id => +id)
@@ -177,7 +176,7 @@ const ChatLog = props => {
   );
 
   const urlSync = keys => {
-    /* const sortOrder = [
+    const sortOrder = [
       'KuskiIds',
       'text',
       'start',
@@ -186,7 +185,21 @@ const ChatLog = props => {
       'count',
       'rpp',
       'page',
-    ]; */
+    ];
+    navigate(
+      `/chatlog?${queryString.stringify(
+        {
+          ...query,
+          ...keys,
+        },
+        {
+          arrayFormat: 'comma',
+          skipEmptyString: true,
+          sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
+        },
+      )}`,
+      { replace: true },
+    );
     /* history.replace({
       search: queryString.stringify(
         {

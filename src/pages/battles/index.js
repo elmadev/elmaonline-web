@@ -2,15 +2,13 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
 import BattleList from 'features/BattleList';
-import { useNavigate } from '@reach/router';
+import queryString from 'query-string';
+import { useNavigate, useLocation } from '@reach/router';
 
 const Battles = props => {
+  const location = useLocation();
   const navigate = useNavigate();
-  const {
-    context: {
-      query: { date },
-    },
-  } = props;
+  const { date } = queryString.parse(location.search);
 
   const [start, setStart] = useState();
   const [end, setEnd] = useState();
