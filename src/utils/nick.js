@@ -1,5 +1,14 @@
 import Cookies from 'universal-cookie';
 
+export const authToken = () => {
+  const cookies = new Cookies();
+  const token = cookies.get('token');
+  if (token) {
+    return token;
+  }
+  return '';
+};
+
 export const nick = () => {
   const cookies = new Cookies();
   const token = cookies.get('token');

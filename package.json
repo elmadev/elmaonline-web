@@ -60,7 +60,7 @@
     "rules": {
       "react-hooks/exhaustive-deps": "off",
       "import/no-anonymous-default-export": "off",
-      "prettier/prettier": "warn"
+      "prettier/prettier": ["warn", { "endOfLine": "auto" }]
     }
   },
   "browserslist": {

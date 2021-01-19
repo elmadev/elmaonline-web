@@ -1,7 +1,9 @@
 import { create } from 'apisauce';
+import config from 'config';
+import { authToken } from 'utils/nick';
 
 const isWindow = typeof window !== 'undefined';
-let baseURL = 'http://localhost:3003/api/';
+let baseURL = config.api;
 if (isWindow) {
   // baseURL = `${window.location.protocol}//${window.location.host}/api/`;
 }
@@ -10,6 +12,7 @@ const api = create({
   headers: {
     Accept: 'application/json',
     'Cache-Control': 'no-cache',
+    Authorization: authToken(),
   },
   timeout: 10000,
 });

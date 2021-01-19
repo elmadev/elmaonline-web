@@ -13,6 +13,7 @@ import Kuski from 'components/Kuski';
 import CupCurrent from 'components/CupCurrent';
 import { Paper } from 'components/Paper';
 import { ListRow, ListCell } from 'components/List';
+import config from 'config';
 
 const Dashboard = props => {
   const { events, openEvent, openStandings, cup } = props;
@@ -51,7 +52,7 @@ const Dashboard = props => {
     body.append('filename', file.name);
     body.append('share', share);
     body.append('comment', comment);
-    fetch('/upload/cupreplay', {
+    fetch(`${config.url}upload/cupreplay`, {
       method: 'POST',
       body,
     }).then(response => {

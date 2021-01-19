@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk } from 'easy-peasy';
 import Cookies from 'universal-cookie';
+import config from 'config';
 
 const cookies = new Cookies();
 
@@ -14,7 +15,7 @@ export default {
     state.username = payload;
   }),
   login: thunk(async (actions, payload) => {
-    const login = await fetch('/token', {
+    const login = await fetch(`${config.url}token`, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: {
