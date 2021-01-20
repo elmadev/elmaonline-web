@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+import Paper from 'components/Paper';
 
 const {{name}} = () => {
   const [name, setName] = useState('');
+  const { data } = useStoreState(state => state.{{name}});
+  const { getData } = useStoreActions(actions => actions.{{name}});
 
   useEffect(() => {
     setName('{{name}}');
+    getData();
   }, []);
 
   return (
-    <Container>
-      <Text>{name}</Text>
-    </Container>
+    <Paper>
+      <div>{name}</div>
+      <div>{data}</div>
+    </Paper>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Text = styled.div``;
 
 export default {{name}};
