@@ -2,6 +2,16 @@
 
 React based frontend for the [elmaonline site](https://elma.online). The backend is found in the [elmaonline-site repo](https://github.com/elmadev/elmaonline-site).
 
+- [test.elma.online](http://test.elma.online) New features will be tested here first, this site uses a secondary copy of the database, so you can mess up as much as you want here, and nothing you do here will be saved on the real site.
+- [elma.online](http://elma.online) This site will be using the live database.
+
+## Branches
+
+- **develop**
+  - The primary branch to use while developing. Make all changes to this branch, preferably as pull requests. Test server uses this branch.
+- **master**
+  - This branch reflects the version currently deployed on [elma.online](http://elma.online), only people actually deploying will be pulling code to this.
+
 ## Get started
 
 1. Install if needed nodejs and yarn
@@ -89,6 +99,14 @@ Visual Studio Code:
 
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
+## Test database
+
+The config is set up to use a test database. Bear in mind the following:
+
+- Test database is a copy of live from end june 2020
+- time, battle and allfinished tables only have a subset of live (last year or two) to keep size down
+- Passwords, emails and private comments have been stripped
 
 ## Communication
 
