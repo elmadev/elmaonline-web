@@ -1,132 +1,106 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Edit } from '@material-ui/icons';
+
+import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
+import Kuski from 'components/Kuski';
 import Time from 'components/Time';
-import ClickToEdit from 'components/ClickToEdit';
-import Feedback from 'components/Feedback';
 import Loading from 'components/Loading';
 import { recordsTT } from 'utils/calcs';
 import LegacyIcon from 'components/LegacyIcon';
-import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import LevelPopup from './LevelPopup';
 
-const Personal = ({
-  times,
-  getTimes,
+const Records = ({
   highlight,
   highlightWeeks,
-  timesError,
-  setError,
   records,
-  setPersonalTimesLoading,
+  recordsLoading,
   showLegacyIcon,
-  kuski,
 }) => {
   const [level, selectLevel] = useState(-1);
-  const levels = records.map(r => {
-    const personal = times.filter(t => t.LevelIndex === r.LevelIndex);
-    if (personal.length > 0) {
-      return { ...r, LevelBesttime: personal[0].LevelBesttime };
-    }
-    return { ...r, LevelBesttime: [] };
-  });
+  const [longName, setLongName] = useState('');
+  const [levelName, setLevelName] = useState('');
 
   return (
     <>
-      <h2>Personal records</h2>
+      <h2>Levels</h2>
       <ListContainer>
         <ListHeader>
           <ListCell width={100}>Filename</ListCell>
           <ListCell width={320}>Level name</ListCell>
-          <ListCell width={200}>
-            <ClickToEdit value={kuski} update={newKuski => getTimes(newKuski)}>
-              {kuski} <EditIcon />
-            </ClickToEdit>
-          </ListCell>
-          <ListCell />
+          <ListCell width={200}>Kuski</ListCell>
+          <ListCell>Time</ListCell>
+          {records.length > 0 &&
+            records[0].LevelBesttime[0].Source !== undefined && <ListCell />}
         </ListHeader>
-        {setPersonalTimesLoading && <Loading />}
-        {levels.length !== 0 && (
-          <>
-            {levels.map(r => (
-              <TimeRow
-                key={r.LevelIndex}
-                onClick={e => {
-                  e.preventDefault();
-                  if (r.LevelBesttime.length > 0) {
-                    selectLevel(level === r.LevelIndex ? -1 : r.LevelIndex);
+        {recordsLoading && <Loading />}
+        {records.map(r => (
+          <TimeRow
+            key={r.LevelIndex}
+            onClick={e => {
+              e.preventDefault();
+              selectLevel(level === r.LevelIndex ? -1 : r.LevelIndex);
+              setLongName(r.Level.LongName);
+              setLevelName(r.Level.LevelName);
+            }}
+            selected={level === r.LevelIndex}
+          >
+            <ListCell width={100}>{r.Level.LevelName}</ListCell>
+            <ListCell width={320}>{r.Level.LongName}</ListCell>
+            {r.LevelBesttime.length > 0 ? (
+              <>
+                <ListCell width={200}>
+                  <Kuski kuskiData={r.LevelBesttime[0].KuskiData} team flag />
+                </ListCell>
+                <ListCell
+                  highlight={
+                    r.LevelBesttime[0].TimeIndex >= highlight[highlightWeeks]
                   }
-                }}
-                selected={level === r.LevelIndex}
-              >
-                <ListCell width={100}>{r.Level.LevelName}</ListCell>
-                <ListCell width={320}>{r.Level.LongName}</ListCell>
-                {r.LevelBesttime.length > 0 ? (
-                  <>
-                    <TimeSpan
-                      width={200}
-                      highlight={
-                        r.LevelBesttime[0].TimeIndex >=
-                        highlight[highlightWeeks]
-                      }
-                    >
-                      <Time time={r.LevelBesttime[0].Time} />
-                    </TimeSpan>
-                    {r.LevelBesttime[0].Source !== undefined ? (
-                      <ListCell right>
-                        <LegacyIcon
-                          source={r.LevelBesttime[0].Source}
-                          show={showLegacyIcon}
-                        />
-                      </ListCell>
-                    ) : (
-                      <ListCell />
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <ListCell />
-                    <ListCell />
-                  </>
+                >
+                  <Time time={r.LevelBesttime[0].Time} />
+                </ListCell>
+                {r.LevelBesttime[0].Source !== undefined && (
+                  <ListCell right>
+                    <LegacyIcon
+                      source={r.LevelBesttime[0].Source}
+                      show={showLegacyIcon}
+                    />
+                  </ListCell>
                 )}
-              </TimeRow>
-            ))}
-            <TTRow>
-              <ListCell />
-              <ListCell>Total Time</ListCell>
-              <ListCell>
-                <Time time={recordsTT(levels, 'LevelBesttime')} />
-              </ListCell>
-              <ListCell />
-            </TTRow>
-          </>
-        )}
+              </>
+            ) : (
+              <>
+                <ListCell />
+                <ListCell />
+              </>
+            )}
+          </TimeRow>
+        ))}
+        <TTRow>
+          <ListCell />
+          <ListCell />
+          <ListCell>Total Time</ListCell>
+          <ListCell>
+            <Time time={recordsTT(records, 'LevelBesttime')} />
+          </ListCell>
+          {records.length > 0 &&
+            records[0].LevelBesttime[0].Source !== undefined && <ListCell />}
+        </TTRow>
       </ListContainer>
       {level !== -1 && (
         <LevelPopup
           highlight={highlight[highlightWeeks]}
           levelId={level}
+          longName={longName}
+          levelName={levelName}
           close={() => {
             selectLevel(-1);
           }}
-          KuskiIndex={times[0].LevelBesttime[0].KuskiIndex}
           showLegacyIcon={showLegacyIcon}
         />
       )}
-      <Feedback
-        open={timesError !== ''}
-        close={() => setError('')}
-        text={timesError}
-        type="error"
-      />
     </>
   );
 };
-
-const EditIcon = styled(Edit)`
-  margin-top: -4px;
-  font-size: 18px !important;
-`;
 
 const TimeRow = styled(ListRow)`
   background: ${p => (p.selected ? '#219653' : 'transparent')};
@@ -152,9 +126,4 @@ const TTRow = styled(ListRow)`
   }
 `;
 
-const TimeSpan = styled(ListCell)`
-  background: ${p => (p.highlight ? '#dddddd' : 'transparent')};
-  width: auto !important;
-`;
-
-export default Personal;
+export default Records;

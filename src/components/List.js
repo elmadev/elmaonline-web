@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const ListCell = ({ width, children, right }) => {
+export const ListCell = ({ width, children, right, highlight }) => {
   return (
-    <Cell width={width} right={right}>
+    <Cell width={width} right={right} highlight={highlight}>
       {children}
     </Cell>
   );
@@ -15,6 +15,7 @@ const Cell = styled.span`
   border-bottom: 1px solid #eaeaea;
   width: ${p => (p.width ? `${p.width}px` : 'auto')};
   text-align: ${p => (p.right ? 'right' : 'left')};
+  background: ${p => (p.highlight ? '#dddddd' : 'transparent')};
   button {
     max-height: 20px;
   }

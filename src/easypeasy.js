@@ -23,6 +23,7 @@ import Replay from 'pages/cupreplay/store';
 import ReplayByUUID from 'pages/replay/store';
 import Teams from 'pages/teams/store';
 import Kuskis from 'pages/kuskis/store';
+import Help from 'pages/help/store';
 import Level from 'pages/level/store';
 import Mod from 'pages/mod/store';
 import Battle from 'pages/battle/store';
@@ -45,6 +46,7 @@ export default {
   LevelPack,
   Search,
   Kuski,
+  Help,
   LevelsAdd,
   Levels,
   Settings,
