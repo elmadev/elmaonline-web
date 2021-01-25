@@ -1,5 +1,5 @@
 // const url = 'http://localhost:3003/';
-const url = 'https://test.elma.online/';
+const url = 'https://apitest.elma.online/';
 
 module.exports = {
   url,
