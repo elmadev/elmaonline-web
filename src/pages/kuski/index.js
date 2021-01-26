@@ -89,7 +89,11 @@ const Kuski = props => {
 };
 
 Kuski.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
+};
+
+Kuski.defaultProps = {
+  name: '',
 };
 
 const Width100 = styled.div`

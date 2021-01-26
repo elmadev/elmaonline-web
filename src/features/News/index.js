@@ -28,7 +28,7 @@ const News = ({ amount }) => {
       <CardContent>
         <ListContainer>
           {news.map(n => (
-            <ListRow onClick={() => openNews(n.NewsIndex)}>
+            <ListRow key={n.NewsIndex} onClick={() => openNews(n.NewsIndex)}>
               <ListCell>
                 <Headline selected={open === n.NewsIndex}>
                   {n.Headline}{' '}

@@ -229,7 +229,11 @@ const Battle = props => {
 };
 
 Battle.propTypes = {
-  BattleIndex: PropTypes.number.isRequired,
+  BattleIndex: PropTypes.number,
+};
+
+Battle.defaultProps = {
+  BattleIndex: 0,
 };
 
 const RightBarContainer = styled.div`

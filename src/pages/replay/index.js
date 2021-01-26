@@ -233,7 +233,11 @@ const ChatContainer = styled.div`
 `;
 
 Replay.propTypes = {
-  ReplayUuid: PropTypes.string.isRequired,
+  ReplayUuid: PropTypes.string,
+};
+
+Replay.defaultProps = {
+  ReplayUuid: '',
 };
 
 export default Replay;

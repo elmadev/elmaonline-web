@@ -334,7 +334,11 @@ const Player = styled.div`
 `;
 
 Level.propTypes = {
-  LevelIndex: PropTypes.number.isRequired,
+  LevelIndex: PropTypes.number,
+};
+
+Level.defaultProps = {
+  LevelIndex: 0,
 };
 
 export default Level;
