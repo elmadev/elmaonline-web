@@ -32,7 +32,8 @@ import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
 
-const Level = ({ LevelIndex }) => {
+const Level = ({ LevelId }) => {
+  const LevelIndex = parseInt(LevelId, 10);
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
   const [play, setPlay] = useState(
@@ -334,11 +335,11 @@ const Player = styled.div`
 `;
 
 Level.propTypes = {
-  LevelIndex: PropTypes.number,
+  LevelId: PropTypes.string,
 };
 
 Level.defaultProps = {
-  LevelIndex: 0,
+  LevelId: '0',
 };
 
 export default Level;

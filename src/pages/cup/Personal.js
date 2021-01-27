@@ -77,7 +77,7 @@ const Personal = () => {
                   <Fragment key={replay.CupTimeIndex}>
                     <ReplayCon>
                       <Checkbox
-                        checked={replay.ShareReplay}
+                        checked={replay.ShareReplay === 1}
                         onChange={() =>
                           updateReplay({
                             field: 'ShareReplay',

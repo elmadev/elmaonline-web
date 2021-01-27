@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -57,8 +57,8 @@ const getExtra = (KuskiIndex, extra, rankingHistory, battle) => {
   return '';
 };
 
-const Battle = props => {
-  const { BattleIndex } = props;
+const Battle = ({ BattleId }) => {
+  const BattleIndex = parseInt(BattleId, 10);
   const [extra, setExtra] = useState('');
   const { allBattleTimes, battle, rankingHistory } = useStoreState(
     state => state.Battle,
@@ -193,8 +193,8 @@ const Battle = props => {
                 .sort(sortResults(battle.BattleType))
                 .map((r, i) => {
                   return (
-                    <>
-                      <ListRow key={r.KuskiIndex}>
+                    <Fragment key={r.KuskiIndex}>
+                      <ListRow>
                         <ListCell width={30}>{i + 1}.</ListCell>
                         <ListCell width={battle.Multi === 1 ? 300 : 200}>
                           <Kuski kuskiData={r.KuskiData} flag team />
@@ -217,7 +217,7 @@ const Battle = props => {
                           )}
                         </ListCell>
                       </ListRow>
-                    </>
+                    </Fragment>
                   );
                 })}
             </ListContainer>
@@ -229,11 +229,11 @@ const Battle = props => {
 };
 
 Battle.propTypes = {
-  BattleIndex: PropTypes.number,
+  BattleId: PropTypes.string,
 };
 
 Battle.defaultProps = {
-  BattleIndex: 0,
+  BattleId: '0',
 };
 
 const RightBarContainer = styled.div`
