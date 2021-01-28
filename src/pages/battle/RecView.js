@@ -73,7 +73,9 @@ const PlayerContainer = styled.div`
 `;
 
 const StyledFormControlLabel = styled(FormControlLabel)`
-  font-size: 14px;
+  span {
+    font-size: 14px;
+  }
 `;
 
 export default RecView;

@@ -12,6 +12,8 @@ import {
   AccordionDetails,
   Tabs,
   Tab,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 import styled from 'styled-components';
 import Layout from 'components/Layout';
@@ -23,8 +25,8 @@ import Download from 'components/Download';
 import Recplayer from 'components/Recplayer';
 import RecList from 'features/RecList';
 import Loading from 'components/Loading';
+import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
-import Play from 'components/Play';
 import LocalTime from 'components/LocalTime';
 import { useNavigate } from '@reach/router';
 import config from 'config';
@@ -97,22 +99,35 @@ const Level = ({ LevelId }) => {
       <PlayerContainer>
         {loading && <Loading />}
         {!loading && (
-          <Player>
-            {play ? (
-              <>
-                {isWindow &&
-                  (battlesForLevel.length < 1 ||
-                    battleStatus(battlesForLevel[0]) !== 'Queued') && (
-                    <Recplayer
-                      lev={`${config.dlUrl}level/${LevelIndex}`}
-                      controls
-                    />
-                  )}
-              </>
-            ) : (
-              <Play type="map" onClick={() => setPlay(true)} />
-            )}
-          </Player>
+          <>
+            <Player>
+              {play ? (
+                <>
+                  {isWindow &&
+                    (battlesForLevel.length < 1 ||
+                      battleStatus(battlesForLevel[0]) !== 'Queued') && (
+                      <Recplayer
+                        lev={`${config.dlUrl}level/${LevelIndex}`}
+                        controls
+                      />
+                    )}
+                </>
+              ) : (
+                <LevelMap LevelIndex={LevelIndex} />
+              )}
+            </Player>
+            <StyledFormControlLabel
+              control={
+                <Checkbox
+                  onChange={() => setPlay(!play)}
+                  checked={play}
+                  color="primary"
+                  size="small"
+                />
+              }
+              label="Fancy map"
+            />
+          </>
         )}
       </PlayerContainer>
       <RightBarContainer>
@@ -332,6 +347,12 @@ const Player = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const StyledFormControlLabel = styled(FormControlLabel)`
+  span {
+    font-size: 14px;
+  }
 `;
 
 Level.propTypes = {
