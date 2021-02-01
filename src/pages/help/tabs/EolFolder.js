@@ -3,6 +3,7 @@ import Link from 'components/Link';
 import styled from 'styled-components';
 import Header from 'components/Header';
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
+import config from 'config';
 
 const MakeTab = ({ components }) => {
   return (
@@ -48,9 +49,9 @@ const tabs = {
         interesting fractal shapes.`,
     <p key="p">
       <span>Download all available shirts here: </span>
-      <Link to="/dl/allshirts" download>
+      <a href={`${config.dlUrl}allshirts`} download>
         Download
-      </Link>
+      </a>
     </p>,
   ],
 
