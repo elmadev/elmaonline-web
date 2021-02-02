@@ -49,7 +49,7 @@ const Help = () => {
   };
 
   return (
-    <Layout>
+    <Layout t={`Help - ${info}`}>
       <Header>Help</Header>
       <MainContainer>
         <LeftContainer>

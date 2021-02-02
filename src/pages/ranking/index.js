@@ -57,7 +57,7 @@ class Ranking extends React.Component {
   render() {
     const { tab, year, month, week, day, battleType, min } = this.state;
     return (
-      <Layout edge>
+      <Layout edge t="Ranking">
         <Tabs
           value={tab}
           onChange={(e, value) => this.setState({ tab: value })}

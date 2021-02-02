@@ -77,10 +77,12 @@ const Battle = ({ BattleId }) => {
 
   const isWindow = typeof window !== 'undefined';
 
-  if (!battle) return <Layout>Battle is unfinished</Layout>;
+  if (!battle) return <Layout t="Battle">Battle is unfinished</Layout>;
 
   return (
-    <Layout>
+    <Layout
+      t={`Battle - ${battle.LevelData ? battle.LevelData.LevelName : '?'}`}
+    >
       <RecView
         isWindow={isWindow}
         BattleIndex={BattleIndex}

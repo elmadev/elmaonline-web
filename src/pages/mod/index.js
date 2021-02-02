@@ -26,7 +26,7 @@ const Mod = () => {
   }, []);
 
   return (
-    <Layout edge>
+    <Layout edge t="Mod">
       <Tabs
         variant="scrollable"
         scrollButtons="auto"

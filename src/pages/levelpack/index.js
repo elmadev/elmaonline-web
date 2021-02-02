@@ -85,7 +85,7 @@ const LevelPack = ({ name }) => {
   if (!isRehydrated) return null;
   if (!levelPackInfo.LevelPackIndex) return null;
   return (
-    <Layout edge>
+    <Layout edge t={`Level pack - ${levelPackInfo.LevelPackName}`}>
       <RootStyle>
         <Tabs
           variant="scrollable"

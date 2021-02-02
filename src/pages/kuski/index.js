@@ -28,7 +28,7 @@ const Kuski = props => {
   if (!kuski) return <div>not found</div>;
 
   return (
-    <Layout edge>
+    <Layout edge t={`Kuski - ${name}`}>
       <Container>
         <Head>
           <Picture>

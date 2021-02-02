@@ -19,7 +19,7 @@ const Cups = () => {
   }
 
   return (
-    <Layout>
+    <Layout t="Cups">
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
           <Typography variant="h3" gutterBottom>

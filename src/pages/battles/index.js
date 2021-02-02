@@ -34,7 +34,7 @@ const Battles = props => {
   if (!start || !end) return null;
 
   return (
-    <Layout edge>
+    <Layout edge t={`Battles - ${start.format('ddd DD.MM.YYYY')}`}>
       <Container>
         <Datepicker>
           <button onClick={previous} type="button">

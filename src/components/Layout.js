@@ -2,16 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useStoreState } from 'easy-peasy';
+import { Helmet } from 'react-helmet';
 
 import TopBar from 'components/TopBar';
 import SideBar from 'components/SideBar';
 import GlobalStyle from 'globalStyle';
 
-const Layout = ({ children, edge }) => {
+const Layout = ({ children, edge, t = '' }) => {
   const { sideBarVisible } = useStoreState(state => state.Page);
   return (
     <>
       <GlobalStyle />
+      <Helmet>
+        <title>Elma Online - {t}</title>
+      </Helmet>
       <Container expanded={sideBarVisible}>
         <TopBar />
         <SideBar />

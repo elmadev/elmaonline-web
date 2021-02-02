@@ -13,7 +13,7 @@ export default function Home() {
   const { loggedIn } = useStoreState(state => state.Login);
 
   return (
-    <Layout>
+    <Layout t="Home">
       <Grid container spacing={3}>
         {!loggedIn && (
           <Grid container item xs={12} sm={12} spacing={3}>

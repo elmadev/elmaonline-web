@@ -1,29 +1,28 @@
 import React from 'react';
 import Layout from 'components/Layout';
+import styled from 'styled-components';
 // import LevelEditorGui from 'level-editor-gui';
 
+const EditorContainer = styled.div`
+  height: calc(100vh - 50px);
+`;
+
 class Editor extends React.Component {
-  /* componentDidMount() {
-    this.editor = new LevelEditorGui({
+  componentDidMount() {
+    /* this.editor = new LevelEditorGui({
       element: 'level-editor',
       server: 'https://janka.la:3123',
-    });
+    }); */
   }
 
   componentWillUnmount() {
-    this.editor.stopAnimationLoop();
-  } */
+    // this.editor.stopAnimationLoop();
+  }
 
   render() {
     return (
-      <Layout>
-        <div
-          id="level-editor"
-          style={{
-            width: '100%',
-            height: '100%',
-          }}
-        />
+      <Layout edge t="Online Editor">
+        <EditorContainer id="level-editor" />
       </Layout>
     );
   }

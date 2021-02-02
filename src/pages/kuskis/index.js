@@ -65,7 +65,7 @@ const Kuskis = () => {
       k.Kuski.toLowerCase().includes(filter.toLocaleLowerCase()),
   );
   return (
-    <Layout edge>
+    <Layout edge t="Kuskis">
       <KuskisContainer>
         <Filter>
           <input

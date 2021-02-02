@@ -27,7 +27,7 @@ const LevelsAdd = () => {
     },
   );
   return (
-    <Layout>
+    <Layout t="Add level pack">
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <Header h1>Add level pack</Header>

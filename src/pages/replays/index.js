@@ -6,7 +6,7 @@ import Layout from 'components/Layout';
 
 export default function Replays() {
   return (
-    <Layout>
+    <Layout t="Replays">
       <Grid container>
         <Grid item xs={12} sm={8}>
           <ReplayList showPagination />

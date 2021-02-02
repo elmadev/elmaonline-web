@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Link from 'components/Link';
 import styled from 'styled-components';
 import Header from 'components/Header';
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';

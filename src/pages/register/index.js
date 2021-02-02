@@ -73,7 +73,7 @@ const Register = () => {
   };
 
   return (
-    <Layout>
+    <Layout t="Register">
       <Container maxWidth="sm">
         {registerSuccess ? (
           <SuccessMessage>

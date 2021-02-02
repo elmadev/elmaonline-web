@@ -16,7 +16,7 @@ const Team = ({ TeamName }) => {
     getTeamMembers(TeamName);
   }, []);
   return (
-    <Layout>
+    <Layout t={`Team - ${TeamName}`}>
       <Header>{TeamName}</Header>
       <Paper>
         <ListContainer>

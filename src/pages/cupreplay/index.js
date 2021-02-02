@@ -75,7 +75,7 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
   }
 
   return (
-    <Layout edge>
+    <Layout edge t={`Cup rec - ${Filename}.rec`}>
       <Container>
         <RecBackground>
           <RecContainer>

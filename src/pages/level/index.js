@@ -94,7 +94,7 @@ const Level = ({ LevelId }) => {
   const isWindow = typeof window !== 'undefined';
 
   return (
-    <Layout>
+    <Layout t={`Level - ${level.LevelName}.lev`}>
       <PlayerContainer>
         {loading && <Loading />}
         {!loading && (

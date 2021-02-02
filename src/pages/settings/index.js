@@ -62,7 +62,7 @@ const Settings = () => {
   };
 
   return (
-    <Layout edge>
+    <Layout edge t="Settings">
       <Tabs
         variant="scrollable"
         scrollButtons="auto"

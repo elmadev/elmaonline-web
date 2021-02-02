@@ -39,7 +39,7 @@ const Map = () => {
   const isWindow = typeof window !== 'undefined';
 
   return (
-    <Layout>
+    <Layout t="Kuski Map">
       <Container>
         <HeaderContainer>
           <HeadlineContainer>Kuski Map</HeadlineContainer>
