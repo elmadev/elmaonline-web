@@ -14,6 +14,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Link from 'components/Link';
 import Layout from 'components/Layout';
+import config from 'config';
 
 const Register = () => {
   const [kuski, setKuski] = useState('');
@@ -174,7 +175,7 @@ const Register = () => {
               {isWindow && (
                 <div style={{ marginTop: '16px', marginBottom: '8px' }}>
                   <ReCAPTCHA
-                    sitekey={window.App.recaptcha}
+                    sitekey={config.recaptcha}
                     onChange={result => setCaptcha(result)}
                   />
                 </div>

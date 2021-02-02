@@ -154,7 +154,7 @@ export default {
     state.levelList = payload;
   }),
   findLevels: thunk(async (actions, payload) => {
-    const get = await LevelsSearchAll({ q: payload });
+    const get = await LevelsSearchAll({ q: payload, ShowLocked: 1 });
     if (get.ok) {
       const newList = [];
       forEach(get.data, l => {

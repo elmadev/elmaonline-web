@@ -9,7 +9,7 @@ const RegisterAndConnect = () => {
       To connect to the server online you need to create a user on this website
       and use the same user credentials to set up the game.
       <Header h3>Registering</Header>
-      You register by using the form on the right side of the frontpage of
+      You register by clicking login in top right corner and then register on
       elma.online. After registering you need to confirm your email before your
       account is enabled. Click the link in the email you will get.
       <Header h3>Setting up EOL</Header>

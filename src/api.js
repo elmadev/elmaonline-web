@@ -122,7 +122,7 @@ export const LevelPackSearch = q => api.get(`levelpack/search/${q}`);
 export const LevelsSearch = data =>
   api.get(`levelpack/searchLevel/${data.q}/${data.offset}/${data.showLocked}`);
 export const LevelsSearchAll = data =>
-  api.get(`levelpack/searchLevel/${data.q}`);
+  api.get(`levelpack/searchLevel/${data.q}/${data.ShowLocked}`);
 export const AddLevelPack = data => api.post('levelpack/add', data);
 export const LevelPackDeleteLevel = data =>
   api.post('levelpack/admin/deleteLevel', data);

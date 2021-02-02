@@ -122,7 +122,7 @@ const tabs = {
         this file to for example{' '}
       </span>
       <span>
-        <Link to="http://stats.sshoyer.net">elmastats</Link>.
+        <a href="http://stats.sshoyer.net">elmastats</a>.
       </span>
     </p>,
   ],
@@ -154,17 +154,11 @@ const tabs = {
     `There are a couple of different options, trying different ones for the
         best performance is recommended.`,
     <p key="p">
-      Download here:{' '}
-      <Link to="./ddraws.zip" download>
-        Zip (local)
-      </Link>
+      Download here: <a href={`${config.url}ddraws.zip`}>Zip (local)</a>
       {' - '}
-      <Link
-        to="https://docs.google.com/uc?authuser=0&id=0B1HOSlW-Ci3UZXJvVmFWSnVMUjg&export=download"
-        download
-      >
+      <a href="https://docs.google.com/uc?authuser=0&id=0B1HOSlW-Ci3UZXJvVmFWSnVMUjg&export=download">
         Rar (Google Docs)
-      </Link>
+      </a>
     </p>,
     `To use a any of these, unpack the archive and copy one of the .dll files
         into your eol folder. You can try to change it if the performance is
@@ -189,9 +183,7 @@ const tabs = {
       the game to be able to check your fps.`,
     <p key="p">
       Download f_rate.inf here:{' '}
-      <Link to="./f_rate.zip" download>
-        Download
-      </Link>
+      <a href={`${config.url}f_rate.zip`}>Zip (local)</a>
     </p>,
   ],
 };

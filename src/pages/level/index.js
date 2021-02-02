@@ -38,9 +38,6 @@ const Level = ({ LevelId }) => {
   const LevelIndex = parseInt(LevelId, 10);
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
-  const [play, setPlay] = useState(
-    navigator.userAgent.toLowerCase().indexOf('firefox') === -1,
-  );
   const {
     besttimes,
     besttimesLoading,
@@ -53,6 +50,7 @@ const Level = ({ LevelId }) => {
     eolLoading,
     timeStats,
     statsLoading,
+    settings: { fancyMap },
   } = useStoreState(state => state.Level);
   const {
     getBesttimes,
@@ -60,6 +58,7 @@ const Level = ({ LevelId }) => {
     getAllfinished,
     getEoltimes,
     getTimeStats,
+    toggleFancyMap,
   } = useStoreActions(actions => actions.Level);
 
   useEffect(() => {
@@ -101,7 +100,7 @@ const Level = ({ LevelId }) => {
         {!loading && (
           <>
             <Player>
-              {play ? (
+              {fancyMap ? (
                 <>
                   {isWindow &&
                     (battlesForLevel.length < 1 ||
@@ -119,8 +118,8 @@ const Level = ({ LevelId }) => {
             <StyledFormControlLabel
               control={
                 <Checkbox
-                  onChange={() => setPlay(!play)}
-                  checked={play}
+                  onChange={() => toggleFancyMap()}
+                  checked={fancyMap}
                   color="primary"
                   size="small"
                 />

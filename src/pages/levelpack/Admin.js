@@ -139,7 +139,7 @@ const Admin = ({ records, LevelPack }) => {
                 if (e.target.value === '') {
                   setSearch('');
                 } else if (search.length > 1) {
-                  searchLevel({ q: search });
+                  searchLevel({ q: search, ShowLocked: 0 });
                 }
               }
               if (e.keyCode === 27) {

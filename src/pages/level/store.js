@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { action, thunk } from 'easy-peasy';
+import { action, thunk, persist } from 'easy-peasy';
 import {
   Besttime,
   Level,
@@ -20,6 +20,15 @@ export default {
   eolLoading: 0,
   timeStats: [],
   statsLoading: 0,
+  settings: persist(
+    {
+      fancyMap: navigator.userAgent.toLowerCase().indexOf('firefox') === -1,
+    },
+    { storage: 'localStorage' },
+  ),
+  toggleFancyMap: action(state => {
+    state.settings.fancyMap = !state.settings.fancyMap;
+  }),
   setBestLoading: action((state, payload) => {
     state.besttimesLoading = payload;
   }),
