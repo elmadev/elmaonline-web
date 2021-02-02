@@ -9,6 +9,7 @@ import {
 import { Paper } from 'components/Paper';
 import { ListContainer, ListHeader, ListCell } from 'components/List';
 import PaginationActions from 'components/Table/PaginationActions';
+import styled from 'styled-components';
 
 class DerpTable extends React.Component {
   static propTypes = {
@@ -77,10 +78,12 @@ class DerpTable extends React.Component {
           </ListHeader>
           {loading && <CircularProgress />}
           {!loading && children}
-          {pagination && (
+        </ListContainer>
+        {pagination && (
+          <table>
             <TableFooter>
               <TableRow>
-                <TablePagination
+                <BareTablePagination
                   rowsPerPageOptions={[10, 25, 50, 100]}
                   colSpan={headers.length}
                   count={pagination ? length : 0}
@@ -101,11 +104,17 @@ class DerpTable extends React.Component {
                 />
               </TableRow>
             </TableFooter>
-          )}
-        </ListContainer>
+          </table>
+        )}
       </Paper>
     );
   }
 }
+
+const BareTablePagination = styled(TablePagination)`
+  && {
+    border-bottom: medium none;
+  }
+`;
 
 export default DerpTable;

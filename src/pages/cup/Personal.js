@@ -17,18 +17,16 @@ import config from 'config';
 const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
 const currentEventIndex = events => {
-  let index = 0;
+  let indices = [];
   forEach(events, e => {
     if (
       e.StartTime < format(new Date(), 't') &&
       e.EndTime > format(new Date(), 't')
     ) {
-      index = e.LevelIndex;
-      return false;
+      indices.push(e.LevelIndex);
     }
-    return true;
   });
-  return index;
+  return indices;
 };
 
 const Personal = () => {
@@ -41,10 +39,14 @@ const Personal = () => {
 
   useEffect(() => {
     getMyReplays(cup.CupGroupIndex);
-    getMyTimes({
-      LevelIndex: currentEventIndex(events),
-      KuskiIndex: nickId(),
-      limit: 10000,
+    const indices = currentEventIndex(events);
+    forEach(indices, index => {
+      getMyTimes({
+        LevelIndex: index,
+        KuskiIndex: nickId(),
+        limit: 10000,
+        levels: indices,
+      });
     });
   }, []);
 
@@ -77,7 +79,7 @@ const Personal = () => {
                   <Fragment key={replay.CupTimeIndex}>
                     <ReplayCon>
                       <Checkbox
-                        checked={replay.ShareReplay}
+                        checked={replay.ShareReplay === 1}
                         onChange={() =>
                           updateReplay({
                             field: 'ShareReplay',
@@ -137,25 +139,35 @@ const Personal = () => {
             </div>
             {myTimes && (
               <>
-                <Header h3 top>
-                  Time (Driven)
-                </Header>
-                {myTimes.map(t => (
-                  <ReplayCon key={t.TimeIndex}>
-                    <div>
-                      <Time time={t.Time} />
-                    </div>
-                    <Desc>
-                      (
-                      <LocalTime
-                        date={t.Driven}
-                        format="dddd HH:mm:ss"
-                        parse="X"
-                      />
-                      )
-                    </Desc>
-                  </ReplayCon>
-                ))}
+                {events.sort(eventSort).map((e, i) => {
+                  const myTimesInLev = myTimes.filter(
+                    m => m.level === e.LevelIndex,
+                  );
+                  if (myTimesInLev.length === 0) return null;
+                  return (
+                    <>
+                      <Header h3 top>
+                        Event {i + 1}
+                      </Header>
+                      {myTimesInLev[0].times.map(t => (
+                        <ReplayCon key={t.TimeIndex}>
+                          <div>
+                            <Time time={t.Time} />
+                          </div>
+                          <Desc>
+                            (
+                            <LocalTime
+                              date={t.Driven}
+                              format="dddd HH:mm:ss"
+                              parse="X"
+                            />
+                            )
+                          </Desc>
+                        </ReplayCon>
+                      ))}
+                    </>
+                  );
+                })}
               </>
             )}
           </Grid>

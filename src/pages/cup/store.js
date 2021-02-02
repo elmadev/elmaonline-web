@@ -96,6 +96,9 @@ export default {
   setMyTimes: action((state, payload) => {
     state.myTimes = payload;
   }),
+  pushMyTimes: action((state, payload) => {
+    state.myTimes.push({ level: payload.level, times: payload.times });
+  }),
   setAllFinished: action((state, payload) => {
     state.allFinished = payload;
   }),
@@ -112,9 +115,10 @@ export default {
     }
   }),
   getMyTimes: thunk(async (actions, payload) => {
+    actions.setMyTimes([]);
     const times = await PersonalAllFinished(payload);
     if (times.ok) {
-      actions.setMyTimes(times.data);
+      actions.pushMyTimes({ times: times.data, level: payload.LevelIndex });
     }
   }),
   teamReplays: [],

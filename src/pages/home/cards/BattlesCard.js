@@ -18,6 +18,7 @@ export default function BattlesCard() {
           start={subYears(new Date(), 1)}
           end={addHours(new Date(), 12)}
           limit={5}
+          condensed
         />
       </CardContent>
       <CardActions>

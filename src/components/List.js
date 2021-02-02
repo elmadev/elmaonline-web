@@ -1,7 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import Link from 'components/Link';
 
-export const ListCell = ({ width, children, right, highlight }) => {
+export const ListCell = ({ width, children, right, highlight, to }) => {
+  if (to) {
+    return (
+      <Cell width={width} right={right} highlight={highlight}>
+        <Link to={to}>{children}</Link>
+      </Cell>
+    );
+  }
   return (
     <Cell width={width} right={right} highlight={highlight}>
       {children}
