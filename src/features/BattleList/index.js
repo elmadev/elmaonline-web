@@ -9,10 +9,8 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import { toServerTime } from 'utils/time';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
-import { useNavigate } from '@reach/router';
 
 const BattleList = ({ start, end, limit = 250, condensed }) => {
-  const navigate = useNavigate();
   const { battles } = useStoreState(state => state.BattleList);
   const { getBattles } = useStoreActions(actions => actions.BattleList);
   useEffect(() => {
@@ -39,11 +37,7 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
             {battles.map(b => {
               const sorted = [...b.Results].sort(sortResults(b.BattleType));
               return (
-                <ListRow
-                  key={b.BattleIndex}
-                  onClick={() => navigate(`/battles/${b.BattleIndex}`)}
-                  bg={battleStatusBgColor(b)}
-                >
+                <ListRow key={b.BattleIndex} bg={battleStatusBgColor(b)}>
                   <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
                     {b.Duration} min{' '}
                     {condensed ? (

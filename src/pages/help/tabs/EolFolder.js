@@ -167,10 +167,7 @@ const tabs = {
       Note that your in-game editor might not work with this ddraw.dll, in which
       case you might want to try swapping for another one or using an excternal
       level editor such as{' '}
-      <Link to="https://mopolauta.moposite.com/viewtopic.php?f=3&t=6101">
-        SLE
-      </Link>
-      .
+      <a href="https://mopolauta.moposite.com/viewtopic.php?f=3&t=6101">SLE</a>.
     </p>,
   ],
 
