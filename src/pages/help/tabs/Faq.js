@@ -56,6 +56,9 @@ const Faq = () => {
           running simultaneously. Close the extra executables and you should be
           good to go.
         </AnswerText>
+        <Header h3>Still lost?</Header>
+        Don&#39;t hesitate to ask for help on the{' '}
+        <a href="https://discord.gg/j5WMFC6">Elma discord</a>.
       </Text>
     </div>
   );
