@@ -12,6 +12,8 @@ import {
   AccordionDetails,
   Tabs,
   Tab,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 import styled from 'styled-components';
 import Layout from 'components/Layout';
@@ -23,8 +25,8 @@ import Download from 'components/Download';
 import Recplayer from 'components/Recplayer';
 import RecList from 'features/RecList';
 import Loading from 'components/Loading';
+import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
-import Play from 'components/Play';
 import LocalTime from 'components/LocalTime';
 import { useNavigate } from '@reach/router';
 import config from 'config';
@@ -32,7 +34,8 @@ import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
 
-const Level = ({ LevelIndex }) => {
+const Level = ({ LevelId }) => {
+  const LevelIndex = parseInt(LevelId, 10);
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
   const [play, setPlay] = useState(
@@ -96,22 +99,35 @@ const Level = ({ LevelIndex }) => {
       <PlayerContainer>
         {loading && <Loading />}
         {!loading && (
-          <Player>
-            {play ? (
-              <>
-                {isWindow &&
-                  (battlesForLevel.length < 1 ||
-                    battleStatus(battlesForLevel[0]) !== 'Queued') && (
-                    <Recplayer
-                      lev={`${config.dlUrl}level/${LevelIndex}`}
-                      controls
-                    />
-                  )}
-              </>
-            ) : (
-              <Play type="map" onClick={() => setPlay(true)} />
-            )}
-          </Player>
+          <>
+            <Player>
+              {play ? (
+                <>
+                  {isWindow &&
+                    (battlesForLevel.length < 1 ||
+                      battleStatus(battlesForLevel[0]) !== 'Queued') && (
+                      <Recplayer
+                        lev={`${config.dlUrl}level/${LevelIndex}`}
+                        controls
+                      />
+                    )}
+                </>
+              ) : (
+                <LevelMap LevelIndex={LevelIndex} />
+              )}
+            </Player>
+            <StyledFormControlLabel
+              control={
+                <Checkbox
+                  onChange={() => setPlay(!play)}
+                  checked={play}
+                  color="primary"
+                  size="small"
+                />
+              }
+              label="Fancy map"
+            />
+          </>
         )}
       </PlayerContainer>
       <RightBarContainer>
@@ -333,8 +349,18 @@ const Player = styled.div`
   justify-content: center;
 `;
 
+const StyledFormControlLabel = styled(FormControlLabel)`
+  span {
+    font-size: 14px;
+  }
+`;
+
 Level.propTypes = {
-  LevelIndex: PropTypes.number.isRequired,
+  LevelId: PropTypes.string,
+};
+
+Level.defaultProps = {
+  LevelId: '0',
 };
 
 export default Level;

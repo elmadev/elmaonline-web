@@ -249,7 +249,11 @@ const LevelPack = ({ name }) => {
 };
 
 LevelPack.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
+};
+
+LevelPack.defaultProps = {
+  name: '',
 };
 
 const RootStyle = styled.div`

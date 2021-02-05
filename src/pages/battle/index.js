@@ -104,7 +104,11 @@ const Battle = props => {
 };
 
 Battle.propTypes = {
-  BattleIndex: PropTypes.number.isRequired,
+  BattleId: PropTypes.string,
+};
+
+Battle.defaultProps = {
+  BattleId: '0',
 };
 
 const MainContainer = styled.div`

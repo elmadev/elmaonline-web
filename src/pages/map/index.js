@@ -106,6 +106,7 @@ const Map = () => {
 const MapContainer = styled.div`
   display: flex;
   flex-grow: 1;
+  height: calc(100vh - 98px);
 `;
 
 const HeaderContainer = styled.div`

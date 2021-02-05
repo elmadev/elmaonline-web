@@ -25,7 +25,6 @@ const ChildrenCon = styled.div`
   min-height: 100%;
   margin-top: -50px;
   box-sizing: border-box;
-  background: #f1f1f1;
   padding: ${p => (p.edge ? 0 : '24px')};
   padding-top: ${p => (p.edge ? '50px' : '74px')};
 `;

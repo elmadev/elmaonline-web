@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { nickId } from 'utils/nick';
 
 const Dropzone = props => {
-  const { error, success, filetype, onDrop, login } = props;
+  const { error, success, filetype, onDrop, login, warning } = props;
   return (
     <ReactDropzone
       accept={filetype}
@@ -27,6 +27,7 @@ const Dropzone = props => {
       )}
       {error && <ErrorText>{error}</ErrorText>}
       {success && <SuccessText>{success}</SuccessText>}
+      {warning && <WarningText>{warning}</WarningText>}
       {login && nickId() === 0 && <DropText>Please log in to upload</DropText>}
     </ReactDropzone>
   );
@@ -40,6 +41,12 @@ const DropText = styled.div`
 const ErrorText = styled.div`
   padding: 8px;
   color: red;
+  opacity: 0.7;
+`;
+
+const WarningText = styled.div`
+  padding: 8px;
+  color: #ff8000;
   opacity: 0.7;
 `;
 

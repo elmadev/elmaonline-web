@@ -11,7 +11,7 @@ import { toServerTime } from 'utils/time';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import { useNavigate } from '@reach/router';
 
-const BattleList = ({ start, end, limit = 250 }) => {
+const BattleList = ({ start, end, limit = 250, condensed }) => {
   const navigate = useNavigate();
   const { battles } = useStoreState(state => state.BattleList);
   const { getBattles } = useStoreActions(actions => actions.BattleList);
@@ -32,7 +32,7 @@ const BattleList = ({ start, end, limit = 250 }) => {
           <ListCell width={150}>Winner</ListCell>
           <ListCell width={60}>Time</ListCell>
           <ListCell width={80}>Started</ListCell>
-          <ListCell>Players</ListCell>
+          {!condensed && <ListCell>Players</ListCell>}
         </ListHeader>
         {battles.length > 0 && (
           <>
@@ -44,8 +44,13 @@ const BattleList = ({ start, end, limit = 250 }) => {
                   onClick={() => navigate(`/battles/${b.BattleIndex}`)}
                   bg={battleStatusBgColor(b)}
                 >
-                  <ListCell width={100}>
-                    {b.Duration} min <BattleType lower type={b.BattleType} />
+                  <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
+                    {b.Duration} min{' '}
+                    {condensed ? (
+                      <>{b.BattleType}</>
+                    ) : (
+                      <BattleType lower type={b.BattleType} />
+                    )}
                   </ListCell>
                   <ListCell width={150}>
                     <Kuski kuskiData={b.KuskiData} team flag />
@@ -65,21 +70,23 @@ const BattleList = ({ start, end, limit = 250 }) => {
                       <Time time={sorted[0].Time} apples={sorted[0].Apples} />
                     )}
                   </ListCell>
-                  <ListCell width={80}>
+                  <ListCell width={80} to={`/battles/${b.BattleIndex}`}>
                     <LocalTime date={b.Started} format="HH:mm" parse="X" />
                   </ListCell>
-                  <ListCell>
-                    <Popularity>
-                      <Popularity
-                        bar
-                        title={b.Results.length}
-                        style={{
-                          width: `${(b.Results.length / 20) * 100}%`,
-                          opacity: b.Results.length / 20 + 0.1,
-                        }}
-                      />
-                    </Popularity>
-                  </ListCell>
+                  {!condensed && (
+                    <ListCell>
+                      <Popularity>
+                        <Popularity
+                          bar
+                          title={b.Results.length}
+                          style={{
+                            width: `${(b.Results.length / 20) * 100}%`,
+                            opacity: b.Results.length / 20 + 0.1,
+                          }}
+                        />
+                      </Popularity>
+                    </ListCell>
+                  )}
                 </ListRow>
               );
             })}
@@ -103,15 +110,8 @@ const Container = styled.div`
   overflow: auto;
   a {
     color: black;
-    display: table-row;
     :hover {
-      background: #f9f9f9;
-    }
-    > * {
-      padding: 10px;
-      border-bottom: 1px solid #eaeaea;
-      display: table-cell;
-      vertical-align: middle;
+      color: #219653;
     }
   }
 `;

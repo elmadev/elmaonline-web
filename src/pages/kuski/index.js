@@ -32,10 +32,7 @@ const Kuski = props => {
       <Container>
         <Head>
           <Picture>
-            <img
-              src={`${config.dlUrl}/shirt/${kuski.KuskiIndex}`}
-              alt="shirt"
-            />
+            <img src={`${config.dlUrl}shirt/${kuski.KuskiIndex}`} alt="shirt" />
           </Picture>
           <Profile>
             <Name>
@@ -89,7 +86,11 @@ const Kuski = props => {
 };
 
 Kuski.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
+};
+
+Kuski.defaultProps = {
+  name: '',
 };
 
 const Width100 = styled.div`

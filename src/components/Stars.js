@@ -16,7 +16,7 @@ const Stars = props => {
           </StarColor>
         ))}
       </StarContainer>
-      <Rating>{average}</Rating>
+      <Rating>{+average.toFixed(2)}</Rating>
     </Container>
   );
 };
