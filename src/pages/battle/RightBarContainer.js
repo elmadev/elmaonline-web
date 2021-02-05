@@ -8,7 +8,6 @@ import {
   Button,
 } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
 import { BattleType } from 'components/Names';
 import Link from 'components/Link';
 import ChatView from 'features/ChatView';
@@ -16,16 +15,6 @@ import LocalTime from 'components/LocalTime';
 import LeaderHistory from 'components/LeaderHistory';
 import { battleStatus } from 'utils/battle';
 import { useNavigate } from '@reach/router';
-
-const useStyles = makeStyles(theme => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-  button: {
-    fontWeight: 'inherit',
-    textTransform: 'initial',
-  },
-}));
 
 const crippleOptions = battle => {
   let crippleString = '';
@@ -46,7 +35,6 @@ const crippleOptions = battle => {
 
 const RightBarContainer = props => {
   const { allBattleTimes, battle, aborted } = props;
-  const classes = useStyles();
   const navigate = useNavigate();
 
   return (
@@ -85,27 +73,25 @@ const RightBarContainer = props => {
             </div>
             <br />
             <Link to={`/levels/${battle.LevelIndex}`}>
-              <Button size="small" color="primary" className={classes.button}>
+              <StyledButton size="small" color="primary">
                 Go to level page
-              </Button>
+              </StyledButton>
             </Link>
             <RightLinkContainer>
-              <Button
+              <StyledButton
                 size="small"
                 color="primary"
-                className={classes.button}
                 onClick={() => navigate(`/battles/${battle.BattleIndex - 1}`)}
               >
                 Previous Battle{' '}
-              </Button>
-              <Button
+              </StyledButton>
+              <StyledButton
                 size="small"
                 color="primary"
-                className={classes.button}
                 onClick={() => navigate(`/battles/${battle.BattleIndex + 1}`)}
               >
                 Next Battle{' '}
-              </Button>
+              </StyledButton>
             </RightLinkContainer>
           </BattleStyleDescription>
         </AccordionDetails>
@@ -153,6 +139,13 @@ const Root = styled.div`
   box-sizing: border-box;
   .chatContainer {
     clear: both;
+  }
+`;
+
+const StyledButton = styled(Button)`
+  && {
+    font-weight: inherit;
+    text-transform: initial;
   }
 `;
 
