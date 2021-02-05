@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from 'components/Header';
-import Link from 'components/Link';
 import styled from 'styled-components';
 
 const GettingStarted = () => {
@@ -24,8 +23,8 @@ const GettingStarted = () => {
       best replays.
       <Header h3>More information</Header>
       For more details join the{' '}
-      <Link to="https://discord.gg/j5WMFC6">Elma discord</Link> or visit the{' '}
-      <Link to="http://wiki.elmaonline.net/Main_Page">Elma Wiki.</Link>
+      <a href="https://discord.gg/j5WMFC6">Elma discord</a> or visit the{' '}
+      <a href="http://wiki.elmaonline.net/Main_Page">Elma Wiki.</a>
     </Text>
   );
 };

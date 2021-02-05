@@ -14,6 +14,7 @@ import CupCurrent from 'components/CupCurrent';
 import { Paper } from 'components/Paper';
 import { ListRow, ListCell } from 'components/List';
 import config from 'config';
+import { authToken } from 'utils/nick';
 
 const Dashboard = props => {
   const { events, openEvent, openStandings, cup } = props;
@@ -21,6 +22,7 @@ const Dashboard = props => {
   const [lastEvent, setLastEvent] = useState(-1);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [warning, setWarning] = useState('');
   const [share, setShare] = useState(true);
   const [comment, setComment] = useState('');
   const [file, setFile] = useState(null);
@@ -46,7 +48,14 @@ const Dashboard = props => {
     setFile(null);
   };
 
+  const reset = () => {
+    setError('');
+    setSuccess('');
+    setWarning('');
+  };
+
   const upload = () => {
+    reset();
     const body = new FormData();
     body.append('file', file);
     body.append('filename', file.name);
@@ -55,18 +64,26 @@ const Dashboard = props => {
     fetch(`${config.url}upload/cupreplay`, {
       method: 'POST',
       body,
+      headers: {
+        Authorization: authToken(),
+      },
     }).then(response => {
       response.json().then(json => {
         if (json.error) {
           setError(json.error);
-        } else if (json.Finished) {
-          setSuccess(
-            <>
-              Replay uploaded, time: <Time time={json.Time} />
-            </>,
-          );
         } else {
-          setSuccess(<>Replay uploaded, apples: {json.Apples}</>);
+          if (json.Finished) {
+            setSuccess(
+              <>
+                Replay uploaded, time: <Time time={json.Time} />
+              </>,
+            );
+          } else {
+            setSuccess(<>Replay uploaded, apples: {json.Apples}</>);
+          }
+          if (json.Match === -1) {
+            setWarning(<>Your time was not verified and will not count</>);
+          }
         }
         setFile(null);
         setComment('');
@@ -84,6 +101,7 @@ const Dashboard = props => {
               filetype=".rec"
               error={error}
               success={success}
+              warning={warning}
               onDrop={e => onDrop(e)}
               login
             />

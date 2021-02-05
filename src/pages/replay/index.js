@@ -130,7 +130,7 @@ const Replay = props => {
                 currentUUID={replay.UUID}
                 openReplay={uuid => navigate(`/r/${uuid}`)}
                 columns={['Replay', 'Time', 'By']}
-                horizontalMargin={-24}
+                horizontalMargin={-16}
               />
             </AccordionDetails>
           </Accordion>
@@ -210,6 +210,7 @@ const LevelStatsContainer = styled.div`
 const BattleDescriptionPaper = styled(Paper)`
   font-size: 14px;
   padding: 7px;
+  width: auto;
 `;
 
 const ReplayDescriptionPaper = styled(Paper)`
@@ -218,6 +219,7 @@ const ReplayDescriptionPaper = styled(Paper)`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  width: auto;
 `;
 
 const ReplayDescription = styled.div`
@@ -233,7 +235,11 @@ const ChatContainer = styled.div`
 `;
 
 Replay.propTypes = {
-  ReplayUuid: PropTypes.string.isRequired,
+  ReplayUuid: PropTypes.string,
+};
+
+Replay.defaultProps = {
+  ReplayUuid: '',
 };
 
 export default Replay;

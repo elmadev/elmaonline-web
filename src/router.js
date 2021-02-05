@@ -30,12 +30,17 @@ import Search from 'pages/search';
 import Settings from 'pages/settings';
 import Team from 'pages/team';
 import Teams from 'pages/teams';
+import styled from 'styled-components';
+
+const Router100 = styled(Router)`
+  height: 100%;
+`;
 
 const Routes = () => {
   return (
-    <Router>
+    <Router100>
       <Home path="/" />
-      <Battle path="battles/:BattleIndex" />
+      <Battle path="battles/:BattleId" />
       <Battles path="battles" />
       <ChatLog path="chatlog" />
       <Confirm path="confirm/:confirmCode" />
@@ -48,7 +53,7 @@ const Routes = () => {
       <Help path="help" />
       <Kuski path="kuskis/:name" />
       <Kuskis path="kuskis" />
-      <Level path="levels/:LevelIndex" />
+      <Level path="levels/:LevelId" />
       <LevelPack path="levels/packs/:name" />
       <Levels path="levels" />
       <LevelsAdd path="levels/add" />
@@ -64,7 +69,7 @@ const Routes = () => {
       <Team path="team/:TeamName" />
       <Teams path="teams" />
       <NotFound default />
-    </Router>
+    </Router100>
   );
 };
 

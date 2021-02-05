@@ -80,8 +80,8 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
         <RecBackground>
           <RecContainer>
             <Recplayer
-              rec={`${config}cupreplay/${ReplayIndex}/${Filename}`}
-              lev={`${config}level/${replay.CupData.LevelIndex}`}
+              rec={`${config.dlUrl}cupreplay/${ReplayIndex}/${Filename}`}
+              lev={`${config.dlUrl}level/${replay.CupData.LevelIndex}`}
               controls
             />
           </RecContainer>

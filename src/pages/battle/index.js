@@ -37,9 +37,9 @@ const runData = runs => {
   return runStats;
 };
 
-const Battle = props => {
+const Battle = ({ BattleId }) => {
+  const BattleIndex = parseInt(BattleId, 10);
   let runStats = null;
-  const { BattleIndex } = props;
   const {
     allBattleTimes,
     battle,
@@ -104,7 +104,11 @@ const Battle = props => {
 };
 
 Battle.propTypes = {
-  BattleIndex: PropTypes.number.isRequired,
+  BattleId: PropTypes.string,
+};
+
+Battle.defaultProps = {
+  BattleId: '0',
 };
 
 const MainContainer = styled.div`
