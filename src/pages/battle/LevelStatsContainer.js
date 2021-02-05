@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import styled from 'styled-components';
 import { Select, MenuItem } from '@material-ui/core';
 import { Paper } from 'components/Paper';
@@ -96,8 +96,8 @@ const LevelStatsContainer = props => {
               .sort(sortResults(battle.BattleType))
               .map((r, i) => {
                 return (
-                  <>
-                    <ListRow key={r.KuskiIndex}>
+                  <Fragment key={r.KuskiIndex}>
+                    <ListRow>
                       <ListCell width={30}>{i + 1}.</ListCell>
                       <ListCell width={battle.Multi === 1 ? 300 : 200}>
                         <Kuski kuskiData={r.KuskiData} flag team />
@@ -138,7 +138,7 @@ const LevelStatsContainer = props => {
                         {getExtra(r.KuskiIndex, extra, rankingHistory, battle)}
                       </ListCell>
                     </ListRow>
-                  </>
+                  </Fragment>
                 );
               })}
           </ListContainer>
