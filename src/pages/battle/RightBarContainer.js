@@ -10,6 +10,7 @@ import {
 import { ExpandMore } from '@material-ui/icons';
 import { BattleType } from 'components/Names';
 import Link from 'components/Link';
+import Download from 'components/Download';
 import ChatView from 'features/ChatView';
 import LocalTime from 'components/LocalTime';
 import LeaderHistory from 'components/LeaderHistory';
@@ -50,10 +51,10 @@ const RightBarContainer = props => {
               <BattleType type={battle.BattleType} />
             </span>{' '}
             battle in{' '}
-            <a href={`/dl/level/${battle.LevelIndex}`}>
+            <Download href={`level/${battle.LevelIndex}`}>
               {battle.LevelData ? battle.LevelData.LevelName : '?'}
               .lev
-            </a>
+            </Download>
             {' by '}
             {battle.KuskiData.Kuski}
             <CrippleText>{crippleOptions(battle)}</CrippleText>
@@ -67,9 +68,9 @@ const RightBarContainer = props => {
             </div>
             <AbortedText>{aborted === 1 && 'Battle Aborted'}</AbortedText>
             <div className="timeStamp">
-              <a href={`/dl/battlereplay/${battle.BattleIndex}`}>
+              <Download href={`battlereplay/${battle.BattleIndex}`}>
                 Download replay
-              </a>
+              </Download>
             </div>
             <br />
             <Link to={`/levels/${battle.LevelIndex}`}>

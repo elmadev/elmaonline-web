@@ -6,6 +6,9 @@ import DerpTable from 'components/Table/DerpTable';
 import { zeroPad } from 'utils/time';
 import { useNavigate } from '@reach/router';
 import { ListRow, ListCell } from 'components/List';
+import { PlayArrow } from '@material-ui/icons';
+import { Button } from '@material-ui/core';
+import config from 'config';
 
 const CupResults = props => {
   const navigate = useNavigate();
@@ -27,18 +30,7 @@ const CupResults = props => {
         length={results.length}
       >
         {results.map((r, no) => (
-          <ListRow
-            key={r.KuskiIndex}
-            onClick={() => {
-              goToReplay(
-                r.CupTimeIndex,
-                `${ShortName}${zeroPad(
-                  eventNo,
-                  2,
-                )}${r.KuskiData.Kuski.substring(0, 6)}`,
-              );
-            }}
-          >
+          <ListRow key={r.KuskiIndex}>
             <ListCell>{no + 1}.</ListCell>
             <ListCell>
               <Kuski kuskiData={r.KuskiData} team flag />
@@ -46,7 +38,9 @@ const CupResults = props => {
             <ListCell>
               {r.Replay ? (
                 <a
-                  href={`/dl/cupreplay/${r.CupTimeIndex}/${ShortName}${zeroPad(
+                  href={`${config.dlUrl}cupreplay/${
+                    r.CupTimeIndex
+                  }/${ShortName}${zeroPad(
                     eventNo,
                     2,
                   )}${r.KuskiData.Kuski.substring(0, 6)}`}
@@ -57,6 +51,19 @@ const CupResults = props => {
               ) : (
                 <Time time={r.Time} apples={-1} />
               )}
+              <Button
+                onClick={() => {
+                  goToReplay(
+                    r.CupTimeIndex,
+                    `${ShortName}${zeroPad(
+                      eventNo,
+                      2,
+                    )}${r.KuskiData.Kuski.substring(0, 6)}`,
+                  );
+                }}
+              >
+                <PlayArrow />
+              </Button>
             </ListCell>
             <ListCell right>
               {r.Points} point{r.Points > 1 ? 's' : ''}

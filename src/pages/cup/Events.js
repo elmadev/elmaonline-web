@@ -52,7 +52,7 @@ const Cups = props => {
             <EventNo>{i + 1}.</EventNo>
             <RightSide>
               <By>
-                <Download url={`level/${e.LevelIndex}`}>
+                <Download href={`level/${e.LevelIndex}`}>
                   {e.Level ? e.Level.LevelName : ''}
                 </Download>{' '}
                 by <Kuski kuskiData={e.KuskiData} />

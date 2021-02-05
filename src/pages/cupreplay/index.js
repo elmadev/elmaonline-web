@@ -7,7 +7,6 @@ import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Layout from 'components/Layout';
 import { Level } from 'components/Names';
-import Link from 'components/Link';
 import Download from 'components/Download';
 import { Paper } from 'components/Paper';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
@@ -97,15 +96,15 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
               </Half>
               <Half>
                 <Header h1 right>
-                  <Download url={`cupreplay/${ReplayIndex}/${Filename}`}>
+                  <Download href={`cupreplay/${ReplayIndex}/${Filename}`}>
                     <Time time={replay.Time} />
                   </Download>
                 </Header>
                 <Header h3 right>
-                  <Link to={`/levels/${replay.CupData.LevelIndex}`}>
+                  <Download href={`level/${replay.CupData.LevelIndex}`}>
                     <Level LevelData={replay.CupData.Level} />
                     .lev
-                  </Link>
+                  </Download>
                 </Header>
               </Half>
               {/* <ReplayRating ReplayIndex={getReplayByUuid.ReplayIndex} /> */}

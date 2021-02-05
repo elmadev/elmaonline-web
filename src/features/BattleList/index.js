@@ -38,14 +38,20 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
               const sorted = [...b.Results].sort(sortResults(b.BattleType));
               return (
                 <ListRow key={b.BattleIndex} bg={battleStatusBgColor(b)}>
-                  <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
-                    {b.Duration} min{' '}
-                    {condensed ? (
-                      <>{b.BattleType}</>
-                    ) : (
-                      <BattleType lower type={b.BattleType} />
-                    )}
-                  </ListCell>
+                  {condensed ? (
+                    <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
+                      <CondensedCon>
+                        <div>{b.Duration} min</div>
+                        <CondensedType>
+                          <BattleType small upper type={b.BattleType} />
+                        </CondensedType>
+                      </CondensedCon>
+                    </ListCell>
+                  ) : (
+                    <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
+                      {b.Duration} min <BattleType lower type={b.BattleType} />
+                    </ListCell>
+                  )}
                   <ListCell width={150}>
                     <Kuski kuskiData={b.KuskiData} team flag />
                   </ListCell>
@@ -108,6 +114,17 @@ const Container = styled.div`
       color: #219653;
     }
   }
+`;
+
+const CondensedCon = styled.div`
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+`;
+
+const CondensedType = styled.div`
+  position: absolute;
+  bottom: 1px;
 `;
 
 BattleList.propTypes = {

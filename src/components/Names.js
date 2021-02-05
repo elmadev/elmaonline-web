@@ -39,10 +39,14 @@ class BattleType extends React.Component {
   static propTypes = {
     type: PropTypes.string.isRequired,
     lower: PropTypes.bool,
+    small: PropTypes.bool,
+    upper: PropTypes.bool,
   };
 
   static defaultProps = {
     lower: false,
+    small: false,
+    upper: false,
   };
 
   render() {
@@ -60,13 +64,19 @@ class BattleType extends React.Component {
       HT: '1 Hour TT',
     };
 
-    const { type, lower } = this.props;
-    return <TypeSpan lower={lower}>{types[type]}</TypeSpan>;
+    const { type, lower, small, upper } = this.props;
+    return (
+      <TypeSpan small={small} lower={lower} upper={upper}>
+        {types[type]}
+      </TypeSpan>
+    );
   }
 }
 
 const TypeSpan = styled.span`
-  text-transform: ${p => (p.lower ? 'lowercase' : 'none')};
+  text-transform: ${p =>
+    p.upper ? 'uppercase' : p.lower ? 'lowercase' : 'none'};
+  font-size: ${p => (p.small ? '10px' : 'inherit')};
 `;
 
 export { Level, BattleType };

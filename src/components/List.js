@@ -19,11 +19,12 @@ export const ListCell = ({ width, children, right, highlight, to }) => {
 
 const Cell = styled.span`
   display: table-cell;
-  padding: 10px;
+  padding: ${p => (p.pad ? p.pad : '10px')};
   border-bottom: 1px solid #eaeaea;
   width: ${p => (p.width ? `${p.width}px` : 'auto')};
   text-align: ${p => (p.right ? 'right' : 'left')};
   background: ${p => (p.highlight ? '#dddddd' : 'transparent')};
+  position: relative;
   button {
     max-height: 20px;
   }

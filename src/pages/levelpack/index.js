@@ -103,7 +103,7 @@ const LevelPack = ({ name }) => {
         <LevelPackName>
           <ShortNameStyled>{levelPackInfo.LevelPackName}</ShortNameStyled>{' '}
           <LongNameStyled>{levelPackInfo.LevelPackLongName}</LongNameStyled>
-          <Download url={`pack/${levelPackInfo.LevelPackName}`}>
+          <Download href={`pack/${levelPackInfo.LevelPackName}`}>
             <DownloadText>Download</DownloadText>
           </Download>
         </LevelPackName>

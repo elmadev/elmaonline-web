@@ -58,7 +58,7 @@ Recplayer.defaultProps = {
   height: 'auto',
   zoom: 1,
   controls: true,
-  imageUrl: 'https://elma.online/recplayer',
+  imageUrl: 'https://api.elma.online/recplayer',
   autoPlay: 'if-visible',
 };
 
