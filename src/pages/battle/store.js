@@ -1,6 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk, persist } from 'easy-peasy';
-import { GetAllBattleTimes, BattleResults, RankingHistoryByBattle } from 'api';
+import {
+  GetAllBattleTimes,
+  BattleResults,
+  RankingHistoryByBattle,
+  AllBattleRuns,
+} from 'api';
 
 export default {
   settings: persist(
@@ -20,6 +25,16 @@ export default {
     const allTimes = await GetAllBattleTimes(payload);
     if (allTimes.ok) {
       actions.setAllBattleTimes(allTimes.data);
+    }
+  }),
+  allBattleRuns: null,
+  setAllBattleRuns: action((state, payload) => {
+    state.allBattleRuns = payload;
+  }),
+  getAllBattleRuns: thunk(async (actions, payload) => {
+    const runs = await AllBattleRuns(payload);
+    if (runs.ok) {
+      actions.setAllBattleRuns(runs.data);
     }
   }),
   battle: null,
