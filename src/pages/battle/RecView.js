@@ -30,8 +30,8 @@ const RecView = props => {
               <>
                 {isWindow && battleStatus !== 'Queued' && (
                   <Recplayer
-                    rec={`${config}/battlereplay/${BattleIndex}`}
-                    lev={`${config}/level/${levelIndex}`}
+                    rec={`${config.dlUrl}battlereplay/${BattleIndex}`}
+                    lev={`${config.dlUrl}level/${levelIndex}`}
                     autoPlay={autoPlayRecs ? 'if-visible' : 'no'}
                     controls
                   />
