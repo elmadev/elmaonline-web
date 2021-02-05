@@ -66,7 +66,11 @@ const Battle = ({ BattleId }) => {
   const isWindow = typeof window !== 'undefined';
 
   return (
-    <Layout>
+    <Layout
+      t={`Battle - ${
+        battle ? (battle.LevelData ? battle.LevelData.LevelName : '?') : '?'
+      }`}
+    >
       <MainContainer>
         {battle ? (
           <RecView
