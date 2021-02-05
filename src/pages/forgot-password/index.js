@@ -34,7 +34,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Layout>
+    <Layout t="Forgot Password">
       <Container maxWidth="sm">
         {resetSuccess ? (
           <SuccessMessage>

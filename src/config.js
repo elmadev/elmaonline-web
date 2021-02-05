@@ -8,4 +8,5 @@ module.exports = {
   dlUrl: `${url}dl/`,
   api: `${url}api/`,
   maps: 'AIzaSyDE8Prt4OybzNNxo1MzIn1XYNGxm9rI8Zk',
+  recaptcha: '6Le-n9QUAAAAAG-3bYyysXddxwD6I6iJeDBTHf2r',
 };

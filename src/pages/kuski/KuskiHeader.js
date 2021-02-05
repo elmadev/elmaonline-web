@@ -25,20 +25,16 @@ const KuskiHeader = ({ KuskiIndex, Kuski }) => {
     <Container>
       <StatsContainer>
         <div>
-          {tt.length === 0 ? (
-            <Loading />
-          ) : (
-            <Time time={recordsTT(tt, 'LevelBesttime')} />
-          )}
+          {!tt ? <Loading /> : <Time time={recordsTT(tt, 'LevelBesttime')} />}
         </div>
         <StatsTitle>Int total time</StatsTitle>
       </StatsContainer>
       <StatsContainer>
-        {ranking.length === 0 ? <Loading /> : <div>{playedAll}</div>}
+        {!ranking ? <Loading /> : <div>{playedAll}</div>}
         <StatsTitle>battles played</StatsTitle>
       </StatsContainer>
       <StatsContainer>
-        {ranking.length === 0 ? <Loading /> : <div>{winsAll}</div>}
+        {!ranking ? <Loading /> : <div>{winsAll}</div>}
         <StatsTitle>battles won</StatsTitle>
       </StatsContainer>
     </Container>

@@ -20,7 +20,7 @@ const images = [FourOFour0, FourOFour1, FourOFour2];
 class NotFound extends React.Component {
   render() {
     return (
-      <Layout>
+      <Layout t="Not Found">
         <Container>
           <Header>Not Found</Header>
           <div>Sorry, the page you were trying to view does not exist.</div>

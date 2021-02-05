@@ -64,7 +64,7 @@ const Teams = () => {
       k.Team.toLowerCase().includes(filter.toLocaleLowerCase()),
   );
   return (
-    <Layout edge>
+    <Layout edge t="Teams">
       <Container>
         <Filter>
           <input

@@ -35,7 +35,7 @@ const Cups = props => {
   }
 
   return (
-    <Layout edge>
+    <Layout edge t={`Cup - ${cup.CupName}`}>
       <Tabs
         variant="scrollable"
         scrollButtons="auto"

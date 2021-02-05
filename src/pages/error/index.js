@@ -28,7 +28,7 @@ class ErrorPage extends React.Component {
     }
 
     return (
-      <Layout>
+      <Layout t="Error">
         <h1>Error</h1>
         <p>Sorry, a critical error occurred on this page.</p>
       </Layout>

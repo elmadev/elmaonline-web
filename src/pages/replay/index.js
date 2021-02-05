@@ -45,7 +45,7 @@ const Replay = props => {
   }
 
   return (
-    <Layout>
+    <Layout t={`rec - ${replay.RecFileName}`}>
       <PlayerContainer>
         <Player>
           {isWindow && (

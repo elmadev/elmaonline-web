@@ -36,7 +36,10 @@ const Help = () => {
       <div>
         <StyledButton
           highlight={info === infoText ? 'true' : null}
-          onClick={() => setInfo(infoText)}
+          onClick={() => {
+            setInfo(infoText);
+            window.scrollTo(0, 0);
+          }}
           color="primary"
         >
           {description}
@@ -46,7 +49,7 @@ const Help = () => {
   };
 
   return (
-    <Layout>
+    <Layout t={`Help - ${info}`}>
       <Header>Help</Header>
       <MainContainer>
         <LeftContainer>

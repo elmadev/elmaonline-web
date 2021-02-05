@@ -17,7 +17,7 @@ const Levels = () => {
     getLevelpacks();
   }, []);
   return (
-    <Layout edge>
+    <Layout edge t="Levels">
       <Container>
         {levelpacks.length > 0 &&
           levelpacks

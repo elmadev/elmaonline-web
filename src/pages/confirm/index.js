@@ -19,7 +19,7 @@ const Confirm = props => {
   }, []);
 
   return (
-    <Layout>
+    <Layout t="Confirm email">
       <Grid container spacing={3}>
         {confirmSuccess === 1 && (
           <Paper>

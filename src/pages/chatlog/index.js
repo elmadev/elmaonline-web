@@ -221,7 +221,7 @@ const ChatLog = props => {
   const acClasses = useStyles();
 
   return (
-    <Layout>
+    <Layout t="Chat Log">
       <Header h2>Chat Log Filter</Header>
       <ChatFilter container spacing={2} alignItems="center">
         <Grid item xs={12} sm={6} lg={3}>

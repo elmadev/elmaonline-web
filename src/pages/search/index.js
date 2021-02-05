@@ -101,7 +101,7 @@ const Search = () => {
   };
 
   return (
-    <Layout edge>
+    <Layout edge t={`Search - ${t} - ${q}`}>
       <Results>
         {t === 'level' && (
           <Flex>

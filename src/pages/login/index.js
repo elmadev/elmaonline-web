@@ -50,7 +50,7 @@ export default function Login() {
   };
 
   return (
-    <Layout>
+    <Layout t="Log in">
       <Container maxWidth="sm">
         {error && (
           <Box py={2}>

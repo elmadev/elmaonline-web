@@ -22,10 +22,12 @@ const Welcome = () => {
                 Install the Elma Online mod on steam workshop
               </a>
             </li>
-            <li>Register on this site</li>
+            <li>
+              <Link to="register">Register on this site</Link>
+            </li>
             <RedLi>New IP May 2020: 161.35.35.82</RedLi>
           </List>
-          For additional information check out the <Link to="/help">Help</Link>{' '}
+          For additional information check out the <Link to="help">Help</Link>{' '}
           section.
         </Text>
       </Grid>
