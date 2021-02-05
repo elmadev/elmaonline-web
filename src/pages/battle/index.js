@@ -37,9 +37,9 @@ const runData = runs => {
   return runStats;
 };
 
-const Battle = props => {
+const Battle = ({ BattleId }) => {
+  const BattleIndex = parseInt(BattleId, 10);
   let runStats = null;
-  const { BattleIndex } = props;
   const {
     allBattleTimes,
     battle,
