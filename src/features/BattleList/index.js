@@ -120,6 +120,8 @@ const CondensedCon = styled.div`
   position: absolute;
   top: 2px;
   bottom: 2px;
+  left: 10px;
+  right: 10px;
 `;
 
 const CondensedType = styled.div`
