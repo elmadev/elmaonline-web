@@ -168,8 +168,9 @@ const PlayerContainer = styled.div`
   float: left;
   padding: 7px;
   box-sizing: border-box;
-  @media (max-width: 1400px) {
-    widtdh: 100%;
+  @media (max-width: 1100px) {
+    float: none;
+    width: 100%;
   }
 `;
 
@@ -179,6 +180,10 @@ const Player = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 1100px) {
+    height: 56vw;
+    min-height: 450px;
+  }
 `;
 
 const RightBarContainer = styled.div`
@@ -186,11 +191,9 @@ const RightBarContainer = styled.div`
   width: 30%;
   padding: 7px;
   box-sizing: border-box;
-  @media (max-width: 1400px) {
-    widtdh: 40%;
-  }
-  @media (max-width: 768px) {
-    widtdh: 100%;
+  @media (max-width: 1100px) {
+    float: none;
+    width: 100%;
   }
 `;
 
@@ -199,11 +202,9 @@ const LevelStatsContainer = styled.div`
   float: left;
   padding: 7px;
   box-sizing: border-box;
-  @media (max-width: 1400px) {
-    widtdh: 60%;
-  }
-  @media (max-width: 768px) {
-    widtdh: 100%;
+  @media (max-width: 1100px) {
+    float: none;
+    width: 100%;
   }
 `;
 
