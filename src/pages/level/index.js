@@ -308,6 +308,10 @@ const ResultsContainer = styled.div`
   float: left;
   padding: 7px;
   box-sizing: border-box;
+  @media screen and (max-width: 1100px) {
+    float: none;
+    width: 100%;
+  }
 `;
 
 const BattlesContainer = styled.div`
@@ -331,6 +335,10 @@ const RightBarContainer = styled.div`
   width: 40%;
   padding: 7px;
   box-sizing: border-box;
+  @media screen and (max-width: 1100px) {
+    float: none;
+    width: 100%;
+  }
 `;
 
 const PlayerContainer = styled.div`
@@ -338,6 +346,10 @@ const PlayerContainer = styled.div`
   float: left;
   padding: 7px;
   box-sizing: border-box;
+  @media screen and (max-width: 1100px) {
+    float: none;
+    width: 100%;
+  }
 `;
 
 const Player = styled.div`
@@ -346,6 +358,9 @@ const Player = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 640px) {
+    height: 350px;
+  }
 `;
 
 const StyledFormControlLabel = styled(FormControlLabel)`
