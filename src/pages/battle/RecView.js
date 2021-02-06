@@ -70,6 +70,10 @@ const PlayerContainer = styled.div`
     align-items: center;
     justify-content: center;
   }
+  @media screen and (max-width: 1100px) {
+    float: none;
+    width: 100%;
+  }
 `;
 
 const StyledFormControlLabel = styled(FormControlLabel)`
