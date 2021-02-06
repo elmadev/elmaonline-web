@@ -104,6 +104,9 @@ const Root = styled.div`
   line-height: 50px;
   padding-left: 250px;
   z-index: 10;
+  @media screen and (max-width: 768px) {
+    padding-left: 60px;
+  }
 `;
 
 const Container = styled.div`

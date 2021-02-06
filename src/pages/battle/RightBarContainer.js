@@ -141,6 +141,10 @@ const Root = styled.div`
   .chatContainer {
     clear: both;
   }
+  @media (max-width: 1100px) {
+    float: none;
+    width: 100%;
+  }
 `;
 
 const StyledButton = styled(Button)`
