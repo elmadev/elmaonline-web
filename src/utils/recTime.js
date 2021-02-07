@@ -83,9 +83,8 @@ export const parsedTimeToString = (parsed, thousands = false) => {
   if (_str.startsWith(',')) {
     _str = '0' + _str;
   } else if (_str.charAt(1) === ',') {
-    // "1,55" => "01,55" ?
-    // used to work like this for miliseconds only.
-    // _str = "0" + _str;
+    // "1,55" => "01,55"
+    _str = '0' + _str;
   }
 
   return _str;
