@@ -10,6 +10,9 @@ import RightBarContainer from './RightBarContainer';
 import LevelStatsContainer from './LevelStatsContainer';
 
 const runData = runs => {
+  if (runs.count === 0) {
+    return null;
+  }
   if (runs.multi === 0) {
     const kuskiRuns = groupBy(runs.rows, 'KuskiIndex');
     const runStats = mapValues(kuskiRuns, (value, key) => {
@@ -20,7 +23,6 @@ const runData = runs => {
         PlayTime: sumBy(value, 'Time'),
       };
     });
-
     if (runs.rows[0]) runStats.BattleIndex = runs.rows[0].BattleIndex;
     return runStats;
   }
@@ -91,7 +93,7 @@ const Battle = ({ BattleId }) => {
         ) : (
           <div />
         )}
-        {battle && rankingHistory && runStats ? (
+        {battle && rankingHistory ? (
           <LevelStatsContainer
             battle={battle}
             rankingHistory={rankingHistory}

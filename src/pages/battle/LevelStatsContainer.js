@@ -34,7 +34,7 @@ const getExtra = (KuskiIndex, extra, rankingHistory, battle) => {
     r => r.KuskiIndex === KuskiIndex && r.BattleType === typeFilter,
   );
   if (filtered.length > 0) {
-    return parseInt(filtered[0][value], 10).toFixed(2);
+    return parseFloat(filtered[0][value]).toFixed(2);
   }
   return '';
 };
@@ -58,7 +58,7 @@ const LevelStatsContainer = props => {
   return (
     <Root>
       <Paper>
-        {battle.Results && runStats && (
+        {battle.Results && (
           <ListContainer>
             <ListHeader>
               <ListCell right width={30}>

@@ -82,10 +82,10 @@ export const parsedTimeToString = (parsed, thousands = false) => {
   // ",75" => "0,75" or ",00" => "0,00"
   if (_str.startsWith(',')) {
     _str = '0' + _str;
-  } else if (_str.charAt(1) === ',') {
-    // "1,55" => "01,55"
-    _str = '0' + _str;
-  }
+  } // else if (_str.charAt(1) === ',') {
+  // "1,55" => "01,55"
+  // _str = '0' + _str;
+  // }
 
   return _str;
 };
