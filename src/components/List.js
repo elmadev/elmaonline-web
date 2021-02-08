@@ -65,6 +65,7 @@ export const ListRow = ({
   onClick,
   bg = 'transparent',
   title = '',
+  highlight = false,
 }) => {
   return (
     <Row
@@ -73,6 +74,7 @@ export const ListRow = ({
       bg={bg}
       onClick={e => onClick && onClick(e)}
       title={title}
+      highlight={highlight}
     >
       {children}
     </Row>
@@ -82,6 +84,7 @@ export const ListRow = ({
 const Row = styled.div`
   display: table-row;
   background: ${p => (p.selected ? '#f5f5f5' : p.bg)};
+  background: ${p => (p.highlight ? '#ddd' : 'initial')};
   cursor: ${p => (p.pointer ? 'pointer' : 'auto')};
   :hover {
     background: #ededed;
