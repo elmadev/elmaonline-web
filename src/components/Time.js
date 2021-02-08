@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-const thousandsValues = [1000, 59999, 60000, 3, 3600000];
-const hundredsValues = [100, 5999, 6000, 2, 360000];
+import {
+  parseTimeHundreds,
+  parseTimeThousands,
+  parsedTimeToString,
+} from '../utils/recTime';
 
 class Time extends React.Component {
   static propTypes = {
@@ -35,28 +37,11 @@ class Time extends React.Component {
       return `${apples} apple${apples !== 1 ? `s` : ``}`;
     }
 
-    let values = hundredsValues;
     if (thousands) {
-      values = thousandsValues;
+      return parsedTimeToString(parseTimeThousands(time), true);
+    } else {
+      return parsedTimeToString(parseTimeHundreds(time), false);
     }
-    const string = `${Math.floor((time / values[0]) % 60)
-      .toString()
-      .padStart(time > 999 ? 2 : 1, 0)},${(time % values[0])
-      .toString()
-      .padStart(values[3], 0)}`;
-
-    if (time > values[4]) {
-      const hours = Math.floor((time / values[4]) % 60);
-      return `${hours}:${Math.floor(time / values[2] - hours * 60)
-        .toString()
-        .padStart(2, 0)}:${string}`;
-    }
-
-    if (time > values[1]) {
-      return `${Math.floor(time / values[2])}:${string}`;
-    }
-
-    return string;
   };
 
   render() {
