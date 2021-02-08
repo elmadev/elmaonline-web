@@ -31,6 +31,11 @@ const ChildrenCon = styled.div`
   box-sizing: border-box;
   padding: ${p => (p.edge ? 0 : '24px')};
   padding-top: ${p => (p.edge ? '50px' : '74px')};
+  @media (max-width: 1000px) {
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: -24px;
+  }
 `;
 
 const Container = styled.div`

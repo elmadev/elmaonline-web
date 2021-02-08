@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { format, formatDistance } from 'date-fns';
 import LocalTime from 'components/LocalTime';
 import Kuski from 'components/Kuski';
+import Download from 'components/Download';
 import { Paper } from 'components/Paper';
 import { Timer } from '@material-ui/icons';
 
@@ -36,9 +37,9 @@ const CupResults = props => {
                 </EventHeader>
                 <EventInfo>
                   {c.Level && (
-                    <a href={`/dl/level/${c.LevelIndex}`}>
+                    <Download href={`level/${c.LevelIndex}`}>
                       {c.Level.LevelName}
-                    </a>
+                    </Download>
                   )}
                 </EventInfo>
                 <EventInfo>

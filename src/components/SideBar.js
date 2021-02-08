@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { mod } from 'utils/nick';
 
 import Link from 'components/Link';
 
 const SideBar = () => {
+  const isRehydrated = useStoreRehydrated();
   const { sideBarVisible } = useStoreState(state => state.Page);
   const { hideSideBar, toggleSideBar } = useStoreActions(
     actions => actions.Page,
@@ -17,10 +18,14 @@ const SideBar = () => {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 1000) {
+    if (
+      typeof window !== 'undefined' &&
+      window.innerWidth < 1000 &&
+      isRehydrated
+    ) {
       hideSideBar();
     }
-  }, []);
+  }, [isRehydrated]);
 
   const onToggle = () => {
     toggleSideBar();
@@ -28,6 +33,7 @@ const SideBar = () => {
       window.dispatchEvent(new Event('resize'));
     }, 10);
   };
+  if (!isRehydrated) return null;
   return (
     <Root sideBarVisible={sideBarVisible}>
       <Container>

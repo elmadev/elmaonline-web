@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Link from 'components/Link';
 import Flag from 'components/Flag';
 
 const Kuski = ({ kuskiData, team, flag, noLink }) => (
   <>
     {kuskiData ? (
-      <span>
+      <Container>
         {flag && kuskiData.Country && (
           <span>
             <Flag nationality={kuskiData.Country} />{' '}
@@ -31,12 +32,16 @@ const Kuski = ({ kuskiData, team, flag, noLink }) => (
             )}
           </>
         )}
-      </span>
+      </Container>
     ) : (
-      <span>Unknown</span>
+      <Container>Unknown</Container>
     )}
   </>
 );
+
+const Container = styled.span`
+  white-space: nowrap;
+`;
 
 Kuski.defaultProps = {
   team: false,

@@ -41,7 +41,7 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
                   {condensed ? (
                     <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
                       <CondensedCon>
-                        <div>{b.Duration} min</div>
+                        <CondensedDuration>{b.Duration} min</CondensedDuration>
                         <CondensedType>
                           <BattleType small upper type={b.BattleType} />
                         </CondensedType>
@@ -127,6 +127,11 @@ const CondensedCon = styled.div`
 const CondensedType = styled.div`
   position: absolute;
   bottom: 1px;
+  white-space: nowrap;
+`;
+
+const CondensedDuration = styled.div`
+  white-space: nowrap;
 `;
 
 BattleList.propTypes = {
