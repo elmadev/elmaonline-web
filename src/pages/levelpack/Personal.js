@@ -23,6 +23,8 @@ const Personal = ({
   kuski,
 }) => {
   const [level, selectLevel] = useState(-1);
+  const [longName, setLongName] = useState('');
+  const [levelName, setLevelName] = useState('');
   const levels = records.map(r => {
     const personal = times.filter(t => t.LevelIndex === r.LevelIndex);
     if (personal.length > 0) {
@@ -55,6 +57,8 @@ const Personal = ({
                   e.preventDefault();
                   if (r.LevelBesttime.length > 0) {
                     selectLevel(level === r.LevelIndex ? -1 : r.LevelIndex);
+                    setLongName(r.Level.LongName);
+                    setLevelName(r.Level.LevelName);
                   }
                 }}
                 selected={level === r.LevelIndex}
@@ -106,6 +110,8 @@ const Personal = ({
         <LevelPopup
           highlight={highlight[highlightWeeks]}
           levelId={level}
+          longName={longName}
+          levelName={levelName}
           close={() => {
             selectLevel(-1);
           }}

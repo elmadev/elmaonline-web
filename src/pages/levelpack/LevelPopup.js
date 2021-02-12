@@ -113,7 +113,12 @@ const LevelPopup = ({
                           <Time time={t.Time} />
                         </ListCell>
                         {t.Source !== undefined && (
-                          <LegacyIcon source={t.Source} show={showLegacyIcon} />
+                          <ListCell right>
+                            <LegacyIcon
+                              source={t.Source}
+                              show={showLegacyIcon}
+                            />
+                          </ListCell>
                         )}
                       </>
                     )}
@@ -131,7 +136,9 @@ const LevelPopup = ({
                       <Time time={t.Time} />
                     </ListCell>
                     {t.Source !== undefined && (
-                      <LegacyIcon source={t.Source} show={showLegacyIcon} />
+                      <ListCell right>
+                        <LegacyIcon source={t.Source} show={showLegacyIcon} />
+                      </ListCell>
                     )}
                   </ListRow>
                 );

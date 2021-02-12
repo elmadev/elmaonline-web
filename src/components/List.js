@@ -83,8 +83,7 @@ export const ListRow = ({
 
 const Row = styled.div`
   display: table-row;
-  background: ${p => (p.selected ? '#f5f5f5' : p.bg)};
-  background: ${p => (p.highlight ? '#ddd' : 'initial')};
+  background: ${p => (p.selected ? '#f5f5f5' : p.highlight ? '#ddd' : p.bg)};
   cursor: ${p => (p.pointer ? 'pointer' : 'auto')};
   :hover {
     background: #ededed;
