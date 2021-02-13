@@ -41,7 +41,7 @@ const Replay = props => {
   if (!replay) return null;
 
   if (isWindow) {
-    link = `https://eol.ams3.digitaloceanspaces.com/${config.s3SubFolder}replays/${replay.UUID}/${replay.RecFileName}`;
+    link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
   }
 
   return (
