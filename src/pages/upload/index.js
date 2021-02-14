@@ -12,6 +12,7 @@ import { Dropdown, TextField } from 'components/Inputs';
 import { Row, Text } from 'components/Containers';
 import { formatBytes } from 'utils/calcs';
 import { nickId } from 'utils/nick';
+import { format } from 'date-fns';
 
 const Upload = () => {
   const [error, setError] = useState('');
@@ -20,7 +21,9 @@ const Upload = () => {
   const [expire, setExpire] = useState('30 days');
   const [maxDownloads, setMaxDownloads] = useState('');
   const [maxDownloadError, setMaxDownloadError] = useState('');
-  const { response, update } = useStoreState(state => state.FileUpload);
+  const { response, update, uploadedAt } = useStoreState(
+    state => state.FileUpload,
+  );
   const { uploadFile, updateFile, setUpdate } = useStoreActions(
     actions => actions.FileUpload,
   );
@@ -53,7 +56,7 @@ const Upload = () => {
   useEffect(() => {
     if (response) {
       if (response.error) {
-        setError(response.error);
+        setError(response.error.message);
         setLoading(false);
       } else if (response.uuid) {
         setLoading(false);
@@ -97,12 +100,17 @@ const Upload = () => {
         onDrop={(a, r) => dropped(a, r)}
         error={error}
       />
-      {loading && <Loading />}
+      {loading && (
+        <Row center>
+          <Loading />
+        </Row>
+      )}
       {url !== '' && (
         <UrlContainer>
           <Paper padding center width="auto">
             <div>
-              Uploaded: {response.file} ({formatBytes(response.size)})
+              Uploaded: {response.file} ({formatBytes(response.size)}) at{' '}
+              {format(new Date(uploadedAt), '	HH:mm')}
             </div>
             <div>
               <a href={url}>{url}</a>

@@ -84,6 +84,9 @@ const SideBar = () => {
           <Link to="/help" onClick={onNavigation}>
             Help
           </Link>
+          <Link to="/up" onClick={onNavigation}>
+            Upload
+          </Link>
           {mod() === 1 && (
             <Link to="/mod" onClick={onNavigation}>
               Mod

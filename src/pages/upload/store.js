@@ -5,8 +5,10 @@ import { UploadFile, UpdateFile } from 'api';
 export default {
   response: null,
   update: false,
+  uploadedAt: 0,
   setResponse: action((state, payload) => {
     state.response = payload;
+    state.uploadedAt = new Date().getTime();
   }),
   setUpdate: action((state, payload) => {
     state.update = payload;
