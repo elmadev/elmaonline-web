@@ -9,6 +9,7 @@ import { ListRow, ListCell } from 'components/List';
 import { PlayArrow } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
 import config from 'config';
+import { downloadWithAuth } from 'utils/misc';
 
 const CupResults = props => {
   const navigate = useNavigate();
@@ -74,10 +75,13 @@ const CupResults = props => {
       <Download>
         {results.length > 0 && (
           <Dl
-            href={`/dl/eventrecs/${CupIndex}/${ShortName}${zeroPad(
-              eventNo,
-              2,
-            )}`}
+            onClick={() =>
+              downloadWithAuth(
+                `eventrecs/${CupIndex}/${ShortName}${zeroPad(eventNo, 2)}`,
+                `${ShortName}${zeroPad(eventNo, 2)}.zip`,
+                'application/zip',
+              )
+            }
           >
             All replays
           </Dl>
@@ -93,10 +97,12 @@ const Download = styled.div`
   min-height: 42px;
 `;
 
-const Dl = styled.a`
+const Dl = styled.span`
   margin-top: 4px;
   margin-right: 4px;
   margin-bottom: 16px;
+  cursor: pointer;
+  color: #219653;
 `;
 
 const Container = styled.div``;

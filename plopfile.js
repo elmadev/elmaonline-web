@@ -1,8 +1,5 @@
 /* eslint-disable no-undef */
 module.exports = function (plop) {
-  plop.addHelper('lowercase', word => {
-    return word.toLowerCase();
-  });
   // screen generator
   plop.setGenerator('page', {
     description: 'add new page to app',
@@ -16,12 +13,12 @@ module.exports = function (plop) {
     actions: [
       {
         type: 'add',
-        path: 'src/pages/{{name}}/index.js',
+        path: 'src/pages/{{lowerCase name}}/index.js',
         templateFile: 'templates/page.hbs',
       },
       {
         type: 'add',
-        path: 'src/pages/{{name}}/store.js',
+        path: 'src/pages/{{lowerCase name}}/store.js',
         templateFile: 'templates/store.hbs',
       },
     ],

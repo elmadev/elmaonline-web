@@ -2,11 +2,7 @@ import { create } from 'apisauce';
 import config from 'config';
 import { authToken } from 'utils/nick';
 
-const isWindow = typeof window !== 'undefined';
 let baseURL = config.api;
-if (isWindow) {
-  // baseURL = `${window.location.protocol}//${window.location.host}/api/`;
-}
 const api = create({
   baseURL,
   headers: {
@@ -15,6 +11,16 @@ const api = create({
     Authorization: authToken(),
   },
   timeout: 10000,
+});
+
+const apiUpload = create({
+  baseURL: config.url,
+  headers: {
+    Accept: '*/*',
+    'Cache-Control': 'no-cache',
+    Authorization: authToken(),
+  },
+  timeout: 60000,
 });
 
 // replays
@@ -225,3 +231,7 @@ export const News = amount => api.get(`news/${amount}`);
 
 // donations
 export const GetDonations = () => api.get(`donate/`);
+
+// upload
+export const UploadFile = data => apiUpload.post(`upload/file`, data);
+export const UpdateFile = data => api.post(`upload`, data);

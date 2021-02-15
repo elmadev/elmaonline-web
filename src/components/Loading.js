@@ -1,33 +1,41 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const Loading = () => (
   <Container>
-    Loading..
-    {/* <Spinner>
+    <Spinner>
       <Bounce1 />
       <Bounce2 />
       <Bounce />
-    </Spinner> */}
+    </Spinner>
   </Container>
 );
 
-/* const BounceDelay = keyframes`
-  0%,
-  80%,
-  100% {
+const BounceDelay = keyframes`
+  0% {
     transform: scale(0);
+    background-color: #1b3a57;
   }
   40% {
     transform: scale(1);
+    background-color: #639bcf;
   }
-`; */
+  80% {
+    transform: scale(0);
+    background-color: #30689c;
+  }
+  100% {
+    transform: scale(0);
+    background-color: #b1cde7;
+  }
+  
+`;
 
 const Container = styled.div`
   padding: 20px;
 `;
 
-/* const Spinner = styled.div`
+const Spinner = styled.div`
   width: 100px;
   text-align: center;
   margin: auto;
@@ -49,6 +57,6 @@ const Bounce1 = styled(Bounce)`
 
 const Bounce2 = styled(Bounce)`
   animation-delay: -0.16s;
-`; */
+`;
 
 export default Loading;

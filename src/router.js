@@ -30,6 +30,7 @@ import Search from 'pages/search';
 import Settings from 'pages/settings';
 import Team from 'pages/team';
 import Teams from 'pages/teams';
+import Upload from 'pages/upload';
 import styled from 'styled-components';
 
 const Router100 = styled(Router)`
@@ -68,6 +69,7 @@ const Routes = () => {
       <Settings path="settings" />
       <Team path="team/:TeamName" />
       <Teams path="teams" />
+      <Upload path="up" />
       <NotFound default />
     </Router100>
   );
