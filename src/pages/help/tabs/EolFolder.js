@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from '@reach/router';
 import styled from 'styled-components';
 import Header from 'components/Header';
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
@@ -184,17 +185,20 @@ const tabs = {
   ],
 };
 
-const EolFolder = () => {
-  const [exp, setExp] = useState(null);
+const EolFolder = ({ section }) => {
+  const navigate = useNavigate();
 
   const makeLink = (expName, linkName, description) => {
     return (
       <TableRow key={expName}>
         <TableCellStyled
-          highlight={exp === expName ? 'true' : null}
+          highlight={section === expName ? 'true' : null}
           key={`${expName}cell`}
         >
-          <Clickable color="primary" onClick={() => setExp(expName)}>
+          <Clickable
+            color="primary"
+            onClick={() => navigate('/help/eolfiles/' + expName)}
+          >
             {linkName}
           </Clickable>{' '}
           - {description}
@@ -259,7 +263,7 @@ const EolFolder = () => {
           </Text>
         </LeftContainer>
         <RightContainer>
-          {exp && <MakeTab components={tabs[exp]} />}
+          {section && <MakeTab components={tabs[section]} />}
         </RightContainer>
       </MainContainer>
     </div>
