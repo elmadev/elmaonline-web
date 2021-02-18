@@ -23,7 +23,13 @@ import EolFolder from './tabs/EolFolder';
 const Help = () => {
   const navigate = useNavigate();
   const { section } = useMatch('/help/*section');
-  const highlightedButton = section || 'howtoinstall';
+  let highlightedButton = section || 'howtoinstall';
+  if (highlightedButton.indexOf('/') !== -1) {
+    highlightedButton = highlightedButton.substr(
+      0,
+      highlightedButton.indexOf('/'),
+    );
+  }
 
   const makeButtons = (infoText, description) => {
     return (
