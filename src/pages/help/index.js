@@ -1,44 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import React from 'react';
+import { Router, useNavigate, useMatch } from '@reach/router';
 import Header from 'components/Header';
 import styled from 'styled-components';
 import Layout from 'components/Layout';
 import { Button } from '@material-ui/core';
+import GettingStarted from './tabs/GettingStarted.js';
 import HowToInstall from './tabs/HowToInstall';
 import RegisterAndConnect from './tabs/RegisterAndConnect';
 import KeyBindings from './tabs/KeyBindings';
 import Rules from './tabs/Rules';
+import Glossary from './tabs/Glossary';
 import ConfiguringEol from './tabs/ConfiguringEol';
 import PlayingBattles from './tabs/PlayingBattles';
 import Etiquette from './tabs/Etiquette';
-import GettingStarted from './tabs/GettingStarted';
 import Faq from './tabs/Faq';
-import Glossary from './tabs/Glossary';
-import Crew from './tabs/Crew';
-import DeveloperApi from './tabs/DeveloperApi';
 import Donate from './tabs/Donate';
+import DeveloperApi from './tabs/DeveloperApi';
 import Links from './tabs/Links';
+import Crew from './tabs/Crew';
 import EolFolder from './tabs/EolFolder';
 
 const Help = () => {
-  const [info, setInfo] = useState('install');
-
-  const { crew, donations } = useStoreState(state => state.Help);
-  const { getCrew, getDonations } = useStoreActions(actions => actions.Help);
-
-  useEffect(() => {
-    if (!crew) getCrew();
-    if (!donations) getDonations();
-  });
+  const navigate = useNavigate();
+  const { section } = useMatch('/help/*section');
+  const highlightedButton = section || 'howtoinstall';
 
   const makeButtons = (infoText, description) => {
     return (
       <div>
         <StyledButton
-          highlight={info === infoText ? 'true' : null}
+          highlight={highlightedButton === infoText ? 'true' : null}
           onClick={() => {
-            setInfo(infoText);
             window.scrollTo(0, 0);
+            navigate('/help/' + infoText);
           }}
           color="primary"
         >
@@ -49,7 +43,7 @@ const Help = () => {
   };
 
   return (
-    <Layout t={`Help - ${info}`}>
+    <Layout t={`Help - ${highlightedButton}`}>
       <Header>Help</Header>
       <MainContainer>
         <LeftContainer>
@@ -57,20 +51,23 @@ const Help = () => {
             <Header h3>1. Getting Started</Header>
           </Text>
           <ButtonContainer>
-            {makeButtons('install', '1.1. How to install')}
-            {makeButtons('connect', '1.2. Register and connect online')}
-            {makeButtons('gettingStarted', '1.3. Useful information')}
+            {makeButtons('howtoinstall', '1.1. How to install')}
+            {makeButtons(
+              'registerandconnect',
+              '1.2. Register and connect online',
+            )}
+            {makeButtons('usefulinformation', '1.3. Useful information')}
             {makeButtons('faq', '1.4. FAQ')}
           </ButtonContainer>
           <Header h3>2. Setting up EOL</Header>
           <ButtonContainer>
-            {makeButtons('keyBindings', '2.1. EOL key bindings')}
-            {makeButtons('configuringEol', '2.2. EOL configuration')}
-            {makeButtons('eolFolder', '2.3. EOL files')}
+            {makeButtons('eolkeybindings', '2.1. EOL key bindings')}
+            {makeButtons('eolconfiguration', '2.2. EOL configuration')}
+            {makeButtons('eolfiles', '2.3. EOL files')}
           </ButtonContainer>
           <Header h3>3. Playing online</Header>
           <ButtonContainer>
-            {makeButtons('playingBattles', '3.1. Playing Battles')}
+            {makeButtons('playingbattles', '3.1. Playing Battles')}
             {makeButtons('rules', '3.2. Rules')}
             {makeButtons('etiquette', '3.3. Etiquette')}
             {makeButtons('glossary', '3.4. Glossary')}
@@ -84,21 +81,24 @@ const Help = () => {
           </ButtonContainer>
         </LeftContainer>
         <RightContainer>
-          {info === 'gettingStarted' && <GettingStarted />}
-          {info === 'install' && <HowToInstall />}
-          {info === 'connect' && <RegisterAndConnect />}
-          {info === 'keyBindings' && <KeyBindings />}
-          {info === 'rules' && <Rules />}
-          {info === 'glossary' && <Glossary />}
-          {info === 'configuringEol' && <ConfiguringEol />}
-          {info === 'playingBattles' && <PlayingBattles />}
-          {info === 'etiquette' && <Etiquette />}
-          {info === 'faq' && <Faq />}
-          {info === 'donate' && <Donate donations={donations} />}
-          {info === 'api' && <DeveloperApi />}
-          {info === 'links' && <Links />}
-          {info === 'crew' && <Crew crew={crew} />}
-          {info === 'eolFolder' && <EolFolder />}
+          <Router primary={false}>
+            <HowToInstall path="howtoinstall" default />
+            <GettingStarted path="usefulinformation" />
+            <RegisterAndConnect path="registerandconnect" />
+            <KeyBindings path="eolkeybindings" />
+            <Rules path="rules" />
+            <Glossary path="glossary" />
+            <ConfiguringEol path="eolconfiguration" />
+            <PlayingBattles path="playingbattles" />
+            <Etiquette path="etiquette" />
+            <Faq path="faq" />
+            <Donate path="donate" />
+            <DeveloperApi path="api" />
+            <Links path="links" />
+            <Crew path="crew" />
+            <EolFolder path="eolfiles" />
+            <EolFolder path="eolfiles/:section" />
+          </Router>
         </RightContainer>
       </MainContainer>
     </Layout>
@@ -124,9 +124,9 @@ const MainContainer = styled.div`
 const LeftContainer = styled.div`
   float: left;
   width: 450px;
+  min-width: 240px;
 `;
 const RightContainer = styled.div`
-  float: right;
   width: 100%;
   margin: 8px;
 `;

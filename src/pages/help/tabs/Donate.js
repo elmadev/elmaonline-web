@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { groupBy, mapValues, sumBy, sortBy, filter } from 'lodash';
 import Link from 'components/Link';
 import Flag from 'components/Flag';
@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Header from 'components/Header';
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import DonationsQR from './DonationsQR.png';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 const parseDonations = donations => {
   const accountBalance = sumBy(donations, v =>
@@ -41,9 +42,19 @@ const paymentInfo = balance => {
   };
 };
 
-const Donate = ({ donations }) => {
+const Donate = () => {
+  const { donations } = useStoreState(state => state.Help);
+  const { getDonations } = useStoreActions(actions => actions.Help);
+
+  useEffect(() => {
+    if (!donations) getDonations();
+  });
+
+  if (!donations) return <span>loading...</span>;
+
   const donators = parseDonations(donations);
   const paymentDates = paymentInfo(donators.accountBalance);
+
   return (
     <Text>
       <div className="header">

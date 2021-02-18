@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import Link from 'components/Link';
 import Flag from 'components/Flag';
 import Header from 'components/Header';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 const parseCrew = crew => {
   return {
@@ -13,7 +14,15 @@ const parseCrew = crew => {
   };
 };
 
-const Crew = ({ crew }) => {
+const Crew = () => {
+  const { crew } = useStoreState(state => state.Help);
+  const { getCrew } = useStoreActions(actions => actions.Help);
+
+  useEffect(() => {
+    if (!crew) getCrew();
+  });
+
+  if (!crew) return <MainDiv>loading...</MainDiv>;
   const crewLists = parseCrew(crew);
   return (
     <MainDiv>
