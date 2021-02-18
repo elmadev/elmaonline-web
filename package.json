@@ -63,6 +63,7 @@
     "rules": {
       "react-hooks/exhaustive-deps": "off",
       "import/no-anonymous-default-export": "off",
+      "no-console": "warn",
       "prettier/prettier": [
         "warn",
         {

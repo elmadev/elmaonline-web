@@ -85,7 +85,6 @@ const LevelPack = ({ name }) => {
 
   if (!isRehydrated) return null;
   if (!levelPackInfo.LevelPackIndex) return null;
-  console.log(levelPackInfo);
   return (
     <Layout edge t={`Level pack - ${levelPackInfo.LevelPackName}`}>
       <RootStyle>
