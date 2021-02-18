@@ -17,9 +17,10 @@ import {
   FormControl,
 } from '@material-ui/core';
 import Layout from 'components/Layout';
-import { nick, nickId } from 'utils/nick';
+import { nick, nickId, mod } from 'utils/nick';
 import FieldBoolean from 'components/FieldBoolean';
 import Download from 'components/Download';
+import Kuski from 'components/Kuski';
 import Records from './Records';
 import TotalTimes from './TotalTimes';
 import Personal from './Personal';
@@ -84,6 +85,7 @@ const LevelPack = ({ name }) => {
 
   if (!isRehydrated) return null;
   if (!levelPackInfo.LevelPackIndex) return null;
+  console.log(levelPackInfo);
   return (
     <Layout edge t={`Level pack - ${levelPackInfo.LevelPackName}`}>
       <RootStyle>
@@ -98,7 +100,9 @@ const LevelPack = ({ name }) => {
           <Tab label="King list" />
           <Tab label="Personal" />
           <Tab label="Multi records" />
-          {nickId() === levelPackInfo.KuskiIndex && <Tab label="Admin" />}
+          {(nickId() === levelPackInfo.KuskiIndex || mod()) && (
+            <Tab label="Admin" />
+          )}
         </Tabs>
         <LevelPackName>
           <ShortNameStyled>{levelPackInfo.LevelPackName}</ShortNameStyled>{' '}
@@ -107,7 +111,10 @@ const LevelPack = ({ name }) => {
             <DownloadText>Download</DownloadText>
           </Download>
         </LevelPackName>
-        <DescriptionStyle>{levelPackInfo.LevelPackDesc}</DescriptionStyle>
+        <DescriptionStyle>
+          {levelPackInfo.LevelPackDesc} - Maintainer:{' '}
+          <Kuski kuskiData={levelPackInfo.KuskiData} />
+        </DescriptionStyle>
         <Settings>
           {openSettings ? (
             <ClickAwayListener onClickAway={() => setOpenSettings(false)}>
