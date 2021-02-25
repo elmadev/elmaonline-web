@@ -9,6 +9,17 @@ import { recordsTT } from 'utils/calcs';
 import LegacyIcon from 'components/LegacyIcon';
 import LevelPopup from './LevelPopup';
 
+const hasSource = records => {
+  if (records.length > 0) {
+    if (records[0].LevelBesttime.length > 0) {
+      if (records[0].LevelBesttime[0].Source !== undefined) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 const Records = ({
   highlight,
   highlightWeeks,
@@ -29,8 +40,7 @@ const Records = ({
           <ListCell width={320}>Level name</ListCell>
           <ListCell width={200}>Kuski</ListCell>
           <ListCell>Time</ListCell>
-          {records.length > 0 &&
-            records[0].LevelBesttime[0].Source !== undefined && <ListCell />}
+          {hasSource(records) && <ListCell />}
         </ListHeader>
         {recordsLoading && <Loading />}
         {records.map(r => (
@@ -82,8 +92,7 @@ const Records = ({
           <ListCell>
             <Time time={recordsTT(records, 'LevelBesttime')} />
           </ListCell>
-          {records.length > 0 &&
-            records[0].LevelBesttime[0].Source !== undefined && <ListCell />}
+          {hasSource(records) && <ListCell />}
         </TTRow>
       </ListContainer>
       {level !== -1 && (
