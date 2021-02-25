@@ -7,15 +7,16 @@ const ClickToEdit = props => {
   const { children, value, update } = props;
   const [editMode, setEditMode] = useState(false);
   const [inputValue, setInputValue] = useState(value);
+
+  const sendValue = () => {
+    setEditMode(false);
+    if (inputValue !== value && inputValue !== '') {
+      update(inputValue);
+    }
+  };
+
   return (
-    <OutsideClickHandler
-      onOutsideClick={() => {
-        setEditMode(false);
-        if (inputValue !== value) {
-          update(inputValue);
-        }
-      }}
-    >
+    <>
       {!editMode ? (
         <Clickable
           role="button"
@@ -26,14 +27,18 @@ const ClickToEdit = props => {
           {children}
         </Clickable>
       ) : (
-        <TextField
-          margin="none"
-          variant="outlined"
-          value={inputValue}
-          onChange={e => setInputValue(e.target.value)}
-        />
+        <OutsideClickHandler onOutsideClick={() => sendValue()}>
+          <TextField
+            margin="none"
+            variant="outlined"
+            value={inputValue}
+            onChange={e => setInputValue(e.target.value)}
+            size="small"
+            onKeyDown={e => e.key === 'Enter' && sendValue()}
+          />
+        </OutsideClickHandler>
       )}
-    </OutsideClickHandler>
+    </>
   );
 };
 

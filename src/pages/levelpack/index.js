@@ -33,11 +33,11 @@ const LevelPack = ({ name }) => {
   const {
     levelPackInfo,
     highlight,
+    multiHighlight,
     personalTimes,
     timesError,
     records,
     recordsLoading,
-    setPersonalTimesLoading,
     personalKuski,
     settings: { highlightWeeks, showLegacyIcon, showLegacy },
   } = useStoreState(state => state.LevelPack);
@@ -85,6 +85,7 @@ const LevelPack = ({ name }) => {
 
   if (!isRehydrated) return null;
   if (!levelPackInfo.LevelPackIndex) return null;
+
   return (
     <Layout edge t={`Level pack - ${levelPackInfo.LevelPackName}`}>
       <RootStyle>
@@ -234,9 +235,9 @@ const LevelPack = ({ name }) => {
             }
             times={personalTimes}
             highlight={highlight}
+            multiHighlight={multiHighlight}
             highlightWeeks={highlightWeeks}
             records={records}
-            setPersonalTimesLoading={setPersonalTimesLoading}
             showLegacyIcon={showLegacyIcon}
             kuski={personalKuski}
           />
@@ -244,7 +245,7 @@ const LevelPack = ({ name }) => {
         {tab === 4 && (
           <MultiRecords
             name={name}
-            highlight={highlight}
+            highlight={multiHighlight}
             highlightWeeks={highlightWeeks}
           />
         )}

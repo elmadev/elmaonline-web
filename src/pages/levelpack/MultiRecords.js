@@ -63,7 +63,7 @@ const Records = ({ highlight, highlightWeeks, name }) => {
                 </ListCell>
                 <ListCell
                   highlight={
-                    r.LevelMultiBesttime[0].TimeIndex >=
+                    r.LevelMultiBesttime[0].MultiTimeIndex >=
                     highlight[highlightWeeks]
                   }
                 >

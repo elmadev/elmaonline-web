@@ -20,6 +20,33 @@ export const recordsTT = (levels, timeObj) => {
   return { tt, finished, levs, unfinished };
 };
 
+export const combinedTT = (levels, timeObjs) => {
+  let tt = 0;
+  let levs = 0;
+  let finished = 0;
+  let unfinished = false;
+  forEach(levels, l => {
+    let bestTime;
+    timeObjs.forEach(b => {
+      if (bestTime === undefined) {
+        bestTime = l[b].Time;
+      } else {
+        bestTime = l[b].Time < bestTime ? l[b].Time : bestTime;
+      }
+    });
+    if (bestTime !== undefined) {
+      tt += bestTime;
+      finished += 1;
+      levs += 1;
+    } else {
+      levs += 1;
+      unfinished = true;
+    }
+    return true;
+  });
+  return { tt, finished, levs, unfinished };
+};
+
 export const uuid = (length = 10) => {
   const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', length);
   return nanoid();
