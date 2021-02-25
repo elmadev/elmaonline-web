@@ -3,12 +3,12 @@ import { action, thunk, persist } from 'easy-peasy';
 import {
   Highlight,
   TotalTimes,
-  PersonalTimes,
   PersonalAllFinished,
   Besttime,
   Records,
   MultiRecords,
   MultiBesttime,
+  PersonalWithMulti,
   LevelPackDeleteLevel,
   LevelsSearchAll,
   LevelPackAddLevel,
@@ -29,8 +29,10 @@ export default {
     }
   }),
   highlight: [9999999999, 9999999999, 9999999999, 9999999999, 9999999999],
+  multiHighlight: [9999999999, 9999999999, 9999999999, 9999999999, 9999999999],
   setHighlight: action((state, payload) => {
-    state.highlight = payload;
+    state.highlight = payload.single;
+    state.multiHighlight = payload.multi;
   }),
   getHighlight: thunk(async actions => {
     const highlights = await Highlight();
@@ -81,34 +83,28 @@ export default {
     }
     actions.setTotaltimesLoading(false);
   }),
+  personalTimes: [],
+  setPersonalTimes: action((state, payload) => {
+    state.personalTimes = payload;
+  }),
+  getPersonalTimes: thunk(async (actions, payload) => {
+    actions.setPersonalKuski(payload.PersonalKuskiIndex);
+    const data = await PersonalWithMulti(payload);
+    if (data.ok) {
+      if (data.data.error) {
+        actions.setError(data.data.error);
+      } else {
+        actions.setPersonalTimes(data.data);
+      }
+    }
+  }),
   timesError: '',
   setError: action((state, payload) => {
     state.timesError = payload;
   }),
-  personalTimes: [],
   personalKuski: '',
-  personalTimesLoading: false,
-  setPersonalTimes: action((state, payload) => {
-    state.personalTimes = payload;
-  }),
-  setPersonalTimesLoading: action((state, paylaod) => {
-    state.personalTimesLoading = paylaod;
-  }),
   setPersonalKuski: action((state, payload) => {
     state.personalKuski = payload;
-  }),
-  getPersonalTimes: thunk(async (actions, payload) => {
-    actions.setPersonalTimesLoading(true);
-    actions.setPersonalKuski(payload.PersonalKuskiIndex);
-    const times = await PersonalTimes(payload);
-    if (times.ok) {
-      if (times.data.error) {
-        actions.setError(times.data.error);
-      } else {
-        actions.setPersonalTimes(times.data);
-      }
-    }
-    actions.setPersonalTimesLoading(false);
   }),
   personalAllFinished: [],
   setPeronalAllFinished: action((state, payload) => {

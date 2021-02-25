@@ -100,7 +100,13 @@ const LevelPopup = ({
                         <ListCell width={220}>
                           <Kuski kuskiData={t.Kuski2Data} team flag />
                         </ListCell>
-                        <ListCell highlight={t.TimeIndex >= highlight}>
+                        <ListCell
+                          highlight={
+                            multi
+                              ? t.MultiTimeIndex >= highlight
+                              : t.TimeIndex >= highlight
+                          }
+                        >
                           <Time time={t.Time} />
                         </ListCell>
                       </>

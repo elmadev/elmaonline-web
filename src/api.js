@@ -120,6 +120,10 @@ export const PersonalTimes = data =>
   api.get(
     `levelpack/${data.name}/personal/${data.PersonalKuskiIndex}/${data.eolOnly}`,
   );
+export const PersonalWithMulti = data =>
+  api.get(
+    `levelpack/${data.name}/personalwithmulti/${data.PersonalKuskiIndex}/${data.eolOnly}`,
+  );
 export const Records = data =>
   api.get(`levelpack/${data.name}/records/${data.eolOnly}`);
 export const MultiRecords = LevelPackName =>
