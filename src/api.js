@@ -141,6 +141,11 @@ export const LevelPackAddLevel = data =>
 export const LevelPackSortLevel = data =>
   api.post('levelpack/admin/sortLevel', data);
 export const LevelPackSort = data => api.post('levelpack/admin/sort', data);
+export const LevelPackFavAdd = data =>
+  api.post('levelpack/favourite/add', data);
+export const LevelPackFavRemove = data =>
+  api.post('levelpack/favourite/remove', data);
+export const LevelPackFavs = () => api.get('levelpack/favourite');
 
 // besttime
 export const Besttime = data =>
