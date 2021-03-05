@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { groupBy, mapValues, sumBy, filter } from 'lodash';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
+import Time from '../../components/Time';
+import Kuski from '../../components/Kuski.js';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { battleStatus } from 'utils/battle';
 import RecView from './RecView';
 import RightBarContainer from './RightBarContainer';
@@ -39,6 +42,20 @@ const runData = runs => {
   return runStats;
 };
 
+const getWinnerData = battle => {
+  if (battle && battle.Results && battle.Results.length > 0) {
+    const r = battle.Results[0];
+
+    return {
+      Kuski: r.KuskiData || {},
+      Time: r.Time,
+      Apples: r.Apples,
+    };
+  }
+
+  return null;
+};
+
 const Battle = ({ BattleId }) => {
   const BattleIndex = parseInt(BattleId, 10);
   let runStats = null;
@@ -67,6 +84,10 @@ const Battle = ({ BattleId }) => {
 
   const isWindow = typeof window !== 'undefined';
 
+  const winner = getWinnerData(battle);
+
+  const showWinnerTitle = useMediaQuery('(max-width: 1000px)');
+
   return (
     <Layout
       t={`Battle - ${
@@ -74,6 +95,13 @@ const Battle = ({ BattleId }) => {
       }`}
     >
       <MainContainer>
+        {battle && winner && showWinnerTitle && (
+          <WinnerTitle>
+            <Kuski kuskiData={winner.Kuski} flag={true} team={false} />
+            <span>&nbsp;</span>
+            <Time time={winner.Time} apples={winner.Apples} />
+          </WinnerTitle>
+        )}
         {battle ? (
           <RecView
             isWindow={isWindow}
@@ -120,6 +148,11 @@ Battle.defaultProps = {
 const MainContainer = styled.div`
   display: inline-block;
   width: 100%;
+`;
+
+const WinnerTitle = styled.div`
+  padding-left: 7px;
+  margin-bottom: 2px;
 `;
 
 export default Battle;
