@@ -143,7 +143,7 @@ const Content = styled.div`
 
 const Title = styled.div`
   background: #383838;
-  line-height: 50px;
+  line-height: 54px;
   color: #fff;
   text-transform: uppercase;
   padding: 0 17px;

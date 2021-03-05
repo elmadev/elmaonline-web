@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SearchIcon from '@material-ui/icons/Search';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
@@ -38,56 +39,63 @@ const TopBar = () => {
   return (
     <Root>
       <Container>
-        <SearchBar />
+        <SearchBar className="top-bar-search-bar" />
         {!loggedIn && (
           <StyledButton color="inherit">
             <Link to="/login">Login</Link>
           </StyledButton>
         )}
-        {loggedIn && (
-          <div>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem>
-                <Link to={`/kuskis/${username}`} onClick={handleClose}>
-                  Profile
-                </Link>
-              </MenuItem>
-              <MenuItem>
-                <Link to="/settings" onClick={handleClose}>
-                  Settings
-                </Link>
-              </MenuItem>
-              <MenuItem>
-                <Link to="/" onClick={performLogout}>
-                  Log out
-                </Link>
-              </MenuItem>
-            </Menu>
-          </div>
-        )}
+        <RightSideFlex>
+          <MobileSearchButton>
+            <Link to="/search" style={{ color: 'inherit', padding: '5px' }}>
+              <SearchIcon />
+            </Link>
+          </MobileSearchButton>
+          {loggedIn && (
+            <div>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem>
+                  <Link to={`/kuskis/${username}`} onClick={handleClose}>
+                    Profile
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/settings" onClick={handleClose}>
+                    Settings
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/" onClick={performLogout}>
+                    Log out
+                  </Link>
+                </MenuItem>
+              </Menu>
+            </div>
+          )}
+        </RightSideFlex>
       </Container>
     </Root>
   );
@@ -101,18 +109,40 @@ const Root = styled.div`
   position: fixed;
   width: 100%;
   box-sizing: border-box;
-  line-height: 50px;
   padding-left: 250px;
   z-index: 10;
   @media screen and (max-width: 768px) {
-    padding-left: 60px;
+    padding-left: 50px;
+  }
+  @media screen and (max-width: 540px) {
+    .top-bar-search-bar {
+      display: none;
+    }
   }
 `;
 
 const Container = styled.div`
-  margin: 0 14px;
+  margin: 0 17px 0 24px;
+  height: 54px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  @media screen and (max-width: 540px) {
+    justify-content: flex-end;
+  }
+`;
+
+const RightSideFlex = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const MobileSearchButton = styled.div`
+  margin-right: 8px;
+  @media screen and (min-width: 541px) {
+    display: none;
+  }
 `;
 
 export default TopBar;

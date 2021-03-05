@@ -4,54 +4,27 @@ import styled from 'styled-components';
 import { Button, Drawer, Hidden, IconButton } from '@material-ui/core';
 import { Info, Cancel } from '@material-ui/icons';
 
-const SearchBar = () => {
+const SearchBar = props => {
+  const { className } = props;
   const navigate = useNavigate();
   const [searchType, setType] = useState('');
   const [value, setValue] = useState('');
   const [info, openInfo] = useState(false);
   return (
-    <Container>
+    <Container className={className} style={{ position: 'relative' }}>
       {searchType === '' ? (
         <TypesContainer>
-          <Hidden xsDown>
-            Search <Button onClick={() => setType('level')}>Level</Button>
-            <Button onClick={() => setType('battle')}>Battle</Button>
-            <Button onClick={() => setType('replay')}>Replay</Button>
-            <Button onClick={() => setType('player')}>Player</Button>
-            <Button onClick={() => setType('team')}>Team</Button>
-          </Hidden>
-          <Hidden smUp>
-            <Button
-              style={{ minWidth: '32px' }}
-              onClick={() => setType('level')}
-            >
-              Level
-            </Button>
-            <Button
-              style={{ minWidth: '32px' }}
-              onClick={() => setType('battle')}
-            >
-              Battle
-            </Button>
-            <Button
-              style={{ minWidth: '32px' }}
-              onClick={() => setType('replay')}
-            >
-              Replay
-            </Button>
-            <Button
-              style={{ minWidth: '32px' }}
-              onClick={() => setType('player')}
-            >
-              Player
-            </Button>
-            <Button
-              style={{ minWidth: '32px' }}
-              onClick={() => setType('team')}
-            >
-              Team
-            </Button>
-          </Hidden>
+          <span
+            className="search-placeholder"
+            style={{ margin: '0 5px 3px 0', fontSize: '14px' }}
+          >
+            Search:
+          </span>
+          <Button onClick={() => setType('level')}>Level</Button>
+          <Button onClick={() => setType('battle')}>Battle</Button>
+          <Button onClick={() => setType('replay')}>Replay</Button>
+          <Button onClick={() => setType('player')}>Player</Button>
+          <Button onClick={() => setType('team')}>Team</Button>
         </TypesContainer>
       ) : (
         <>
@@ -106,14 +79,45 @@ const SearchBar = () => {
   );
 };
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  .MuiButton-root {
+    min-width: 0;
+    display: block;
+    padding: 3px 6px;
+    margin: 0 2px;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    .MuiButton-label {
+      display: block;
+      font-size: 13px;
+    }
+  }
+`;
+
+const TypesContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  border: 0;
+  background-color: white;
+  color: #767676;
+  padding: 5px 8px 5px 12px;
+  border-radius: 4px;
+`;
+
 const Reset = styled.div`
-  position: absolute;
-  left: 536px;
-  top: 14px;
-  height: 24px;
+  display: block;
+  margin-left: 3px;
   button {
-    padding: 0;
-    position: absolute;
+    padding: 5px;
+    color: inherit;
   }
 `;
 
@@ -129,33 +133,8 @@ const OpenInfo = styled.div`
   cursor: pointer;
 `;
 
-const TypesContainer = styled.div`
-  position: relative;
-  height: 41px;
-  margin-left: 8px 0;
-  border: 0;
-  width: 380px;
-  background-color: white;
-  color: #767676;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 8px;
-  @media (max-width: 460px) {
-    width: 100%;
-  }
-`;
-
-const Container = styled.div`
-  margin: 5px;
-  margin-left: -10px;
-  display: flex;
-  flex-direction: row;
-`;
-
 const SearchInput = styled.input`
-  height: 25px;
+  height: 22px;
   padding: 8px;
   display: block;
   margin-left: 8px 0;

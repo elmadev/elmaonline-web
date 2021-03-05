@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import LocalTime from 'components/LocalTime';
 import Link from 'components/Link';
+import SearchBar from 'components/SearchBar';
 import Kuski from 'components/Kuski';
 import queryString from 'query-string';
 import { useLocation } from '@reach/router';
@@ -103,6 +104,12 @@ const Search = () => {
   return (
     <Layout edge t={`Search - ${t} - ${q}`}>
       <Results>
+        {!t && (
+          <SearchBarWrapper>
+            <p className="mobile-search-title">Search for: </p>
+            <SearchBar className="search-page-search-bar" />
+          </SearchBarWrapper>
+        )}
         {t === 'level' && (
           <Flex>
             <Flex2>
@@ -703,6 +710,21 @@ const LoadMore = styled.button`
   :disabled {
     cursor: default;
     color: #8c8c8c;
+  }
+`;
+
+const SearchBarWrapper = styled.div`
+  padding: 30px 20px;
+  .mobile-search-title {
+    display: none;
+  }
+  @media (max-width: 460px) {
+    .mobile-search-title {
+      display: block;
+    }
+    .search-placeholder {
+      display: none;
+    }
   }
 `;
 

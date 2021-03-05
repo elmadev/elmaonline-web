@@ -27,14 +27,13 @@ const Layout = ({ children, edge, t = '' }) => {
 
 const ChildrenCon = styled.div`
   min-height: 100%;
-  margin-top: -50px;
+  margin-top: -54px;
   box-sizing: border-box;
   padding: ${p => (p.edge ? 0 : '24px')};
-  padding-top: ${p => (p.edge ? '50px' : '74px')};
+  padding-top: ${p => (p.edge ? '54px' : '74px')};
   @media (max-width: 1000px) {
-    padding-left: 0;
-    padding-right: 0;
-    margin-right: -24px;
+    padding-left: ${p => (p.edge ? 0 : '16px')};
+    padding-right: ${p => (p.edge ? 0 : '16px')};
   }
 `;
 
