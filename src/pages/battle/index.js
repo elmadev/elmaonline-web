@@ -97,7 +97,7 @@ const Battle = ({ BattleId }) => {
       <MainContainer>
         {battle && winner && showWinnerTitle && (
           <WinnerTitle>
-            <Kuski kuskiData={winner.Kuski} flag={true} team={false} />
+            <Kuski kuskiData={winner.Kuski} flag={true} team={true} />
             <span>&nbsp;</span>
             <Time time={winner.Time} apples={winner.Apples} />
           </WinnerTitle>
