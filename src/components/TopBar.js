@@ -40,17 +40,17 @@ const TopBar = () => {
     <Root>
       <Container>
         <SearchBar className="top-bar-search-bar" />
-        {!loggedIn && (
-          <StyledButton color="inherit">
-            <Link to="/login">Login</Link>
-          </StyledButton>
-        )}
         <RightSideFlex>
           <MobileSearchButton>
             <Link to="/search" style={{ color: 'inherit', padding: '5px' }}>
               <SearchIcon />
             </Link>
           </MobileSearchButton>
+          {!loggedIn && (
+            <StyledButton color="inherit">
+              <Link to="/login">Login</Link>
+            </StyledButton>
+          )}
           {loggedIn && (
             <div>
               <IconButton
