@@ -77,7 +77,7 @@ const GlobalStyle = createGlobalStyle`
   }
   *:focus {
     outline: 0;
-  }
+  }  
 `;
 
 export default GlobalStyle;

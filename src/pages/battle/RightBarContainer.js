@@ -133,19 +133,7 @@ const RightBarContainer = props => {
   );
 };
 
-const Root = styled.div`
-  float: right;
-  width: 40%;
-  padding: 7px;
-  box-sizing: border-box;
-  .chatContainer {
-    clear: both;
-  }
-  @media (max-width: 1100px) {
-    float: none;
-    width: 100%;
-  }
-`;
+const Root = styled.div``;
 
 const StyledButton = styled(Button)`
   && {

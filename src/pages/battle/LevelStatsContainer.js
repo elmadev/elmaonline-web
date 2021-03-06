@@ -148,15 +148,6 @@ const LevelStatsContainer = props => {
   );
 };
 
-const Root = styled.div`
-  width: 60%;
-  float: left;
-  padding: 7px;
-  box-sizing: border-box;
-  @media screen and (max-width: 1100px) {
-    float: none;
-    width: 100%;
-  }
-`;
+const Root = styled.div``;
 
 export default LevelStatsContainer;

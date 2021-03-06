@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import PropTypes from 'prop-types';
 import { groupBy, mapValues, sumBy, filter } from 'lodash';
 import Layout from 'components/Layout';
-import styled from 'styled-components';
+import SidebarPage from 'components/SidebarPage';
+import VSpaceChildren from 'components/VSpaceChildren';
 import { battleStatus } from 'utils/battle';
 import RecView from './RecView';
 import RightBarContainer from './RightBarContainer';
@@ -67,44 +69,37 @@ const Battle = ({ BattleId }) => {
 
   const isWindow = typeof window !== 'undefined';
 
+  const levName =
+    (battle && battle.LevelData && battle.LevelData.LevelName) || '?';
+
   return (
-    <Layout
-      t={`Battle - ${
-        battle ? (battle.LevelData ? battle.LevelData.LevelName : '?') : '?'
-      }`}
-    >
-      <MainContainer>
-        {battle ? (
-          <RecView
-            isWindow={isWindow}
-            BattleIndex={BattleIndex}
-            levelIndex={battle.LevelIndex}
-            battleStatus={battleStatus(battle)}
-          />
-        ) : (
-          <div />
-        )}
-        {battle && allBattleTimes ? (
+    <Layout t={`Battle - ${levName}`}>
+      <SidebarPage stackWhen="(max-width: 900px)" rightSm responsive>
+        <VSpaceChildren>
+          {battle && (
+            <RecView
+              isWindow={isWindow}
+              BattleIndex={BattleIndex}
+              levelIndex={battle.LevelIndex}
+              battleStatus={battleStatus(battle)}
+            />
+          )}
+          {battle && rankingHistory && (
+            <LevelStatsContainer
+              battle={battle}
+              rankingHistory={rankingHistory}
+              runStats={runStats}
+            />
+          )}
+        </VSpaceChildren>
+        {battle && allBattleTimes && (
           <RightBarContainer
             battle={battle}
             allBattleTimes={allBattleTimes}
             aborted={battle.Aborted}
           />
-        ) : (
-          <div />
         )}
-        {battle && rankingHistory ? (
-          <LevelStatsContainer
-            battle={battle}
-            rankingHistory={rankingHistory}
-            runStats={runStats}
-          />
-        ) : (
-          <div>
-            <span>loading...</span>
-          </div>
-        )}
-      </MainContainer>
+      </SidebarPage>
     </Layout>
   );
 };
@@ -116,10 +111,5 @@ Battle.propTypes = {
 Battle.defaultProps = {
   BattleId: '0',
 };
-
-const MainContainer = styled.div`
-  display: inline-block;
-  width: 100%;
-`;
 
 export default Battle;

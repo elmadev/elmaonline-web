@@ -59,20 +59,12 @@ const RecView = props => {
 };
 
 const PlayerContainer = styled.div`
-  width: 60%;
-  float: left;
-  padding: 7px;
-  box-sizing: border-box;
   .player {
     background: #f1f1f1;
     height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  @media screen and (max-width: 1100px) {
-    float: none;
-    width: 100%;
   }
 `;
 
