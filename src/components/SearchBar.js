@@ -62,14 +62,14 @@ const SearchBar = () => {
             type="text"
             placeholder={`Search ${searchType}`}
             onKeyUp={e => {
-              if (e.keyCode === 13) {
+              if (e.key === 'Enter') {
                 if (e.target.value === '') {
                   setType('');
                 } else {
                   navigate(`/search?q=${e.target.value}&t=${searchType}`);
                 }
               }
-              if (e.keyCode === 27) {
+              if (e.key === 'Escape') {
                 setValue('');
                 setType('');
               }

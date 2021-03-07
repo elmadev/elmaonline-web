@@ -11,61 +11,60 @@ import { nickId } from 'utils/nick';
 import Layout from 'components/Layout';
 
 const schema = yup.object().shape({
-  LevelPackName: yup
+  CollectionName: yup
     .string()
     .required()
     .min(2)
     .max(16)
     .matches(/^[A-Za-z0-9]+$/, 'Only letters and number allowed, no spaces'),
-  LevelPackLongName: yup.string().required().min(2).max(30),
-  LevelPackDesc: yup.string().required().max(255),
+  CollectionLongName: yup.string().required().min(2).max(50),
 });
 
-const LevelsAdd = () => {
-  const { addSuccess } = useStoreState(state => state.LevelsAdd);
-  const { addLevelPack } = useStoreActions(actions => actions.LevelsAdd);
+const LevelsAddCollection = () => {
+  const { addSuccess } = useStoreState(state => state.LevelsAddCollection);
+  const { addCollection } = useStoreActions(
+    actions => actions.LevelsAddCollection,
+  );
   const formal = useFormal(
     {},
     {
       schema,
-      onSubmit: values => addLevelPack({ ...values }),
+      onSubmit: values => addCollection({ ...values }),
     },
   );
   return (
-    <Layout t="Add level pack">
+    <Layout t="Add level pack collection">
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <Header h1>Add level pack</Header>
+          <Header h1>Add level pack collection</Header>
           {addSuccess === '' ? (
             <>
               {nickId() > 0 ? (
                 <form {...formal.getFormProps()}>
                   <Field
-                    label="Level pack name"
-                    {...formal.getFieldProps('LevelPackName')}
+                    label="Collection name"
+                    {...formal.getFieldProps('CollectionName')}
                   />
                   <Field
-                    label="Level pack long name"
-                    {...formal.getFieldProps('LevelPackLongName')}
-                  />
-                  <Field
-                    label="Level pack description"
-                    {...formal.getFieldProps('LevelPackDesc')}
+                    label="Collection long name"
+                    {...formal.getFieldProps('CollectionLongName')}
                   />
                   <Button variant="contained" onClick={() => formal.submit()}>
                     Create
                   </Button>
                 </form>
               ) : (
-                <div>Log in to create a level pack.</div>
+                <div>Log in to create a level pack collection.</div>
               )}
             </>
           ) : (
             <>
               <div>
-                Level pack{' '}
-                <Link to={`/levels/packs/${addSuccess}`}>{addSuccess}</Link> has
-                been created successfully.
+                Level pack collection{' '}
+                <Link to={`/levels/collections/${addSuccess}`}>
+                  {addSuccess}
+                </Link>{' '}
+                has been created successfully.
               </div>
             </>
           )}
@@ -75,4 +74,4 @@ const LevelsAdd = () => {
   );
 };
 
-export default LevelsAdd;
+export default LevelsAddCollection;

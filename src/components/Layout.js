@@ -25,6 +25,11 @@ const Layout = ({ children, edge, t = '' }) => {
   );
 };
 
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const ChildrenCon = styled.div`
   min-height: 100%;
   margin-top: -50px;
@@ -35,6 +40,9 @@ const ChildrenCon = styled.div`
     padding-left: 0;
     padding-right: 0;
     margin-right: -24px;
+  }
+  ${Content} {
+    margin: 24px;
   }
 `;
 

@@ -44,7 +44,7 @@ export default function Login() {
   );
 
   const onEnter = e => {
-    if (e.key === 'Enter' || e.keyCode === 13) {
+    if (e.key === 'Enter') {
       formal.submit();
     }
   };

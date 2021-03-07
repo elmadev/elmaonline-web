@@ -5,6 +5,7 @@ import {
   LevelPackFavAdd,
   LevelPackFavRemove,
   LevelPackFavs,
+  Collections,
 } from 'api';
 
 export default {
@@ -38,6 +39,16 @@ export default {
     const post = await LevelPackFavRemove(payload);
     if (post.ok) {
       actions.getFavs();
+    }
+  }),
+  collections: [],
+  setCollections: action((state, payload) => {
+    state.collections = payload;
+  }),
+  getCollections: thunk(async actions => {
+    const get = await Collections();
+    if (get.ok) {
+      actions.setCollections(get.data);
     }
   }),
 };
