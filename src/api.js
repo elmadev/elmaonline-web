@@ -141,6 +141,22 @@ export const LevelPackAddLevel = data =>
 export const LevelPackSortLevel = data =>
   api.post('levelpack/admin/sortLevel', data);
 export const LevelPackSort = data => api.post('levelpack/admin/sort', data);
+export const LevelPackFavAdd = data =>
+  api.post('levelpack/favourite/add', data);
+export const LevelPackFavRemove = data =>
+  api.post('levelpack/favourite/remove', data);
+export const LevelPackFavs = () => api.get('levelpack/favourite');
+
+// collections
+export const AddCollection = data =>
+  api.post('levelpack/collections/add', data);
+export const Collections = () => api.get('levelpack/collections');
+export const Collection = name => api.get(`levelpack/collections/${name}`);
+export const SearchPack = search =>
+  api.get(`levelpack/collections/search/${search}`);
+export const AddPack = data => api.post('levelpack/collections/addpack', data);
+export const DeletePack = data =>
+  api.post('levelpack/collections/deletepack', data);
 
 // besttime
 export const Besttime = data =>

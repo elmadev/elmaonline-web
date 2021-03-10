@@ -41,7 +41,7 @@ const SideBar = () => {
           role="button"
           tabIndex="0"
           onKeyUp={e => {
-            if (e.keyCode === 13) onToggle();
+            if (e.key === 'Enter') onToggle();
           }}
           onClick={onToggle}
         >

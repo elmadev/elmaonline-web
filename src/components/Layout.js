@@ -25,6 +25,11 @@ const Layout = ({ children, edge, t = '' }) => {
   );
 };
 
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const ChildrenCon = styled.div`
   min-height: 100%;
   margin-top: -54px;
@@ -34,6 +39,9 @@ const ChildrenCon = styled.div`
   @media (max-width: 1000px) {
     padding-left: ${p => (p.edge ? 0 : '12px')};
     padding-right: ${p => (p.edge ? 0 : '12px')};
+  }
+  ${Content} {
+    margin: 24px;
   }
 `;
 

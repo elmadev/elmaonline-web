@@ -18,6 +18,8 @@ import Level from 'pages/level';
 import LevelPack from 'pages/levelpack';
 import Levels from 'pages/levels';
 import LevelsAdd from 'pages/levels-add';
+import LevelsAddCollection from 'pages/levels-add-collection';
+import LevelpackCollection from 'pages/levelpack-collection';
 import Login from 'pages/login';
 import Map from 'pages/map';
 import Mod from 'pages/mod';
@@ -58,6 +60,8 @@ const Routes = () => {
       <LevelPack path="levels/packs/:name" />
       <Levels path="levels" />
       <LevelsAdd path="levels/add" />
+      <LevelsAddCollection path="levels/collections/add" />
+      <LevelpackCollection path="levels/collections/:name" />
       <Login path="login" />
       <Map path="map" />
       <Mod path="mod" />
