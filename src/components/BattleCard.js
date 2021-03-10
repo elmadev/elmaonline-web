@@ -71,7 +71,17 @@ const BattleCard = props => {
     });
   }, 1000);
 
-  if (!battle) return null;
+  if (!battle) {
+    return (
+      <CardFlex>
+        <Grid container spacing={0}>
+          <Grid item>
+            <CardHeader title="No Battle" />
+          </Grid>
+        </Grid>
+      </CardFlex>
+    );
+  }
 
   return (
     <CardFlex>
