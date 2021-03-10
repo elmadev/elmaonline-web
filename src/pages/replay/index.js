@@ -19,6 +19,7 @@ import RecList from 'features/RecList';
 import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment';
+import Tag from 'components/Tag';
 import { useNavigate } from '@reach/router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import config from 'config';
@@ -87,21 +88,11 @@ const Replay = props => {
                 </Link>
               </ReplayDescription>
               <div>
-                {replay.TAS === 1 && (
-                  <span style={{ color: 'red' }}>(TAS)</span>
-                )}
-                {replay.Unlisted === 1 && (
-                  <span style={{ color: 'gray' }}>(Unlisted)</span>
-                )}
-                {replay.Finished === 0 && (
-                  <span style={{ color: 'gray' }}>(DNF)</span>
-                )}
-                {replay.Bug === 1 && (
-                  <span style={{ color: 'brown' }}>(Bug)</span>
-                )}
-                {replay.Nitro === 1 && (
-                  <span style={{ color: 'blue' }}>(Mod)</span>
-                )}
+                {replay.TAS === 1 && <Tag tag="TAS" />}
+                {replay.Unlisted === 1 && <Tag tag="Unlisted" />}
+                {replay.Finished === 0 && <Tag tag="DNF" />}
+                {replay.Bug === 1 && <Tag tag="Bug" />}
+                {replay.Nitro === 1 && <Tag tag="Mod" />}
               </div>
             </AccordionDetails>
           </Accordion>

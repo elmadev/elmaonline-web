@@ -8,6 +8,7 @@ const colors = {
   DNF: 'gray',
   Bug: 'brown',
   Nitro: 'blue',
+  Unlisted: 'gray',
 };
 
 const StyledTag = styled(Chip)`
