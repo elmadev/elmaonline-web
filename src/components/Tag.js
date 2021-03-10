@@ -15,7 +15,6 @@ const StyledTag = styled(Chip)`
   &.MuiChip-root {
     ${p => p.label && `color: ${colors[p.label]}`};
     ${p => p.label && `border-color: ${colors[p.label]}`};
-    margin: 2px;
   }
 `;
 

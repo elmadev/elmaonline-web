@@ -5,7 +5,7 @@ import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Link from 'components/Link';
-import Tag from 'components/Tag';
+import Tags from 'components/Tags';
 import { useNavigate } from '@reach/router';
 import { formatDistance } from 'date-fns';
 
@@ -17,6 +17,16 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
     } else {
       navigate(`/r/${uuid}`);
     }
+  };
+
+  const getTags = () => {
+    return [
+      replay.TAS ? 'TAS' : undefined,
+      replay.Unlisted ? 'Unlisted' : undefined,
+      !replay.Finished ? 'DNF' : undefined,
+      replay.Bug ? 'Bug' : undefined,
+      replay.Nitro ? 'Mod' : undefined,
+    ].filter(Boolean);
   };
 
   return (
@@ -58,10 +68,7 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
       )}
       {columns.indexOf('Tags') !== -1 && (
         <ListCell width={300}>
-          {replay.TAS === 1 && <Tag tag="TAS" />}
-          {replay.Finished === 0 && <Tag tag="DNF" />}
-          {replay.Bug === 1 && <Tag tag="Bug" />}
-          {replay.Nitro === 1 && <Tag tag="Mod" />}
+          <Tags tags={getTags()} />
         </ListCell>
       )}
     </ListRow>
