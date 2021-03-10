@@ -6,11 +6,12 @@ import Kuski from 'components/Kuski';
 import Download from 'components/Download';
 import { Paper } from 'components/Paper';
 import { Timer } from '@material-ui/icons';
+import Link from 'components/Link';
 
 const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
 const CupResults = props => {
-  const { events } = props;
+  const { events, ShortName } = props;
 
   const currentEvents = events.filter(
     e =>
@@ -28,37 +29,36 @@ const CupResults = props => {
   return (
     <Container>
       {currentEvents.map(c => (
-        <Fragment key={`${c.CupIndex}${c.StartTime}`}>
-          {c.EndTime > format(new Date(), 't') &&
-            c.StartTime < format(new Date(), 't') && (
-              <Paper>
-                <EventHeader>
-                  Event {getEventNumber(c)} by <Kuski kuskiData={c.KuskiData} />
-                </EventHeader>
-                <EventInfo>
-                  {c.Level && (
-                    <Download href={`level/${c.LevelIndex}`}>
-                      {c.Level.LevelName}
-                    </Download>
-                  )}
-                </EventInfo>
-                <EventInfo>
-                  Deadline:{' '}
-                  <LocalTime
-                    date={c.EndTime}
-                    format="ddd D MMM YYYY HH:mm"
-                    parse="X"
-                  />
-                </EventInfo>
-                <EventInfo>
-                  <Timer />{' '}
-                  {formatDistance(new Date(c.EndTime * 1000), new Date(), {
-                    addSuffix: true,
-                  })}
-                </EventInfo>
-              </Paper>
+        <Paper>
+          <EventHeader>
+            <Link to={`/cup/${ShortName}/events/${getEventNumber(c)}/map`}>
+              Event {getEventNumber(c)}
+            </Link>
+            <span> by </span>
+            <Kuski kuskiData={c.KuskiData} />
+          </EventHeader>
+          <EventInfo>
+            {c.Level && (
+              <Download href={`level/${c.LevelIndex}`}>
+                {c.Level.LevelName}
+              </Download>
             )}
-        </Fragment>
+          </EventInfo>
+          <EventInfo>
+            Deadline:{' '}
+            <LocalTime
+              date={c.EndTime}
+              format="ddd D MMM YYYY HH:mm"
+              parse="X"
+            />
+          </EventInfo>
+          <EventInfo>
+            <Timer />{' '}
+            {formatDistance(new Date(c.EndTime * 1000), new Date(), {
+              addSuffix: true,
+            })}
+          </EventInfo>
+        </Paper>
       ))}
     </Container>
   );

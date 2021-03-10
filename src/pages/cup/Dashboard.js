@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { forEach } from 'lodash';
 import { format } from 'date-fns';
+import Link from 'components/Link';
 import styled from 'styled-components';
 import { Grid, Checkbox, Button, TextField } from '@material-ui/core';
 import Header from 'components/Header';
@@ -17,7 +18,7 @@ import config from 'config';
 import { authToken } from 'utils/nick';
 
 const Dashboard = props => {
-  const { events, openEvent, openStandings, cup } = props;
+  const { events, cup } = props;
   const [standings, setStandings] = useState({});
   const [lastEvent, setLastEvent] = useState(-1);
   const [error, setError] = useState('');
@@ -158,8 +159,10 @@ const Dashboard = props => {
           <CupCurrent events={events} />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Header h2 onClick={() => openEvent(lastEvent)}>
-            Last Event
+          <Header h2>
+            <Link to={`/cup/${cup.ShortName}/events/${lastEvent + 1}`}>
+              Last Event
+            </Link>
           </Header>
           {events[lastEvent] && (
             <CupResults
@@ -169,8 +172,8 @@ const Dashboard = props => {
               results={events[lastEvent].CupTimes.slice(0, 5)}
             />
           )}
-          <Header h2 onClick={() => openStandings()}>
-            Standings
+          <Header h2>
+            <Link to={`/cup/${cup.ShortName}/standings`}>Standings</Link>
           </Header>
           {standings.player && (
             <DerpTable
