@@ -8,11 +8,17 @@ export default function Replays({
   defaultPage = 0,
   defaultPageSize = 25,
   showPagination,
+  showTags,
 }) {
   const [page, setPage] = useState(defaultPage);
   const [pageSize, setPageSize] = useState(defaultPageSize);
   const { replays } = useStoreState(state => state.ReplayList);
   const { getReplays } = useStoreActions(actions => actions.ReplayList);
+
+  const columns = ['Uploaded', 'Replay', 'Level', 'Time', 'By'];
+  if (showTags) {
+    columns.push('Tags');
+  }
 
   useEffect(() => {
     getReplays({ page, pageSize });
@@ -31,17 +37,21 @@ export default function Replays({
     <>
       <ListContainer>
         <ListHeader>
+          <ListCell>Uploaded</ListCell>
           <ListCell>Replay</ListCell>
           <ListCell>Level</ListCell>
           <ListCell right>Time</ListCell>
           <ListCell>By</ListCell>
+          {showTags && <ListCell>Tags</ListCell>}
         </ListHeader>
         {!replays ? (
           <ListRow>
             <ListCell />
           </ListRow>
         ) : (
-          replays.rows.map(i => <RecListItem key={i.ReplayIndex} replay={i} />)
+          replays.rows.map(i => (
+            <RecListItem key={i.ReplayIndex} replay={i} columns={columns} />
+          ))
         )}
       </ListContainer>
       {showPagination && (

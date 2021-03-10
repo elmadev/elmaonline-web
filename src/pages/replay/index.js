@@ -19,6 +19,7 @@ import RecList from 'features/RecList';
 import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment';
+import Tags from 'components/Tags';
 import { useNavigate } from '@reach/router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import config from 'config';
@@ -43,6 +44,16 @@ const Replay = props => {
   if (isWindow) {
     link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
   }
+
+  const getTags = () => {
+    return [
+      replay.TAS ? 'TAS' : undefined,
+      replay.Unlisted ? 'Unlisted' : undefined,
+      !replay.Finished ? 'DNF' : undefined,
+      replay.Bug ? 'Bug' : undefined,
+      replay.Nitro ? 'Mod' : undefined,
+    ].filter(Boolean);
+  };
 
   return (
     <Layout t={`rec - ${replay.RecFileName}`}>
@@ -86,23 +97,7 @@ const Replay = props => {
                   Go to level page
                 </Link>
               </ReplayDescription>
-              <div>
-                {replay.TAS === 1 && (
-                  <span style={{ color: 'red' }}>(TAS)</span>
-                )}
-                {replay.Unlisted === 1 && (
-                  <span style={{ color: 'gray' }}>(Unlisted)</span>
-                )}
-                {replay.Finished === 0 && (
-                  <span style={{ color: 'gray' }}>(DNF)</span>
-                )}
-                {replay.Bug === 1 && (
-                  <span style={{ color: 'brown' }}>(Bug)</span>
-                )}
-                {replay.Nitro === 1 && (
-                  <span style={{ color: 'blue' }}>(Mod)</span>
-                )}
-              </div>
+              <Tags tags={getTags()} />
             </AccordionDetails>
           </Accordion>
           {/* <ExpansionPanel defaultExpanded>

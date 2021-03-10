@@ -24,12 +24,12 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
     <Container>
       <ListContainer>
         <ListHeader>
+          <ListCell width={80}>Started</ListCell>
           <ListCell width={100}>Type</ListCell>
           <ListCell width={150}>Designer</ListCell>
           <ListCell width={100}>Level</ListCell>
           <ListCell width={150}>Winner</ListCell>
           <ListCell width={60}>Time</ListCell>
-          <ListCell width={80}>Started</ListCell>
           {!condensed && <ListCell>Players</ListCell>}
         </ListHeader>
         {battles.length > 0 && (
@@ -38,6 +38,9 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
               const sorted = [...b.Results].sort(sortResults(b.BattleType));
               return (
                 <ListRow key={b.BattleIndex} bg={battleStatusBgColor(b)}>
+                  <ListCell width={80} to={`/battles/${b.BattleIndex}`}>
+                    <LocalTime date={b.Started} format="HH:mm" parse="X" />
+                  </ListCell>
                   {condensed ? (
                     <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
                       <CondensedCon>
@@ -69,9 +72,6 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
                     {b.Results.length > 0 && (
                       <Time time={sorted[0].Time} apples={sorted[0].Apples} />
                     )}
-                  </ListCell>
-                  <ListCell width={80} to={`/battles/${b.BattleIndex}`}>
-                    <LocalTime date={b.Started} format="HH:mm" parse="X" />
                   </ListCell>
                   {!condensed && (
                     <ListCell>

@@ -23,7 +23,7 @@ export default function Replays() {
           <Grid container>
             {list === 0 && (
               <Grid item xs={12} sm={12}>
-                <ReplayList showPagination />
+                <ReplayList showPagination showTags />
               </Grid>
             )}
             {list === 1 && (
