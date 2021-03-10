@@ -5,6 +5,7 @@ import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Link from 'components/Link';
+import Tag from 'components/Tag';
 import { useNavigate } from '@reach/router';
 import { formatDistance } from 'date-fns';
 
@@ -43,12 +44,10 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
       )}
       {columns.indexOf('Time') !== -1 && (
         <ListCell right>
-          {replay.TAS === 1 && <span style={{ color: 'red' }}>(TAS) </span>}
-          {replay.Finished === 0 && (
-            <span style={{ color: 'gray' }}>(DNF) </span>
-          )}
-          {replay.Bug === 1 && <span style={{ color: 'brown' }}>(Bug) </span>}
-          {replay.Nitro === 1 && <span style={{ color: 'blue' }}>(Mod) </span>}
+          {replay.TAS === 1 && <Tag tag="TAS" />}
+          {replay.Finished === 0 && <Tag tag="DNF" />}
+          {replay.Bug === 1 && <Tag tag="Bug" />}
+          {replay.Nitro === 1 && <Tag tag="Mod" />}
           <Time thousands time={replay.ReplayTime} />
         </ListCell>
       )}
