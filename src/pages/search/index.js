@@ -720,17 +720,6 @@ const LoadMore = styled.button`
 
 const SearchBarWrapper = styled.div`
   padding: 30px 20px;
-  .mobile-search-title {
-    display: none;
-  }
-  @media (max-width: 460px) {
-    .mobile-search-title {
-      display: block;
-    }
-    .search-placeholder {
-      display: none;
-    }
-  }
 `;
 
 export default Search;
