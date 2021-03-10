@@ -16,20 +16,13 @@ export default function Home() {
     <Layout t="Home">
       <Grid container spacing={3}>
         {!loggedIn && (
-          <Grid container item xs={12} sm={12} spacing={3}>
+          <Grid container item xs={12}>
             <Grid item xs={12}>
               <WelcomeCard />
             </Grid>
           </Grid>
         )}
-        <Grid
-          container
-          item
-          xs={12}
-          sm={7}
-          alignContent="flex-start"
-          spacing={3}
-        >
+        <Grid container item sm={7} alignContent="flex-start" spacing={3}>
           <Grid item xs={12}>
             <BattlesCard />
           </Grid>
@@ -37,14 +30,7 @@ export default function Home() {
             <ReplaysCard />
           </Grid>
         </Grid>
-        <Grid
-          container
-          spacing={3}
-          item
-          xs={12}
-          sm={5}
-          alignContent="flex-start"
-        >
+        <Grid container spacing={3} item sm alignContent="flex-start">
           <Grid item xs={12}>
             <CurrentBattleCard />
           </Grid>
