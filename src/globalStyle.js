@@ -58,7 +58,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     margin: 0;
-    margin-top: 50px;
+    margin-top: 54px;
   }
   a {
     color: #219653;

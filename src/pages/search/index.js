@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useMediaQuery } from '@material-ui/core';
 import LocalTime from 'components/LocalTime';
 import Link from 'components/Link';
+import SearchBar from 'components/SearchBar';
 import Kuski from 'components/Kuski';
 import queryString from 'query-string';
 import { useLocation } from '@reach/router';
@@ -82,6 +84,8 @@ const Search = () => {
     }
   }, [levels, showLocked]);
 
+  const smallSearchBar = useMediaQuery('(max-width: 460px');
+
   const updateHidden = (data, oldValue) => {
     const newValue = 1 - oldValue;
     changeLevel({ LevelIndex: data.LevelIndex, update: { Hidden: newValue } });
@@ -103,6 +107,14 @@ const Search = () => {
   return (
     <Layout edge t={`Search - ${t} - ${q}`}>
       <Results>
+        {!t && (
+          <SearchBarWrapper>
+            {smallSearchBar && (
+              <p className="mobile-search-title">Search for: </p>
+            )}
+            <SearchBar hidePlaceholder={smallSearchBar} />
+          </SearchBarWrapper>
+        )}
         {t === 'level' && (
           <Flex>
             <Flex2>
@@ -704,6 +716,10 @@ const LoadMore = styled.button`
     cursor: default;
     color: #8c8c8c;
   }
+`;
+
+const SearchBarWrapper = styled.div`
+  padding: 30px 20px;
 `;
 
 export default Search;
