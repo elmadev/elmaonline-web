@@ -6,6 +6,7 @@ import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Link from 'components/Link';
 import { useNavigate } from '@reach/router';
+import { formatDistance } from 'date-fns';
 
 const RecListItem = ({ replay, selected, columns, openReplay }) => {
   const navigate = useNavigate();
@@ -23,6 +24,13 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
       onClick={() => handleOpenReplay(replay.UUID)}
       selected={selected}
     >
+      {columns.indexOf('Uploaded') !== -1 && (
+        <ListCell width={170}>
+          {formatDistance(replay.Uploaded * 1000, new Date(), {
+            addSuffix: true,
+          })}
+        </ListCell>
+      )}
       {columns.indexOf('Replay') !== -1 && (
         <ListCell width={200}>
           <Link to={`/r/${replay.UUID}`}>{replay.RecFileName}</Link>

@@ -31,6 +31,7 @@ export default function Replays({
     <>
       <ListContainer>
         <ListHeader>
+          <ListCell>Uploaded</ListCell>
           <ListCell>Replay</ListCell>
           <ListCell>Level</ListCell>
           <ListCell right>Time</ListCell>
@@ -41,7 +42,13 @@ export default function Replays({
             <ListCell />
           </ListRow>
         ) : (
-          replays.rows.map(i => <RecListItem key={i.ReplayIndex} replay={i} />)
+          replays.rows.map(i => (
+            <RecListItem
+              key={i.ReplayIndex}
+              replay={i}
+              columns={['Uploaded', 'Replay', 'Level', 'Time', 'By']}
+            />
+          ))
         )}
       </ListContainer>
       {showPagination && (
