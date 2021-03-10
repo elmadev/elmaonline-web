@@ -44,10 +44,6 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
       )}
       {columns.indexOf('Time') !== -1 && (
         <ListCell right>
-          {replay.TAS === 1 && <Tag tag="TAS" />}
-          {replay.Finished === 0 && <Tag tag="DNF" />}
-          {replay.Bug === 1 && <Tag tag="Bug" />}
-          {replay.Nitro === 1 && <Tag tag="Mod" />}
           <Time thousands time={replay.ReplayTime} />
         </ListCell>
       )}
@@ -58,6 +54,14 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
           ) : (
             <div>{replay.DrivenByText}</div>
           )}
+        </ListCell>
+      )}
+      {columns.indexOf('Tags') !== -1 && (
+        <ListCell width={300}>
+          {replay.TAS === 1 && <Tag tag="TAS" />}
+          {replay.Finished === 0 && <Tag tag="DNF" />}
+          {replay.Bug === 1 && <Tag tag="Bug" />}
+          {replay.Nitro === 1 && <Tag tag="Mod" />}
         </ListCell>
       )}
     </ListRow>
