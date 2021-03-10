@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
 import SearchBar from 'components/SearchBar';
+import { useMediaQuery } from '@material-ui/core';
 // import TopBarActions from 'components/TopBarActions';
 
 const StyledButton = styled(Button)`
@@ -22,6 +23,8 @@ const TopBar = () => {
   const open = Boolean(anchorEl);
   const { loggedIn, username } = useStoreState(state => state.Login);
   const { logout } = useStoreActions(actions => actions.Login);
+
+  const mobileSearch = useMediaQuery('(max-width: 540px)');
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget);
@@ -39,13 +42,15 @@ const TopBar = () => {
   return (
     <Root>
       <Container>
-        <SearchBar className="top-bar-search-bar" />
+        {!mobileSearch && <SearchBar />}
         <RightSideFlex>
-          <MobileSearchButton>
-            <Link to="/search" style={{ color: 'inherit', padding: '5px' }}>
-              <SearchIcon />
-            </Link>
-          </MobileSearchButton>
+          {mobileSearch && (
+            <MobileSearchButton>
+              <Link to="/search" style={{ color: 'inherit', padding: '5px' }}>
+                <SearchIcon />
+              </Link>
+            </MobileSearchButton>
+          )}
           {!loggedIn && (
             <StyledButton color="inherit">
               <Link to="/login">Login</Link>
@@ -140,9 +145,6 @@ const RightSideFlex = styled.div`
 
 const MobileSearchButton = styled.div`
   margin-right: 8px;
-  @media screen and (min-width: 541px) {
-    display: none;
-  }
 `;
 
 export default TopBar;

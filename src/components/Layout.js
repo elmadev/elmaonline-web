@@ -32,8 +32,8 @@ const ChildrenCon = styled.div`
   padding: ${p => (p.edge ? 0 : '24px')};
   padding-top: ${p => (p.edge ? '54px' : '74px')};
   @media (max-width: 1000px) {
-    padding-left: ${p => (p.edge ? 0 : '16px')};
-    padding-right: ${p => (p.edge ? 0 : '16px')};
+    padding-left: ${p => (p.edge ? 0 : '12px')};
+    padding-right: ${p => (p.edge ? 0 : '12px')};
   }
 `;
 

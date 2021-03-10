@@ -5,21 +5,16 @@ import { Button, Drawer, Hidden, IconButton } from '@material-ui/core';
 import { Info, Cancel } from '@material-ui/icons';
 
 const SearchBar = props => {
-  const { className } = props;
+  const { hidePlaceholder } = props;
   const navigate = useNavigate();
   const [searchType, setType] = useState('');
   const [value, setValue] = useState('');
   const [info, openInfo] = useState(false);
   return (
-    <Container className={className} style={{ position: 'relative' }}>
+    <Container>
       {searchType === '' ? (
         <TypesContainer>
-          <span
-            className="search-placeholder"
-            style={{ margin: '0 5px 3px 0', fontSize: '14px' }}
-          >
-            Search:
-          </span>
+          {!hidePlaceholder && <Placeholder>Search:</Placeholder>}
           <Button onClick={() => setType('level')}>Level</Button>
           <Button onClick={() => setType('battle')}>Battle</Button>
           <Button onClick={() => setType('replay')}>Replay</Button>
@@ -141,6 +136,12 @@ const SearchInput = styled.input`
   border: 0;
   width: 300px;
   max-width: 100%;
+`;
+
+const Placeholder = styled.span`
+  margin-bottom: 3px;
+  margin-right: 1px;
+  font-size: 14px;
 `;
 
 export default SearchBar;

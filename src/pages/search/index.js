@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useMediaQuery } from '@material-ui/core';
 import LocalTime from 'components/LocalTime';
 import Link from 'components/Link';
 import SearchBar from 'components/SearchBar';
@@ -83,6 +84,8 @@ const Search = () => {
     }
   }, [levels, showLocked]);
 
+  const smallSearchBar = useMediaQuery('(max-width: 460px');
+
   const updateHidden = (data, oldValue) => {
     const newValue = 1 - oldValue;
     changeLevel({ LevelIndex: data.LevelIndex, update: { Hidden: newValue } });
@@ -106,8 +109,10 @@ const Search = () => {
       <Results>
         {!t && (
           <SearchBarWrapper>
-            <p className="mobile-search-title">Search for: </p>
-            <SearchBar className="search-page-search-bar" />
+            {smallSearchBar && (
+              <p className="mobile-search-title">Search for: </p>
+            )}
+            <SearchBar hidePlaceholder={smallSearchBar} />
           </SearchBarWrapper>
         )}
         {t === 'level' && (
