@@ -1,5 +1,11 @@
-const { override, addWebpackAlias, addBabelPlugin } = require('customize-cra');
+const {
+  override,
+  addWebpackAlias,
+  addBabelPlugin,
+  addWebpackPlugin,
+} = require('customize-cra');
 const path = require('path');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = override(
   addWebpackAlias({
@@ -15,4 +21,9 @@ module.exports = override(
     features: path.resolve(__dirname, 'src/features'),
   }),
   addBabelPlugin('babel-plugin-styled-components'),
+  addWebpackPlugin(
+    new CompressionPlugin({
+      test: /\.js$|\.css$|\.html$|\.svg$|/,
+    }),
+  ),
 );
