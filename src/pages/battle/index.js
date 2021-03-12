@@ -102,7 +102,7 @@ const Battle = ({ BattleId }) => {
             <Time time={winner.Time} apples={winner.Apples} />
           </WinnerTitle>
         )}
-        {battle ? (
+        {battle && battle.LevelIndex ? (
           <RecView
             isWindow={isWindow}
             BattleIndex={BattleIndex}

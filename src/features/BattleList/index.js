@@ -68,7 +68,7 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
                       battleStatus(b)
                     )}
                   </ListCell>
-                  <ListCell width={60}>
+                  <ListCell whiteSpace="nowrap" width={60}>
                     {b.Results.length > 0 && (
                       <Time time={sorted[0].Time} apples={sorted[0].Apples} />
                     )}
