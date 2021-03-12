@@ -95,6 +95,10 @@ const LevelStatsContainer = props => {
             {[...battle.Results]
               .sort(sortResults(battle.BattleType))
               .map((r, i) => {
+                // note that battle.Results can contain more entries than runStats.
+                // it appears this happens if kuski joins for countdown but not for battle.
+                const runStatsForKuski = runStats && runStats[r.KuskiIndex];
+
                 return (
                   <Fragment key={r.KuskiIndex}>
                     <ListRow>
@@ -117,22 +121,17 @@ const LevelStatsContainer = props => {
                         )}
                       </ListCell>
                       <ListCell right>
-                        {runStats ? (
-                          <Time
-                            time={runStats[r.KuskiIndex].PlayTime}
-                            apples={0}
-                          />
+                        {runStatsForKuski ? (
+                          <Time time={runStatsForKuski.PlayTime} apples={0} />
                         ) : (
                           '0,00'
                         )}
                       </ListCell>
                       <ListCell right>
-                        {runStats && runStats[r.KuskiIndex].Finishes
-                          ? runStats[r.KuskiIndex].Finishes
-                          : '0'}
+                        {runStatsForKuski ? runStatsForKuski.Finishes : '0'}
                       </ListCell>
                       <ListCell right>
-                        {runStats ? runStats[r.KuskiIndex].Apples : '0'}
+                        {runStatsForKuski ? runStatsForKuski.Apples : '0'}
                       </ListCell>
                       <ListCell right width={205}>
                         {getExtra(r.KuskiIndex, extra, rankingHistory, battle)}
