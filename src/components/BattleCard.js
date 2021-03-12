@@ -76,7 +76,7 @@ const BattleCard = props => {
       <CardFlex>
         <Grid container spacing={0}>
           <Grid item>
-            <CardHeader title="No Battle" />
+            <CardContent>No battle currently</CardContent>
           </Grid>
         </Grid>
       </CardFlex>

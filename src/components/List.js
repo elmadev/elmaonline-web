@@ -2,16 +2,33 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'components/Link';
 
-export const ListCell = ({ width, children, right, highlight, to }) => {
+export const ListCell = ({
+  width,
+  children,
+  right,
+  highlight,
+  to,
+  whiteSpace,
+}) => {
   if (to) {
     return (
-      <Cell width={width} right={right} highlight={highlight}>
+      <Cell
+        whiteSpace={whiteSpace}
+        width={width}
+        right={right}
+        highlight={highlight}
+      >
         <Link to={to}>{children}</Link>
       </Cell>
     );
   }
   return (
-    <Cell width={width} right={right} highlight={highlight}>
+    <Cell
+      whiteSpace={whiteSpace}
+      width={width}
+      right={right}
+      highlight={highlight}
+    >
       {children}
     </Cell>
   );
@@ -25,6 +42,7 @@ const Cell = styled.span`
   text-align: ${p => (p.right ? 'right' : 'left')};
   background: ${p => (p.highlight ? '#dddddd' : 'transparent')};
   position: relative;
+  white-space: ${p => (p.whiteSpace ? p.whiteSpace : 'normal')};
   button {
     max-height: 20px;
   }
