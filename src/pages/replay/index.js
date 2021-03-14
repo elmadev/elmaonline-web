@@ -90,7 +90,7 @@ const Replay = props => {
                   )}
                   by{' '}
                   {replay.DrivenByData ? replay.DrivenByData.Kuski : 'Unknown'}{' '}
-                  in <Level LevelData={replay.LevelData} />
+                  in <Level LevelData={replay.LevelData} noLink />
                 </div>
                 <br />
                 <Link to={`/levels/${replay.LevelIndex}`}>
@@ -104,7 +104,7 @@ const Replay = props => {
             <ExpansionPanelSummary expandIcon={<ExpandMore />}>
               <Typography variant="body1">
                 <React.Fragment>
-                  <Level LevelData={replay.LevelData} />.lev
+                  <Level LevelData={replay.LevelData} noLink/>.lev
                 </React.Fragment>
               </Typography>
             </ExpansionPanelSummary>

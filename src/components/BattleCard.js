@@ -90,10 +90,10 @@ const BattleCard = props => {
           <CardHeader title="Current Battle" />
           <CardContent>
             <Header h2 nomargin>
-              <Level LevelData={battle.LevelData} />
+              <Level LevelData={battle.LevelData} noLink />
             </Header>
             <Typography variant="body1" color="textSecondary">
-              <Level long LevelData={battle.LevelData} />
+              <Level long LevelData={battle.LevelData} noLink />
             </Typography>
             <Text>
               <span>Designer: </span>

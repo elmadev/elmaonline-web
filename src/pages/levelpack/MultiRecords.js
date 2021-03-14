@@ -5,12 +5,15 @@ import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import { Level } from 'components/Names';
 import Loading from 'components/Loading';
 import { recordsTT } from 'utils/calcs';
 import LevelPopup from './LevelPopup';
 
 const Records = ({ highlight, highlightWeeks, name }) => {
   const [level, selectLevel] = useState(-1);
+  const [longName, setLongName] = useState('');
+  const [levelName, setLevelName] = useState('');
   const { multiRecords, multiRecordsLoading, lastMultiName } = useStoreState(
     state => state.LevelPack,
   );
@@ -40,10 +43,14 @@ const Records = ({ highlight, highlightWeeks, name }) => {
             onClick={e => {
               e.preventDefault();
               selectLevel(level === r.LevelIndex ? -1 : r.LevelIndex);
+              setLongName(r.Level.LongName);
+              setLevelName(r.Level.LevelName);
             }}
             selected={level === r.LevelIndex}
           >
-            <ListCell width={100}>{r.Level.LevelName}</ListCell>
+            <ListCell width={100}>
+              <Level LevelIndex={r.LevelIndex} LevelData={r.Level} />
+            </ListCell>
             <ListCell width={320}>{r.Level.LongName}</ListCell>
             {r.LevelMultiBesttime.length > 0 ? (
               <>
@@ -93,6 +100,8 @@ const Records = ({ highlight, highlightWeeks, name }) => {
         <LevelPopup
           highlight={highlight[highlightWeeks]}
           levelId={level}
+          longName={longName}
+          levelName={levelName}
           close={() => {
             selectLevel(-1);
           }}

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Link from 'components/Link';
 
 const formatLevel = level => {
   if (
@@ -12,7 +13,7 @@ const formatLevel = level => {
   return level;
 };
 
-const Level = ({ long, LevelData }) => {
+const LevelNameFormatted = ({ long, LevelData }) => {
   return (
     <>
       {long && LevelData && LevelData.LongName}
@@ -22,17 +23,35 @@ const Level = ({ long, LevelData }) => {
   );
 };
 
+const Level = ({ LevelIndex, long, LevelData, noLink }) => {
+  return (
+    <>
+      {noLink ? (
+        <LevelNameFormatted long={long} LevelData={LevelData} />
+      ) : (
+        <Link to={`/levels/${LevelIndex}`}>
+          <LevelNameFormatted long={long} LevelData={LevelData} />
+        </Link>
+      )}
+    </>
+  );
+};
+
 Level.propTypes = {
+  LevelIndex: PropTypes.number,
   long: PropTypes.bool,
   LevelData: PropTypes.shape({
     LevelName: PropTypes.string,
     LongName: PropTypes.string,
   }),
+  noLink: PropTypes.bool,
 };
 
 Level.defaultProps = {
+  LevelIndex: null,
   long: false,
   LevelData: null,
+  noLink: false,
 };
 
 class BattleType extends React.Component {

@@ -13,8 +13,7 @@ import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import { useNavigate } from '@reach/router';
 import Loading from 'components/Loading';
 import config from 'config';
-/* import { Level } from 'components/Names';
-import RecList from 'features/RecList';
+/* import RecList from 'features/RecList';
 import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment'; */
@@ -102,7 +101,7 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
                 </Header>
                 <Header h3 right>
                   <Download href={`level/${replay.CupData.LevelIndex}`}>
-                    <Level LevelData={replay.CupData.Level} />
+                    <Level LevelData={replay.CupData.Level} noLink />
                     .lev
                   </Download>
                 </Header>

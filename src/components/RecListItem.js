@@ -49,7 +49,7 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
       )}
       {columns.indexOf('Level') !== -1 && (
         <ListCell width={100}>
-          <Level LevelData={replay.LevelData} />
+          <Level LevelIndex={replay.LevelIndex} LevelData={replay.LevelData} />
         </ListCell>
       )}
       {columns.indexOf('Time') !== -1 && (

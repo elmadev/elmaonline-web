@@ -4,9 +4,8 @@ import { TablePagination } from '@material-ui/core';
 import subYears from 'date-fns/subYears';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import { toServerTime } from 'utils/time';
-import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';
-import { BattleType } from 'components/Names';
+import { Level, BattleType } from 'components/Names';
 import Time from 'components/Time';
 import LocalTime from 'components/LocalTime';
 import Link from 'components/Link';
@@ -58,7 +57,7 @@ export default function ReplayListBattle({
       <ListContainer>
         <ListHeader>
           <ListCell>Started</ListCell>
-          <ListCell>Battle</ListCell>
+          <ListCell>Level</ListCell>
           <ListCell>Type</ListCell>
           <ListCell>Designer</ListCell>
           <ListCell right>Result</ListCell>
@@ -86,7 +85,7 @@ export default function ReplayListBattle({
                   </Link>
                 </ListCell>
                 <ListCell width={100}>
-                  <Level LevelData={i.LevelData} />
+                  <Level LevelIndex={i.LevelIndex} LevelData={i.LevelData} />
                 </ListCell>
                 <ListCell width={100}>
                   <BattleType type={i.BattleType} />

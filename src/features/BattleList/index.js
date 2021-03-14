@@ -4,7 +4,7 @@ import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import styled from 'styled-components';
-import { BattleType } from 'components/Names';
+import { Level, BattleType } from 'components/Names';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import { toServerTime } from 'utils/time';
@@ -59,7 +59,12 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
                     <Kuski kuskiData={b.KuskiData} team flag />
                   </ListCell>
                   <ListCell width={100}>
-                    {b.LevelData && b.LevelData.LevelName}
+                    {b.LevelData && (
+                      <Level
+                        LevelIndex={b.LevelIndex}
+                        LevelData={b.LevelData}
+                      />
+                    )}
                   </ListCell>
                   <ListCell width={150}>
                     {b.Finished === 1 && b.Results.length > 0 ? (
