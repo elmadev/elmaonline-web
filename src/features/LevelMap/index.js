@@ -8,6 +8,7 @@ import Loading from 'components/Loading';
 import { levToSvg } from 'elma-js';
 
 const MapContainer = styled.div`
+  width: ${props => (props.fullscreen ? '100%' : props.width)};
   height: ${props => props.height};
   > div {
     ${props =>
@@ -49,7 +50,8 @@ const MapContainer = styled.div`
   }
 `;
 
-const LevelMap = ({ LevelIndex }) => {
+const LevelMap = props => {
+  const { LevelIndex, width, height } = props;
   const [fullscreen, setFullscreen] = useState(false);
   const { levelData } = useStoreState(state => state.LevelMap);
   const { getLevelData } = useStoreActions(actions => actions.LevelMap);
@@ -60,6 +62,8 @@ const LevelMap = ({ LevelIndex }) => {
 
   if (!levelData) {
     return <Loading />;
+  } else if (!levelData.LevelData) {
+    return <MapContainer />;
   }
 
   const svg = levToSvg(levelData.LevelData);
@@ -68,7 +72,8 @@ const LevelMap = ({ LevelIndex }) => {
     <MapContainer
       fullscreen={fullscreen}
       onClick={() => setFullscreen(!fullscreen)}
-      height="100%"
+      width={width}
+      height={height}
     >
       <div dangerouslySetInnerHTML={{ __html: svg }} />
     </MapContainer>
@@ -77,6 +82,14 @@ const LevelMap = ({ LevelIndex }) => {
 
 LevelMap.propTypes = {
   LevelIndex: PropTypes.number.isRequired,
+  width: PropTypes.string,
+  height: PropTypes.string,
+};
+
+LevelMap.defaultProps = {
+  LevelIndex: null,
+  width: '100%',
+  height: '100%',
 };
 
 export default LevelMap;

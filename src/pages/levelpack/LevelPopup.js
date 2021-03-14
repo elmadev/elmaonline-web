@@ -4,6 +4,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
 import LegacyIcon from 'components/LegacyIcon';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
@@ -70,6 +71,7 @@ const LevelPopup = ({
             &times;
           </ClosePopUp>
         </Title>
+        <LevelMap LevelIndex={levelId} width="50%" />
         <h2>Top-{timesLimit.toLocaleString()} times</h2>
         <ListContainer>
           <ListHeader>
@@ -175,16 +177,16 @@ const ShowMoreCon = styled.div`
 `;
 
 const LevelPopUpCon = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
-  left: 800px;
+  left: 1050px;
   height: 100vh;
   background: #fff;
   box-sizing: border-box;
   padding-top: 50px;
   border-left: 1px solid #eaeaea;
-  @media (max-width: 1150px) {
+  @media (max-width: 1400px) {
     left: 650px;
   }
   @media (max-width: 999px) {
