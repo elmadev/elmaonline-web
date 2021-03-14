@@ -308,7 +308,11 @@ const Search = () => {
                         {(r.LevelData && `${r.LevelData.LevelName}.lev`) ||
                           'unknown'}{' '}
                         /{' '}
-                        {(r.DrivenByData && r.DrivenByData.Kuski) || 'unknown'}{' '}
+                        {r.DrivenByData ? (
+                          <Kuski kuskiData={r.DrivenByData} />
+                        ) : (
+                          r.DrivenByText || 'Unknown'
+                        )}{' '}
                         /{' '}
                         <LocalTime
                           date={r.Uploaded}
@@ -361,7 +365,11 @@ const Search = () => {
                         {(r.LevelData && `${r.LevelData.LevelName}.lev`) ||
                           'unknown'}{' '}
                         /{' '}
-                        {(r.DrivenByData && r.DrivenByData.Kuski) || 'unknown'}{' '}
+                        {r.DrivenByData ? (
+                          <Kuski kuskiData={r.DrivenByData} />
+                        ) : (
+                          r.DrivenByText || 'Unknown'
+                        )}{' '}
                         /{' '}
                         <LocalTime
                           date={r.Uploaded}
@@ -414,7 +422,11 @@ const Search = () => {
                         {(r.LevelData && `${r.LevelData.LevelName}.lev`) ||
                           'unknown'}{' '}
                         /{' '}
-                        {(r.DrivenByData && r.DrivenByData.Kuski) || 'unknown'}{' '}
+                        {r.DrivenByData ? (
+                          <Kuski kuskiData={r.DrivenByData} />
+                        ) : (
+                          r.DrivenByText || 'Unknown'
+                        )}{' '}
                         /{' '}
                         <LocalTime
                           date={r.Uploaded}
