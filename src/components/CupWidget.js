@@ -23,7 +23,7 @@ const CupWidget = ({ ShortName }) => {
           <Header onClick={() => navigate(`/cup/${ShortName}`)} h2>
             {cup.CupName}
           </Header>
-          <CupCurrent events={events} />
+          <CupCurrent events={events} ShortName={ShortName} />
           <Text onClick={() => navigate(`/cup/${ShortName}`)}>
             Open cup page to upload replays
           </Text>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, Tab, Grid } from '@material-ui/core';
+import { Router, useNavigate, useParams, useMatch } from '@reach/router';
 import styled from 'styled-components';
 import Header from 'components/Header';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -16,19 +17,21 @@ import Personal from './Personal';
 import Team from './Team';
 
 const Cups = props => {
-  const { ShortName } = props;
-  const [tab, setTab] = useState(0);
-  const [openEvent, setOpenEvent] = useState(-1);
+  const { ShortName, cupTab } = props;
   const { cup, lastCupShortName, events } = useStoreState(state => state.Cup);
   const { getCup, update, addNewBlog } = useStoreActions(
     actions => actions.Cup,
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (lastCupShortName !== ShortName) {
       getCup(ShortName);
     }
   }, []);
+
+  const isCupAdmin =
+    admins(cup).length > 0 && admins(cup).indexOf(nickId()) > -1;
 
   if (!cup) {
     return null;
@@ -39,19 +42,20 @@ const Cups = props => {
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
-        value={tab}
-        onChange={(e, value) => setTab(value)}
+        value={cupTab}
+        onChange={(e, value) =>
+          // value can be empty string
+          navigate(['/cup', ShortName, value].filter(Boolean).join('/'))
+        }
       >
-        <Tab label="Dashboard" />
-        <Tab label="Events" />
-        <Tab label="Standings" />
-        <Tab label="Rules & Info" />
-        <Tab label="Blog" />
-        {nickId() > 0 && <Tab label="Personal" />}
-        {nickId() > 0 && <Tab label="Team" />}
-        {admins(cup).length > 0 && admins(cup).indexOf(nickId()) > -1 && (
-          <Tab label="Admin" />
-        )}
+        <Tab label="Dashboard" value="" />
+        <Tab label="Events" value="events" />
+        <Tab label="Standings" value="standings" />
+        <Tab label="Rules & Info" value="rules" />
+        <Tab label="Blog" value="blog" />
+        {nickId() > 0 && <Tab label="Personal" value="personal" />}
+        {nickId() > 0 && <Tab label="Team" value="team" />}
+        {isCupAdmin && <Tab label="Admin" value="admin" />}
       </Tabs>
       <CupName>
         <Grid container spacing={2}>
@@ -65,21 +69,27 @@ const Cups = props => {
           </Grid>
         </Grid>
       </CupName>
-      {tab === 0 && (
-        <Dashboard
-          cup={cup}
-          events={events}
-          openStandings={() => setTab(2)}
-          openEvent={e => {
-            setTab(1);
-            setOpenEvent(e);
-          }}
-        />
-      )}
-      {tab === 1 && <Events cup={cup} events={events} setEvent={openEvent} />}
-      {tab === 2 && <Standings events={events} cup={cup} />}
-      {tab === 3 && (
+      <Router primary={false}>
+        <Dashboard default cup={cup} events={events} />
+        <div path="events">
+          <Events
+            default
+            eventNumber={1}
+            eventTab="results"
+            cup={cup}
+            events={events}
+          />
+          <Events
+            path=":eventNumber"
+            eventTab="results"
+            cup={cup}
+            events={events}
+          />
+          <Events path=":eventNumber/:eventTab" cup={cup} events={events} />
+        </div>
+        <Standings path="standings" cup={cup} events={events} />
         <RulesInfo
+          path="rules"
           description={cup.Description}
           owner={admins(cup)}
           updateDesc={newDesc => {
@@ -90,9 +100,8 @@ const Cups = props => {
             });
           }}
         />
-      )}
-      {tab === 4 && (
         <Blog
+          path="blog"
           cup={cup}
           owner={admins(cup)}
           items={cup.CupBlog}
@@ -100,10 +109,10 @@ const Cups = props => {
             addNewBlog({ data: newBlog, shortName: cup.ShortName });
           }}
         />
-      )}
-      {tab === 5 && <Personal />}
-      {tab === 6 && <Team />}
-      {tab === 7 && <Admin />}
+        <Personal path="personal" />
+        <Team path="team" />
+        {isCupAdmin && <Admin path="admin" />}
+      </Router>
     </Layout>
   );
 };

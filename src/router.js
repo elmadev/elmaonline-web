@@ -47,7 +47,7 @@ const Routes = () => {
       <Battles path="battles" />
       <ChatLog path="chatlog" />
       <Confirm path="confirm/:confirmCode" />
-      <Cup path="cup/:ShortName" />
+      <Cup path="cup/:ShortName/*" />
       <CupReplay path="r/cup/:ReplayIndex/:Filename" ReplayType="cup" />
       <Cups path="cups" />
       <Editor path="editor" />
