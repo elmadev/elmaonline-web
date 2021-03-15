@@ -17,7 +17,18 @@ import Personal from './Personal';
 import Team from './Team';
 
 const Cups = props => {
-  const { ShortName, cupTab } = props;
+  const { ShortName } = props;
+
+  const cupTab = (() => {
+    let c = props['*'];
+
+    if (c && c.indexOf('/') !== 0) {
+      return c.split('/')[0];
+    }
+
+    return c;
+  })();
+
   const { cup, lastCupShortName, events } = useStoreState(state => state.Cup);
   const { getCup, update, addNewBlog } = useStoreActions(
     actions => actions.Cup,
