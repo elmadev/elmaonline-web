@@ -3,6 +3,7 @@ import { useStoreRehydrated } from 'easy-peasy';
 import styled from 'styled-components';
 import { Edit } from '@material-ui/icons';
 import Time from 'components/Time';
+import { Level } from 'components/Names';
 import ClickToEdit from 'components/ClickToEdit';
 import Feedback from 'components/Feedback';
 import Loading from 'components/Loading';
@@ -42,6 +43,8 @@ const Personal = ({
   kuski,
 }) => {
   const [level, selectLevel] = useState(-1);
+  const [longName, setLongName] = useState('');
+  const [levelName, setLevelName] = useState('');
   const isRehydrated = useStoreRehydrated();
 
   let levels;
@@ -97,10 +100,14 @@ const Personal = ({
                     e.preventDefault();
                     if (r.single.Time || r.multi.Time) {
                       selectLevel(level === r.LevelIndex ? -1 : r.LevelIndex);
+                      setLongName(r.Level.LongName);
+                      setLevelName(r.Level.LevelName);
                     }
                   }}
                 >
-                  <ListCell>{r.Level.LevelName}</ListCell>
+                  <ListCell width={100}>
+                    <Level LevelIndex={r.LevelIndex} LevelData={r.Level} />
+                  </ListCell>
                   <ListCell>{r.Level.LongName}</ListCell>
                   <ListCell
                     highlight={r.single.TimeIndex >= highlight[highlightWeeks]}
@@ -184,6 +191,8 @@ const Personal = ({
         <LevelPopup
           highlight={highlight[highlightWeeks]}
           levelId={level}
+          longName={longName}
+          levelName={levelName}
           close={() => {
             selectLevel(-1);
           }}

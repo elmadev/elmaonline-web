@@ -49,7 +49,7 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
       )}
       {columns.indexOf('Level') !== -1 && (
         <ListCell width={100}>
-          <Level LevelData={replay.LevelData} />
+          <Level LevelIndex={replay.LevelIndex} LevelData={replay.LevelData} />
         </ListCell>
       )}
       {columns.indexOf('Time') !== -1 && (
@@ -62,7 +62,7 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
           {replay.DrivenByData ? (
             <Kuski kuskiData={replay.DrivenByData} />
           ) : (
-            <div>{replay.DrivenByText}</div>
+            <div>{replay.DrivenByText || 'Unknown'}</div>
           )}
         </ListCell>
       )}
@@ -85,6 +85,7 @@ RecListItem.propTypes = {
     Bug: PropTypes.number,
     Nitro: PropTypes.number,
     Finished: PropTypes.number,
+    DrivenBy: PropTypes.number,
     DrivenByText: PropTypes.string,
   }).isRequired,
   openReplay: PropTypes.func,

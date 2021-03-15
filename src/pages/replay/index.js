@@ -13,6 +13,7 @@ import Layout from 'components/Layout';
 import Recplayer from 'components/Recplayer';
 import { Level } from 'components/Names';
 import LocalTime from 'components/LocalTime';
+import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Link from 'components/Link';
 import RecList from 'features/RecList';
@@ -89,8 +90,12 @@ const Replay = props => {
                     <Time thousands time={replay.ReplayTime} />
                   )}
                   by{' '}
-                  {replay.DrivenByData ? replay.DrivenByData.Kuski : 'Unknown'}{' '}
-                  in <Level LevelData={replay.LevelData} />
+                  {replay.DrivenByData ? (
+                    <Kuski kuskiData={replay.DrivenByData} />
+                  ) : (
+                    replay.DrivenByText || 'Unknown'
+                  )}{' '}
+                  in <Level LevelData={replay.LevelData} noLink />
                 </div>
                 <br />
                 <Link to={`/levels/${replay.LevelIndex}`}>
@@ -104,7 +109,7 @@ const Replay = props => {
             <ExpansionPanelSummary expandIcon={<ExpandMore />}>
               <Typography variant="body1">
                 <React.Fragment>
-                  <Level LevelData={replay.LevelData} />.lev
+                  <Level LevelData={replay.LevelData} noLink/>.lev
                 </React.Fragment>
               </Typography>
             </ExpansionPanelSummary>

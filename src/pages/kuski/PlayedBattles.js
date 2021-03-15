@@ -7,7 +7,7 @@ import { useNavigate } from '@reach/router';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import LocalTime from 'components/LocalTime';
-import { BattleType } from 'components/Names';
+import { Level, BattleType } from 'components/Names';
 import { sortResults } from 'utils/battle';
 import { ListCell, ListHeader, ListContainer, ListRow } from 'components/List';
 
@@ -66,7 +66,9 @@ const PlayedBattles = ({ KuskiIndex }) => {
                 <Kuski kuskiData={b.KuskiData} flag team />
               </ListCell>
               <ListCell width={130}>
-                {b.LevelData && b.LevelData.LevelName}
+                {b.LevelData && (
+                  <Level LevelIndex={b.LevelIndex} LevelData={b.LevelData} />
+                )}
               </ListCell>
               <ListCell width={150}>
                 {playedBattles.Results[i].length > 0 && (

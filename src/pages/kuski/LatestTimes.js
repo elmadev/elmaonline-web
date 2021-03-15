@@ -41,7 +41,7 @@ const LatestTimes = ({ KuskiIndex }) => {
               .map(r => (
                 <ListRow key={`${r.LevelIndex}${r.Driven}`}>
                   <ListCell>
-                    <Level LevelData={r.LevelData} />
+                    <Level LevelIndex={r.LevelIndex} LevelData={r.LevelData} />
                   </ListCell>
                   <ListCell>
                     <Time time={r.Time} />
@@ -81,17 +81,17 @@ const LatestTimes = ({ KuskiIndex }) => {
               .map(r => (
                 <ListRow key={`${r.LevelIndex}${r.Time}`}>
                   <ListCell>
-                    <Level LevelData={r.LevelData} />
+                    <Level LevelIndex={r.LevelIndex} LevelData={r.LevelData} />
                   </ListCell>
                   <ListCell>
                     <Time time={r.Time} />
                   </ListCell>
                   <ListCell>
-                    {/* <LocalTime
+                    <LocalTime
                       date={r.Driven}
                       format="ddd D MMM YYYY HH:mm:ss"
                       parse="X"
-                    /> */}
+                    />
                   </ListCell>
                 </ListRow>
               ))}

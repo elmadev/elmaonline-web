@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import { Level } from 'components/Names';
 import Loading from 'components/Loading';
 import { recordsTT } from 'utils/calcs';
 import LegacyIcon from 'components/LegacyIcon';
@@ -54,7 +55,9 @@ const Records = ({
             }}
             selected={level === r.LevelIndex}
           >
-            <ListCell width={100}>{r.Level.LevelName}</ListCell>
+            <ListCell width={100}>
+              <Level LevelIndex={r.LevelIndex} LevelData={r.Level} />
+            </ListCell>
             <ListCell width={320}>{r.Level.LongName}</ListCell>
             {r.LevelBesttime.length > 0 ? (
               <>
