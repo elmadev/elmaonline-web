@@ -106,8 +106,12 @@ export const PersonalAllFinished = data =>
   api.get(`allfinished/${data.LevelIndex}/${data.KuskiIndex}/${data.limit}`);
 export const PersonalLatest = data =>
   api.get(`allfinished/${data.KuskiIndex}/${data.limit}`);
-export const AllFinishedInRange = data =>
-  api.get(`allfinished/ranged/${data.LevelIndex}/${data.from}/${data.to}`);
+export const LeaderHistory = data => {
+  const { from = '', to = '', KuskiIndex = '', BattleIndex = '' } = data;
+  return api.get(
+    `allfinished/leaderhistory/${data.LevelIndex}?from=${from}&to=${to}&KuskiIndex=${KuskiIndex}&BattleIndex=${BattleIndex}`,
+  );
+};
 export const AllFinishedLevel = LevelIndex =>
   api.get(`allfinished/${LevelIndex}`);
 

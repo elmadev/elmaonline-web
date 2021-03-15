@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { action, persist, thunk } from 'easy-peasy';
 import {
-  AllFinishedInRange,
+  LeaderHistory,
   Cup,
   CupEvents,
   UpdateCup,
@@ -89,7 +89,7 @@ export default {
   }),
   myReplays: [],
   myTimes: [],
-  allFinished: [],
+  leaderHistory: [],
   setMyReplays: action((state, payload) => {
     state.myReplays = payload;
   }),
@@ -99,8 +99,8 @@ export default {
   pushMyTimes: action((state, payload) => {
     state.myTimes.push({ level: payload.level, times: payload.times });
   }),
-  setAllFinished: action((state, payload) => {
-    state.allFinished = payload;
+  setLeaderHistory: action((state, payload) => {
+    state.leaderHistory = payload;
   }),
   getMyReplays: thunk(async (actions, payload) => {
     const recs = await MyReplays(payload);
@@ -143,10 +143,10 @@ export default {
       actions.setTeamReplays(recs.data);
     }
   }),
-  getAllFinishedInRange: thunk(async (actions, payload) => {
-    const times = await AllFinishedInRange(payload);
+  getLeaderHistory: thunk(async (actions, payload) => {
+    const times = await LeaderHistory(payload);
     if (times.ok) {
-      actions.setAllFinished(times.data);
+      actions.setLeaderHistory(times.data);
     }
   }),
   levelList: [],
