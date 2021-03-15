@@ -9,6 +9,7 @@ import { Grid, TextField } from '@material-ui/core';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import Link from 'components/Link';
 import styled from 'styled-components';
+import { nickId, mod } from 'utils/nick';
 
 const LevelpackCollection = ({ name }) => {
   const [tab, setTab] = useState(0);
@@ -38,7 +39,7 @@ const LevelpackCollection = ({ name }) => {
         onChange={(e, t) => setTab(t)}
       >
         <Tab label="Packs" />
-        <Tab label="Admin" />
+        {(nickId() === collection.KuskiIndex || mod()) && <Tab label="Admin" />}
       </Tabs>
       <Content>
         <Header h2>
@@ -89,7 +90,7 @@ const LevelpackCollection = ({ name }) => {
               ))}
             </ListContainer>
           </Grid>
-          {tab === 1 && (
+          {tab === 1 && (nickId() === collection.KuskiIndex || mod()) && (
             <Grid item xs={12} md={6}>
               <Header h3>Search packs</Header>
               <TextBox>
