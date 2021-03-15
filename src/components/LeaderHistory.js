@@ -2,6 +2,7 @@ import React from 'react';
 import Time from 'components/Time';
 import LocalTime from 'components/LocalTime';
 import styled from 'styled-components';
+import Loading from 'components/Loading';
 
 const TimelineLine = styled.span`
   position: absolute;
@@ -81,46 +82,54 @@ const TimelineMarker = styled.span`
   position: relative;
 `;
 
-export default function LeaderHistory({ allFinished }) {
+const Container = styled.div`
+  padding: 20px;
+`;
+
+export default function LeaderHistory({ allFinished, loading }) {
+  if (loading) return <Loading />;
+
   return (
-    <TimeDevelopment>
-      {[...allFinished]
-        .reduce((acc, cur) => {
-          if (acc.length < 1 || acc[acc.length - 1].Time > cur.Time)
-            acc.push(cur);
-          return acc;
-        }, [])
-        .map((b, i, a) => (
-          <TimeDevelopmentRow key={b.TimeIndex}>
-            <TimeDiff>
-              {a.length > 1 && !a[i + 1] && 'Winner'}
-              {a[i - 1] && (
-                <span>
-                  {' '}
-                  -<Time time={a[i - 1].Time - b.Time} />
-                </span>
-              )}
-              {a.length > 1 && !a[i - 1] && 'First finish'}
-              {a.length === 1 && allFinished.length !== 1 && 'First finish'}
-              {a.length === 1 && allFinished.length === 1 && 'Only finish'}
-            </TimeDiff>
-            <TimelineCell>
-              <TimelineMarker />
-              <TimelineLine />
-            </TimelineCell>
-            <TimeDevelopmentTime>
-              <Time time={b.Time} />
-            </TimeDevelopmentTime>
-            <TimeDevelopmentKuski>{b.KuskiData.Kuski}</TimeDevelopmentKuski>
-            <TimeDevelopmentLocalTime>
-              <LocalTime
-                date={b.Driven}
-                format="ddd D MMM YYYY HH:mm:ss"
-                parse="X"
-              />
-            </TimeDevelopmentLocalTime>
-          </TimeDevelopmentRow>
-        ))}
-    </TimeDevelopment>
+    <Container>
+      <TimeDevelopment>
+        {[...allFinished]
+          .reduce((acc, cur) => {
+            if (acc.length < 1 || acc[acc.length - 1].Time > cur.Time)
+              acc.push(cur);
+            return acc;
+          }, [])
+          .map((b, i, a) => (
+            <TimeDevelopmentRow key={b.TimeIndex}>
+              <TimeDiff>
+                {a.length > 1 && !a[i + 1] && 'Winner'}
+                {a[i - 1] && (
+                  <span>
+                    {' '}
+                    -<Time time={a[i - 1].Time - b.Time} />
+                  </span>
+                )}
+                {a.length > 1 && !a[i - 1] && 'First finish'}
+                {a.length === 1 && allFinished.length !== 1 && 'First finish'}
+                {a.length === 1 && allFinished.length === 1 && 'Only finish'}
+              </TimeDiff>
+              <TimelineCell>
+                <TimelineMarker />
+                <TimelineLine />
+              </TimelineCell>
+              <TimeDevelopmentTime>
+                <Time time={b.Time} />
+              </TimeDevelopmentTime>
+              <TimeDevelopmentKuski>{b.KuskiData.Kuski}</TimeDevelopmentKuski>
+              <TimeDevelopmentLocalTime>
+                <LocalTime
+                  date={b.Driven}
+                  format="ddd D MMM YYYY HH:mm:ss"
+                  parse="X"
+                />
+              </TimeDevelopmentLocalTime>
+            </TimeDevelopmentRow>
+          ))}
+      </TimeDevelopment>
+    </Container>
   );
 }

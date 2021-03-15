@@ -33,6 +33,8 @@ import config from 'config';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
+import { nickId } from 'utils/nick';
+import LeaderHistory from 'components/LeaderHistory';
 
 const Level = ({ LevelId }) => {
   const LevelIndex = parseInt(LevelId, 10);
@@ -51,6 +53,9 @@ const Level = ({ LevelId }) => {
     timeStats,
     statsLoading,
     settings: { fancyMap },
+    personalLeaderHistory,
+    leaderHistory,
+    leaderHistoryLoading,
   } = useStoreState(state => state.Level);
   const {
     getBesttimes,
@@ -59,6 +64,8 @@ const Level = ({ LevelId }) => {
     getEoltimes,
     getTimeStats,
     toggleFancyMap,
+    getPersonalLeaderHistory,
+    getLeaderHistory,
   } = useStoreActions(actions => actions.Level);
 
   useEffect(() => {
@@ -79,8 +86,17 @@ const Level = ({ LevelId }) => {
       (timeStats.length === 0 || statsLoading !== LevelIndex)
     ) {
       getTimeStats(LevelIndex);
+      if (nickId() > 0) {
+        getPersonalLeaderHistory({ LevelIndex, KuskiIndex: nickId() });
+      }
     }
-    if (value === 3 && (eoltimes.length === 0 || eolLoading !== LevelIndex)) {
+    if (
+      value === 3 &&
+      (leaderHistory.length === 0 || leaderHistoryLoading !== LevelIndex)
+    ) {
+      getLeaderHistory({ LevelIndex });
+    }
+    if (value === 4 && (eoltimes.length === 0 || eolLoading !== LevelIndex)) {
       getEoltimes({ levelId: LevelIndex, limit: 10000, eolOnly: 1 });
     }
   };
@@ -246,6 +262,7 @@ const Level = ({ LevelId }) => {
                 <Tab label="Best times" />
                 <Tab label="All times" />
                 <Tab label="Personal stats" />
+                <Tab label="Leaders" />
                 {level.Legacy && <Tab label="EOL times" />}
               </Tabs>
               {tab === 0 && (
@@ -265,10 +282,17 @@ const Level = ({ LevelId }) => {
               {tab === 2 && (
                 <StatsTable
                   data={timeStats}
+                  leaderHistory={personalLeaderHistory}
                   loading={statsLoading !== LevelIndex}
                 />
               )}
               {tab === 3 && (
+                <LeaderHistory
+                  allFinished={leaderHistory}
+                  loading={leaderHistoryLoading !== LevelIndex}
+                />
+              )}
+              {tab === 4 && (
                 <TimeTable
                   loading={eolLoading !== LevelIndex}
                   data={eoltimes}
