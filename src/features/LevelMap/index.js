@@ -4,6 +4,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Loading from 'components/Loading';
+import Portal from 'components/Portal';
 
 import { levToSvg } from 'elma-js';
 
@@ -69,14 +70,29 @@ const LevelMap = props => {
   const svg = levToSvg(levelData.LevelData);
 
   return (
-    <MapContainer
-      fullscreen={fullscreen}
-      onClick={() => setFullscreen(!fullscreen)}
-      width={width}
-      height={height}
-    >
-      <div dangerouslySetInnerHTML={{ __html: svg }} />
-    </MapContainer>
+    <>
+      {fullscreen ? (
+        <Portal>
+          <MapContainer
+            fullscreen={fullscreen}
+            onClick={() => setFullscreen(!fullscreen)}
+            width={width}
+            height={height}
+          >
+            <div dangerouslySetInnerHTML={{ __html: svg }} />
+          </MapContainer>
+        </Portal>
+      ) : (
+        <MapContainer
+          fullscreen={fullscreen}
+          onClick={() => setFullscreen(!fullscreen)}
+          width={width}
+          height={height}
+        >
+          <div dangerouslySetInnerHTML={{ __html: svg }} />
+        </MapContainer>
+      )}
+    </>
   );
 };
 
