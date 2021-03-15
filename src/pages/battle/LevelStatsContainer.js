@@ -152,6 +152,7 @@ const Root = styled.div`
   float: left;
   padding: 7px;
   box-sizing: border-box;
+  overflow: auto;
   @media screen and (max-width: 1100px) {
     float: none;
     width: 100%;
