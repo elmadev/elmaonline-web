@@ -6,6 +6,7 @@ import {
   BattlesByLevel,
   AllFinishedLevel,
   LevelTimeStats,
+  LeaderHistory,
 } from 'api';
 
 export default {
@@ -19,7 +20,11 @@ export default {
   eoltimes: [],
   eolLoading: 0,
   timeStats: [],
+  personalLeaderHistory: [],
+  leaderHistory: [],
   statsLoading: 0,
+  leaderHistoryLoading: 0,
+  personalLeaderHistoryLoading: 0,
   settings: persist(
     {
       fancyMap: navigator.userAgent.toLowerCase().indexOf('firefox') === -1,
@@ -88,6 +93,32 @@ export default {
     const stats = await LevelTimeStats(payload);
     if (stats.ok) {
       actions.setTimeStats({ data: stats.data, id: payload });
+    }
+  }),
+  setPersonalLeaderHistory: action((state, payload) => {
+    state.personalLeaderHistory = payload.data;
+    state.personalLeaderHistoryLoading = payload.id;
+  }),
+  getPersonalLeaderHistory: thunk(async (actions, payload) => {
+    const leaderHistory = await LeaderHistory(payload);
+    if (leaderHistory.ok) {
+      actions.setPersonalLeaderHistory({
+        data: leaderHistory.data,
+        id: payload.LevelIndex,
+      });
+    }
+  }),
+  setLeaderHistory: action((state, payload) => {
+    state.leaderHistory = payload.data;
+    state.leaderHistoryLoading = payload.id;
+  }),
+  getLeaderHistory: thunk(async (actions, payload) => {
+    const leaderHistory = await LeaderHistory(payload);
+    if (leaderHistory.ok) {
+      actions.setLeaderHistory({
+        data: leaderHistory.data,
+        id: payload.LevelIndex,
+      });
     }
   }),
 };

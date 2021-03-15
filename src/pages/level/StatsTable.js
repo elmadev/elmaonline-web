@@ -6,6 +6,7 @@ import Time from 'components/Time';
 import Loading from 'components/Loading';
 import _ from 'lodash';
 import { nickId } from 'utils/nick';
+import LeaderHistory from 'components/LeaderHistory';
 
 const finishedTypes = {
   B: 'Finished (Apple Bug)',
@@ -16,7 +17,7 @@ const finishedTypes = {
   X: 'Cheated',
 };
 
-const StatsTable = ({ data, loading }) => {
+const StatsTable = ({ data, loading, leaderHistory }) => {
   if (loading) return <Loading />;
 
   if (!nickId()) return <Container>Log in to see personal stats.</Container>;
@@ -38,59 +39,62 @@ const StatsTable = ({ data, loading }) => {
   };
 
   return (
-    <ListContainer>
-      <ListHeader>
-        <ListCell right width={100}>
-          Type
-        </ListCell>
-        <ListCell right width={200}>
-          Total runs
-        </ListCell>
-        <ListCell right width={200}>
-          Time played
-        </ListCell>
-        <ListCell right width={200}>
-          Total runs %
-        </ListCell>
-        <ListCell right width={200}>
-          Time played %
-        </ListCell>
-      </ListHeader>
-      <ListRow>
-        <ListCell right width={100}>
-          All
-        </ListCell>
-        <ListCell right width={200}>
-          {getTotalRunCount()}
-        </ListCell>
-        <ListCell right width={200}>
-          {getTotalTimeSum() !== 0 && <Time time={getTotalTimeSum()} />}
-        </ListCell>
-        <ListCell />
-        <ListCell />
-      </ListRow>
-      {data.map(row => {
-        return (
-          <ListRow>
-            <ListCell right width={100}>
-              {finishedTypes[row.Finished]}
-            </ListCell>
-            <ListCell right width={200}>
-              {row.RunCount}
-            </ListCell>
-            <ListCell right width={200}>
-              {row.TimeSum !== 0 && <Time time={row.TimeSum} />}
-            </ListCell>
-            <ListCell right width={200}>
-              {getRunCountPercentage(row.RunCount) || null}
-            </ListCell>
-            <ListCell right width={200}>
-              {getTimeSumPercentage(row.TimeSum) || null}
-            </ListCell>
-          </ListRow>
-        );
-      })}
-    </ListContainer>
+    <>
+      <ListContainer>
+        <ListHeader>
+          <ListCell right width={100}>
+            Type
+          </ListCell>
+          <ListCell right width={200}>
+            Total runs
+          </ListCell>
+          <ListCell right width={200}>
+            Time played
+          </ListCell>
+          <ListCell right width={200}>
+            Total runs %
+          </ListCell>
+          <ListCell right width={200}>
+            Time played %
+          </ListCell>
+        </ListHeader>
+        <ListRow>
+          <ListCell right width={100}>
+            All
+          </ListCell>
+          <ListCell right width={200}>
+            {getTotalRunCount()}
+          </ListCell>
+          <ListCell right width={200}>
+            {getTotalTimeSum() !== 0 && <Time time={getTotalTimeSum()} />}
+          </ListCell>
+          <ListCell />
+          <ListCell />
+        </ListRow>
+        {data.map(row => {
+          return (
+            <ListRow>
+              <ListCell right width={100}>
+                {finishedTypes[row.Finished]}
+              </ListCell>
+              <ListCell right width={200}>
+                {row.RunCount}
+              </ListCell>
+              <ListCell right width={200}>
+                {row.TimeSum !== 0 && <Time time={row.TimeSum} />}
+              </ListCell>
+              <ListCell right width={200}>
+                {getRunCountPercentage(row.RunCount) || null}
+              </ListCell>
+              <ListCell right width={200}>
+                {getTimeSumPercentage(row.TimeSum) || null}
+              </ListCell>
+            </ListRow>
+          );
+        })}
+      </ListContainer>
+      <LeaderHistory allFinished={leaderHistory} />
+    </>
   );
 };
 
