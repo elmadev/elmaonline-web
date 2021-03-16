@@ -23,6 +23,10 @@ const apiUpload = create({
   timeout: 60000,
 });
 
+export const setApiAuth = authToken => {
+  api.setHeader('Authorization', authToken);
+};
+
 // replays
 export const ReplayComment = replayIndex =>
   api.get(`replay_comment/${replayIndex}`);

@@ -175,6 +175,7 @@ const Settings = () => {
                     <PaperCon>
                       {ignored.map(i => (
                         <IgnoreCon
+                          key={i.IgnoreIndex}
                           onClick={() => unignore(i.IgnoredKuskiIndex)}
                         >
                           <Remove /> {i.KuskiData.Kuski}

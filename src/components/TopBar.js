@@ -10,6 +10,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
 import SearchBar from 'components/SearchBar';
 import { useMediaQuery } from '@material-ui/core';
+import { useNavigate } from '@reach/router';
 // import TopBarActions from 'components/TopBarActions';
 
 const StyledButton = styled(Button)`
@@ -19,6 +20,7 @@ const StyledButton = styled(Button)`
 `;
 
 const TopBar = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const { loggedIn, username } = useStoreState(state => state.Login);
@@ -45,15 +47,15 @@ const TopBar = () => {
         {!mobileSearch && <SearchBar />}
         <RightSideFlex>
           {mobileSearch && (
-            <MobileSearchButton>
+            <MobileSearchButton onClick={() => navigate('/search')}>
               <Link to="/search" style={{ color: 'inherit', padding: '5px' }}>
                 <SearchIcon />
               </Link>
             </MobileSearchButton>
           )}
           {!loggedIn && (
-            <StyledButton color="inherit">
-              <Link to="/login">Login</Link>
+            <StyledButton color="inherit" onClick={() => navigate('/login')}>
+              Login
             </StyledButton>
           )}
           {loggedIn && (

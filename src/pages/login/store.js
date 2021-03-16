@@ -2,6 +2,7 @@
 import { action, thunk } from 'easy-peasy';
 import Cookies from 'universal-cookie';
 import config from 'config';
+import { setApiAuth } from 'api';
 
 const cookies = new Cookies();
 
@@ -33,6 +34,7 @@ export default {
       maxAge: 8640000,
     };
     cookies.set('token', body.Response.token, options);
+    setApiAuth(body.Response.token);
     cookies.set('username', body.Response.username, options);
     cookies.set('userid', body.Response.userid, options);
     if (body.Response.mod) {
@@ -47,6 +49,7 @@ export default {
   }),
   logout: thunk(async actions => {
     cookies.remove('token', { path: '/' });
+    setApiAuth('');
     cookies.remove('username', { path: '/' });
     cookies.remove('userid', { path: '/' });
     cookies.remove('mod', { path: '/' });

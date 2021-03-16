@@ -25,6 +25,8 @@ const Video = ({ width, height, poster, video, formats = [] }) => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  cursor: pointer;
+`;
 
 export default Video;
