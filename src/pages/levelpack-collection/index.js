@@ -128,7 +128,7 @@ const LevelpackCollection = ({ name }) => {
                     key={l.LevelPackIndex}
                   >
                     <ListCell width={70}>
-                      <Link to={`/levels/pack/${l.LevelPackName}`}>
+                      <Link to={`/levels/packs/${l.LevelPackName}`}>
                         {l.LevelPackName}
                       </Link>
                     </ListCell>

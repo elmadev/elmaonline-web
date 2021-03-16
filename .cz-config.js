@@ -9,7 +9,8 @@ module.exports = {
     },
     {
       value: 'refactor',
-      name: 'refactor: A code change that neither fixes a bug or adds a feature',
+      name:
+        'refactor: A code change that neither fixes a bug or adds a feature',
     },
     { value: 'test', name: 'test:     Adding missing tests' },
     {
@@ -18,7 +19,27 @@ module.exports = {
     },
   ],
 
-  scopes: [{ name: 'other' }, { name: 'deps' }, { name: 'config' }, { name: 'ui' }, { name: 'home' }, { name: 'battles' }, { name: 'cups' }, { name: 'levels' }, { name: 'levelpacks' }, { name: 'kuskis' }, { name: 'search' }, { name: 'chat' }, { name: 'login' }, { name: 'replays' }, { name: 'teams' }, { name: 'settings' }, { name: 'help' }, { name: 'ranking' }, { name: 'admin' }],
+  scopes: [
+    { name: 'other' },
+    { name: 'deps' },
+    { name: 'config' },
+    { name: 'ui' },
+    { name: 'home' },
+    { name: 'battles' },
+    { name: 'cups' },
+    { name: 'levels' },
+    { name: 'levelpacks' },
+    { name: 'kuskis' },
+    { name: 'search' },
+    { name: 'chat' },
+    { name: 'login' },
+    { name: 'replays' },
+    { name: 'teams' },
+    { name: 'settings' },
+    { name: 'help' },
+    { name: 'ranking' },
+    { name: 'admin' },
+  ],
 
   allowTicketNumber: false,
   isTicketNumberRequired: false,
@@ -31,7 +52,8 @@ module.exports = {
     // used if allowCustomScopes is true
     customScope: 'Denote the SCOPE of this change:',
     subject: 'Write a short, imperative tense description of the change:\n',
-    body: 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n',
+    body:
+      'Provide a LONGER description of the change (optional). Use "|" to break new line:\n',
     breaking: 'List any BREAKING CHANGES (optional):\n',
     footer: 'List any ISSUES CLOSED by this change (optional). E.g.: #31:\n',
     confirmCommit: 'Are you sure you want to proceed with the commit above?',
@@ -40,5 +62,5 @@ module.exports = {
   allowBreakingChanges: ['feat', 'fix'],
   skipQuestions: ['body', 'customScope', 'breaking'],
   subjectLimit: 100,
-  footerPrefix : 'Closes:'
+  footerPrefix: 'Closes:',
 };

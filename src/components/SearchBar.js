@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from '@reach/router';
 import styled from 'styled-components';
-import { Button, Drawer, Hidden, IconButton } from '@material-ui/core';
+import { Button, Drawer, IconButton } from '@material-ui/core';
 import { Info, Cancel } from '@material-ui/icons';
 
 const SearchBar = props => {

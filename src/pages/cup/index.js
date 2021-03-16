@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Tabs, Tab, Grid } from '@material-ui/core';
-import { Router, useNavigate, useParams, useMatch } from '@reach/router';
+import { Router, useNavigate } from '@reach/router';
 import styled from 'styled-components';
 import Header from 'components/Header';
 import { useStoreState, useStoreActions } from 'easy-peasy';
