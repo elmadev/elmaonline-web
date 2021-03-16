@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'components/Link';
+import Video from 'components/Video';
 import { Grid } from '@material-ui/core';
 
 const Welcome = () => {
@@ -33,13 +34,12 @@ const Welcome = () => {
       </Grid>
       <Grid item xs={12} sm={6}>
         <Trailer>
-          <iframe
-            title="trailer"
-            width="358"
+          <Video
             height="201"
-            src="https://www.youtube.com/embed/yvy1gGcywC0"
-            frameBorder="0"
-            allowFullScreen
+            width="358"
+            poster="trailer-poster.jpg"
+            video="trailer.mp4"
+            formats={['mp4']}
           />
         </Trailer>
       </Grid>
