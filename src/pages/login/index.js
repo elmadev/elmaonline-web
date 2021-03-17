@@ -8,6 +8,7 @@ import Field from 'components/Field';
 import { useNavigate } from '@reach/router';
 import MuiAlert from '@material-ui/lab/Alert';
 import Link from 'components/Link';
+import Layout from 'components/Layout';
 
 const defaultStr = yup.string().default('');
 
@@ -43,42 +44,44 @@ export default function Login() {
   );
 
   const onEnter = e => {
-    if (e.key === 'Enter' || e.keyCode === 13) {
+    if (e.key === 'Enter') {
       formal.submit();
     }
   };
 
   return (
-    <Container maxWidth="sm">
-      {error && (
-        <Box py={2}>
-          <MuiAlert elevation={6} variant="filled" severity="error">
-            {error}
-          </MuiAlert>
+    <Layout t="Log in">
+      <Container maxWidth="sm">
+        {error && (
+          <Box py={2}>
+            <MuiAlert elevation={6} variant="filled" severity="error">
+              {error}
+            </MuiAlert>
+          </Box>
+        )}
+        <form {...formal.getFormProps()}>
+          <Field
+            label="Kuski"
+            onKeyPress={e => onEnter(e)}
+            {...formal.getFieldProps('kuski')}
+          />
+          <Field
+            label="Password"
+            type="password"
+            onKeyPress={e => onEnter(e)}
+            {...formal.getFieldProps('password')}
+          />
+          <Box py={2}>
+            <Link to="/forgot">Forgot password?</Link>
+          </Box>
+          <Button variant="contained" fullWidth onClick={() => formal.submit()}>
+            Login
+          </Button>
+        </form>
+        <Box py={3}>
+          Don&apos;t have an account? <Link to="/register">Register</Link>
         </Box>
-      )}
-      <form {...formal.getFormProps()}>
-        <Field
-          label="Kuski"
-          onKeyPress={e => onEnter(e)}
-          {...formal.getFieldProps('kuski')}
-        />
-        <Field
-          label="Password"
-          type="password"
-          onKeyPress={e => onEnter(e)}
-          {...formal.getFieldProps('password')}
-        />
-        <Box py={2}>
-          <Link to="/forgot">Forgot password?</Link>
-        </Box>
-        <Button variant="contained" fullWidth onClick={() => formal.submit()}>
-          Login
-        </Button>
-      </form>
-      <Box py={3}>
-        Don&apos;t have an account? <Link to="/register">Register</Link>
-      </Box>
-    </Container>
+      </Container>
+    </Layout>
   );
 }

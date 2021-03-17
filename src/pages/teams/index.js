@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
+import Layout from 'components/Layout';
 
 const groups = [
   'a',
@@ -63,50 +64,52 @@ const Teams = () => {
       k.Team.toLowerCase().includes(filter.toLocaleLowerCase()),
   );
   return (
-    <Container>
-      <Filter>
-        <input
-          type="text"
-          value={filter}
-          onChange={e => {
-            setFilter(e.target.value);
-          }}
-          placeholder="Filter"
-        />
-      </Filter>
-      <KuskiList>
-        {groups.map(g => {
-          const letterTeams = filteredTeams.filter(k =>
-            Array.isArray(g)
-              ? g.includes(k.Team[0].toLowerCase())
-              : g === k.Team[0].toLowerCase(),
-          );
-          if (letterTeams.length < 1) return null;
-          return (
-            <div key={g}>
-              <GroupTitle
-                onClick={() => toggleGroup(g)}
-                onKeyDown={() => toggleGroup(g)}
-                role="button"
-                tabIndex="0"
-              >
-                <GroupChar>{Array.isArray(g) ? '…' : g}</GroupChar>
-                <GroupItemCount>{letterTeams.length}</GroupItemCount>
-              </GroupTitle>
-              {(filter.length > 0 || expanded.includes(g)) && (
-                <GroupContent>
-                  {letterTeams.map(k => (
-                    <KuskiRow to={`/team/${k.Team}`} key={k.TeamIndex}>
-                      {k.Team}
-                    </KuskiRow>
-                  ))}
-                </GroupContent>
-              )}
-            </div>
-          );
-        })}
-      </KuskiList>
-    </Container>
+    <Layout edge t="Teams">
+      <Container>
+        <Filter>
+          <input
+            type="text"
+            value={filter}
+            onChange={e => {
+              setFilter(e.target.value);
+            }}
+            placeholder="Filter"
+          />
+        </Filter>
+        <KuskiList>
+          {groups.map(g => {
+            const letterTeams = filteredTeams.filter(k =>
+              Array.isArray(g)
+                ? g.includes(k.Team[0].toLowerCase())
+                : g === k.Team[0].toLowerCase(),
+            );
+            if (letterTeams.length < 1) return null;
+            return (
+              <div key={g}>
+                <GroupTitle
+                  onClick={() => toggleGroup(g)}
+                  onKeyDown={() => toggleGroup(g)}
+                  role="button"
+                  tabIndex="0"
+                >
+                  <GroupChar>{Array.isArray(g) ? '…' : g}</GroupChar>
+                  <GroupItemCount>{letterTeams.length}</GroupItemCount>
+                </GroupTitle>
+                {(filter.length > 0 || expanded.includes(g)) && (
+                  <GroupContent>
+                    {letterTeams.map(k => (
+                      <KuskiRow to={`/team/${k.Team}`} key={k.TeamIndex}>
+                        {k.Team}
+                      </KuskiRow>
+                    ))}
+                  </GroupContent>
+                )}
+              </div>
+            );
+          })}
+        </KuskiList>
+      </Container>
+    </Layout>
   );
 };
 

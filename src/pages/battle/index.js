@@ -1,265 +1,158 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import PropTypes from 'prop-types';
+import { groupBy, mapValues, sumBy, filter } from 'lodash';
+import Layout from 'components/Layout';
 import styled from 'styled-components';
-import {
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Select,
-  MenuItem,
-} from '@material-ui/core';
-import { ExpandMore } from '@material-ui/icons';
-import { Paper } from 'components/Paper';
-import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
-import { BattleType } from 'components/Names';
-import Time from 'components/Time';
-import Link from 'components/Link';
-import ChatView from 'features/ChatView';
-import Kuski from 'components/Kuski';
-import Download from 'components/Download';
-import LocalTime from 'components/LocalTime';
-import LeaderHistory from 'components/LeaderHistory';
-import { sortResults, battleStatus, getBattleType } from 'utils/battle';
+import Time from '../../components/Time';
+import Kuski from '../../components/Kuski.js';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { battleStatus } from 'utils/battle';
 import RecView from './RecView';
+import RightBarContainer from './RightBarContainer';
+import LevelStatsContainer from './LevelStatsContainer';
 
-const getExtra = (KuskiIndex, extra, rankingHistory, battle) => {
-  let typeFilter = '';
-  let value = '';
-  if (Object.keys(rankingHistory).length === 0) return 'unavailable';
-  if (extra === '') {
-    return '';
+const runData = runs => {
+  if (runs.count === 0) {
+    return null;
   }
-  if (extra === 'RankingAll') {
-    typeFilter = 'All';
-    value = 'Ranking';
+  if (runs.multi === 0) {
+    const kuskiRuns = groupBy(runs.rows, 'KuskiIndex');
+    const runStats = mapValues(kuskiRuns, (value, key) => {
+      return {
+        KuskiIndex: key,
+        Apples: sumBy(value, 'Apples'),
+        Finishes: filter(value, { Finished: 'F' }).length,
+        PlayTime: sumBy(value, 'Time'),
+      };
+    });
+    if (runs.rows[0]) runStats.BattleIndex = runs.rows[0].BattleIndex;
+    return runStats;
   }
-  if (extra === 'RankingType') {
-    typeFilter = getBattleType(battle);
-    value = 'Ranking';
-  }
-  if (extra === 'RankingIncreaseAll') {
-    typeFilter = 'All';
-    value = 'Increase';
-  }
-  if (extra === 'RankingIncreaseType') {
-    typeFilter = getBattleType(battle);
-    value = 'Increase';
-  }
-  const filtered = rankingHistory.filter(
-    r => r.KuskiIndex === KuskiIndex && r.BattleType === typeFilter,
-  );
-  if (filtered.length > 0) {
-    return parseInt(filtered[0][value], 10).toFixed(2);
-  }
-  return '';
+  const kuskiRuns = groupBy(runs.rows, 'KuskiIndex1');
+  const runStats = mapValues(kuskiRuns, (value, key) => {
+    return {
+      KuskiIndex: key,
+      Apples: sumBy(value, 'Apples'),
+      Finishes: filter(value, { Finished: 'F' }).length,
+      PlayTime: sumBy(value, 'Time'),
+    };
+  });
+  if (runs.rows[0]) runStats.BattleIndex = runs.rows[0].BattleIndex;
+  return runStats;
 };
 
-const Battle = props => {
-  const { BattleIndex } = props;
-  const [extra, setExtra] = useState('');
-  const { allBattleTimes, battle, rankingHistory } = useStoreState(
-    state => state.Battle,
-  );
+const getWinnerData = battle => {
+  if (battle && battle.Results && battle.Results.length > 0) {
+    const r = battle.Results[0];
+
+    return {
+      Kuski: r.KuskiData || {},
+      Time: r.Time,
+      Apples: r.Apples,
+    };
+  }
+
+  return null;
+};
+
+const Battle = ({ BattleId }) => {
+  const BattleIndex = parseInt(BattleId, 10);
+  let runStats = null;
+  const {
+    allBattleTimes,
+    battle,
+    rankingHistory,
+    allBattleRuns,
+  } = useStoreState(state => state.Battle);
   const {
     getAllBattleTimes,
     getBattle,
     getRankingHistoryByBattle,
+    getAllBattleRuns,
   } = useStoreActions(state => state.Battle);
 
   useEffect(() => {
+    runStats = null;
     getAllBattleTimes(BattleIndex);
+    getAllBattleRuns(BattleIndex);
     getBattle(BattleIndex);
     getRankingHistoryByBattle(BattleIndex);
   }, [BattleIndex]);
 
+  if (allBattleRuns !== null) runStats = runData(allBattleRuns);
+
   const isWindow = typeof window !== 'undefined';
 
-  if (!battle) return <Root>Battle is unfinished</Root>;
+  const winner = getWinnerData(battle);
+
+  const showWinnerTitle = useMediaQuery('(max-width: 1000px)');
 
   return (
-    <Root>
-      <RecView
-        isWindow={isWindow}
-        BattleIndex={BattleIndex}
-        levelIndex={battle.LevelIndex}
-        battleStatus={battleStatus(battle)}
-      />
-      <RightBarContainer>
-        <div className="chatContainer">
-          <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography variant="body2">Battle info</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <BattleStyleDescription>
-                {battle.Duration} minute{' '}
-                <span className="battleType">
-                  <BattleType type={battle.BattleType} />
-                </span>{' '}
-                battle in{' '}
-                <Download url={`level/${battle.LevelIndex}`}>
-                  {battle.LevelData ? battle.LevelData.LevelName : '?'}.lev
-                </Download>{' '}
-                {battle.KuskiData.Kuski}
-                <div className="timeStamp">
-                  Started{' '}
-                  <LocalTime
-                    date={battle.Started}
-                    format="DD.MM.YYYY HH:mm:ss"
-                    parse="X"
-                  />
-                </div>
-                <div className="timeStamp">
-                  <Download url={`battlereplay/${BattleIndex}`}>
-                    Download replay
-                  </Download>
-                </div>
-                <br />
-                <Link to={`/levels/${battle.LevelIndex}`}>
-                  Go to level page
-                </Link>
-              </BattleStyleDescription>
-            </AccordionDetails>
-          </Accordion>
-          {battle.Finished === 1 && battle.BattleType === 'NM' && (
-            <Accordion defaultExpanded>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography variant="body1">Leader history</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {allBattleTimes !== null && allBattleTimes !== [] ? (
-                  <LeaderHistory allFinished={allBattleTimes} />
-                ) : null}
-              </AccordionDetails>
-            </Accordion>
-          )}
-          {!(battleStatus(battle) === 'Queued') && (
-            <Accordion defaultExpanded>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography variant="body1">Chat</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <ChatView
-                  start={Number(battle.Started)}
-                  end={
-                    Number(battle.Started) + Number((battle.Duration + 2) * 60)
-                  }
-                  // battleEndEvent: when the battle ends compared to the start prop
-                  battleEnd={Number(battle.Duration * 60)}
-                  paginated
-                />
-              </AccordionDetails>
-            </Accordion>
-          )}
-        </div>
-      </RightBarContainer>
-      <LevelStatsContainer>
-        <Paper>
-          {battle.Results && (
-            <ListContainer>
-              <ListHeader>
-                <ListCell right width={30}>
-                  #
-                </ListCell>
-                <ListCell width={200}>Kuski</ListCell>
-                <ListCell right width={200}>
-                  Time
-                </ListCell>
-                <ListCell>
-                  <Select
-                    value={extra}
-                    onChange={e => setExtra(e.target.value)}
-                    name="extra"
-                    displayEmpty
-                  >
-                    <MenuItem value="" disabled>
-                      Extra
-                    </MenuItem>
-                    <MenuItem value="RankingAll">Ranking (all)</MenuItem>
-                    <MenuItem value="RankingType">Ranking (type)</MenuItem>
-                    <MenuItem value="RankingIncreaseAll">
-                      Ranking Increase (all)
-                    </MenuItem>
-                    <MenuItem value="RankingIncreaseType">
-                      Ranking Increase (type)
-                    </MenuItem>
-                  </Select>
-                </ListCell>
-              </ListHeader>
-              {[...battle.Results]
-                .sort(sortResults(battle.BattleType))
-                .map((r, i) => {
-                  return (
-                    <>
-                      <ListRow key={r.KuskiIndex}>
-                        <ListCell width={30}>{i + 1}.</ListCell>
-                        <ListCell width={battle.Multi === 1 ? 300 : 200}>
-                          <Kuski kuskiData={r.KuskiData} flag team />
-                          {battle.Multi === 1 && (
-                            <>
-                              {' '}
-                              & <Kuski kuskiData={r.KuskiData2} flag team />
-                            </>
-                          )}
-                        </ListCell>
-                        <ListCell right width={200}>
-                          <Time time={r.Time} apples={r.Apples} />
-                        </ListCell>
-                        <ListCell>
-                          {getExtra(
-                            r.KuskiIndex,
-                            extra,
-                            rankingHistory,
-                            battle,
-                          )}
-                        </ListCell>
-                      </ListRow>
-                    </>
-                  );
-                })}
-            </ListContainer>
-          )}
-        </Paper>
-      </LevelStatsContainer>
-    </Root>
+    <Layout
+      t={`Battle - ${
+        battle ? (battle.LevelData ? battle.LevelData.LevelName : '?') : '?'
+      }`}
+    >
+      <MainContainer>
+        {battle && winner && showWinnerTitle && (
+          <WinnerTitle>
+            <Kuski kuskiData={winner.Kuski} flag={true} team={true} />
+            <span>&nbsp;</span>
+            <Time time={winner.Time} apples={winner.Apples} />
+          </WinnerTitle>
+        )}
+        {battle && battle.LevelIndex ? (
+          <RecView
+            isWindow={isWindow}
+            BattleIndex={BattleIndex}
+            levelIndex={battle.LevelIndex}
+            battleStatus={battleStatus(battle)}
+          />
+        ) : (
+          <div />
+        )}
+        {battle && allBattleTimes ? (
+          <RightBarContainer
+            battle={battle}
+            allBattleTimes={allBattleTimes}
+            aborted={battle.Aborted}
+          />
+        ) : (
+          <div />
+        )}
+        {battle && rankingHistory ? (
+          <LevelStatsContainer
+            battle={battle}
+            rankingHistory={rankingHistory}
+            runStats={runStats}
+          />
+        ) : (
+          <div>
+            <span>loading...</span>
+          </div>
+        )}
+      </MainContainer>
+    </Layout>
   );
 };
 
 Battle.propTypes = {
-  BattleIndex: PropTypes.number.isRequired,
+  BattleId: PropTypes.string,
 };
 
-const Root = styled.div`
-  padding: 7px;
+Battle.defaultProps = {
+  BattleId: '0',
+};
+
+const MainContainer = styled.div`
+  display: inline-block;
+  width: 100%;
 `;
 
-const RightBarContainer = styled.div`
-  float: right;
-  width: 40%;
-  padding: 7px;
-  box-sizing: border-box;
-  .chatContainer {
-    clear: both;
-  }
-`;
-
-const LevelStatsContainer = styled.div`
-  width: 60%;
-  float: left;
-  padding: 7px;
-  box-sizing: border-box;
-`;
-
-const BattleStyleDescription = styled.div`
-  font-size: 14px;
-  .timeStamp {
-    color: #7d7d7d;
-  }
-  .battleType {
-    text-transform: lowercase;
-  }
+const WinnerTitle = styled.div`
+  padding-left: 7px;
+  margin-bottom: 2px;
 `;
 
 export default Battle;

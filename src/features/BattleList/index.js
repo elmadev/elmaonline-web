@@ -4,15 +4,13 @@ import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import styled from 'styled-components';
-import { BattleType } from 'components/Names';
+import { Level, BattleType } from 'components/Names';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import { toServerTime } from 'utils/time';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
-import { useNavigate } from '@reach/router';
 
-const BattleList = ({ start, end, limit = 250 }) => {
-  const navigate = useNavigate();
+const BattleList = ({ start, end, limit = 250, condensed }) => {
   const { battles } = useStoreState(state => state.BattleList);
   const { getBattles } = useStoreActions(actions => actions.BattleList);
   useEffect(() => {
@@ -26,32 +24,47 @@ const BattleList = ({ start, end, limit = 250 }) => {
     <Container>
       <ListContainer>
         <ListHeader>
+          <ListCell width={80}>Started</ListCell>
           <ListCell width={100}>Type</ListCell>
           <ListCell width={150}>Designer</ListCell>
           <ListCell width={100}>Level</ListCell>
           <ListCell width={150}>Winner</ListCell>
           <ListCell width={60}>Time</ListCell>
-          <ListCell width={80}>Started</ListCell>
-          <ListCell>Players</ListCell>
+          {!condensed && <ListCell>Players</ListCell>}
         </ListHeader>
         {battles.length > 0 && (
           <>
             {battles.map(b => {
               const sorted = [...b.Results].sort(sortResults(b.BattleType));
               return (
-                <ListRow
-                  key={b.BattleIndex}
-                  onClick={() => navigate(`battles/${b.BattleIndex}`)}
-                  bg={battleStatusBgColor(b)}
-                >
-                  <ListCell width={100}>
-                    {b.Duration} min <BattleType lower type={b.BattleType} />
+                <ListRow key={b.BattleIndex} bg={battleStatusBgColor(b)}>
+                  <ListCell width={80} to={`/battles/${b.BattleIndex}`}>
+                    <LocalTime date={b.Started} format="HH:mm" parse="X" />
                   </ListCell>
+                  {condensed ? (
+                    <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
+                      <CondensedCon>
+                        <CondensedDuration>{b.Duration} min</CondensedDuration>
+                        <CondensedType>
+                          <BattleType small upper type={b.BattleType} />
+                        </CondensedType>
+                      </CondensedCon>
+                    </ListCell>
+                  ) : (
+                    <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
+                      {b.Duration} min <BattleType lower type={b.BattleType} />
+                    </ListCell>
+                  )}
                   <ListCell width={150}>
                     <Kuski kuskiData={b.KuskiData} team flag />
                   </ListCell>
                   <ListCell width={100}>
-                    {b.LevelData && b.LevelData.LevelName}
+                    {b.LevelData && (
+                      <Level
+                        LevelIndex={b.LevelIndex}
+                        LevelData={b.LevelData}
+                      />
+                    )}
                   </ListCell>
                   <ListCell width={150}>
                     {b.Finished === 1 && b.Results.length > 0 ? (
@@ -60,26 +73,25 @@ const BattleList = ({ start, end, limit = 250 }) => {
                       battleStatus(b)
                     )}
                   </ListCell>
-                  <ListCell width={60}>
+                  <ListCell whiteSpace="nowrap" width={60}>
                     {b.Results.length > 0 && (
                       <Time time={sorted[0].Time} apples={sorted[0].Apples} />
                     )}
                   </ListCell>
-                  <ListCell width={80}>
-                    <LocalTime date={b.Started} format="HH:mm" parse="X" />
-                  </ListCell>
-                  <ListCell>
-                    <Popularity>
-                      <Popularity
-                        bar
-                        title={b.Results.length}
-                        style={{
-                          width: `${(b.Results.length / 20) * 100}%`,
-                          opacity: b.Results.length / 20 + 0.1,
-                        }}
-                      />
-                    </Popularity>
-                  </ListCell>
+                  {!condensed && (
+                    <ListCell>
+                      <Popularity>
+                        <Popularity
+                          bar
+                          title={b.Results.length}
+                          style={{
+                            width: `${(b.Results.length / 20) * 100}%`,
+                            opacity: b.Results.length / 20 + 0.1,
+                          }}
+                        />
+                      </Popularity>
+                    </ListCell>
+                  )}
                 </ListRow>
               );
             })}
@@ -103,17 +115,28 @@ const Container = styled.div`
   overflow: auto;
   a {
     color: black;
-    display: table-row;
     :hover {
-      background: #f9f9f9;
-    }
-    > * {
-      padding: 10px;
-      border-bottom: 1px solid #eaeaea;
-      display: table-cell;
-      vertical-align: middle;
+      color: #219653;
     }
   }
+`;
+
+const CondensedCon = styled.div`
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 10px;
+  right: 10px;
+`;
+
+const CondensedType = styled.div`
+  position: absolute;
+  bottom: 1px;
+  white-space: nowrap;
+`;
+
+const CondensedDuration = styled.div`
+  white-space: nowrap;
 `;
 
 BattleList.propTypes = {

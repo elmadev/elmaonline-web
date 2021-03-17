@@ -1,11 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const RecPlayer =
   typeof document !== 'undefined' && require('recplayer-react').default; // eslint-disable-line global-require
 
 const Recplayer = props => {
-  const { rec, lev, width, height, zoom, controls, imageUrl, autoPlay } = props;
+  const { rec, lev, width, height, controls, imageUrl, autoPlay } = props;
+
+  let defaultZoom = 1;
+
+  if (useMediaQuery('(max-width: 900px)')) {
+    defaultZoom = 0.9;
+  }
+
+  if (useMediaQuery('(max-width: 640px)')) {
+    defaultZoom = 0.75;
+  }
+
+  if (useMediaQuery('(max-width: 500px)')) {
+    defaultZoom = 0.7;
+  }
+
+  const zoom = props.zoom || defaultZoom;
 
   let shouldAutoPlay = false;
 
@@ -56,9 +73,9 @@ Recplayer.defaultProps = {
   rec: null,
   width: 'auto',
   height: 'auto',
-  zoom: 1,
+  zoom: undefined,
   controls: true,
-  imageUrl: 'https://elma.online/recplayer',
+  imageUrl: 'https://api.elma.online/recplayer',
   autoPlay: 'if-visible',
 };
 

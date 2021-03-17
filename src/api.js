@@ -1,18 +1,31 @@
 import { create } from 'apisauce';
+import config from 'config';
+import { authToken } from 'utils/nick';
 
-const isWindow = typeof window !== 'undefined';
-let baseURL = 'http://localhost:3003/api/';
-if (isWindow) {
-  // baseURL = `${window.location.protocol}//${window.location.host}/api/`;
-}
+let baseURL = config.api;
 const api = create({
   baseURL,
   headers: {
     Accept: 'application/json',
     'Cache-Control': 'no-cache',
+    Authorization: authToken(),
   },
   timeout: 10000,
 });
+
+const apiUpload = create({
+  baseURL: config.url,
+  headers: {
+    Accept: '*/*',
+    'Cache-Control': 'no-cache',
+    Authorization: authToken(),
+  },
+  timeout: 60000,
+});
+
+export const setApiAuth = authToken => {
+  api.setHeader('Authorization', authToken);
+};
 
 // replays
 export const ReplayComment = replayIndex =>
@@ -97,8 +110,12 @@ export const PersonalAllFinished = data =>
   api.get(`allfinished/${data.LevelIndex}/${data.KuskiIndex}/${data.limit}`);
 export const PersonalLatest = data =>
   api.get(`allfinished/${data.KuskiIndex}/${data.limit}`);
-export const AllFinishedInRange = data =>
-  api.get(`allfinished/ranged/${data.LevelIndex}/${data.from}/${data.to}`);
+export const LeaderHistory = data => {
+  const { from = '', to = '', KuskiIndex = '', BattleIndex = '' } = data;
+  return api.get(
+    `allfinished/leaderhistory/${data.LevelIndex}?from=${from}&to=${to}&KuskiIndex=${KuskiIndex}&BattleIndex=${BattleIndex}`,
+  );
+};
 export const AllFinishedLevel = LevelIndex =>
   api.get(`allfinished/${LevelIndex}`);
 
@@ -111,6 +128,10 @@ export const PersonalTimes = data =>
   api.get(
     `levelpack/${data.name}/personal/${data.PersonalKuskiIndex}/${data.eolOnly}`,
   );
+export const PersonalWithMulti = data =>
+  api.get(
+    `levelpack/${data.name}/personalwithmulti/${data.PersonalKuskiIndex}/${data.eolOnly}`,
+  );
 export const Records = data =>
   api.get(`levelpack/${data.name}/records/${data.eolOnly}`);
 export const MultiRecords = LevelPackName =>
@@ -119,7 +140,7 @@ export const LevelPackSearch = q => api.get(`levelpack/search/${q}`);
 export const LevelsSearch = data =>
   api.get(`levelpack/searchLevel/${data.q}/${data.offset}/${data.showLocked}`);
 export const LevelsSearchAll = data =>
-  api.get(`levelpack/searchLevel/${data.q}`);
+  api.get(`levelpack/searchLevel/${data.q}/${data.ShowLocked}`);
 export const AddLevelPack = data => api.post('levelpack/add', data);
 export const LevelPackDeleteLevel = data =>
   api.post('levelpack/admin/deleteLevel', data);
@@ -128,6 +149,22 @@ export const LevelPackAddLevel = data =>
 export const LevelPackSortLevel = data =>
   api.post('levelpack/admin/sortLevel', data);
 export const LevelPackSort = data => api.post('levelpack/admin/sort', data);
+export const LevelPackFavAdd = data =>
+  api.post('levelpack/favourite/add', data);
+export const LevelPackFavRemove = data =>
+  api.post('levelpack/favourite/remove', data);
+export const LevelPackFavs = () => api.get('levelpack/favourite');
+
+// collections
+export const AddCollection = data =>
+  api.post('levelpack/collections/add', data);
+export const Collections = () => api.get('levelpack/collections');
+export const Collection = name => api.get(`levelpack/collections/${name}`);
+export const SearchPack = search =>
+  api.get(`levelpack/collections/search/${search}`);
+export const AddPack = data => api.post('levelpack/collections/addpack', data);
+export const DeletePack = data =>
+  api.post('levelpack/collections/deletepack', data);
 
 // besttime
 export const Besttime = data =>
@@ -158,6 +195,8 @@ export const BattlesByPlayer = data =>
   api.get(
     `battle/byPlayer/${data.KuskiIndex}?page=${data.page}&pageSize=${data.pageSize}`,
   );
+export const AllBattleRuns = BattleIndex =>
+  api.get(`battle/allRuns/${BattleIndex}`);
 export const BattleListPeriod = data =>
   api.get(`battle/byPeriod/${data.start}/${data.end}/${data.limit}`);
 
@@ -174,6 +213,7 @@ export const Ignore = Kuski => api.post(`player/ignore/${Kuski}`);
 export const Ignored = () => api.get('player/ignored');
 export const Unignore = KuskiIndex => api.post(`player/unignore/${KuskiIndex}`);
 export const Players = () => api.get('player/');
+export const GetCrew = () => api.get('player/crew/');
 
 // teams
 export const Teams = () => api.get('teams');
@@ -216,3 +256,10 @@ export const IPlogs = KuskiIndex => api.get(`mod/iplogs/${KuskiIndex}`);
 
 // news
 export const News = amount => api.get(`news/${amount}`);
+
+// donations
+export const GetDonations = () => api.get(`donate/`);
+
+// upload
+export const UploadFile = data => apiUpload.post(`upload/file`, data);
+export const UpdateFile = data => api.post(`upload`, data);

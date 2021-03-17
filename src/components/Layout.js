@@ -2,31 +2,47 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useStoreState } from 'easy-peasy';
+import { Helmet } from 'react-helmet';
 
 import TopBar from 'components/TopBar';
 import SideBar from 'components/SideBar';
 import GlobalStyle from 'globalStyle';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, edge, t = '' }) => {
   const { sideBarVisible } = useStoreState(state => state.Page);
   return (
     <>
       <GlobalStyle />
+      <Helmet>
+        <title>Elma Online - {t}</title>
+      </Helmet>
       <Container expanded={sideBarVisible}>
         <TopBar />
         <SideBar />
-        <ChildrenCon>{children}</ChildrenCon>
+        <ChildrenCon edge={edge}>{children}</ChildrenCon>
       </Container>
     </>
   );
 };
 
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const ChildrenCon = styled.div`
   min-height: 100%;
-  margin-top: -50px;
-  padding-top: 50px;
+  margin-top: -54px;
   box-sizing: border-box;
-  background: #f1f1f1;
+  padding: ${p => (p.edge ? 0 : '24px')};
+  padding-top: ${p => (p.edge ? '54px' : '74px')};
+  @media (max-width: 1000px) {
+    padding-left: ${p => (p.edge ? 0 : '12px')};
+    padding-right: ${p => (p.edge ? 0 : '12px')};
+  }
+  ${Content} {
+    margin: 24px;
+  }
 `;
 
 const Container = styled.div`

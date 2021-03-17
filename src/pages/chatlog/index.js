@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { VariableSizeList } from 'react-window';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useDebounce } from 'use-debounce';
-// import queryString from 'query-string';
+import Layout from 'components/Layout';
+import queryString from 'query-string';
 import {
   TextField,
   TablePagination,
@@ -18,8 +19,7 @@ import {
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import styled from 'styled-components';
-// import history from 'utils/history';
-
+import { useLocation, useNavigate } from '@reach/router';
 import ChatView from 'features/ChatView';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';
@@ -122,9 +122,9 @@ const renderGroup = params => [
 ];
 
 const ChatLog = props => {
-  const {
-    context: { query = {} }, // Search query params
-  } = props;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const query = queryString.parse(location.search);
 
   const queryIds = query.KuskiIds
     ? query.KuskiIds.split(',').map(id => +id)
@@ -177,7 +177,7 @@ const ChatLog = props => {
   );
 
   const urlSync = keys => {
-    /* const sortOrder = [
+    const sortOrder = [
       'KuskiIds',
       'text',
       'start',
@@ -186,9 +186,9 @@ const ChatLog = props => {
       'count',
       'rpp',
       'page',
-    ]; */
-    /* history.replace({
-      search: queryString.stringify(
+    ];
+    navigate(
+      `/chatlog?${queryString.stringify(
         {
           ...query,
           ...keys,
@@ -198,8 +198,9 @@ const ChatLog = props => {
           skipEmptyString: true,
           sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
         },
-      ),
-    }); */
+      )}`,
+      { replace: true },
+    );
   };
 
   const handleChangePage = (event, newPage) => {
@@ -220,7 +221,7 @@ const ChatLog = props => {
   const acClasses = useStyles();
 
   return (
-    <Container>
+    <Layout t="Chat Log">
       <Header h2>Chat Log Filter</Header>
       <ChatFilter container spacing={2} alignItems="center">
         <Grid item xs={12} sm={6} lg={3}>
@@ -371,13 +372,9 @@ const ChatLog = props => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       )}
-    </Container>
+    </Layout>
   );
 };
-
-const Container = styled.div`
-  padding: 10px;
-`;
 
 const ChatFilter = styled(Grid)`
   padding-bottom: 10px;

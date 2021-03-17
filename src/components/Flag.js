@@ -1,5 +1,5 @@
 import React from 'react';
-// import f from 'flag-icon-css/css/flag-icon.css';
+import 'flag-icon-css/css/flag-icon.css';
 import PropTypes from 'prop-types';
 
 const Flag = ({ nationality }) => (

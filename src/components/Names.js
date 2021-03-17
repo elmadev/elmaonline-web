@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Link from 'components/Link';
 
 const formatLevel = level => {
   if (
@@ -12,7 +13,7 @@ const formatLevel = level => {
   return level;
 };
 
-const Level = ({ long, LevelData }) => {
+const LevelNameFormatted = ({ long, LevelData }) => {
   return (
     <>
       {long && LevelData && LevelData.LongName}
@@ -22,27 +23,49 @@ const Level = ({ long, LevelData }) => {
   );
 };
 
+const Level = ({ LevelIndex, long, LevelData, noLink }) => {
+  return (
+    <>
+      {noLink ? (
+        <LevelNameFormatted long={long} LevelData={LevelData} />
+      ) : (
+        <Link to={`/levels/${LevelIndex}`}>
+          <LevelNameFormatted long={long} LevelData={LevelData} />
+        </Link>
+      )}
+    </>
+  );
+};
+
 Level.propTypes = {
+  LevelIndex: PropTypes.number,
   long: PropTypes.bool,
   LevelData: PropTypes.shape({
     LevelName: PropTypes.string,
     LongName: PropTypes.string,
   }),
+  noLink: PropTypes.bool,
 };
 
 Level.defaultProps = {
+  LevelIndex: null,
   long: false,
   LevelData: null,
+  noLink: false,
 };
 
 class BattleType extends React.Component {
   static propTypes = {
     type: PropTypes.string.isRequired,
     lower: PropTypes.bool,
+    small: PropTypes.bool,
+    upper: PropTypes.bool,
   };
 
   static defaultProps = {
     lower: false,
+    small: false,
+    upper: false,
   };
 
   render() {
@@ -60,13 +83,19 @@ class BattleType extends React.Component {
       HT: '1 Hour TT',
     };
 
-    const { type, lower } = this.props;
-    return <TypeSpan lower={lower}>{types[type]}</TypeSpan>;
+    const { type, lower, small, upper } = this.props;
+    return (
+      <TypeSpan small={small} lower={lower} upper={upper}>
+        {types[type]}
+      </TypeSpan>
+    );
   }
 }
 
 const TypeSpan = styled.span`
-  text-transform: ${p => (p.lower ? 'lowercase' : 'none')};
+  text-transform: ${p =>
+    p.upper ? 'uppercase' : p.lower ? 'lowercase' : 'none'};
+  font-size: ${p => (p.small ? '10px' : 'inherit')};
 `;
 
 export { Level, BattleType };

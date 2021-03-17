@@ -4,10 +4,12 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Loading from 'components/Loading';
+import Portal from 'components/Portal';
 
 import { levToSvg } from 'elma-js';
 
 const MapContainer = styled.div`
+  width: ${props => (props.fullscreen ? '100%' : props.width)};
   height: ${props => props.height};
   > div {
     ${props =>
@@ -49,7 +51,8 @@ const MapContainer = styled.div`
   }
 `;
 
-const LevelMap = ({ LevelIndex }) => {
+const LevelMap = props => {
+  const { LevelIndex, width, height } = props;
   const [fullscreen, setFullscreen] = useState(false);
   const { levelData } = useStoreState(state => state.LevelMap);
   const { getLevelData } = useStoreActions(actions => actions.LevelMap);
@@ -60,23 +63,49 @@ const LevelMap = ({ LevelIndex }) => {
 
   if (!levelData) {
     return <Loading />;
+  } else if (!levelData.LevelData) {
+    return <MapContainer />;
   }
 
   const svg = levToSvg(levelData.LevelData);
 
   return (
-    <MapContainer
-      fullscreen={fullscreen}
-      onClick={() => setFullscreen(!fullscreen)}
-      height="100%"
-    >
-      <div dangerouslySetInnerHTML={{ __html: svg }} />
-    </MapContainer>
+    <>
+      {fullscreen ? (
+        <Portal>
+          <MapContainer
+            fullscreen={fullscreen}
+            onClick={() => setFullscreen(!fullscreen)}
+            width={width}
+            height={height}
+          >
+            <div dangerouslySetInnerHTML={{ __html: svg }} />
+          </MapContainer>
+        </Portal>
+      ) : (
+        <MapContainer
+          fullscreen={fullscreen}
+          onClick={() => setFullscreen(!fullscreen)}
+          width={width}
+          height={height}
+        >
+          <div dangerouslySetInnerHTML={{ __html: svg }} />
+        </MapContainer>
+      )}
+    </>
   );
 };
 
 LevelMap.propTypes = {
   LevelIndex: PropTypes.number.isRequired,
+  width: PropTypes.string,
+  height: PropTypes.string,
+};
+
+LevelMap.defaultProps = {
+  LevelIndex: null,
+  width: '100%',
+  height: '100%',
 };
 
 export default LevelMap;

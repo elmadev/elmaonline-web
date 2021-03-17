@@ -71,7 +71,17 @@ const BattleCard = props => {
     });
   }, 1000);
 
-  if (!battle) return null;
+  if (!battle) {
+    return (
+      <CardFlex>
+        <Grid container spacing={0}>
+          <Grid item>
+            <CardContent>No battle currently</CardContent>
+          </Grid>
+        </Grid>
+      </CardFlex>
+    );
+  }
 
   return (
     <CardFlex>
@@ -80,10 +90,10 @@ const BattleCard = props => {
           <CardHeader title="Current Battle" />
           <CardContent>
             <Header h2 nomargin>
-              <Level LevelData={battle.LevelData} />
+              <Level LevelData={battle.LevelData} noLink />
             </Header>
             <Typography variant="body1" color="textSecondary">
-              <Level long LevelData={battle.LevelData} />
+              <Level long LevelData={battle.LevelData} noLink />
             </Typography>
             <Text>
               <span>Designer: </span>
@@ -125,7 +135,6 @@ const CardFlex = styled(Card)`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
 `;
 
 const Text = styled.div`

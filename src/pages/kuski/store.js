@@ -36,7 +36,7 @@ export default {
       actions.setlatestPRs(prs.data);
     }
   }),
-  ranking: [],
+  ranking: false,
   setRanking: action((state, payload) => {
     state.ranking = payload;
   }),
@@ -46,7 +46,7 @@ export default {
       actions.setRanking(call.data);
     }
   }),
-  tt: [],
+  tt: false,
   setTt: action((state, payload) => {
     state.tt = payload;
   }),

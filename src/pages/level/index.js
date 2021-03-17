@@ -12,32 +12,34 @@ import {
   AccordionDetails,
   Tabs,
   Tab,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 import styled from 'styled-components';
+import Layout from 'components/Layout';
 import { ExpandMore } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-
 import Kuski from 'components/Kuski';
 import Download from 'components/Download';
 import Recplayer from 'components/Recplayer';
 import RecList from 'features/RecList';
 import Loading from 'components/Loading';
+import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
-import Play from 'components/Play';
 import LocalTime from 'components/LocalTime';
 import { useNavigate } from '@reach/router';
 import config from 'config';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
+import { nickId } from 'utils/nick';
+import LeaderHistory from 'components/LeaderHistory';
 
-const Level = ({ LevelIndex }) => {
+const Level = ({ LevelId }) => {
+  const LevelIndex = parseInt(LevelId, 10);
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
-  const [play, setPlay] = useState(
-    navigator.userAgent.toLowerCase().indexOf('firefox') === -1,
-  );
   const {
     besttimes,
     besttimesLoading,
@@ -50,6 +52,10 @@ const Level = ({ LevelIndex }) => {
     eolLoading,
     timeStats,
     statsLoading,
+    settings: { fancyMap },
+    personalLeaderHistory,
+    leaderHistory,
+    leaderHistoryLoading,
   } = useStoreState(state => state.Level);
   const {
     getBesttimes,
@@ -57,6 +63,9 @@ const Level = ({ LevelIndex }) => {
     getAllfinished,
     getEoltimes,
     getTimeStats,
+    toggleFancyMap,
+    getPersonalLeaderHistory,
+    getLeaderHistory,
   } = useStoreActions(actions => actions.Level);
 
   useEffect(() => {
@@ -77,41 +86,63 @@ const Level = ({ LevelIndex }) => {
       (timeStats.length === 0 || statsLoading !== LevelIndex)
     ) {
       getTimeStats(LevelIndex);
+      if (nickId() > 0) {
+        getPersonalLeaderHistory({ LevelIndex, KuskiIndex: nickId() });
+      }
     }
-    if (value === 3 && (eoltimes.length === 0 || eolLoading !== LevelIndex)) {
+    if (
+      value === 3 &&
+      (leaderHistory.length === 0 || leaderHistoryLoading !== LevelIndex)
+    ) {
+      getLeaderHistory({ LevelIndex });
+    }
+    if (value === 4 && (eoltimes.length === 0 || eolLoading !== LevelIndex)) {
       getEoltimes({ levelId: LevelIndex, limit: 10000, eolOnly: 1 });
     }
   };
 
   const goToBattle = battleIndex => {
     if (!Number.isNaN(battleIndex)) {
-      navigate(`battles/${battleIndex}`);
+      navigate(`/battles/${battleIndex}`);
     }
   };
 
   const isWindow = typeof window !== 'undefined';
 
   return (
-    <Container>
+    <Layout t={`Level - ${level.LevelName}.lev`}>
       <PlayerContainer>
         {loading && <Loading />}
         {!loading && (
-          <Player>
-            {play ? (
-              <>
-                {isWindow &&
-                  (battlesForLevel.length < 1 ||
-                    battleStatus(battlesForLevel[0]) !== 'Queued') && (
-                    <Recplayer
-                      lev={`${config.dlUrl}level/${LevelIndex}`}
-                      controls
-                    />
-                  )}
-              </>
-            ) : (
-              <Play type="map" onClick={() => setPlay(true)} />
-            )}
-          </Player>
+          <>
+            <Player>
+              {fancyMap ? (
+                <>
+                  {isWindow &&
+                    (battlesForLevel.length < 1 ||
+                      battleStatus(battlesForLevel[0]) !== 'Queued') && (
+                      <Recplayer
+                        lev={`${config.dlUrl}level/${LevelIndex}`}
+                        controls
+                      />
+                    )}
+                </>
+              ) : (
+                <LevelMap LevelIndex={LevelIndex} />
+              )}
+            </Player>
+            <StyledFormControlLabel
+              control={
+                <Checkbox
+                  onChange={() => toggleFancyMap()}
+                  checked={fancyMap}
+                  color="primary"
+                  size="small"
+                />
+              }
+              label="Fancy map"
+            />
+          </>
         )}
       </PlayerContainer>
       <RightBarContainer>
@@ -231,6 +262,7 @@ const Level = ({ LevelIndex }) => {
                 <Tab label="Best times" />
                 <Tab label="All times" />
                 <Tab label="Personal stats" />
+                <Tab label="Leaders" />
                 {level.Legacy && <Tab label="EOL times" />}
               </Tabs>
               {tab === 0 && (
@@ -250,10 +282,17 @@ const Level = ({ LevelIndex }) => {
               {tab === 2 && (
                 <StatsTable
                   data={timeStats}
+                  leaderHistory={personalLeaderHistory}
                   loading={statsLoading !== LevelIndex}
                 />
               )}
               {tab === 3 && (
+                <LeaderHistory
+                  allFinished={leaderHistory}
+                  loading={leaderHistoryLoading !== LevelIndex}
+                />
+              )}
+              {tab === 4 && (
                 <TimeTable
                   loading={eolLoading !== LevelIndex}
                   data={eoltimes}
@@ -264,7 +303,7 @@ const Level = ({ LevelIndex }) => {
           )}
         </Paper>
       </ResultsContainer>
-    </Container>
+    </Layout>
   );
 };
 
@@ -293,6 +332,10 @@ const ResultsContainer = styled.div`
   float: left;
   padding: 7px;
   box-sizing: border-box;
+  @media screen and (max-width: 1100px) {
+    float: none;
+    width: 100%;
+  }
 `;
 
 const BattlesContainer = styled.div`
@@ -316,10 +359,10 @@ const RightBarContainer = styled.div`
   width: 40%;
   padding: 7px;
   box-sizing: border-box;
-`;
-
-const Container = styled.div`
-  padding: 7px;
+  @media screen and (max-width: 1100px) {
+    float: none;
+    width: 100%;
+  }
 `;
 
 const PlayerContainer = styled.div`
@@ -327,6 +370,10 @@ const PlayerContainer = styled.div`
   float: left;
   padding: 7px;
   box-sizing: border-box;
+  @media screen and (max-width: 1100px) {
+    float: none;
+    width: 100%;
+  }
 `;
 
 const Player = styled.div`
@@ -335,10 +382,23 @@ const Player = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 640px) {
+    height: 350px;
+  }
+`;
+
+const StyledFormControlLabel = styled(FormControlLabel)`
+  span {
+    font-size: 14px;
+  }
 `;
 
 Level.propTypes = {
-  LevelIndex: PropTypes.number.isRequired,
+  LevelId: PropTypes.string,
+};
+
+Level.defaultProps = {
+  LevelId: '0',
 };
 
 export default Level;

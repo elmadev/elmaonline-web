@@ -5,6 +5,7 @@ import Kuski from 'components/Kuski';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListCell, ListContainer, ListRow } from 'components/List';
 import { useNavigate } from '@reach/router';
+import Layout from 'components/Layout';
 
 const Team = ({ TeamName }) => {
   const navigate = useNavigate();
@@ -15,12 +16,12 @@ const Team = ({ TeamName }) => {
     getTeamMembers(TeamName);
   }, []);
   return (
-    <Container>
+    <Layout t={`Team - ${TeamName}`}>
       <Header>{TeamName}</Header>
       <Paper>
         <ListContainer>
           {teamMembers.map(m => (
-            <ListRow onClick={() => navigate(`kuskis/${m.Kuski}`)}>
+            <ListRow onClick={() => navigate(`/kuskis/${m.Kuski}`)}>
               <ListCell>
                 <Kuski kuskiData={m} />
               </ListCell>
@@ -28,7 +29,7 @@ const Team = ({ TeamName }) => {
           ))}
         </ListContainer>
       </Paper>
-    </Container>
+    </Layout>
   );
 };
 
@@ -37,10 +38,6 @@ const Paper = styled.div`
   background-color: #ffffff;
   border: 1px solid #e2e3e4;
   border-radius: 4px;
-`;
-
-const Container = styled.div`
-  padding: 8px;
 `;
 
 export default Team;

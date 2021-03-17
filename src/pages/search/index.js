@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useMediaQuery } from '@material-ui/core';
 import LocalTime from 'components/LocalTime';
 import Link from 'components/Link';
+import SearchBar from 'components/SearchBar';
 import Kuski from 'components/Kuski';
+import queryString from 'query-string';
+import { useLocation } from '@reach/router';
 import { Switch } from '@material-ui/core';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import { mod } from 'utils/nick';
 import { forEach } from 'lodash';
+import Layout from 'components/Layout';
 
-const Search = ({
-  context: {
-    query: { q, t },
-  },
-}) => {
+const Search = () => {
+  const location = useLocation();
+  const { q, t } = queryString.parse(location.search);
   const [updated, setUpdated] = useState({});
   const {
     levelPacks,
@@ -81,6 +84,8 @@ const Search = ({
     }
   }, [levels, showLocked]);
 
+  const smallSearchBar = useMediaQuery('(max-width: 460px');
+
   const updateHidden = (data, oldValue) => {
     const newValue = 1 - oldValue;
     changeLevel({ LevelIndex: data.LevelIndex, update: { Hidden: newValue } });
@@ -100,8 +105,16 @@ const Search = ({
   };
 
   return (
-    <Container>
+    <Layout edge t={`Search - ${t} - ${q}`}>
       <Results>
+        {!t && (
+          <SearchBarWrapper>
+            {smallSearchBar && (
+              <p className="mobile-search-title">Search for: </p>
+            )}
+            <SearchBar hidePlaceholder={smallSearchBar} />
+          </SearchBarWrapper>
+        )}
         {t === 'level' && (
           <Flex>
             <Flex2>
@@ -148,7 +161,7 @@ const Search = ({
                       <ListRow key={r.LevelIndex}>
                         <ListCell width={90}>
                           <ResultLinkCell
-                            to={`levels/${r.LevelIndex}`}
+                            to={`/levels/${r.LevelIndex}`}
                             key={r.LevelIndex}
                           >
                             {r.LevelName}.lev
@@ -251,7 +264,7 @@ const Search = ({
                     <>
                       {l.LevelPack ? (
                         <ResultLink
-                          to={`levels/packs/${l.LevelPack.LevelPackName}`}
+                          to={`/levels/packs/${l.LevelPack.LevelPackName}`}
                           key={l.LevelPack.LevelPackIndex}
                         >
                           <div>{l.LevelPack.LevelPackLongName}</div>
@@ -262,7 +275,7 @@ const Search = ({
                         </ResultLink>
                       ) : (
                         <ResultLink
-                          to={`levels/packs/${l.LevelPackName}`}
+                          to={`/levels/packs/${l.LevelPackName}`}
                           key={l.LevelPackIndex}
                         >
                           <>{l.LevelPackLongName}</>
@@ -289,13 +302,17 @@ const Search = ({
               {replaysByFilename.length !== 0 && (
                 <>
                   {replaysByFilename.map(r => (
-                    <ResultLink to={`r/${r.UUID}`} key={r.UUID}>
+                    <ResultLink to={`/r/${r.UUID}`} key={r.UUID}>
                       <div>{r.RecFileName}</div>
                       <ResultSecondaryData>
                         {(r.LevelData && `${r.LevelData.LevelName}.lev`) ||
                           'unknown'}{' '}
                         /{' '}
-                        {(r.DrivenByData && r.DrivenByData.Kuski) || 'unknown'}{' '}
+                        {r.DrivenByData ? (
+                          <Kuski kuskiData={r.DrivenByData} />
+                        ) : (
+                          r.DrivenByText || 'Unknown'
+                        )}{' '}
                         /{' '}
                         <LocalTime
                           date={r.Uploaded}
@@ -342,13 +359,17 @@ const Search = ({
               {replaysByDriven.length !== 0 && (
                 <>
                   {replaysByDriven.map(r => (
-                    <ResultLink to={`r/${r.UUID}`} key={r.UUID}>
+                    <ResultLink to={`/r/${r.UUID}`} key={r.UUID}>
                       <div>{r.RecFileName}</div>
                       <ResultSecondaryData>
                         {(r.LevelData && `${r.LevelData.LevelName}.lev`) ||
                           'unknown'}{' '}
                         /{' '}
-                        {(r.DrivenByData && r.DrivenByData.Kuski) || 'unknown'}{' '}
+                        {r.DrivenByData ? (
+                          <Kuski kuskiData={r.DrivenByData} />
+                        ) : (
+                          r.DrivenByText || 'Unknown'
+                        )}{' '}
                         /{' '}
                         <LocalTime
                           date={r.Uploaded}
@@ -395,13 +416,17 @@ const Search = ({
               {replaysByLevel.length !== 0 && (
                 <>
                   {replaysByLevel.map(r => (
-                    <ResultLink to={`r/${r.UUID}`} key={r.UUID}>
+                    <ResultLink to={`/r/${r.UUID}`} key={r.UUID}>
                       <div>{r.RecFileName}</div>
                       <ResultSecondaryData>
                         {(r.LevelData && `${r.LevelData.LevelName}.lev`) ||
                           'unknown'}{' '}
                         /{' '}
-                        {(r.DrivenByData && r.DrivenByData.Kuski) || 'unknown'}{' '}
+                        {r.DrivenByData ? (
+                          <Kuski kuskiData={r.DrivenByData} />
+                        ) : (
+                          r.DrivenByText || 'Unknown'
+                        )}{' '}
                         /{' '}
                         <LocalTime
                           date={r.Uploaded}
@@ -453,7 +478,7 @@ const Search = ({
                 <>
                   {battlesByFilename.map(b => (
                     <ResultLink
-                      to={`battles/${b.BattleIndex}`}
+                      to={`/battles/${b.BattleIndex}`}
                       key={b.BattleIndex}
                     >
                       <div>{b.LevelData.LevelName}.lev</div>
@@ -505,7 +530,7 @@ const Search = ({
                 <>
                   {battlesByDesigner.map(b => (
                     <ResultLink
-                      to={`battles/${b.BattleIndex}`}
+                      to={`/battles/${b.BattleIndex}`}
                       key={b.BattleIndex}
                     >
                       <div>{b.LevelData.LevelName}.lev</div>
@@ -559,7 +584,7 @@ const Search = ({
             {players.length !== 0 && (
               <>
                 {players.map(p => (
-                  <ResultLink to={`kuskis/${p.Kuski}`} key={p.Kuski}>
+                  <ResultLink to={`/kuskis/${p.Kuski}`} key={p.Kuski}>
                     <div>
                       <Kuski team kuskiData={p} />
                     </div>
@@ -598,7 +623,7 @@ const Search = ({
             {teams.length !== 0 && (
               <>
                 {teams.map(v => (
-                  <ResultLink key={v.Team} to={`team/${v.Team}`}>
+                  <ResultLink key={v.Team} to={`/team/${v.Team}`}>
                     <div>{v.Team}</div>
                     <ResultSecondaryData />
                   </ResultLink>
@@ -627,17 +652,12 @@ const Search = ({
           </div>
         )}
       </Results>
-    </Container>
+    </Layout>
   );
 };
 
 const SwitchThin = styled(Switch)`
   margin: -10px;
-`;
-
-const Container = styled.div`
-  background: #fff;
-  min-height: 100%;
 `;
 
 const Results = styled.div`
@@ -708,6 +728,10 @@ const LoadMore = styled.button`
     cursor: default;
     color: #8c8c8c;
   }
+`;
+
+const SearchBarWrapper = styled.div`
+  padding: 30px 20px;
 `;
 
 export default Search;

@@ -6,7 +6,7 @@ import { useNavigate } from '@reach/router';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import LocalTime from 'components/LocalTime';
-import { BattleType } from 'components/Names';
+import { Level, BattleType } from 'components/Names';
 import { sortResults } from 'utils/battle';
 import { ListCell, ListHeader, ListContainer, ListRow } from 'components/List';
 
@@ -44,14 +44,16 @@ function DesignedBattles({ KuskiIndex }) {
           const sorted = [...b.Results].sort(sortResults(b.BattleType));
           return (
             <ListRow
-              onClick={() => navigate(`battles/${b.BattleIndex}`)}
+              onClick={() => navigate(`/battles/${b.BattleIndex}`)}
               key={b.BattleIndex}
             >
               <ListCell width={130}>
                 {b.Duration} min <BattleType type={b.BattleType} />
               </ListCell>
               <ListCell width={130}>
-                {b.LevelData && b.LevelData.LevelName}
+                {b.LevelData && (
+                  <Level LevelIndex={b.LevelIndex} LevelData={b.LevelData} />
+                )}
               </ListCell>
               <ListCell width={150}>
                 {b.Results.length > 0 && (

@@ -18,6 +18,8 @@ import Level from 'pages/level';
 import LevelPack from 'pages/levelpack';
 import Levels from 'pages/levels';
 import LevelsAdd from 'pages/levels-add';
+import LevelsAddCollection from 'pages/levels-add-collection';
+import LevelpackCollection from 'pages/levelpack-collection';
 import Login from 'pages/login';
 import Map from 'pages/map';
 import Mod from 'pages/mod';
@@ -30,28 +32,36 @@ import Search from 'pages/search';
 import Settings from 'pages/settings';
 import Team from 'pages/team';
 import Teams from 'pages/teams';
+import Upload from 'pages/upload';
+import styled from 'styled-components';
+
+const Router100 = styled(Router)`
+  height: 100%;
+`;
 
 const Routes = () => {
   return (
-    <Router>
+    <Router100>
       <Home path="/" />
-      <Battle path="battles/:BattleIndex" />
+      <Battle path="battles/:BattleId" />
       <Battles path="battles" />
       <ChatLog path="chatlog" />
       <Confirm path="confirm/:confirmCode" />
-      <Cup path="cup/:ShortName" />
+      <Cup path="cup/:ShortName/*" />
       <CupReplay path="r/cup/:ReplayIndex/:Filename" ReplayType="cup" />
       <Cups path="cups" />
       <Editor path="editor" />
       <Error path="error" />
       <ForgotPassword path="forgot" />
-      <Help path="help" />
+      <Help path="help/*" />
       <Kuski path="kuskis/:name" />
       <Kuskis path="kuskis" />
-      <Level path="levels/:LevelIndex" />
+      <Level path="levels/:LevelId" />
       <LevelPack path="levels/packs/:name" />
       <Levels path="levels" />
       <LevelsAdd path="levels/add" />
+      <LevelsAddCollection path="levels/collections/add" />
+      <LevelpackCollection path="levels/collections/:name" />
       <Login path="login" />
       <Map path="map" />
       <Mod path="mod" />
@@ -63,8 +73,9 @@ const Routes = () => {
       <Settings path="settings" />
       <Team path="team/:TeamName" />
       <Teams path="teams" />
+      <Upload path="up" />
       <NotFound default />
-    </Router>
+    </Router100>
   );
 };
 

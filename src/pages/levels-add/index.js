@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Grid, Button } from '@material-ui/core';
 import useFormal from '@kevinwolf/formal-web';
@@ -9,9 +8,15 @@ import Field from 'components/Field';
 import Header from 'components/Header';
 import Link from 'components/Link';
 import { nickId } from 'utils/nick';
+import Layout from 'components/Layout';
 
 const schema = yup.object().shape({
-  LevelPackName: yup.string().required().min(2).max(16),
+  LevelPackName: yup
+    .string()
+    .required()
+    .min(2)
+    .max(16)
+    .matches(/^[A-Za-z0-9]+$/, 'Only letters and number allowed, no spaces'),
   LevelPackLongName: yup.string().required().min(2).max(30),
   LevelPackDesc: yup.string().required().max(255),
 });
@@ -27,7 +32,7 @@ const LevelsAdd = () => {
     },
   );
   return (
-    <Container>
+    <Layout t="Add level pack">
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <Header h1>Add level pack</Header>
@@ -66,12 +71,8 @@ const LevelsAdd = () => {
           )}
         </Grid>
       </Grid>
-    </Container>
+    </Layout>
   );
 };
-
-const Container = styled.div`
-  padding: 20px;
-`;
 
 export default LevelsAdd;

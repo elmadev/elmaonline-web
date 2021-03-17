@@ -4,11 +4,11 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import LeaderHistory from 'components/LeaderHistory';
 
 const Leaders = ({ event }) => {
-  const { allFinished } = useStoreState(state => state.Cup);
-  const { getAllFinishedInRange } = useStoreActions(actions => actions.Cup);
+  const { leaderHistory } = useStoreState(state => state.Cup);
+  const { getLeaderHistory } = useStoreActions(actions => actions.Cup);
 
   useEffect(() => {
-    getAllFinishedInRange({
+    getLeaderHistory({
       LevelIndex: event.LevelIndex,
       from: event.StartTime,
       to: event.EndTime,
@@ -17,7 +17,9 @@ const Leaders = ({ event }) => {
 
   return (
     <Container>
-      {allFinished.length > 0 && <LeaderHistory allFinished={allFinished} />}
+      {leaderHistory.length > 0 && (
+        <LeaderHistory allFinished={leaderHistory} />
+      )}
     </Container>
   );
 };

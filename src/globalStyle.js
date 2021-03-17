@@ -48,15 +48,17 @@ const GlobalStyle = createGlobalStyle`
   }
   html,
   body,
+  #root,
   #app {
     height: 100% !important;
     margin: 0;
     padding: 0;
     font-weight: 400;
+    background: #f1f1f1;
   }
   body {
     margin: 0;
-    margin-top: 50px;
+    margin-top: 54px;
   }
   a {
     color: #219653;

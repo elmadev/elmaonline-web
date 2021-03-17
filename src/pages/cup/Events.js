@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from '@reach/router';
 import { formatDistance, format } from 'date-fns';
 import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
@@ -28,16 +29,18 @@ const GetWinner = times => {
 };
 
 const Cups = props => {
-  const { events, setEvent, cup } = props;
-  const [openEvent, setOpenEvent] = useState(-1);
-  const [tab, setTab] = useState(0);
-
-  useEffect(() => {
-    setOpenEvent(setEvent);
-  }, [setEvent]);
+  const { cup, events, eventNumber, eventTab } = props;
+  const eventIndex = eventNumber - 1;
+  const navigate = useNavigate();
 
   if (!events) {
-    return null;
+    return <div>No events found.</div>;
+  }
+
+  const event = events[eventIndex];
+
+  if (event === undefined) {
+    return <div>Event does not exist.</div>;
   }
 
   return (
@@ -46,13 +49,20 @@ const Cups = props => {
         {events.sort(eventSort).map((e, i) => (
           <EventContainer
             key={e.CupIndex}
-            highlight={i === openEvent}
-            onClick={() => setOpenEvent(i)}
+            highlight={i === eventIndex}
+            onClick={() =>
+              // persist selected eventTab when changing events.
+              navigate(
+                ['/cup', cup.ShortName, 'events', i + 1, eventTab]
+                  .filter(Boolean)
+                  .join('/'),
+              )
+            }
           >
             <EventNo>{i + 1}.</EventNo>
             <RightSide>
               <By>
-                <Download url={`level/${e.LevelIndex}`}>
+                <Download href={`level/${e.LevelIndex}`}>
                   {e.Level ? e.Level.LevelName : ''}
                 </Download>{' '}
                 by <Kuski kuskiData={e.KuskiData} />
@@ -105,49 +115,53 @@ const Cups = props => {
           </EventContainer>
         ))}
       </Grid>
-      {openEvent > -1 && (
-        <Grid item xs={12} sm={6}>
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            value={tab}
-            onChange={(e, value) => setTab(value)}
-          >
-            <Tab label="Results" />
-            {events[openEvent].StartTime < format(new Date(), 't') && (
-              <Tab label="Map" />
-            )}
-            {events[openEvent].EndTime < format(new Date(), 't') && (
-              <Tab label="Interviews" />
-            )}
-            {events[openEvent].EndTime < format(new Date(), 't') && (
-              <Tab label="Leaders" />
-            )}
-          </Tabs>
-          {tab === 0 && (
-            <CupResults
-              CupIndex={events[openEvent].CupIndex}
-              ShortName={cup.ShortName}
-              eventNo={openEvent + 1}
-              results={events[openEvent].CupTimes}
-            />
-          )}
-          {tab === 1 && events[openEvent].StartTime < format(new Date(), 't') && (
-            <PlayerContainer>
-              <Recplayer
-                lev={`${config.dlUrl}level/${events[openEvent].LevelIndex}`}
-                controls
+      {(() => {
+        const hasEnded = event.StartTime < format(new Date(), 't');
+
+        return (
+          <Grid item xs={12} sm={6}>
+            <Tabs
+              variant="scrollable"
+              scrollButtons="auto"
+              value={eventTab}
+              onChange={(e, value) => {
+                navigate(
+                  ['/cup', cup.ShortName, 'events', eventNumber, value]
+                    .filter(Boolean)
+                    .join('/'),
+                );
+              }}
+            >
+              <Tab label="Results" value="results" />
+              {hasEnded && <Tab label="Map" value="map" />}
+              {hasEnded && <Tab label="Interviews" value="interviews" />}
+              {hasEnded && <Tab label="Leaders" value="leaders" />}
+            </Tabs>
+            {eventTab === 'results' && (
+              <CupResults
+                CupIndex={event.CupIndex}
+                ShortName={cup.ShortName}
+                eventNo={eventIndex + 1}
+                results={event.CupTimes}
               />
-            </PlayerContainer>
-          )}
-          {tab === 2 && events[openEvent].EndTime < format(new Date(), 't') && (
-            <Interviews cup={cup} event={events[openEvent]} />
-          )}
-          {tab === 3 && events[openEvent].EndTime < format(new Date(), 't') && (
-            <Leaders event={events[openEvent]} />
-          )}
-        </Grid>
-      )}
+            )}
+            {eventTab === 'map' && hasEnded && (
+              <PlayerContainer>
+                <Recplayer
+                  lev={`${config.dlUrl}level/${events[eventIndex].LevelIndex}`}
+                  controls
+                />
+              </PlayerContainer>
+            )}
+            {eventTab === 'interviews' && hasEnded && (
+              <Interviews cup={cup} event={events[eventIndex]} />
+            )}
+            {eventTab === 'leaders' && hasEnded && (
+              <Leaders event={events[eventIndex]} />
+            )}
+          </Grid>
+        );
+      })()}
     </Grid>
   );
 };

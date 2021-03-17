@@ -3,7 +3,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Grid, CircularProgress } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import Link from 'components/Link';
-import styled from 'styled-components';
+import Layout from 'components/Layout';
 
 const Confirm = props => {
   const { confirmCode } = props;
@@ -19,7 +19,7 @@ const Confirm = props => {
   }, []);
 
   return (
-    <Container>
+    <Layout t="Confirm email">
       <Grid container spacing={3}>
         {confirmSuccess === 1 && (
           <Paper>
@@ -54,14 +54,8 @@ const Confirm = props => {
           </Paper>
         )}
       </Grid>
-    </Container>
+    </Layout>
   );
 };
-
-const Container = styled.div`
-  padding-top: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-`;
 
 export default Confirm;

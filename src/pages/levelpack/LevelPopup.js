@@ -4,6 +4,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
 import LegacyIcon from 'components/LegacyIcon';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
@@ -70,6 +71,7 @@ const LevelPopup = ({
             &times;
           </ClosePopUp>
         </Title>
+        <LevelMap LevelIndex={levelId} width="50%" />
         <h2>Top-{timesLimit.toLocaleString()} times</h2>
         <ListContainer>
           <ListHeader>
@@ -100,20 +102,31 @@ const LevelPopup = ({
                         <ListCell width={220}>
                           <Kuski kuskiData={t.Kuski2Data} team flag />
                         </ListCell>
-                        <TimeSpan highlight={t.TimeIndex >= highlight}>
+                        <ListCell
+                          highlight={
+                            multi
+                              ? t.MultiTimeIndex >= highlight
+                              : t.TimeIndex >= highlight
+                          }
+                        >
                           <Time time={t.Time} />
-                        </TimeSpan>
+                        </ListCell>
                       </>
                     ) : (
                       <>
                         <ListCell width={220}>
                           <Kuski kuskiData={t.KuskiData} team flag />
                         </ListCell>
-                        <TimeSpan highlight={t.TimeIndex >= highlight}>
+                        <ListCell highlight={t.TimeIndex >= highlight}>
                           <Time time={t.Time} />
-                        </TimeSpan>
+                        </ListCell>
                         {t.Source !== undefined && (
-                          <LegacyIcon source={t.Source} show={showLegacyIcon} />
+                          <ListCell right>
+                            <LegacyIcon
+                              source={t.Source}
+                              show={showLegacyIcon}
+                            />
+                          </ListCell>
                         )}
                       </>
                     )}
@@ -127,11 +140,13 @@ const LevelPopup = ({
                 return (
                   <ListRow key={`${t.TimeIndex}${t.Time}`}>
                     <ListCell width={40}>{i + 1}.</ListCell>
-                    <TimeSpan highlight={t.TimeIndex >= highlight}>
+                    <ListCell highlight={t.TimeIndex >= highlight}>
                       <Time time={t.Time} />
-                    </TimeSpan>
+                    </ListCell>
                     {t.Source !== undefined && (
-                      <LegacyIcon source={t.Source} show={showLegacyIcon} />
+                      <ListCell right>
+                        <LegacyIcon source={t.Source} show={showLegacyIcon} />
+                      </ListCell>
                     )}
                   </ListRow>
                 );
@@ -156,10 +171,6 @@ const ShowMore = styled.span`
   cursor: pointer;
 `;
 
-const TimeSpan = styled(ListCell)`
-  background: ${p => (p.highlight ? '#dddddd' : 'transparent')};
-`;
-
 const ShowMoreCon = styled.div`
   padding: 10px;
   font-size: 14px;
@@ -169,13 +180,13 @@ const LevelPopUpCon = styled.div`
   position: fixed;
   top: 0;
   right: 0;
-  left: 800px;
+  left: 1050px;
   height: 100vh;
   background: #fff;
   box-sizing: border-box;
   padding-top: 50px;
   border-left: 1px solid #eaeaea;
-  @media (max-width: 1150px) {
+  @media (max-width: 1400px) {
     left: 650px;
   }
   @media (max-width: 999px) {

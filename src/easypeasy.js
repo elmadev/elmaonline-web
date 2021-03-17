@@ -18,16 +18,20 @@ import LevelPack from 'pages/levelpack/store';
 import Search from 'pages/search/store';
 import Kuski from 'pages/kuski/store';
 import LevelsAdd from 'pages/levels-add/store';
+import LevelsAddCollection from 'pages/levels-add-collection/store';
+import LevelpackCollection from 'pages/levelpack-collection/store';
 import Settings from 'pages/settings/store';
 import Replay from 'pages/cupreplay/store';
 import ReplayByUUID from 'pages/replay/store';
 import Teams from 'pages/teams/store';
 import Kuskis from 'pages/kuskis/store';
+import Help from 'pages/help/store';
 import Level from 'pages/level/store';
 import Mod from 'pages/mod/store';
 import Battle from 'pages/battle/store';
 import Levels from 'pages/levels/store';
 import News from 'features/News/store';
+import FileUpload from 'pages/upload/store';
 import ReplayList from 'features/ReplayList/store';
 
 export default {
@@ -45,7 +49,10 @@ export default {
   LevelPack,
   Search,
   Kuski,
+  Help,
   LevelsAdd,
+  LevelsAddCollection,
+  LevelpackCollection,
   Levels,
   Settings,
   Upload,
@@ -60,6 +67,7 @@ export default {
   Battle,
   Login,
   ReplayList,
+  FileUpload,
   Page: {
     sideBarVisible: true,
     showSideBar: action(state => {

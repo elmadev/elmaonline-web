@@ -30,7 +30,7 @@ const StyledLinearProgress = styled(LinearProgress)`
     background-color: #f1f1f1;
 
     .MuiLinearProgress-barColorPrimary {
-      background-color: ${p => p.lineColor};
+      background-color: ${p => p.linecolor};
     }
   }
 `;
@@ -49,7 +49,7 @@ export default function LinearProgressWithLabel({ value, remainingSeconds }) {
           <StyledLinearProgress
             value={value}
             variant="determinate"
-            lineColor={lineColor}
+            linecolor={lineColor}
           />
         </Box>
         <Typography variant="body2" color="textSecondary">

@@ -5,7 +5,9 @@ import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Link from 'components/Link';
+import Tags from 'components/Tags';
 import { useNavigate } from '@reach/router';
+import { formatDistance } from 'date-fns';
 
 const RecListItem = ({ replay, selected, columns, openReplay }) => {
   const navigate = useNavigate();
@@ -17,12 +19,29 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
     }
   };
 
+  const getTags = () => {
+    return [
+      replay.TAS ? 'TAS' : undefined,
+      replay.Unlisted ? 'Unlisted' : undefined,
+      !replay.Finished ? 'DNF' : undefined,
+      replay.Bug ? 'Bug' : undefined,
+      replay.Nitro ? 'Mod' : undefined,
+    ].filter(Boolean);
+  };
+
   return (
     <ListRow
       key={replay.ReplayIndex}
       onClick={() => handleOpenReplay(replay.UUID)}
       selected={selected}
     >
+      {columns.indexOf('Uploaded') !== -1 && (
+        <ListCell width={170}>
+          {formatDistance(replay.Uploaded * 1000, new Date(), {
+            addSuffix: true,
+          })}
+        </ListCell>
+      )}
       {columns.indexOf('Replay') !== -1 && (
         <ListCell width={200}>
           <Link to={`/r/${replay.UUID}`}>{replay.RecFileName}</Link>
@@ -30,17 +49,11 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
       )}
       {columns.indexOf('Level') !== -1 && (
         <ListCell width={100}>
-          <Level LevelData={replay.LevelData} />
+          <Level LevelIndex={replay.LevelIndex} LevelData={replay.LevelData} />
         </ListCell>
       )}
       {columns.indexOf('Time') !== -1 && (
         <ListCell right>
-          {replay.TAS === 1 && <span style={{ color: 'red' }}>(TAS) </span>}
-          {replay.Finished === 0 && (
-            <span style={{ color: 'gray' }}>(DNF) </span>
-          )}
-          {replay.Bug === 1 && <span style={{ color: 'brown' }}>(Bug) </span>}
-          {replay.Nitro === 1 && <span style={{ color: 'blue' }}>(Mod) </span>}
           <Time thousands time={replay.ReplayTime} />
         </ListCell>
       )}
@@ -49,8 +62,13 @@ const RecListItem = ({ replay, selected, columns, openReplay }) => {
           {replay.DrivenByData ? (
             <Kuski kuskiData={replay.DrivenByData} />
           ) : (
-            <div>{replay.DrivenByText}</div>
+            <div>{replay.DrivenByText || 'Unknown'}</div>
           )}
+        </ListCell>
+      )}
+      {columns.indexOf('Tags') !== -1 && (
+        <ListCell width={300}>
+          <Tags tags={getTags()} />
         </ListCell>
       )}
     </ListRow>
@@ -67,6 +85,7 @@ RecListItem.propTypes = {
     Bug: PropTypes.number,
     Nitro: PropTypes.number,
     Finished: PropTypes.number,
+    DrivenBy: PropTypes.number,
     DrivenByText: PropTypes.string,
   }).isRequired,
   openReplay: PropTypes.func,

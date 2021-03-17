@@ -135,14 +135,14 @@ const Admin = ({ records, LevelPack }) => {
             variant="outlined"
             fullWidth
             onKeyUp={e => {
-              if (e.keyCode === 13) {
+              if (e.key === 'Enter') {
                 if (e.target.value === '') {
                   setSearch('');
                 } else if (search.length > 1) {
-                  searchLevel({ q: search });
+                  searchLevel({ q: search, ShowLocked: 0 });
                 }
               }
-              if (e.keyCode === 27) {
+              if (e.key === 'Escape') {
                 setSearch('');
               }
             }}

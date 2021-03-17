@@ -64,7 +64,7 @@ const StandingsDetailedPopup = ({ data, events, close }) => {
 
 const DetailedPopup = styled.div`
   position: fixed;
-  top: 0;
+  top: 50px;
   right: 0;
   left: 800px;
   height: 100vh;

@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { mod } from 'utils/nick';
 
 import Link from 'components/Link';
 
 const SideBar = () => {
+  const isRehydrated = useStoreRehydrated();
   const { sideBarVisible } = useStoreState(state => state.Page);
   const { hideSideBar, toggleSideBar } = useStoreActions(
     actions => actions.Page,
@@ -17,10 +18,14 @@ const SideBar = () => {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 1000) {
+    if (
+      typeof window !== 'undefined' &&
+      window.innerWidth < 1000 &&
+      isRehydrated
+    ) {
       hideSideBar();
     }
-  }, []);
+  }, [isRehydrated]);
 
   const onToggle = () => {
     toggleSideBar();
@@ -28,6 +33,7 @@ const SideBar = () => {
       window.dispatchEvent(new Event('resize'));
     }, 10);
   };
+  if (!isRehydrated) return null;
   return (
     <Root sideBarVisible={sideBarVisible}>
       <Container>
@@ -35,7 +41,7 @@ const SideBar = () => {
           role="button"
           tabIndex="0"
           onKeyUp={e => {
-            if (e.keyCode === 13) onToggle();
+            if (e.key === 'Enter') onToggle();
           }}
           onClick={onToggle}
         >
@@ -48,7 +54,7 @@ const SideBar = () => {
           <Link to="/battles" onClick={onNavigation}>
             Battles
           </Link>
-          <Link to="/battles/ranking" onClick={onNavigation}>
+          <Link to="/ranking" onClick={onNavigation}>
             Ranking
           </Link>
           <Link to="/levels" onClick={onNavigation}>
@@ -77,6 +83,9 @@ const SideBar = () => {
           </Link>
           <Link to="/help" onClick={onNavigation}>
             Help
+          </Link>
+          <Link to="/up" onClick={onNavigation}>
+            Upload
           </Link>
           {mod() === 1 && (
             <Link to="/mod" onClick={onNavigation}>
@@ -134,7 +143,7 @@ const Content = styled.div`
 
 const Title = styled.div`
   background: #383838;
-  line-height: 50px;
+  line-height: 54px;
   color: #fff;
   text-transform: uppercase;
   padding: 0 17px;

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-// import { useNavigate } from "@reach/router";
+import { useNavigate } from '@reach/router';
 import styled from 'styled-components';
-import { Button, Drawer, Hidden, IconButton } from '@material-ui/core';
+import { Button, Drawer, IconButton } from '@material-ui/core';
 import { Info, Cancel } from '@material-ui/icons';
 
-const SearchBar = () => {
-  // const navigate = useNavigate();
+const SearchBar = props => {
+  const { hidePlaceholder } = props;
+  const navigate = useNavigate();
   const [searchType, setType] = useState('');
   const [value, setValue] = useState('');
   const [info, openInfo] = useState(false);
@@ -13,45 +14,12 @@ const SearchBar = () => {
     <Container>
       {searchType === '' ? (
         <TypesContainer>
-          <Hidden xsDown>
-            Search <Button onClick={() => setType('level')}>Level</Button>
-            <Button onClick={() => setType('battle')}>Battle</Button>
-            <Button onClick={() => setType('replay')}>Replay</Button>
-            <Button onClick={() => setType('player')}>Player</Button>
-            <Button onClick={() => setType('team')}>Team</Button>
-          </Hidden>
-          <Hidden smUp>
-            <Button
-              style={{ minWidth: '32px' }}
-              onClick={() => setType('level')}
-            >
-              Level
-            </Button>
-            <Button
-              style={{ minWidth: '32px' }}
-              onClick={() => setType('battle')}
-            >
-              Battle
-            </Button>
-            <Button
-              style={{ minWidth: '32px' }}
-              onClick={() => setType('replay')}
-            >
-              Replay
-            </Button>
-            <Button
-              style={{ minWidth: '32px' }}
-              onClick={() => setType('player')}
-            >
-              Player
-            </Button>
-            <Button
-              style={{ minWidth: '32px' }}
-              onClick={() => setType('team')}
-            >
-              Team
-            </Button>
-          </Hidden>
+          {!hidePlaceholder && <Placeholder>Search:</Placeholder>}
+          <Button onClick={() => setType('level')}>Level</Button>
+          <Button onClick={() => setType('battle')}>Battle</Button>
+          <Button onClick={() => setType('replay')}>Replay</Button>
+          <Button onClick={() => setType('player')}>Player</Button>
+          <Button onClick={() => setType('team')}>Team</Button>
         </TypesContainer>
       ) : (
         <>
@@ -62,14 +30,14 @@ const SearchBar = () => {
             type="text"
             placeholder={`Search ${searchType}`}
             onKeyUp={e => {
-              if (e.keyCode === 13) {
+              if (e.key === 'Enter') {
                 if (e.target.value === '') {
                   setType('');
                 } else {
-                  // navigate(`/search?q=${e.target.value}&t=${searchType}`);
+                  navigate(`/search?q=${e.target.value}&t=${searchType}`);
                 }
               }
-              if (e.keyCode === 27) {
+              if (e.key === 'Escape') {
                 setValue('');
                 setType('');
               }
@@ -106,14 +74,45 @@ const SearchBar = () => {
   );
 };
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  .MuiButton-root {
+    min-width: 0;
+    display: block;
+    padding: 3px 6px;
+    margin: 0 2px;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    .MuiButton-label {
+      display: block;
+      font-size: 13px;
+    }
+  }
+`;
+
+const TypesContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  border: 0;
+  background-color: white;
+  color: #767676;
+  padding: 5px 8px 5px 12px;
+  border-radius: 4px;
+`;
+
 const Reset = styled.div`
-  position: absolute;
-  left: 536px;
-  top: 14px;
-  height: 24px;
+  display: block;
+  margin-left: 3px;
   button {
-    padding: 0;
-    position: absolute;
+    padding: 5px;
+    color: inherit;
   }
 `;
 
@@ -129,39 +128,20 @@ const OpenInfo = styled.div`
   cursor: pointer;
 `;
 
-const TypesContainer = styled.div`
-  position: relative;
-  height: 41px;
-  margin-left: 8px 0;
-  border: 0;
-  width: 380px;
-  background-color: white;
-  color: #767676;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 8px;
-  @media (max-width: 460px) {
-    width: 100%;
-  }
-`;
-
-const Container = styled.div`
-  margin: 5px;
-  margin-left: -10px;
-  display: flex;
-  flex-direction: row;
-`;
-
 const SearchInput = styled.input`
-  height: 25px;
+  height: 22px;
   padding: 8px;
   display: block;
   margin-left: 8px 0;
   border: 0;
   width: 300px;
   max-width: 100%;
+`;
+
+const Placeholder = styled.span`
+  margin-bottom: 3px;
+  margin-right: 1px;
+  font-size: 14px;
 `;
 
 export default SearchBar;

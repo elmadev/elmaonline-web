@@ -4,12 +4,12 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CupWidget from 'components/CupWidget';
 
-export default function FeedCard() {
+export default function FeedCard({ cupShortName }) {
   return (
     <Card>
       <CardHeader title="Feed" />
       <CardContent>
-        <CupWidget ShortName="Kopa" />
+        <CupWidget ShortName={cupShortName} />
       </CardContent>
     </Card>
   );

@@ -9,16 +9,18 @@ import {
 import { ExpandMore } from '@material-ui/icons';
 import styled from 'styled-components';
 import { Paper } from 'components/Paper';
-
+import Layout from 'components/Layout';
 import Recplayer from 'components/Recplayer';
 import { Level } from 'components/Names';
 import LocalTime from 'components/LocalTime';
+import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Link from 'components/Link';
 import RecList from 'features/RecList';
 import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment';
+import Tags from 'components/Tags';
 import { useNavigate } from '@reach/router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import config from 'config';
@@ -41,11 +43,21 @@ const Replay = props => {
   if (!replay) return null;
 
   if (isWindow) {
-    link = `https://eol.ams3.digitaloceanspaces.com/${config.s3SubFolder}replays/${replay.UUID}/${replay.RecFileName}`;
+    link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
   }
 
+  const getTags = () => {
+    return [
+      replay.TAS ? 'TAS' : undefined,
+      replay.Unlisted ? 'Unlisted' : undefined,
+      !replay.Finished ? 'DNF' : undefined,
+      replay.Bug ? 'Bug' : undefined,
+      replay.Nitro ? 'Mod' : undefined,
+    ].filter(Boolean);
+  };
+
   return (
-    <Container>
+    <Layout t={`rec - ${replay.RecFileName}`}>
       <PlayerContainer>
         <Player>
           {isWindow && (
@@ -78,38 +90,26 @@ const Replay = props => {
                     <Time thousands time={replay.ReplayTime} />
                   )}
                   by{' '}
-                  {replay.DrivenByData ? replay.DrivenByData.Kuski : 'Unknown'}{' '}
-                  in <Level LevelData={replay.LevelData} />
+                  {replay.DrivenByData ? (
+                    <Kuski kuskiData={replay.DrivenByData} />
+                  ) : (
+                    replay.DrivenByText || 'Unknown'
+                  )}{' '}
+                  in <Level LevelData={replay.LevelData} noLink />
                 </div>
                 <br />
                 <Link to={`/levels/${replay.LevelIndex}`}>
                   Go to level page
                 </Link>
               </ReplayDescription>
-              <div>
-                {replay.TAS === 1 && (
-                  <span style={{ color: 'red' }}>(TAS)</span>
-                )}
-                {replay.Unlisted === 1 && (
-                  <span style={{ color: 'gray' }}>(Unlisted)</span>
-                )}
-                {replay.Finished === 0 && (
-                  <span style={{ color: 'gray' }}>(DNF)</span>
-                )}
-                {replay.Bug === 1 && (
-                  <span style={{ color: 'brown' }}>(Bug)</span>
-                )}
-                {replay.Nitro === 1 && (
-                  <span style={{ color: 'blue' }}>(Mod)</span>
-                )}
-              </div>
+              <Tags tags={getTags()} />
             </AccordionDetails>
           </Accordion>
           {/* <ExpansionPanel defaultExpanded>
             <ExpansionPanelSummary expandIcon={<ExpandMore />}>
               <Typography variant="body1">
                 <React.Fragment>
-                  <Level LevelData={replay.LevelData} />.lev
+                  <Level LevelData={replay.LevelData} noLink/>.lev
                 </React.Fragment>
               </Typography>
             </ExpansionPanelSummary>
@@ -130,7 +130,7 @@ const Replay = props => {
                 currentUUID={replay.UUID}
                 openReplay={uuid => navigate(`/r/${uuid}`)}
                 columns={['Replay', 'Time', 'By']}
-                horizontalMargin={-24}
+                horizontalMargin={-16}
               />
             </AccordionDetails>
           </Accordion>
@@ -159,25 +159,18 @@ const Replay = props => {
           <ReplayComments ReplayIndex={replay.ReplayIndex} />
         </BattleDescriptionPaper>
       </LevelStatsContainer>
-    </Container>
+    </Layout>
   );
 };
-
-const Container = styled.div`
-  padding: 7px;
-  @media (max-width: 768px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
-`;
 
 const PlayerContainer = styled.div`
   width: 70%;
   float: left;
   padding: 7px;
   box-sizing: border-box;
-  @media (max-width: 1400px) {
-    widtdh: 100%;
+  @media (max-width: 1100px) {
+    float: none;
+    width: 100%;
   }
 `;
 
@@ -187,6 +180,10 @@ const Player = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 1100px) {
+    height: 56vw;
+    min-height: 450px;
+  }
 `;
 
 const RightBarContainer = styled.div`
@@ -194,11 +191,9 @@ const RightBarContainer = styled.div`
   width: 30%;
   padding: 7px;
   box-sizing: border-box;
-  @media (max-width: 1400px) {
-    widtdh: 40%;
-  }
-  @media (max-width: 768px) {
-    widtdh: 100%;
+  @media (max-width: 1100px) {
+    float: none;
+    width: 100%;
   }
 `;
 
@@ -207,17 +202,16 @@ const LevelStatsContainer = styled.div`
   float: left;
   padding: 7px;
   box-sizing: border-box;
-  @media (max-width: 1400px) {
-    widtdh: 60%;
-  }
-  @media (max-width: 768px) {
-    widtdh: 100%;
+  @media (max-width: 1100px) {
+    float: none;
+    width: 100%;
   }
 `;
 
 const BattleDescriptionPaper = styled(Paper)`
   font-size: 14px;
   padding: 7px;
+  width: auto;
 `;
 
 const ReplayDescriptionPaper = styled(Paper)`
@@ -226,6 +220,7 @@ const ReplayDescriptionPaper = styled(Paper)`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  width: auto;
 `;
 
 const ReplayDescription = styled.div`
@@ -241,7 +236,11 @@ const ChatContainer = styled.div`
 `;
 
 Replay.propTypes = {
-  ReplayUuid: PropTypes.string.isRequired,
+  ReplayUuid: PropTypes.string,
+};
+
+Replay.defaultProps = {
+  ReplayUuid: '',
 };
 
 export default Replay;

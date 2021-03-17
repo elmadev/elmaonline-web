@@ -4,10 +4,22 @@ import styled from 'styled-components';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import { Level } from 'components/Names';
 import Loading from 'components/Loading';
 import { recordsTT } from 'utils/calcs';
 import LegacyIcon from 'components/LegacyIcon';
 import LevelPopup from './LevelPopup';
+
+const hasSource = records => {
+  if (records.length > 0) {
+    if (records[0].LevelBesttime.length > 0) {
+      if (records[0].LevelBesttime[0].Source !== undefined) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
 
 const Records = ({
   highlight,
@@ -29,8 +41,7 @@ const Records = ({
           <ListCell width={320}>Level name</ListCell>
           <ListCell width={200}>Kuski</ListCell>
           <ListCell>Time</ListCell>
-          {records.length > 0 &&
-            records[0].LevelBesttime[0].Source !== undefined && <ListCell />}
+          {hasSource(records) && <ListCell />}
         </ListHeader>
         {recordsLoading && <Loading />}
         {records.map(r => (
@@ -44,20 +55,22 @@ const Records = ({
             }}
             selected={level === r.LevelIndex}
           >
-            <ListCell width={100}>{r.Level.LevelName}</ListCell>
+            <ListCell width={100}>
+              <Level LevelIndex={r.LevelIndex} LevelData={r.Level} />
+            </ListCell>
             <ListCell width={320}>{r.Level.LongName}</ListCell>
             {r.LevelBesttime.length > 0 ? (
               <>
                 <ListCell width={200}>
                   <Kuski kuskiData={r.LevelBesttime[0].KuskiData} team flag />
                 </ListCell>
-                <TimeSpan
+                <ListCell
                   highlight={
                     r.LevelBesttime[0].TimeIndex >= highlight[highlightWeeks]
                   }
                 >
                   <Time time={r.LevelBesttime[0].Time} />
-                </TimeSpan>
+                </ListCell>
                 {r.LevelBesttime[0].Source !== undefined && (
                   <ListCell right>
                     <LegacyIcon
@@ -82,8 +95,7 @@ const Records = ({
           <ListCell>
             <Time time={recordsTT(records, 'LevelBesttime')} />
           </ListCell>
-          {records.length > 0 &&
-            records[0].LevelBesttime[0].Source !== undefined && <ListCell />}
+          {hasSource(records) && <ListCell />}
         </TTRow>
       </ListContainer>
       {level !== -1 && (
@@ -124,10 +136,6 @@ const TTRow = styled(ListRow)`
     background: ${p => (p.selected ? '#219653' : '#f9f9f9')};
     color: ${p => (p.selected ? '#fff' : 'inherit')};
   }
-`;
-
-const TimeSpan = styled(ListCell)`
-  background: ${p => (p.highlight ? '#dddddd' : 'transparent')};
 `;
 
 export default Records;

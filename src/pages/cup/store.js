@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { action, persist, thunk } from 'easy-peasy';
 import {
-  AllFinishedInRange,
+  LeaderHistory,
   Cup,
   CupEvents,
   UpdateCup,
@@ -89,15 +89,18 @@ export default {
   }),
   myReplays: [],
   myTimes: [],
-  allFinished: [],
+  leaderHistory: [],
   setMyReplays: action((state, payload) => {
     state.myReplays = payload;
   }),
   setMyTimes: action((state, payload) => {
     state.myTimes = payload;
   }),
-  setAllFinished: action((state, payload) => {
-    state.allFinished = payload;
+  pushMyTimes: action((state, payload) => {
+    state.myTimes.push({ level: payload.level, times: payload.times });
+  }),
+  setLeaderHistory: action((state, payload) => {
+    state.leaderHistory = payload;
   }),
   getMyReplays: thunk(async (actions, payload) => {
     const recs = await MyReplays(payload);
@@ -112,9 +115,10 @@ export default {
     }
   }),
   getMyTimes: thunk(async (actions, payload) => {
+    actions.setMyTimes([]);
     const times = await PersonalAllFinished(payload);
     if (times.ok) {
-      actions.setMyTimes(times.data);
+      actions.pushMyTimes({ times: times.data, level: payload.LevelIndex });
     }
   }),
   teamReplays: [],
@@ -139,10 +143,10 @@ export default {
       actions.setTeamReplays(recs.data);
     }
   }),
-  getAllFinishedInRange: thunk(async (actions, payload) => {
-    const times = await AllFinishedInRange(payload);
+  getLeaderHistory: thunk(async (actions, payload) => {
+    const times = await LeaderHistory(payload);
     if (times.ok) {
-      actions.setAllFinished(times.data);
+      actions.setLeaderHistory(times.data);
     }
   }),
   levelList: [],
@@ -150,7 +154,7 @@ export default {
     state.levelList = payload;
   }),
   findLevels: thunk(async (actions, payload) => {
-    const get = await LevelsSearchAll({ q: payload });
+    const get = await LevelsSearchAll({ q: payload, ShowLocked: 1 });
     if (get.ok) {
       const newList = [];
       forEach(get.data, l => {

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import Layout from 'components/Layout';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Link } from '@reach/router';
+import { Paper } from 'components/Paper';
 
 const {{name}} = () => {
   const [touches, setTouches] = useState(0);
@@ -13,21 +14,12 @@ const {{name}} = () => {
   }, []);
 
   return (
-    <Container>
-      <Text>{data}</Text>
-      <Text onClick={() => setTouches(touches + 1)}>{touches}</Text>
+    <Layout>
+      <Paper>{data}</Paper>
+      <Paper onClick={() => setTouches(touches + 1)}>{touches}</Paper>
       <Link to="/">Home</Link>
-    </Container>
+    </Layout>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const Text = styled.div``;
 
 export default {{name}};

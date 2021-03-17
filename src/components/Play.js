@@ -22,7 +22,7 @@ const Text = styled.div`
 
 const Container = styled.div`
   background-image: url('${Sky}');
-  height: 400px;
+  height: 450px;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -34,9 +34,7 @@ const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
   };
 
   const handleOpenReplay = uuid => {
-    navigate({
-      pathname: `/r/${uuid}`,
-    });
+    navigate(`/r/${uuid}`);
   };
 
   const filterFunction = o => {

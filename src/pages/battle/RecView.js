@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
-import { Checkbox, FormControlLabel, withStyles } from '@material-ui/core';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
 import Recplayer from 'components/Recplayer';
 import Play from 'components/Play';
 import styled from 'styled-components';
@@ -30,8 +30,8 @@ const RecView = props => {
               <>
                 {isWindow && battleStatus !== 'Queued' && (
                   <Recplayer
-                    rec={`${config}/battlereplay/${BattleIndex}`}
-                    lev={`${config}/level/${levelIndex}`}
+                    rec={`${config.dlUrl}battlereplay/${BattleIndex}`}
+                    lev={`${config.dlUrl}level/${levelIndex}`}
                     autoPlay={autoPlayRecs ? 'if-visible' : 'no'}
                     controls
                   />
@@ -65,15 +65,27 @@ const PlayerContainer = styled.div`
   box-sizing: border-box;
   .player {
     background: #f1f1f1;
-    height: 400px;
+    height: 550px;
     display: flex;
     align-items: center;
     justify-content: center;
+    @media screen and (max-width: 1650px) {
+      height: 450px;
+    }
+    @media screen and (max-width: 500px) {
+      height: 400px;
+    }
+  }
+  @media screen and (max-width: 1100px) {
+    float: none;
+    width: 100%;
   }
 `;
 
-const StyledFormControlLabel = withStyles({
-  label: { fontSize: '14px' },
-})(FormControlLabel);
+const StyledFormControlLabel = styled(FormControlLabel)`
+  span {
+    font-size: 14px;
+  }
+`;
 
 export default RecView;

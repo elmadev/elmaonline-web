@@ -8,6 +8,7 @@ import Header from 'components/Header';
 import Feedback from 'components/Feedback';
 import { nickId } from 'utils/nick';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import Layout from 'components/Layout';
 import Setting from './Setting';
 
 const Settings = () => {
@@ -61,7 +62,7 @@ const Settings = () => {
   };
 
   return (
-    <>
+    <Layout edge t="Settings">
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
@@ -174,6 +175,7 @@ const Settings = () => {
                     <PaperCon>
                       {ignored.map(i => (
                         <IgnoreCon
+                          key={i.IgnoreIndex}
                           onClick={() => unignore(i.IgnoredKuskiIndex)}
                         >
                           <Remove /> {i.KuskiData.Kuski}
@@ -212,7 +214,7 @@ const Settings = () => {
           </InfoBox>
         </Drawer>
       </Container>
-    </>
+    </Layout>
   );
 };
 

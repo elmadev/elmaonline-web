@@ -16,6 +16,8 @@ import Dropzone from 'components/Dropzone';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Alert from 'components/Alert';
 import Link from 'components/Link';
+import config from 'config';
+import { authToken } from 'utils/nick';
 
 const Upload = ({ onUpload, filetype }) => {
   const {
@@ -170,9 +172,12 @@ const Upload = ({ onUpload, filetype }) => {
       const data = new FormData();
       data.append('file', file);
       data.append('filename', file.name);
-      fetch('/upload/replay', {
+      fetch(`${config.url}upload/replay`, {
         method: 'POST',
         body: data,
+        headers: {
+          Authorization: authToken(),
+        },
       }).then(response => {
         response.json().then(body => {
           if (body.error) {
