@@ -83,7 +83,7 @@ export default {
     }
     actions.setTotaltimesLoading(false);
   }),
-  personalTimes: [],
+  personalTimes: persist([], { storage: 'sessionStorage' }),
   setPersonalTimes: action((state, payload) => {
     state.personalTimes = payload;
   }),
