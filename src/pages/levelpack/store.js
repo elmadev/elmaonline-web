@@ -2,10 +2,9 @@
 import { action, thunk, persist } from 'easy-peasy';
 import {
   Highlight,
-  TotalTimes,
   PersonalAllFinished,
   Besttime,
-  Records,
+  LevelPackStats,
   MultiRecords,
   MultiBesttime,
   PersonalWithMulti,
@@ -59,29 +58,11 @@ export default {
   }),
   totaltimes: [],
   kinglist: [],
-  lastPack: 0,
-  totaltimesLoading: false,
   setTotalTimes: action((state, payload) => {
     state.totaltimes = payload;
   }),
   setKinglist: action((state, payload) => {
     state.kinglist = payload;
-  }),
-  setTotaltimesLoading: action((state, payload) => {
-    state.totaltimesLoading = payload;
-  }),
-  setLastPack: action((state, payload) => {
-    state.lastPack = payload;
-  }),
-  getTotalTimes: thunk(async (actions, payload) => {
-    actions.setTotaltimesLoading(true);
-    const tts = await TotalTimes(payload);
-    if (tts.ok) {
-      actions.setTotalTimes(tts.data.tts);
-      actions.setKinglist(tts.data.points);
-      actions.setLastPack(payload.levelPackIndex);
-    }
-    actions.setTotaltimesLoading(false);
   }),
   personalTimes: [],
   setPersonalTimes: action((state, payload) => {
@@ -144,11 +125,13 @@ export default {
   setRecordsLoading: action((state, payload) => {
     state.recordsLoading = payload;
   }),
-  getRecords: thunk(async (actions, payload) => {
+  getStats: thunk(async (actions, payload) => {
     actions.setRecordsLoading(true);
-    const times = await Records(payload);
+    const times = await LevelPackStats(payload);
     if (times.ok) {
-      actions.setRecords(times.data);
+      actions.setRecords(times.data.records);
+      actions.setTotalTimes(times.data.tts);
+      actions.setKinglist(times.data.points);
     }
     actions.setRecordsLoading(false);
     actions.setAdminLoading(false);

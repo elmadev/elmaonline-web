@@ -4,7 +4,7 @@ import {
   PersonalLatest,
   PersonalLatestPRs,
   PersonalRanking,
-  Records,
+  LevelPackStats,
   PersonalTimes,
   BattlesByDesigner,
   GiveRights,
@@ -51,7 +51,7 @@ export default {
     state.tt = payload;
   }),
   getTt: thunk(async (actions, payload) => {
-    const records = await Records({ name: 'Int', eolOnly: 0 });
+    const records = await LevelPackStats({ name: 'Int', eolOnly: 0 });
     const times = await PersonalTimes({
       PersonalKuskiIndex: payload,
       name: 'Int',
