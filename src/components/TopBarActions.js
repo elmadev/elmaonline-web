@@ -4,10 +4,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
+import { useNavigate } from '@reach/router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import styled from 'styled-components';
-
-import Link from 'components/Link';
 
 const StyledButton = styled(Button)`
   a {
@@ -15,7 +14,14 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const Item = styled(MenuItem)`
+  && {
+    color: #219653;
+  }
+`;
+
 export default function TopBarActions() {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const { loggedIn, username } = useStoreState(state => state.Login);
@@ -25,20 +31,24 @@ export default function TopBarActions() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = to => {
     setAnchorEl(null);
+    if (to) {
+      navigate(to);
+    }
   };
 
   const performLogout = () => {
     handleClose();
     logout();
+    navigate('/');
   };
 
   return (
     <>
       {!loggedIn && (
-        <StyledButton color="inherit">
-          <Link to="/login">Login</Link>
+        <StyledButton color="inherit" onClick={() => navigate('/login')}>
+          Login
         </StyledButton>
       )}
       {loggedIn && (
@@ -65,23 +75,13 @@ export default function TopBarActions() {
               horizontal: 'right',
             }}
             open={open}
-            onClose={handleClose}
+            onClose={() => handleClose('')}
           >
-            <MenuItem>
-              <Link to={`/kuskis/${username}`} onClick={handleClose}>
-                Profile
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/settings" onClick={handleClose}>
-                Settings
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="/" onClick={performLogout}>
-                Log out
-              </Link>
-            </MenuItem>
+            <Item onClick={() => handleClose(`/kuskis/${username}`)}>
+              Profile
+            </Item>
+            <Item onClick={() => handleClose('/settings')}>Settings</Item>
+            <Item onClick={() => performLogout()}>Log out</Item>
           </Menu>
         </div>
       )}

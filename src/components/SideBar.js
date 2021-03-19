@@ -2,12 +2,15 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { mod } from 'utils/nick';
-
+import SideBarSubItem from 'components/SideBarSubItem';
 import Link from 'components/Link';
 
 const SideBar = () => {
   const isRehydrated = useStoreRehydrated();
-  const { sideBarVisible } = useStoreState(state => state.Page);
+  const {
+    sideBarVisible,
+    sideBar: { menu },
+  } = useStoreState(state => state.Page);
   const { hideSideBar, toggleSideBar } = useStoreActions(
     actions => actions.Page,
   );
@@ -37,56 +40,35 @@ const SideBar = () => {
   return (
     <Root sideBarVisible={sideBarVisible}>
       <Container>
-        <Title
-          role="button"
-          tabIndex="0"
-          onKeyUp={e => {
-            if (e.key === 'Enter') onToggle();
-          }}
-          onClick={onToggle}
-        >
-          &#9776; <Header sideBarVisible={sideBarVisible}>Sidebar</Header>
+        <Title>
+          <Burger
+            role="button"
+            tabIndex="0"
+            onKeyUp={e => {
+              if (e.key === 'Enter') onToggle();
+            }}
+            onClick={onToggle}
+          >
+            &#9776;
+          </Burger>
+          <Header to="/" sideBarVisible={sideBarVisible}>
+            Elma Online
+          </Header>
         </Title>
         <Content sideBarVisible={sideBarVisible}>
-          <Link to="/" onClick={onNavigation}>
-            Home
-          </Link>
-          <Link to="/battles" onClick={onNavigation}>
-            Battles
-          </Link>
-          <Link to="/ranking" onClick={onNavigation}>
-            Ranking
-          </Link>
-          <Link to="/levels" onClick={onNavigation}>
-            Levels
-          </Link>
-          <Link to="/replays" onClick={onNavigation}>
-            Replays
-          </Link>
-          <Link to="/kuskis" onClick={onNavigation}>
-            Kuskis
-          </Link>
-          <Link to="/teams" onClick={onNavigation}>
-            Teams
-          </Link>
-          <Link to="/cups" onClick={onNavigation}>
-            Cups
-          </Link>
-          <Link to="/editor" onClick={onNavigation}>
-            Editor
-          </Link>
-          <Link to="/map" onClick={onNavigation}>
-            Map
-          </Link>
-          <Link to="/chatlog" onClick={onNavigation}>
-            Chat Log
-          </Link>
-          <Link to="/help" onClick={onNavigation}>
-            Help
-          </Link>
-          <Link to="/up" onClick={onNavigation}>
-            Upload
-          </Link>
+          {menu.map(m => (
+            <SideBarSubItem
+              key={m.header}
+              name={m.header}
+              expanded={m.expanded}
+            >
+              {m.items.map(i => (
+                <Link key={i.name} to={i.to} onClick={onNavigation}>
+                  {i.name}
+                </Link>
+              ))}
+            </SideBarSubItem>
+          ))}
           {mod() === 1 && (
             <Link to="/mod" onClick={onNavigation}>
               Mod
@@ -107,15 +89,21 @@ const Root = styled.div`
   z-index: 11;
   height: ${p => (p.sideBarVisible ? '100%' : 'auto')};
   @media (max-width: 768px) {
-    width: ${p => (p.sideBarVisible ? '250px' : '50px')};
+    width: ${p => (p.sideBarVisible ? '175px' : '50px')};
+    opacity: 0.9;
   }
 `;
 
-const Header = styled.span`
-  display: ${p => (p.sideBarVisible ? 'inline' : 'initial')};
+const Header = styled(Link)`
+  color: #fff;
+  display: ${p => (p.sideBarVisible ? 'inline-block' : 'initial')};
   @media (max-width: 768px) {
-    display: none;
+    display: ${p => (p.sideBarVisible ? 'inline-block' : 'none')};
   }
+`;
+
+const Burger = styled.span`
+  padding: 17px;
 `;
 
 const Container = styled.div`
@@ -133,20 +121,21 @@ const Content = styled.div`
   a {
     color: #c3c3c3;
     display: block;
-    padding: 10px 15px;
+    font-size: 0.8em;
+    padding: 10px 25px;
     text-decoration: none;
     :hover {
-      background: rgba(0, 0, 0, 0.1);
+      background: #333333;
     }
   }
 `;
 
 const Title = styled.div`
-  background: #383838;
+  background: #1f1f1f;
+  opacity: 0.9;
   line-height: 54px;
   color: #fff;
   text-transform: uppercase;
-  padding: 0 17px;
   outline: 0;
   cursor: pointer;
 `;
