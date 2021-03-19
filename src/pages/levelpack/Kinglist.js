@@ -1,30 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import React from 'react';
+import { useStoreState } from 'easy-peasy';
 import Loading from 'components/Loading';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 
-const Kinglist = ({ highlight, highlightWeeks, levelPackIndex }) => {
-  const {
-    kinglist,
-    totaltimesLoading,
-    lastPack,
-    settings: { showLegacy },
-  } = useStoreState(state => state.LevelPack);
-  const { getTotalTimes } = useStoreActions(actions => actions.LevelPack);
-  const lastShowLegacy = useRef(showLegacy);
-
-  useEffect(() => {
-    if (lastPack !== levelPackIndex) {
-      getTotalTimes({ levelPackIndex, eolOnly: showLegacy ? 0 : 1 });
-    }
-  }, [levelPackIndex]);
-
-  useEffect(() => {
-    if (lastShowLegacy.current !== showLegacy) {
-      lastShowLegacy.current = showLegacy;
-      getTotalTimes({ levelPackIndex, eolOnly: showLegacy ? 0 : 1 });
-    }
-  }, [showLegacy]);
+const Kinglist = ({ highlight, highlightWeeks }) => {
+  const { kinglist, recordsLoading } = useStoreState(state => state.LevelPack);
 
   return (
     <>
@@ -36,7 +16,7 @@ const Kinglist = ({ highlight, highlightWeeks, levelPackIndex }) => {
           <ListCell width={200}>Points</ListCell>
           <ListCell />
         </ListHeader>
-        {totaltimesLoading && <Loading />}
+        {recordsLoading && <Loading />}
         {kinglist.length > 0 && (
           <>
             {kinglist

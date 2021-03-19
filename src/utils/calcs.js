@@ -7,10 +7,21 @@ export const recordsTT = (levels, timeObj) => {
   let finished = 0;
   let unfinished = false;
   forEach(levels, l => {
-    if (l[timeObj].length > 0) {
-      tt += l[timeObj][0].Time;
-      finished += 1;
-      levs += 1;
+    if (l[timeObj]) {
+      if (Array.isArray(l[timeObj])) {
+        if (l[timeObj].length > 0) {
+          tt += l[timeObj][0].Time;
+          finished += 1;
+          levs += 1;
+        } else {
+          levs += 1;
+          unfinished = true;
+        }
+      } else {
+        tt += l[timeObj].Time;
+        finished += 1;
+        levs += 1;
+      }
     } else {
       levs += 1;
       unfinished = true;
