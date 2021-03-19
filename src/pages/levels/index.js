@@ -45,7 +45,7 @@ const Levels = () => {
       if (loggedIn) {
         setPacks(
           levelpacks.map(lp => {
-            if (loggedIn) {
+            if (loggedIn && favs) {
               if (
                 favs.findIndex(f => f.LevelPackIndex === lp.LevelPackIndex) > -1
               ) {
@@ -135,15 +135,19 @@ const Levels = () => {
         )}
         {tab === 1 && (
           <>
-            {collections.length > 0 &&
-              collections.map(c => (
-                <GridItem
-                  to={`/levels/collections/${c.CollectionName}`}
-                  name={c.CollectionName}
-                  longname={c.CollectionLongName}
-                  key={c.LevelPackCollectionIndex}
-                />
-              ))}
+            {collections && (
+              <>
+                {collections.length > 0 &&
+                  collections.map(c => (
+                    <GridItem
+                      to={`/levels/collections/${c.CollectionName}`}
+                      name={c.CollectionName}
+                      longname={c.CollectionLongName}
+                      key={c.LevelPackCollectionIndex}
+                    />
+                  ))}
+              </>
+            )}
             <FabCon>
               <Fab
                 color="primary"

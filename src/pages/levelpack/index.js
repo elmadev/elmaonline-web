@@ -46,7 +46,7 @@ const LevelPack = ({ name }) => {
     getHighlight,
     getPersonalTimes,
     setError,
-    getRecords,
+    getStats,
     setHighlightWeeks,
     toggleShowLegacyIcon,
     toggleShowLegacy,
@@ -57,7 +57,7 @@ const LevelPack = ({ name }) => {
 
   useEffect(() => {
     getLevelPackInfo(name);
-    getRecords({ name, eolOnly: showLegacy ? 0 : 1 });
+    getStats({ name, eolOnly: showLegacy ? 0 : 1 });
     getHighlight();
     const PersonalKuskiIndex = nick();
     if (PersonalKuskiIndex !== '') {
@@ -72,7 +72,7 @@ const LevelPack = ({ name }) => {
   useEffect(() => {
     if (lastShowLegacy.current !== showLegacy) {
       lastShowLegacy.current = showLegacy;
-      getRecords({ name, eolOnly: showLegacy ? 0 : 1 });
+      getStats({ name, eolOnly: showLegacy ? 0 : 1 });
       if (personalKuski !== '') {
         getPersonalTimes({
           PersonalKuskiIndex: personalKuski,
@@ -209,18 +209,10 @@ const LevelPack = ({ name }) => {
           />
         )}
         {tab === 1 && (
-          <TotalTimes
-            levelPackIndex={levelPackInfo.LevelPackIndex}
-            highlight={highlight}
-            highlightWeeks={highlightWeeks}
-          />
+          <TotalTimes highlight={highlight} highlightWeeks={highlightWeeks} />
         )}
         {tab === 2 && (
-          <Kinglist
-            levelPackIndex={levelPackInfo.LevelPackIndex}
-            highlight={highlight}
-            highlightWeeks={highlightWeeks}
-          />
+          <Kinglist highlight={highlight} highlightWeeks={highlightWeeks} />
         )}
         {tab === 3 && (
           <Personal
