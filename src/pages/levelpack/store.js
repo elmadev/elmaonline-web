@@ -64,7 +64,7 @@ export default {
   setKinglist: action((state, payload) => {
     state.kinglist = payload;
   }),
-  personalTimes: [],
+  personalTimes: persist([], { storage: 'sessionStorage' }),
   setPersonalTimes: action((state, payload) => {
     state.personalTimes = payload;
   }),
