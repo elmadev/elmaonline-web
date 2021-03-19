@@ -58,7 +58,7 @@ export default {
       eolOnly: 0,
     });
     if (records.ok && times.ok) {
-      const levels = records.data.map(r => {
+      const levels = records.data.records.map(r => {
         const personal = times.data.filter(t => t.LevelIndex === r.LevelIndex);
         if (personal.length > 0) {
           return { ...r, LevelBesttime: personal[0].LevelBesttime };
