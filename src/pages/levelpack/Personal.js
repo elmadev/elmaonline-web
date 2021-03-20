@@ -47,18 +47,20 @@ const Personal = ({
   const [levelName, setLevelName] = useState('');
   const isRehydrated = useStoreRehydrated();
 
-  let levels;
+  let levels = [];
   if (isRehydrated) {
-    levels = records.map(r => {
-      const timeIndex = times.packLevels.indexOf(r.LevelIndex);
-      return {
-        single: times.timesData[timeIndex].LevelBesttime,
-        multi: times.timesData[timeIndex].LevelMultiBesttime,
-        both: times.timesData[timeIndex].LevelCombinedBesttime,
-        Level: r.Level,
-        LevelIndex: r.LevelIndex,
-      };
-    });
+    if (times.packLevels) {
+      levels = records.map(r => {
+        const timeIndex = times.packLevels.indexOf(r.LevelIndex);
+        return {
+          single: times.timesData[timeIndex].LevelBesttime,
+          multi: times.timesData[timeIndex].LevelMultiBesttime,
+          both: times.timesData[timeIndex].LevelCombinedBesttime,
+          Level: r.Level,
+          LevelIndex: r.LevelIndex,
+        };
+      });
+    }
   }
   const tts = [
     combinedTT(levels, ['single']),
