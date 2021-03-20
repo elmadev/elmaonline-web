@@ -159,7 +159,7 @@ export default {
   deleteLevel: thunk(async (actions, payload) => {
     const del = await LevelPackDeleteLevel(payload);
     if (del.ok) {
-      actions.getRecords({
+      actions.getStats({
         name: payload.name,
         eolOnly: payload.showLegacy ? 0 : 1,
       });
@@ -182,7 +182,7 @@ export default {
   addLevel: thunk(async (actions, payload) => {
     const add = await LevelPackAddLevel(payload);
     if (add.ok) {
-      actions.getRecords({
+      actions.getStats({
         name: payload.name,
         eolOnly: payload.showLegacy ? 0 : 1,
       });
@@ -192,7 +192,7 @@ export default {
     actions.setAdminLoading(true);
     const sort = await LevelPackSortLevel(payload);
     if (sort.ok) {
-      actions.getRecords({
+      actions.getStats({
         name: payload.name,
         eolOnly: payload.showLegacy ? 0 : 1,
       });
@@ -204,7 +204,7 @@ export default {
     actions.setAdminLoading(true);
     const sort = await LevelPackSort(payload);
     if (sort.ok) {
-      actions.getRecords({
+      actions.getStats({
         name: payload.name,
         eolOnly: payload.showLegacy ? 0 : 1,
       });
