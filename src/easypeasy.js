@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { action } from 'easy-peasy';
+import { action, persist } from 'easy-peasy';
 import ReplayComments from 'features/ReplayComments/store';
 import ReplayRating from 'features/ReplayRating/store';
 import ReplaysBy from 'features/ReplaysBy/store';
@@ -78,6 +78,51 @@ export default {
     }),
     toggleSideBar: action(state => {
       state.sideBarVisible = !state.sideBarVisible;
+    }),
+    sideBar: persist(
+      {
+        menu: [
+          {
+            header: 'Playing',
+            expanded: true,
+            items: [
+              { name: 'Battles', to: '/battles', hidden: false },
+              { name: 'Levels', to: '/levels', hidden: false },
+              { name: 'Replays', to: '/replays', hidden: false },
+              { name: 'Ranking', to: '/ranking', hidden: false },
+            ],
+          },
+          {
+            header: 'Community',
+            expanded: true,
+            items: [
+              { name: 'Chat Log', to: '/chatlog', hidden: false },
+              { name: 'Players', to: '/kuskis', hidden: false },
+              { name: 'Teams', to: '/teams', hidden: false },
+              { name: 'Kuski map', to: '/map', hidden: false },
+            ],
+          },
+          {
+            header: 'Competitions',
+            expanded: true,
+            items: [{ name: 'Cups', to: '/cups', hidden: false }],
+          },
+          {
+            header: 'Tools',
+            expanded: true,
+            items: [
+              { name: 'Help', to: '/help', hidden: false },
+              { name: 'Editor', to: '/editor', hidden: false },
+              { name: 'File upload', to: '/up', hidden: false },
+            ],
+          },
+        ],
+      },
+      { storage: 'localStorage' },
+    ),
+    setExpanded: action((state, payload) => {
+      const index = state.sideBar.menu.findIndex(m => m.header === payload);
+      state.sideBar.menu[index].expanded = !state.sideBar.menu[index].expanded;
     }),
   },
   test: {

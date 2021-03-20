@@ -1,45 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import SearchIcon from '@material-ui/icons/Search';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import Button from '@material-ui/core/Button';
-import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
 import SearchBar from 'components/SearchBar';
 import { useMediaQuery } from '@material-ui/core';
 import { useNavigate } from '@reach/router';
-// import TopBarActions from 'components/TopBarActions';
-
-const StyledButton = styled(Button)`
-  a {
-    color: #f1f1f1;
-  }
-`;
+import TopBarActions from 'components/TopBarActions';
 
 const TopBar = () => {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const { loggedIn, username } = useStoreState(state => state.Login);
-  const { logout } = useStoreActions(actions => actions.Login);
 
   const mobileSearch = useMediaQuery('(max-width: 540px)');
-
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const performLogout = () => {
-    handleClose();
-    logout();
-  };
 
   return (
     <Root>
@@ -53,55 +24,7 @@ const TopBar = () => {
               </Link>
             </MobileSearchButton>
           )}
-          {!loggedIn && (
-            <StyledButton color="inherit" onClick={() => navigate('/login')}>
-              Login
-            </StyledButton>
-          )}
-          {loggedIn && (
-            <div>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem>
-                  <Link to={`/kuskis/${username}`} onClick={handleClose}>
-                    Profile
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <Link to="/settings" onClick={handleClose}>
-                    Settings
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <Link to="/" onClick={performLogout}>
-                    Log out
-                  </Link>
-                </MenuItem>
-              </Menu>
-            </div>
-          )}
+          <TopBarActions />
         </RightSideFlex>
       </Container>
     </Root>
