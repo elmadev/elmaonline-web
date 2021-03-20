@@ -4,8 +4,10 @@ import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { mod } from 'utils/nick';
 import SideBarSubItem from 'components/SideBarSubItem';
 import Link from 'components/Link';
+import { useLocation } from '@reach/router';
 
 const SideBar = () => {
+  const location = useLocation();
   const isRehydrated = useStoreRehydrated();
   const {
     sideBarVisible,
@@ -19,6 +21,8 @@ const SideBar = () => {
       hideSideBar();
     }
   };
+
+  const isSelected = to => location.pathname.substring(0, to.length) === to;
 
   useEffect(() => {
     if (
@@ -63,16 +67,25 @@ const SideBar = () => {
               expanded={m.expanded}
             >
               {m.items.map(i => (
-                <Link key={i.name} to={i.to} onClick={onNavigation}>
+                <MenuLink
+                  selected={isSelected(i.to)}
+                  key={i.name}
+                  to={i.to}
+                  onClick={onNavigation}
+                >
                   {i.name}
-                </Link>
+                </MenuLink>
               ))}
             </SideBarSubItem>
           ))}
           {mod() === 1 && (
-            <Link to="/mod" onClick={onNavigation}>
+            <MenuLink
+              selected={isSelected('/mod')}
+              to="/mod"
+              onClick={onNavigation}
+            >
               Mod
-            </Link>
+            </MenuLink>
           )}
         </Content>
       </Container>
@@ -102,6 +115,19 @@ const Header = styled(Link)`
   }
 `;
 
+const MenuLink = styled(Link)`
+  display: block;
+  font-size: 0.8em;
+  padding: 10px 25px;
+  text-decoration: none;
+  background-color: ${p => (p.selected ? '#c3c3c3' : 'transparent')};
+  color: ${p => (p.selected ? '#1f1f1f' : '#c3c3c3')};
+  :hover {
+    background-color: #333333;
+    color: #c3c3c3;
+  }
+`;
+
 const Burger = styled.span`
   padding: 17px;
 `;
@@ -110,6 +136,8 @@ const Container = styled.div`
   height: 100%;
   max-height: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Content = styled.div`
@@ -118,16 +146,6 @@ const Content = styled.div`
   overflow-y: auto;
   display: ${p => (p.sideBarVisible ? 'block' : 'none')};
   background: #1f1f1f;
-  a {
-    color: #c3c3c3;
-    display: block;
-    font-size: 0.8em;
-    padding: 10px 25px;
-    text-decoration: none;
-    :hover {
-      background: #333333;
-    }
-  }
 `;
 
 const Title = styled.div`
