@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
 import Layout from 'components/Layout';
+import Loading from 'components/Loading';
 
 const groups = [
   'a',
@@ -55,8 +56,18 @@ const Teams = () => {
     setExpanded(newExpanded);
   };
 
-  if (!teams) return null;
-  if (teams.length <= 0) return null;
+  if (!teams)
+    return (
+      <Layout edge t="Teams">
+        <Loading />
+      </Layout>
+    );
+  if (teams.length <= 0)
+    return (
+      <Layout edge t="Teams">
+        <Loading />
+      </Layout>
+    );
 
   const filteredTeams = teams.filter(
     k =>

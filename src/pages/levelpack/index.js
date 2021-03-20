@@ -21,6 +21,7 @@ import { nick, nickId, mod } from 'utils/nick';
 import FieldBoolean from 'components/FieldBoolean';
 import Download from 'components/Download';
 import Kuski from 'components/Kuski';
+import Loading from 'components/Loading';
 import Records from './Records';
 import TotalTimes from './TotalTimes';
 import Personal from './Personal';
@@ -83,8 +84,12 @@ const LevelPack = ({ name }) => {
     }
   }, [showLegacy]);
 
-  if (!isRehydrated) return null;
-  if (!levelPackInfo.LevelPackIndex) return null;
+  if (!isRehydrated || !levelPackInfo)
+    return (
+      <Layout edge t={`Level pack - ${name}`}>
+        <Loading />
+      </Layout>
+    );
 
   return (
     <Layout edge t={`Level pack - ${levelPackInfo.LevelPackName}`}>

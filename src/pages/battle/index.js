@@ -91,7 +91,11 @@ const Battle = ({ BattleId }) => {
   return (
     <Layout
       t={`Battle - ${
-        battle ? (battle.LevelData ? battle.LevelData.LevelName : '?') : '?'
+        battle
+          ? battle.LevelData
+            ? battle.LevelData.LevelName
+            : BattleIndex
+          : BattleIndex
       }`}
     >
       <MainContainer>

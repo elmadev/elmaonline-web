@@ -58,8 +58,18 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
     }
   }, [replay, replayLoaded, ReplayIndex]);
 
-  if (!replayLoaded) return <Loading />;
-  if (!replay.CupData) return <div>Unable to load replay</div>;
+  if (!replayLoaded)
+    return (
+      <Layout edge t={`Cup rec - ${Filename}.rec`}>
+        <Loading />
+      </Layout>
+    );
+  if (!replay.CupData)
+    return (
+      <Layout edge t={`Cup rec - ${Filename}.rec`}>
+        <div>Unable to load replay</div>
+      </Layout>
+    );
 
   let others = [];
   if (otherReplays.length > 0) {

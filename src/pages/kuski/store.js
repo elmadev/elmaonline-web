@@ -126,10 +126,15 @@ export default {
     }
   }),
   kuski: '',
+  kuskiLoading: true,
   setKuski: action((state, payload) => {
     state.kuski = payload;
   }),
+  setKuskiLoading: action((state, payload) => {
+    state.kuskiLoading = payload;
+  }),
   getKuskiByName: thunk(async (actions, payload) => {
+    actions.setKuskiLoading(true);
     const kuski = await UserInfoByIdentifier({
       IdentifierType: 'Kuski',
       KuskiIdentifier: payload,
@@ -137,5 +142,6 @@ export default {
     if (kuski.ok) {
       actions.setKuski(kuski.data);
     }
+    actions.setKuskiLoading(false);
   }),
 };
