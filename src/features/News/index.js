@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import LocalTime from 'components/LocalTime';
 import styled from 'styled-components';
-import { Card, CardHeader, CardContent } from '@material-ui/core';
+import { Card, CardContent } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListRow, ListCell, ListContainer } from 'components/List';
 import { Parser } from 'react-tiny-bbcode';
+import Header from 'components/Header';
 
 const News = ({ amount }) => {
   const [open, setOpen] = useState(0);
@@ -24,8 +25,8 @@ const News = ({ amount }) => {
 
   return (
     <Card>
-      <CardHeader title="News" />
       <CardContent>
+        <Header h2>News</Header>
         <ListContainer>
           {news.map(n => (
             <ListRow key={n.NewsIndex} onClick={() => openNews(n.NewsIndex)}>

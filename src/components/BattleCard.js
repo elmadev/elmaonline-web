@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  CardHeader,
-} from '@material-ui/core';
+import { Card, CardContent, Grid } from '@material-ui/core';
 import { Level, BattleType } from 'components/Names';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';
