@@ -17,8 +17,9 @@ export const ListCell = ({
         width={width}
         right={right}
         highlight={highlight}
+        to={to}
       >
-        <Link to={to}>{children}</Link>
+        <CellLink to={to}>{children}</CellLink>
       </Cell>
     );
   }
@@ -34,9 +35,14 @@ export const ListCell = ({
   );
 };
 
+const CellLink = styled(Link)`
+  padding: 10px;
+  display: block;
+`;
+
 const Cell = styled.span`
   display: table-cell;
-  padding: ${p => (p.pad ? p.pad : '10px')};
+  padding: ${p => (p.to ? 0 : '10px')};
   border-bottom: 1px solid #eaeaea;
   width: ${p => (p.width ? `${p.width}px` : 'auto')};
   text-align: ${p => (p.right ? 'right' : 'left')};

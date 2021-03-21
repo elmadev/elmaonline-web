@@ -5,9 +5,8 @@ import BattleList from 'features/BattleList';
 import subYears from 'date-fns/subYears';
 import addHours from 'date-fns/addHours';
 import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import Link from 'components/Link';
 import Header from 'components/Header';
+import Button from 'components/Buttons';
 
 export default function BattlesCard() {
   return (
@@ -22,8 +21,8 @@ export default function BattlesCard() {
         />
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary">
-          <Link to="/battles">Show more</Link>
+        <Button to="/battles" naked small>
+          Show more
         </Button>
       </CardActions>
     </Card>

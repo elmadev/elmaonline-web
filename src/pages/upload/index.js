@@ -115,7 +115,7 @@ const Upload = () => {
             <div>
               <a href={url}>{url}</a>
             </div>
-            <Button margin="6px 0" color="primary" onClick={() => copyText()}>
+            <Button margin="6px 0" onClick={() => copyText()}>
               Copy
             </Button>
             {nickId() !== 0 && (
