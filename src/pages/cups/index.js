@@ -1,9 +1,10 @@
 import React, { useEffect, Fragment } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { Typography, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import Link from 'components/Link';
 import AddCup from 'components/AddCup';
+import Header from 'components/Header';
 import Layout from 'components/Layout';
 import Loading from 'components/Loading';
 
@@ -22,9 +23,7 @@ const Cups = () => {
       ) : (
         <Grid container spacing={3}>
           <Grid item xs={12} sm={7}>
-            <Typography variant="h3" gutterBottom>
-              Ongoing Cups
-            </Typography>
+            <Header h1>Ongoing Cups</Header>
             {cupList
               .filter(c => c.Finished === 0)
               .map(c => (
@@ -37,9 +36,7 @@ const Cups = () => {
                   />
                 </Fragment>
               ))}
-            <Typography variant="h3" gutterBottom>
-              Finished Cups
-            </Typography>
+            <Header h1>Finished Cups</Header>
             {cupList
               .filter(c => c.Finished === 1)
               .map(c => (
@@ -54,9 +51,7 @@ const Cups = () => {
               ))}
           </Grid>
           <Grid item xs={12} sm={5}>
-            <Typography variant="h3" gutterBottom>
-              Create new cup
-            </Typography>
+            <Header h1>Create new cup</Header>
             {addSuccess === '' ? (
               <AddCup add={data => addCup(data)} />
             ) : (

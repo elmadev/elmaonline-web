@@ -7,6 +7,7 @@ import { Level } from 'components/Names';
 import ClickToEdit from 'components/ClickToEdit';
 import Feedback from 'components/Feedback';
 import Loading from 'components/Loading';
+import Header from 'components/Header';
 import LegacyIcon from 'components/LegacyIcon';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import LevelPopup from './LevelPopup';
@@ -70,7 +71,9 @@ const Personal = ({
 
   return (
     <>
-      <h2>Personal records</h2>
+      <Header h2 mLeft>
+        Personal records
+      </Header>
       <ChoosePlayer>
         <span>Select player: </span>
         <div>

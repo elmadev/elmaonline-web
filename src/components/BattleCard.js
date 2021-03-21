@@ -87,14 +87,14 @@ const BattleCard = props => {
     <CardFlex>
       <Grid container spacing={0}>
         <Grid item xs={12} md={6}>
-          <CardHeader title="Current Battle" />
           <CardContent>
-            <Header h2 nomargin>
+            <Header h2>Current Battle</Header>
+            <Header h3 nomargin>
               <Level LevelData={battle.LevelData} noLink />
             </Header>
-            <Typography variant="body1" color="textSecondary">
+            <Header h3>
               <Level long LevelData={battle.LevelData} noLink />
-            </Typography>
+            </Header>
             <Text>
               <span>Designer: </span>
               <strong>

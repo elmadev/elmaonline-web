@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStoreState } from 'easy-peasy';
 import Loading from 'components/Loading';
+import Header from 'components/Header';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 
 const Kinglist = ({ highlight, highlightWeeks }) => {
@@ -8,7 +9,9 @@ const Kinglist = ({ highlight, highlightWeeks }) => {
 
   return (
     <>
-      <h2>Kinglist</h2>
+      <Header h2 mLeft>
+        Kinglist
+      </Header>
       <ListContainer>
         <ListHeader>
           <ListCell width={70}>#</ListCell>

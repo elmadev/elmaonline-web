@@ -6,7 +6,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -24,6 +23,7 @@ import Kuski from 'components/Kuski';
 import Download from 'components/Download';
 import Recplayer from 'components/Recplayer';
 import RecList from 'features/RecList';
+import Header from 'components/Header';
 import Loading from 'components/Loading';
 import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
@@ -151,7 +151,7 @@ const Level = ({ LevelId }) => {
           {!loading && (
             <Accordion defaultExpanded>
               <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography variant="body2">Level info</Typography>
+                <Header h3>Level info</Header>
               </AccordionSummary>
               <AccordionDetails>
                 <LevelDescription>
@@ -174,7 +174,7 @@ const Level = ({ LevelId }) => {
           )}
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography variant="body2">Battles in level</Typography>
+              <Header h3>Battles in level</Header>
             </AccordionSummary>
             <AccordionBattles>
               <BattlesContainer>
@@ -236,7 +236,7 @@ const Level = ({ LevelId }) => {
           </Accordion>
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography variant="body2">Replays in level</Typography>
+              <Header h3>Replays in level</Header>
             </AccordionSummary>
             <AccordionReplays>
               <RecList

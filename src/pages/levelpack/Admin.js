@@ -9,6 +9,7 @@ import {
 } from '@material-ui/icons';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
+import Header from 'components/Header';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ListCell, ListContainer, ListHeader } from 'components/List';
 
@@ -63,7 +64,9 @@ const Admin = ({ records, LevelPack }) => {
   return (
     <Grid container spacing={0}>
       <Grid item xs={12} md={6}>
-        <h2>Current levels</h2>
+        <Header h2 mLeft>
+          Current levels
+        </Header>
         <ListContainer>
           <ListHeader>
             <ListCell width={70}>Filename</ListCell>
@@ -124,7 +127,9 @@ const Admin = ({ records, LevelPack }) => {
         </DragDropContext>
       </Grid>
       <Grid item xs={12} md={6}>
-        <h2>Search levels</h2>
+        <Header h2 mLeft>
+          Search levels
+        </Header>
         <TextBox>
           <TextField
             id="outlined-name"
