@@ -219,7 +219,10 @@ const Upload = ({ onUpload, filetype }) => {
               ReplayTime: body.time,
               Finished: body.finished,
               LevelIndex: body.LevelIndex,
-              Unlisted: +fileInfo[body.file].unlisted,
+              Unlisted:
+                body.uuid.substring(0, 5) === 'local'
+                  ? 1
+                  : +fileInfo[body.file].unlisted,
               DrivenBy: fileInfo[body.file].kuskiIndex,
               TAS: +fileInfo[body.file].tas,
               Bug: +fileInfo[body.file].bug,

@@ -49,7 +49,11 @@ const Replay = props => {
     );
 
   if (isWindow) {
-    link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
+    if (replay.UUID.substring(0, 5) === 'local') {
+      link = `${config.url}temp/${replay.UUID}-${replay.RecFileName}`;
+    } else {
+      link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
+    }
   }
 
   const getTags = () => {
