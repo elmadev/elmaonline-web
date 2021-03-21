@@ -4,7 +4,7 @@ import {
   PersonalLatest,
   PersonalLatestPRs,
   PersonalRanking,
-  Records,
+  LevelPackStats,
   PersonalTimes,
   BattlesByDesigner,
   GiveRights,
@@ -51,14 +51,14 @@ export default {
     state.tt = payload;
   }),
   getTt: thunk(async (actions, payload) => {
-    const records = await Records({ name: 'Int', eolOnly: 0 });
+    const records = await LevelPackStats({ name: 'Int', eolOnly: 0 });
     const times = await PersonalTimes({
       PersonalKuskiIndex: payload,
       name: 'Int',
       eolOnly: 0,
     });
     if (records.ok && times.ok) {
-      const levels = records.data.map(r => {
+      const levels = records.data.records.map(r => {
         const personal = times.data.filter(t => t.LevelIndex === r.LevelIndex);
         if (personal.length > 0) {
           return { ...r, LevelBesttime: personal[0].LevelBesttime };
@@ -126,10 +126,15 @@ export default {
     }
   }),
   kuski: '',
+  kuskiLoading: true,
   setKuski: action((state, payload) => {
     state.kuski = payload;
   }),
+  setKuskiLoading: action((state, payload) => {
+    state.kuskiLoading = payload;
+  }),
   getKuskiByName: thunk(async (actions, payload) => {
+    actions.setKuskiLoading(true);
     const kuski = await UserInfoByIdentifier({
       IdentifierType: 'Kuski',
       KuskiIdentifier: payload,
@@ -137,5 +142,6 @@ export default {
     if (kuski.ok) {
       actions.setKuski(kuski.data);
     }
+    actions.setKuskiLoading(false);
   }),
 };

@@ -82,7 +82,7 @@ const Dashboard = props => {
           } else {
             setSuccess(<>Replay uploaded, apples: {json.Apples}</>);
           }
-          if (json.Match === -1) {
+          if (json.Match === -1 && json.Finished) {
             setWarning(<>Your time was not verified and will not count</>);
           }
         }

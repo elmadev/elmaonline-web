@@ -21,6 +21,7 @@ import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment';
 import Tags from 'components/Tags';
+import Loading from 'components/Loading';
 import { useNavigate } from '@reach/router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import config from 'config';
@@ -32,7 +33,7 @@ const Replay = props => {
   let link = '';
 
   const { getReplayByUUID } = useStoreActions(state => state.ReplayByUUID);
-  const { replay } = useStoreState(state => state.ReplayByUUID);
+  const { replay, loading } = useStoreState(state => state.ReplayByUUID);
 
   useEffect(() => {
     if (ReplayUuid) {
@@ -40,7 +41,12 @@ const Replay = props => {
     }
   }, [ReplayUuid]);
 
-  if (!replay) return null;
+  if (!replay)
+    return (
+      <Layout t={`rec - ${ReplayUuid}`}>
+        {loading ? <Loading /> : <div>not found</div>}
+      </Layout>
+    );
 
   if (isWindow) {
     link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;

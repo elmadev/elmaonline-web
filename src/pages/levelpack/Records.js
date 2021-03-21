@@ -12,8 +12,8 @@ import LevelPopup from './LevelPopup';
 
 const hasSource = records => {
   if (records.length > 0) {
-    if (records[0].LevelBesttime.length > 0) {
-      if (records[0].LevelBesttime[0].Source !== undefined) {
+    if (records[0].LevelBesttime) {
+      if (records[0].LevelBesttime.Source !== undefined) {
         return true;
       }
     }
@@ -59,22 +59,22 @@ const Records = ({
               <Level LevelIndex={r.LevelIndex} LevelData={r.Level} />
             </ListCell>
             <ListCell width={320}>{r.Level.LongName}</ListCell>
-            {r.LevelBesttime.length > 0 ? (
+            {r.LevelBesttime ? (
               <>
                 <ListCell width={200}>
-                  <Kuski kuskiData={r.LevelBesttime[0].KuskiData} team flag />
+                  <Kuski kuskiData={r.LevelBesttime.KuskiData} team flag />
                 </ListCell>
                 <ListCell
                   highlight={
-                    r.LevelBesttime[0].TimeIndex >= highlight[highlightWeeks]
+                    r.LevelBesttime.TimeIndex >= highlight[highlightWeeks]
                   }
                 >
-                  <Time time={r.LevelBesttime[0].Time} />
+                  <Time time={r.LevelBesttime.Time} />
                 </ListCell>
-                {r.LevelBesttime[0].Source !== undefined && (
+                {r.LevelBesttime.Source !== undefined && (
                   <ListCell right>
                     <LegacyIcon
-                      source={r.LevelBesttime[0].Source}
+                      source={r.LevelBesttime.Source}
                       show={showLegacyIcon}
                     />
                   </ListCell>

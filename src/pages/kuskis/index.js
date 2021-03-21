@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Layout from 'components/Layout';
 import Link from 'components/Link';
 import Kuski from 'components/Kuski';
+import Loading from 'components/Loading';
 
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
@@ -49,10 +50,6 @@ const Kuskis = () => {
     getPlayers();
   }, []);
 
-  if (!playerList) {
-    return null;
-  }
-
   const toggleGroup = c => {
     setExpanded(prevExpanded => {
       return prevExpanded.includes(c) ? [] : [c];
@@ -66,50 +63,54 @@ const Kuskis = () => {
   );
   return (
     <Layout edge t="Kuskis">
-      <KuskisContainer>
-        <Filter>
-          <input
-            type="text"
-            value={text}
-            onChange={e => {
-              setText(e.target.value);
-            }}
-            placeholder="Filter"
-          />
-        </Filter>
-        <KuskiList>
-          {groups.map(g => {
-            const kuskis = filteredKuskis.filter(k =>
-              Array.isArray(g)
-                ? g.includes(k.Kuski[0].toLowerCase())
-                : g === k.Kuski[0].toLowerCase(),
-            );
-            if (kuskis.length < 1) return null;
-            return (
-              <div key={g}>
-                <GroupTitle
-                  onClick={() => toggleGroup(g)}
-                  onKeyDown={() => toggleGroup(g)}
-                  role="button"
-                  tabIndex="0"
-                >
-                  <GroupChar>{Array.isArray(g) ? '…' : g}</GroupChar>
-                  <GroupItemCount>{kuskis.length}</GroupItemCount>
-                </GroupTitle>
-                {(filter.length > 0 || expanded.includes(g)) && (
-                  <GroupContent>
-                    {kuskis.map(k => (
-                      <KuskiRow to={`/kuskis/${k.Kuski}`} key={k.KuskiIndex}>
-                        <Kuski kuskiData={k} flag team noLink />
-                      </KuskiRow>
-                    ))}
-                  </GroupContent>
-                )}
-              </div>
-            );
-          })}
-        </KuskiList>
-      </KuskisContainer>
+      {!playerList ? (
+        <Loading />
+      ) : (
+        <KuskisContainer>
+          <Filter>
+            <input
+              type="text"
+              value={text}
+              onChange={e => {
+                setText(e.target.value);
+              }}
+              placeholder="Filter"
+            />
+          </Filter>
+          <KuskiList>
+            {groups.map(g => {
+              const kuskis = filteredKuskis.filter(k =>
+                Array.isArray(g)
+                  ? g.includes(k.Kuski[0].toLowerCase())
+                  : g === k.Kuski[0].toLowerCase(),
+              );
+              if (kuskis.length < 1) return null;
+              return (
+                <div key={g}>
+                  <GroupTitle
+                    onClick={() => toggleGroup(g)}
+                    onKeyDown={() => toggleGroup(g)}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    <GroupChar>{Array.isArray(g) ? '…' : g}</GroupChar>
+                    <GroupItemCount>{kuskis.length}</GroupItemCount>
+                  </GroupTitle>
+                  {(filter.length > 0 || expanded.includes(g)) && (
+                    <GroupContent>
+                      {kuskis.map(k => (
+                        <KuskiRow to={`/kuskis/${k.Kuski}`} key={k.KuskiIndex}>
+                          <Kuski kuskiData={k} flag team noLink />
+                        </KuskiRow>
+                      ))}
+                    </GroupContent>
+                  )}
+                </div>
+              );
+            })}
+          </KuskiList>
+        </KuskisContainer>
+      )}
     </Layout>
   );
 };

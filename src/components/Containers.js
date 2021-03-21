@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const Row = ({ children, center }) => {
-  return <FlexRow center={center}>{children}</FlexRow>;
+export const Row = ({ children, center, ai, jc }) => {
+  return (
+    <FlexRow ai={ai} jc={jc} center={center}>
+      {children}
+    </FlexRow>
+  );
 };
 
 const FlexRow = styled.div`
@@ -13,8 +17,12 @@ const FlexRow = styled.div`
   ${p => p.jc && `justify-content: ${p.jc};`}
 `;
 
-export const Column = ({ children, center }) => {
-  return <FlexColumn center={center}>{children}</FlexColumn>;
+export const Column = ({ children, center, ai, jc }) => {
+  return (
+    <FlexColumn ai={ai} jc={jc} center={center}>
+      {children}
+    </FlexColumn>
+  );
 };
 
 const FlexColumn = styled.div`

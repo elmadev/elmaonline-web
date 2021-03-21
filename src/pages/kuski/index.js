@@ -5,6 +5,7 @@ import { Tabs, Tab } from '@material-ui/core';
 import styled from 'styled-components';
 import config from 'config';
 import Layout from 'components/Layout';
+import Loading from 'components/Loading';
 import Flag from 'components/Flag';
 import ReplaysBy from 'features/ReplaysBy';
 import PlayedBattles from './PlayedBattles';
@@ -19,68 +20,73 @@ const Kuski = props => {
   const { name } = props;
 
   const { getKuskiByName } = useStoreActions(state => state.Kuski);
-  const { kuski } = useStoreState(state => state.Kuski);
+  const { kuski, kuskiLoading } = useStoreState(state => state.Kuski);
 
   useEffect(() => {
     getKuskiByName(name);
   }, [name]);
 
-  if (!kuski) return <div>not found</div>;
-
   return (
     <Layout edge t={`Kuski - ${name}`}>
-      <Container>
-        <Head>
-          <Picture>
-            <img src={`${config.dlUrl}shirt/${kuski.KuskiIndex}`} alt="shirt" />
-          </Picture>
-          <Profile>
-            <Name>
-              <Flag nationality={kuski.Country} />
-              {kuski.Kuski}
-            </Name>
-            <TeamNat>
-              {kuski.TeamData && `Team: ${kuski.TeamData.Team}`}
-            </TeamNat>
-          </Profile>
-          <KuskiHeader Kuski={kuski.Kuski} KuskiIndex={kuski.KuskiIndex} />
-        </Head>
-        <Tabs
-          variant="scrollable"
-          scrollButtons="auto"
-          value={tab}
-          onChange={(e, t) => setTab(t)}
-        >
-          <Tab label="Played Battles" />
-          <Tab label="Designed Battles" />
-          <Tab label="Latest times" />
-          <Tab label="Replays Uploaded" />
-          <Tab label="Replays Driven" />
-          <Tab label="Info" />
-        </Tabs>
-        {tab === 0 && (
-          <Width100>
-            <PlayedBattles KuskiIndex={kuski.KuskiIndex} />
-          </Width100>
-        )}
-        {tab === 1 && (
-          <Width100>
-            <DesignedBattles KuskiIndex={kuski.KuskiIndex} />
-          </Width100>
-        )}
-        {tab === 2 && <LatestTimes KuskiIndex={kuski.KuskiIndex} />}
-        {tab === 3 && (
-          <Width100>
-            <ReplaysBy type="uploaded" KuskiIndex={kuski.KuskiIndex} />
-          </Width100>
-        )}
-        {tab === 4 && (
-          <Width100>
-            <ReplaysBy type="driven" KuskiIndex={kuski.KuskiIndex} />
-          </Width100>
-        )}
-        {tab === 5 && <Info kuskiInfo={kuski} />}
-      </Container>
+      {!kuski ? (
+        <>{kuskiLoading ? <Loading /> : <div>not found</div>}</>
+      ) : (
+        <Container>
+          <Head>
+            <Picture>
+              <img
+                src={`${config.dlUrl}shirt/${kuski.KuskiIndex}`}
+                alt="shirt"
+              />
+            </Picture>
+            <Profile>
+              <Name>
+                <Flag nationality={kuski.Country} />
+                {kuski.Kuski}
+              </Name>
+              <TeamNat>
+                {kuski.TeamData && `Team: ${kuski.TeamData.Team}`}
+              </TeamNat>
+            </Profile>
+            <KuskiHeader Kuski={kuski.Kuski} KuskiIndex={kuski.KuskiIndex} />
+          </Head>
+          <Tabs
+            variant="scrollable"
+            scrollButtons="auto"
+            value={tab}
+            onChange={(e, t) => setTab(t)}
+          >
+            <Tab label="Played Battles" />
+            <Tab label="Designed Battles" />
+            <Tab label="Latest times" />
+            <Tab label="Replays Uploaded" />
+            <Tab label="Replays Driven" />
+            <Tab label="Info" />
+          </Tabs>
+          {tab === 0 && (
+            <Width100>
+              <PlayedBattles KuskiIndex={kuski.KuskiIndex} />
+            </Width100>
+          )}
+          {tab === 1 && (
+            <Width100>
+              <DesignedBattles KuskiIndex={kuski.KuskiIndex} />
+            </Width100>
+          )}
+          {tab === 2 && <LatestTimes KuskiIndex={kuski.KuskiIndex} />}
+          {tab === 3 && (
+            <Width100>
+              <ReplaysBy type="uploaded" KuskiIndex={kuski.KuskiIndex} />
+            </Width100>
+          )}
+          {tab === 4 && (
+            <Width100>
+              <ReplaysBy type="driven" KuskiIndex={kuski.KuskiIndex} />
+            </Width100>
+          )}
+          {tab === 5 && <Info kuskiInfo={kuski} />}
+        </Container>
+      )}
     </Layout>
   );
 };
