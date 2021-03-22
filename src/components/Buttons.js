@@ -7,11 +7,17 @@ const StyledButton = styled(MuiButton)`
   && {
     ${p => p.margin && `margin: ${p.margin};`}
     ${p => p.small && 'font-size: 0.8125rem;'}
-    ${p => p.small && `padding: ${p.to ? 0 : '4px 5px'};`}
+    padding: ${p =>
+      p.little
+        ? `${p.theme.padXXSmall} ${p.theme.padXXSmall}`
+        : `${p.theme.padXSmall} ${p.theme.padMedium}`};
     ${p => p.to && 'padding: 0;'}
     a {
       display: block;
-      padding: ${p => (p.small ? '4px 5px' : '6px 16px')};
+      padding: ${p =>
+        p.little
+          ? `${p.theme.padXXSmall} ${p.theme.padXXSmall}`
+          : `${p.theme.padXSmall} ${p.theme.padMedium}`};
     }
   }
 `;
@@ -23,17 +29,17 @@ const Button = ({
   disabled,
   secondary,
   naked,
-  small,
+  little,
   to, // use this to create a normal link
 }) => {
   let color = 'primary';
   let variant = 'contained';
   if (secondary) {
-    color = '';
+    color = 'secondary';
   }
   if (naked) {
-    color = '';
-    variant = '';
+    color = 'default';
+    variant = 'text';
   }
   return (
     <StyledButton
@@ -41,7 +47,7 @@ const Button = ({
       margin={margin}
       variant={variant}
       color={color}
-      small={small}
+      little={little}
       onClick={() => onClick && onClick()}
     >
       {to ? <ReachLink to={to}>{children}</ReachLink> : <>{children}</>}

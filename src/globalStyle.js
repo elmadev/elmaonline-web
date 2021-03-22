@@ -5,7 +5,7 @@ const GlobalStyle = createGlobalStyle`
     color: #222;
     font-weight: 100;
     font-size: 1em;
-    font-family: 'Segoe UI', 'HelveticaNeue-Light', sans-serif;
+    font-family: ${p => p.theme.fontFamily};
     line-height: 1.375;
   }
   ::-moz-selection {
@@ -54,14 +54,14 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     font-weight: 400;
-    background: #f1f1f1;
+    background: ${p => p.theme.pageBackground};
   }
   body {
     margin: 0;
     margin-top: 54px;
   }
   a {
-    color: #219653;
+    color: ${p => p.theme.linkColor};
     text-decoration: none;
   }
   h2,
