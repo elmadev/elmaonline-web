@@ -1,3 +1,4 @@
+import { theme } from 'theme';
 const reversedBattleTypes = ['SL', 'SR', 'FT'];
 
 const sortResults = battleType => (a, b) => {
@@ -33,13 +34,13 @@ const battleStatus = data => {
 const battleStatusBgColor = data => {
   let bgColor;
   if (data.Aborted === 1) {
-    bgColor = '#ffb3ba';
+    bgColor = theme.aborted;
   }
   if (data.Aborted === 0 && data.InQueue === 1) {
-    bgColor = '#baffc9';
+    bgColor = theme.inqueue;
   }
   if (data.Aborted === 0 && data.InQueue === 0 && data.Finished === 0) {
-    bgColor = '#bae1ff';
+    bgColor = theme.ongoing;
   }
   return bgColor;
 };

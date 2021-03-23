@@ -6,12 +6,11 @@ import { Link as ReachLink } from '@reach/router';
 const StyledButton = styled(MuiButton)`
   && {
     ${p => p.margin && `margin: ${p.margin};`}
-    ${p => p.small && 'font-size: 0.8125rem;'}
+    ${p => p.little && 'font-size: 0.8125rem;'}
     padding: ${p =>
       p.little
-        ? `${p.theme.padXXSmall} ${p.theme.padXXSmall}`
-        : `${p.theme.padXSmall} ${p.theme.padMedium}`};
-    ${p => p.to && 'padding: 0;'}
+        ? `${p.to ? 0 : p.theme.padXXSmall} ${p.to ? 0 : p.theme.padXXSmall}`
+        : `${p.to ? 0 : p.theme.padXSmall} ${p.to ? 0 : p.theme.padMedium}`};
     a {
       display: block;
       padding: ${p =>
@@ -49,6 +48,7 @@ const Button = ({
       color={color}
       little={little}
       onClick={() => onClick && onClick()}
+      to={to}
     >
       {to ? <ReachLink to={to}>{children}</ReachLink> : <>{children}</>}
     </StyledButton>

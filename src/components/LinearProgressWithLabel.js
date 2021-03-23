@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import styled from 'styled-components';
+import { Text } from 'components/Containers';
 import { addSeconds, format } from 'date-fns';
 
 function formattedTime(seconds) {
@@ -52,9 +52,7 @@ export default function LinearProgressWithLabel({ value, remainingSeconds }) {
             linecolor={lineColor}
           />
         </Box>
-        <Typography variant="body2" color="textSecondary">
-          {formattedTime(remainingSeconds)} left
-        </Typography>
+        <Text light>{formattedTime(remainingSeconds)} left</Text>
       </Box>
     </Box>
   );

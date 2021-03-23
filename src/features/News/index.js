@@ -60,7 +60,7 @@ const Headline = styled.div`
 `;
 
 const Written = styled.span`
-  color: gray;
+  color: ${p => p.theme.lightTextColor};
 `;
 
 export default News;

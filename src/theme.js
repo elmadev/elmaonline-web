@@ -2,14 +2,24 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 const pad = 4;
 
-export const theme = {
+const elmaGreen = {
   // colors
   primary: '#219653',
-  light: '#6ddf9e',
+  primaryLight: '#2ed175',
+  primaryDark: '#17693a',
   secondary: '#0097a7',
+  secondaryLight: '#00cfe6',
+  secondaryDark: '#005c66',
   linkColor: '#219653',
   pageBackground: '#f1f1f1',
-  header: '#1b3a57',
+  paperBackground: 'white',
+  headerColor: '#1b3a57',
+  hoverColor: '#ededed',
+
+  // battles
+  ongoing: '#bae1ff',
+  inqueue: '#baffc9',
+  aborted: '#ffb3ba',
 
   // paddings
   padXXSmall: `${pad}px`,
@@ -22,10 +32,39 @@ export const theme = {
 
   // texts
   fontFamily: `'Segoe UI', 'HelveticaNeue-Light', sans-serif`,
-  fontSize: '14px',
+  fontSize: '1em',
+  fontColor: '#222',
+  lightTextColor: '#767676',
 };
 
-export const muiTheme = createMuiTheme({
+const powerPink = {
+  ...elmaGreen,
+  // colors
+  primary: '#d81b60',
+  primaryLight: '#ff5c8d',
+  primaryDark: '#a00037',
+  secondary: '#0097a7',
+  secondaryLight: '#00cfe6',
+  secondaryDark: '#005c66',
+  linkColor: '#ff5c8d',
+  pageBackground: '#263238',
+  paperBackground: '#102027',
+  headerColor: '#fafafa',
+  hoverColor: '#4f5b62',
+
+  //battles
+  ongoing: 'rgba(186, 225, 255, .2)',
+  inqueue: 'rgba(186, 255, 201, .2)',
+  aborted: 'rgba(255, 179, 186, .2)',
+
+  // texts
+  fontColor: 'white',
+  lightTextColor: '#bfbfbf',
+};
+
+const theme = powerPink;
+
+const muiTheme = createMuiTheme({
   palette: {
     primary: {
       main: theme.primary,
@@ -37,4 +76,18 @@ export const muiTheme = createMuiTheme({
   typography: {
     useNextVariants: true,
   },
+  overrides: {
+    MuiPaper: {
+      root: {
+        backgroundColor: theme.paperBackground,
+      },
+    },
+    MuiButton: {
+      root: {
+        color: theme.fontColor,
+      },
+    },
+  },
 });
+
+export { theme, muiTheme };

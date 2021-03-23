@@ -113,12 +113,6 @@ const Container = styled.div`
   display: block;
   max-width: 100%;
   overflow: auto;
-  a {
-    color: black;
-    :hover {
-      color: #219653;
-    }
-  }
 `;
 
 const CondensedCon = styled.div`

@@ -51,7 +51,7 @@ const Container1 = styled.h1`
   margin-left: ${p => (p.mLeft ? '10px' : 0)};
   margin-bottom: 16px;
   margin-top: ${p => (p.top ? '16px' : '0')};
-  color: ${p => (p.link ? '#219653' : '#1b3a57')};
+  color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
   font-size: 36px;
@@ -65,7 +65,7 @@ const Container2 = styled.h2`
   margin-left: ${p => (p.mLeft ? '10px' : 0)};
   margin-bottom: 8px;
   margin-top: ${p => (p.top ? '16px' : '0')};
-  color: ${p => (p.link ? '#219653' : '#1b3a57')};
+  color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
   font-size: 22px;
@@ -79,7 +79,7 @@ const Container3 = styled.h3`
   margin-left: ${p => (p.mLeft ? '10px' : 0)};
   margin-bottom: 0px;
   margin-top: ${p => (p.top ? '16px' : '0')};
-  color: ${p => (p.link ? '#219653' : '#1b3a57')};
+  color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
   font-size: 1em;

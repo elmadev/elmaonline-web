@@ -35,4 +35,6 @@ const FlexColumn = styled.div`
 
 export const Text = styled.div`
   padding-bottom: 16px;
+  color: ${p => (p.light ? p.theme.lightTextColor : p.theme.fontColor)};
+  font-size: ${p => p.theme.fontSize};
 `;

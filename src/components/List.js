@@ -41,6 +41,7 @@ const CellLink = styled(Link)`
 `;
 
 const Cell = styled.span`
+  color: ${p => p.theme.fontColor};
   display: table-cell;
   padding: ${p => (p.to ? 0 : '10px')};
   border-bottom: 1px solid #eaeaea;
@@ -110,6 +111,6 @@ const Row = styled.div`
   background: ${p => (p.selected ? '#f5f5f5' : p.highlight ? '#ddd' : p.bg)};
   cursor: ${p => (p.pointer ? 'pointer' : 'auto')};
   :hover {
-    background: #ededed;
+    background: ${p => p.theme.hoverColor};
   }
 `;

@@ -21,7 +21,7 @@ export default function BattlesCard() {
         />
       </CardContent>
       <CardActions>
-        <Button to="/battles" naked small>
+        <Button to="/battles" naked little>
           Show more
         </Button>
       </CardActions>

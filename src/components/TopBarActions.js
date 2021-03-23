@@ -16,7 +16,7 @@ const StyledButton = styled(Button)`
 
 const Item = styled(MenuItem)`
   && {
-    color: #219653;
+    color: ${p => p.theme.linkColor};
   }
 `;
 

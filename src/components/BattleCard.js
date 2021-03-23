@@ -132,7 +132,7 @@ const CardFlex = styled(Card)`
 `;
 
 const Text = styled.div`
-  color: rgba(0, 0, 0, 0.54);
+  color: ${p => p.theme.lightTextColor};
   font-size: 14px;
 `;
 
