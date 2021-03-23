@@ -5,8 +5,10 @@ export const Paper = styled.div`
   display: flex;
   flex-direction: column;
   width: ${p => (p.width ? p.width : '100%')};
-  background-color: ${p => (p.highlight ? '#b1cde7' : '#ffffff')};
-  border: 1px solid ${p => (p.highlight ? 'rgba(0,0,0,0.2)' : '#e2e3e4')};
+  background-color: ${p =>
+    p.highlight ? p.theme.ongoing : p.theme.paperBackground};
+  border: 1px solid
+    ${p => (p.highlight ? 'rgba(0,0,0,0.2)' : p.theme.borderColor)};
   border-radius: 4px;
   ${p => p.padding && 'padding: 16px;'};
   ${p => p.center && 'justify-content: center; align-items: center;'}

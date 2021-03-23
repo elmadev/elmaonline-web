@@ -377,7 +377,7 @@ const PlayerContainer = styled.div`
 `;
 
 const Player = styled.div`
-  background: #f1f1f1;
+  background: ${p => p.theme.pageBackground};
   height: 400px;
   display: flex;
   align-items: center;

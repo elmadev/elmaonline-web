@@ -261,7 +261,7 @@ LevelPack.defaultProps = {
 };
 
 const RootStyle = styled.div`
-  background: #fff;
+  background: ${p => p.theme.paperBackground};
   min-height: 100%;
   box-sizing: border-box;
 `;

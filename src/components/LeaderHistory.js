@@ -49,13 +49,13 @@ const TimeDevelopmentKuski = styled.span`
   vertical-align: middle;
   padding-right: 5px;
   display: table-cell;
-  color: #7d7d7d;
+  color: ${p => p.theme.lightTextColor};
 `;
 
 const TimeDevelopmentLocalTime = styled.span`
   vertical-align: middle;
   display: table-cell;
-  color: #7d7d7d;
+  color: ${p => p.theme.lightTextColor};
 `;
 
 const TimelineCell = styled.span`
@@ -66,7 +66,7 @@ const TimelineCell = styled.span`
 const TimeDiff = styled.span`
   vertical-align: middle;
   display: table-cell;
-  color: #7d7d7d;
+  color: ${p => p.theme.lightTextColor};
   text-align: right;
 `;
 

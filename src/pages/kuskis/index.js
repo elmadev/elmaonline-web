@@ -117,17 +117,17 @@ const Kuskis = () => {
 
 const KuskisContainer = styled.div`
   min-height: 100%;
-  background: #fff;
+  background: ${p => p.theme.paperBackground};
   padding-bottom: 200px;
 
   a {
-    color: #000;
+    color: ${p => p.theme.fontColor};
     border-bottom: 1px solid #eaeaea;
     font-size: 14px;
     display: block;
 
     &:hover {
-      background: #f9f9f9;
+      background: ${p => p.theme.hoverColor};
     }
   }
 `;
@@ -137,12 +137,13 @@ const GroupContent = styled.div`
 `;
 
 const Filter = styled.div`
-  background: #f1f1f1;
+  background: ${p => p.theme.pageBackground};
   position: fixed;
   width: 100%;
   z-index: 5;
 
   input {
+    color: ${p => p.theme.fontColor};
     padding: 15px 10px;
     font-size: 14px;
     border: 0;

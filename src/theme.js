@@ -7,6 +7,8 @@ const elmaGreen = {
   primary: '#219653',
   primaryLight: '#2ed175',
   primaryDark: '#17693a',
+  primaryAlpha: 'rgba(33, 150, 83, 0.1)',
+  primaryAlpha3: 'rgba(33, 150, 83, 0.3)',
   secondary: '#0097a7',
   secondaryLight: '#00cfe6',
   secondaryDark: '#005c66',
@@ -15,6 +17,9 @@ const elmaGreen = {
   paperBackground: 'white',
   headerColor: '#1b3a57',
   hoverColor: '#ededed',
+  selectedColor: '#f5f5f5',
+  highlightColor: '#dddddd',
+  borderColor: '#e2e3e4',
 
   // battles
   ongoing: '#bae1ff',
@@ -43,6 +48,8 @@ const powerPink = {
   primary: '#d81b60',
   primaryLight: '#ff5c8d',
   primaryDark: '#a00037',
+  primaryAlpha: 'rgba(216, 27, 96, 0.1)',
+  primaryAlpha3: 'rgba(216, 27, 96, 0.3)',
   secondary: '#0097a7',
   secondaryLight: '#00cfe6',
   secondaryDark: '#005c66',
@@ -50,7 +57,9 @@ const powerPink = {
   pageBackground: '#263238',
   paperBackground: '#102027',
   headerColor: '#fafafa',
-  hoverColor: '#4f5b62',
+  selectedColor: '#34444c',
+  hoverColor: '#263238',
+  borderColor: '#37474f',
 
   //battles
   ongoing: 'rgba(186, 225, 255, .2)',

@@ -35,8 +35,8 @@ const Team = ({ TeamName }) => {
 
 const Paper = styled.div`
   width: 100%;
-  background-color: #ffffff;
-  border: 1px solid #e2e3e4;
+  background-color: ${p => p.theme.paperBackground};
+  border: 1px solid ${p => p.theme.borderColor};
   border-radius: 4px;
 `;
 

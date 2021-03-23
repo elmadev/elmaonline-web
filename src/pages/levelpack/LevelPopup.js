@@ -185,7 +185,7 @@ const LevelPopUpCon = styled.div`
   right: 0;
   left: 1050px;
   height: 100vh;
-  background: #fff;
+  background: ${p => p.theme.paperBackground};
   box-sizing: border-box;
   padding-top: 50px;
   border-left: 1px solid #eaeaea;

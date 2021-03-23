@@ -24,7 +24,7 @@ const GridItem = ({ name, longname, to, children, promote }) => {
 
 const ShortName = styled.div`
   font-weight: 500;
-  color: #219653;
+  color: ${p => p.theme.linkColor};
 `;
 
 const LongName = styled.div`
@@ -41,7 +41,7 @@ const Container = styled.div`
   position: relative;
   > a {
     display: block;
-    background: #fff;
+    background: ${p => p.theme.paperBackground};
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
@@ -49,7 +49,7 @@ const Container = styled.div`
     overflow: hidden;
     position: relative;
     :hover {
-      background: #f9f9f9;
+      background: ${p => p.theme.hoverColor};
     }
   }
   @media (max-width: 1350px) {

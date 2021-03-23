@@ -182,10 +182,11 @@ const EventContainer = styled.div`
   flex-direction: row;
   height: 100px;
   cursor: pointer;
-  background-color: ${props => (props.highlight ? '#219653' : 'transparent')};
+  background-color: ${props =>
+    props.highlight ? props.theme.primary : 'transparent'};
   color: ${props => (props.highlight ? 'white' : 'black')};
   a {
-    color: ${props => (props.highlight ? 'white' : '#219653')};
+    color: ${props => (props.highlight ? 'white' : props.theme.linkColor)};
   }
 `;
 

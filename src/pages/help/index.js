@@ -115,11 +115,11 @@ const StyledButton = styled(Button)`
   && {
     border: ${p =>
       p.highlight
-        ? '2px solid rgba(33, 150, 83, 0.3)'
+        ? `2px solid ${p.theme.primaryAlpha3}`
         : '2px solid transparent'};
     text-transform: initial;
     font-weight: ${p => (p.highlight ? '550' : 'inherit')};
-    background: ${p => (p.highlight ? 'rgba(33, 150, 83, 0.1)' : 'initial')};
+    background: ${p => (p.highlight ? p.theme.primaryAlpha : 'initial')};
   }
 `;
 

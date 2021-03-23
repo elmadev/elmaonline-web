@@ -71,7 +71,7 @@ const DetailedPopup = styled.div`
   right: 0;
   left: 800px;
   height: 100vh;
-  background: #fff;
+  background: ${p => p.theme.paperBackground};
   box-sizing: border-box;
   padding-top: var(--top-bar-height);
   border-left: 1px solid #eaeaea;
