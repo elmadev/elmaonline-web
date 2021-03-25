@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDropzone from 'react-dropzone';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import config from 'config';
 import { nickId } from 'utils/nick';
-import { theme } from 'theme';
 
 const Dropzone = ({
   error,
@@ -14,6 +13,7 @@ const Dropzone = ({
   warning,
   minHeight = '100px',
 }) => {
+  const theme = useContext(ThemeContext);
   return (
     <ReactDropzone
       accept={filetype}

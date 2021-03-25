@@ -10,6 +10,7 @@ import { nickId } from 'utils/nick';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Layout from 'components/Layout';
 import Setting from './Setting';
+import Themes from './Themes';
 
 const Settings = () => {
   const { userInfo, error, message, ignored } = useStoreState(
@@ -72,7 +73,7 @@ const Settings = () => {
         <Tab label="User info" />
         <Tab label="Team" />
         <Tab label="Ignore" />
-        <Tab label="Notifications" />
+        <Tab label="Site theme" />
       </Tabs>
       <Container>
         {nickId() > 0 ? (
@@ -186,6 +187,7 @@ const Settings = () => {
                 </Grid>
               </Grid>
             )}
+            {tab === 3 && <Themes />}
           </>
         ) : (
           <div>Log in to change settings.</div>

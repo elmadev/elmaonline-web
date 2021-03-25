@@ -8,7 +8,7 @@ import {
   FormControl,
   Icon,
 } from '@material-ui/core';
-import { theme } from 'theme';
+import { withTheme } from 'styled-components';
 
 const minYear = 2010;
 const maxYear = parseInt(m().format('YYYY'), 10);
@@ -38,6 +38,7 @@ class Year extends React.Component {
   }
 
   render() {
+    const { theme } = this.props;
     const years = [];
     for (let y = 2010; y <= maxYear; y += 1) {
       years.push(y);
@@ -92,4 +93,4 @@ Year.propTypes = {
   yearUpdated: PropTypes.func.isRequired,
 };
 
-export default Year;
+export default withTheme(Year);

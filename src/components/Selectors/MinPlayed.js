@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Icon from '@material-ui/core/Icon';
-import { theme } from 'theme';
+import { withTheme } from 'styled-components';
 
 const values = [1, 2, 5, 10, 25, 50, 100];
 
@@ -23,7 +23,7 @@ class MinPlayed extends React.Component {
   }
 
   render() {
-    const { isUpdated, min } = this.props;
+    const { isUpdated, min, theme } = this.props;
 
     return (
       <>
@@ -77,4 +77,4 @@ MinPlayed.propTypes = {
   min: PropTypes.number.isRequired,
 };
 
-export default MinPlayed;
+export default withTheme(MinPlayed);

@@ -8,7 +8,7 @@ import {
   FormControl,
   Icon,
 } from '@material-ui/core';
-import { theme } from 'theme';
+import { withTheme } from 'styled-components';
 
 class Week extends React.Component {
   constructor(props) {
@@ -25,6 +25,7 @@ class Week extends React.Component {
   }
 
   render() {
+    const { theme } = this.props;
     const weeks = [];
     for (let y = 1; y <= 54; y += 1) {
       weeks.push(y);
@@ -79,4 +80,4 @@ Week.propTypes = {
   weekUpdated: PropTypes.func.isRequired,
 };
 
-export default Week;
+export default withTheme(Week);

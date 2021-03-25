@@ -34,48 +34,61 @@ import Team from 'pages/team';
 import Teams from 'pages/teams';
 import Upload from 'pages/upload';
 import styled from 'styled-components';
+import { useStoreState, useStoreRehydrated } from 'easy-peasy';
+import { themes, muiTheme } from './theme';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from 'styled-components';
 
 const Router100 = styled(Router)`
   height: 100%;
 `;
 
 const Routes = () => {
+  const isRehydrated = useStoreRehydrated();
+  const {
+    settings: { siteTheme },
+  } = useStoreState(state => state.Settings);
+  if (!isRehydrated) return null;
   return (
-    <Router100>
-      <Home path="/" />
-      <Battle path="battles/:BattleId" />
-      <Battles path="battles" />
-      <ChatLog path="chatlog" />
-      <Confirm path="confirm/:confirmCode" />
-      <Cup path="cup/:ShortName/*" />
-      <CupReplay path="r/cup/:ReplayIndex/:Filename" ReplayType="cup" />
-      <Cups path="cups" />
-      <Editor path="editor" />
-      <Error path="error" />
-      <ForgotPassword path="forgot" />
-      <Help path="help/*" />
-      <Kuski path="kuskis/:name" />
-      <Kuskis path="kuskis" />
-      <Level path="levels/:LevelId" />
-      <LevelPack path="levels/packs/:name" />
-      <Levels path="levels" />
-      <LevelsAdd path="levels/add" />
-      <LevelsAddCollection path="levels/collections/add" />
-      <LevelpackCollection path="levels/collections/:name" />
-      <Login path="login" />
-      <Map path="map" />
-      <Mod path="mod" />
-      <Ranking path="ranking" />
-      <Register path="register" />
-      <Replay path="r/:ReplayUuid" />
-      <Replays path="replays" />
-      <Search path="search" />
-      <Settings path="settings" />
-      <Team path="team/:TeamName" />
-      <Teams path="teams" />
-      <Upload path="up" />
-      <NotFound default />
-    </Router100>
+    <MuiThemeProvider theme={muiTheme(siteTheme)}>
+      <ThemeProvider theme={themes[siteTheme]}>
+        <Router100>
+          <Home path="/" />
+          <Battle path="battles/:BattleId" />
+          <Battles path="battles" />
+          <ChatLog path="chatlog" />
+          <Confirm path="confirm/:confirmCode" />
+          <Cup path="cup/:ShortName/*" />
+          <CupReplay path="r/cup/:ReplayIndex/:Filename" ReplayType="cup" />
+          <Cups path="cups" />
+          <Editor path="editor" />
+          <Error path="error" />
+          <ForgotPassword path="forgot" />
+          <Help path="help/*" />
+          <Kuski path="kuskis/:name" />
+          <Kuskis path="kuskis" />
+          <Level path="levels/:LevelId" />
+          <LevelPack path="levels/packs/:name" />
+          <Levels path="levels" />
+          <LevelsAdd path="levels/add" />
+          <LevelsAddCollection path="levels/collections/add" />
+          <LevelpackCollection path="levels/collections/:name" />
+          <Login path="login" />
+          <Map path="map" />
+          <Mod path="mod" />
+          <Ranking path="ranking" />
+          <Register path="register" />
+          <Replay path="r/:ReplayUuid" />
+          <Replays path="replays" />
+          <Search path="search" />
+          <Settings path="settings" />
+          <Team path="team/:TeamName" />
+          <Teams path="teams" />
+          <Upload path="up" />
+          <NotFound default />
+        </Router100>
+      </ThemeProvider>
+    </MuiThemeProvider>
   );
 };
 

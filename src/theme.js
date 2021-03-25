@@ -2,7 +2,8 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 const pad = 4;
 
-const elmaGreen = {
+const elmaGreenLight = {
+  name: 'Elma Green (Light)',
   // colors
   type: 'light',
   primary: '#219653',
@@ -44,8 +45,9 @@ const elmaGreen = {
   buttonFontColor: '#fff',
 };
 
-const powerPink = {
-  ...elmaGreen,
+const powerPinkDark = {
+  ...elmaGreenLight,
+  name: 'Power Pink (Dark)',
   // colors
   type: 'dark',
   primary: '#d81b60',
@@ -74,60 +76,103 @@ const powerPink = {
   lightTextColor: '#bfbfbf',
 };
 
-const theme = powerPink;
+const oceanBlueDark = {
+  ...powerPinkDark,
+  name: 'Ocean Blue (Dark)',
+  // colors
+  primary: '#1976d2',
+  primaryLight: '#63a4ff',
+  primaryDark: '#004ba0',
+  primaryAlpha: 'rgba(25, 118, 210, 0.1)',
+  primaryAlpha3: 'rgba(25, 118, 210, 0.3)',
+  secondary: '#f57c00',
+  secondaryLight: '#ffad42',
+  secondaryDark: '#bb4d00',
+  linkColor: '#63a4ff',
+};
 
-const muiTheme = createMuiTheme({
-  palette: {
-    type: theme.type,
-    primary: {
-      light: theme.primaryLight,
-      main: theme.primary,
-      dark: theme.primaryDark,
-      contrastText: theme.buttonFontColor,
-    },
-    secondary: {
-      main: theme.secondary,
-    },
-  },
-  typography: {
-    useNextVariants: true,
-  },
-  overrides: {
-    MuiPaper: {
-      root: {
-        backgroundColor: theme.paperBackground,
-        color: theme.fontColor,
-      },
-    },
-    MuiButton: {
-      root: {
-        color: theme.fontColor,
-      },
-    },
-    MuiTablePagination: {
-      root: {
-        color: theme.fontColor,
-      },
-    },
-    MuiSelect: {
-      icon: {
-        color: theme.lightTextColor,
-      },
-    },
-    MuiMenuItem: {
-      root: {
-        color: theme.linkColor,
-      },
-    },
-    MuiChip: {
-      root: {
-        color: theme.lightTextColor,
-      },
-      outlined: {
-        border: `1px solid ${theme.lightTextColor}`,
-      },
-    },
-  },
-});
+const oceanBlueLight = {
+  ...elmaGreenLight,
+  name: 'Ocean Blue (Light)',
+  // colors
+  primary: '#0d47a1',
+  primaryLight: '#5472d3',
+  primaryDark: '#002171',
+  primaryAlpha: 'rgba(13, 71, 161, 0.1)',
+  primaryAlpha3: 'rgba(13, 71, 161, 0.3)',
+  secondary: '#f57c00',
+  secondaryLight: '#ffad42',
+  secondaryDark: '#bb4d00',
+  linkColor: '#5472d3',
+};
 
-export { theme, muiTheme };
+const themes = [elmaGreenLight, oceanBlueLight, powerPinkDark, oceanBlueDark];
+
+const previews = [
+  'https://up.elma.online/u/w77aszpiki/ElmaGreenLight.png',
+  'https://up.elma.online/u/84rwrjqcwe/OceanBlueLight.png',
+  'https://up.elma.online/u/6zocp6lq8n/PowerPinkDark.png',
+  'https://up.elma.online/u/8nm2weck7p/OceanBlueDark.png',
+];
+
+const muiTheme = themeId =>
+  createMuiTheme({
+    palette: {
+      type: themes[themeId].type,
+      primary: {
+        light: themes[themeId].primaryLight,
+        main: themes[themeId].primary,
+        dark: themes[themeId].primaryDark,
+        contrastText: themes[themeId].buttonFontColor,
+      },
+      secondary: {
+        main: themes[themeId].secondary,
+      },
+    },
+    typography: {
+      useNextVariants: true,
+    },
+    overrides: {
+      MuiPaper: {
+        root: {
+          backgroundColor: themes[themeId].paperBackground,
+          color: themes[themeId].fontColor,
+        },
+      },
+      MuiButton: {
+        root: {
+          color: themes[themeId].fontColor,
+        },
+      },
+      MuiTablePagination: {
+        root: {
+          color: themes[themeId].fontColor,
+        },
+      },
+      MuiSelect: {
+        icon: {
+          color: themes[themeId].lightTextColor,
+        },
+      },
+      MuiMenuItem: {
+        root: {
+          color: themes[themeId].linkColor,
+        },
+      },
+      MuiChip: {
+        root: {
+          color: themes[themeId].lightTextColor,
+        },
+        outlined: {
+          border: `1px solid ${themes[themeId].lightTextColor}`,
+        },
+      },
+      MuiCheckbox: {
+        root: {
+          color: 'inherit',
+        },
+      },
+    },
+  });
+
+export { muiTheme, themes, previews };

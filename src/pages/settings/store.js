@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { action, thunk } from 'easy-peasy';
+import { action, thunk, persist } from 'easy-peasy';
 import { UserInfo, UpdateUserInfo, Ignored, Ignore, Unignore } from 'api';
 
 export default {
@@ -53,5 +53,11 @@ export default {
     if (removeIgonre.ok) {
       actions.getIgnored();
     }
+  }),
+  settings: persist({
+    siteTheme: 0,
+  }),
+  setSiteTheme: action((state, payload) => {
+    state.settings.siteTheme = payload;
   }),
 };

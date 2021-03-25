@@ -1,4 +1,3 @@
-import { theme } from 'theme';
 const reversedBattleTypes = ['SL', 'SR', 'FT'];
 
 const sortResults = battleType => (a, b) => {
@@ -31,7 +30,7 @@ const battleStatus = data => {
   return status;
 };
 
-const battleStatusBgColor = data => {
+const battleStatusBgColor = (data, theme) => {
   let bgColor;
   if (data.Aborted === 1) {
     bgColor = theme.aborted;

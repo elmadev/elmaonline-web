@@ -7,7 +7,7 @@ import {
   FormControl,
   Icon,
 } from '@material-ui/core';
-import { theme } from 'theme';
+import { withTheme } from 'styled-components';
 
 class Day extends React.Component {
   update(number) {
@@ -23,7 +23,7 @@ class Day extends React.Component {
   }
 
   render() {
-    const { numbers, name, number } = this.props;
+    const { numbers, name, number, theme } = this.props;
 
     return (
       <>
@@ -74,4 +74,4 @@ Day.propTypes = {
   number: PropTypes.number.isRequired,
 };
 
-export default Day;
+export default withTheme(Day);

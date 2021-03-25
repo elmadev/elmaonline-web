@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -14,7 +14,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@material-ui/core';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import Layout from 'components/Layout';
 import { ExpandMore } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
@@ -37,6 +37,7 @@ import { nickId } from 'utils/nick';
 import LeaderHistory from 'components/LeaderHistory';
 
 const Level = ({ LevelId }) => {
+  const theme = useContext(ThemeContext);
   const LevelIndex = parseInt(LevelId, 10);
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
@@ -195,7 +196,7 @@ const Level = ({ LevelId }) => {
                         );
                         return (
                           <BattleRow
-                            bg={battleStatusBgColor(i)}
+                            bg={battleStatusBgColor(i, theme)}
                             hover
                             key={i.BattleIndex}
                             onClick={() => {
