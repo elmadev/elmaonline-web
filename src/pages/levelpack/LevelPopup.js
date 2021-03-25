@@ -170,7 +170,7 @@ const LevelPopup = ({
 };
 
 const ShowMore = styled.span`
-  color: #219653;
+  color: ${p => p.theme.linkColor};
   cursor: pointer;
 `;
 

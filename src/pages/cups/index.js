@@ -66,7 +66,7 @@ const Cups = () => {
 
 const CupName = styled.div`
   font-weight: 500;
-  color: #219653;
+  color: ${p => p.theme.linkColor};
 `;
 
 const Description = styled.div`

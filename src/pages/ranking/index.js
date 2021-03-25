@@ -5,6 +5,7 @@ import { Tabs, Tab, Grid } from '@material-ui/core';
 import Layout from 'components/Layout';
 import Header from 'components/Header';
 import RankingTable from 'features/RankingTable';
+import { Paper } from 'components/Paper';
 import {
   Year,
   Month,
@@ -121,65 +122,69 @@ class Ranking extends React.Component {
               )}
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Header h2>Filter</Header>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  marginBottom: '8px',
-                }}
-              >
-                {tab > 0 && (
-                  <Year
-                    yearUpdated={newYear => this.setState({ year: newYear })}
+              <Paper padding>
+                <Header h2>Filter</Header>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    marginBottom: '8px',
+                  }}
+                >
+                  {tab > 0 && (
+                    <Year
+                      yearUpdated={newYear => this.setState({ year: newYear })}
+                    />
+                  )}
+                  {(tab === 2 || tab === 4) && (
+                    <Month
+                      monthUpdated={newMonth =>
+                        this.setState({ month: newMonth })
+                      }
+                    />
+                  )}
+                  {tab === 3 && (
+                    <Week
+                      weekUpdated={newWeek => this.setState({ week: newWeek })}
+                    />
+                  )}
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    marginBottom: '8px',
+                  }}
+                >
+                  {tab === 4 && (
+                    <Day
+                      dayUpdated={newDay => this.setState({ day: newDay })}
+                    />
+                  )}
+                  <BattleTypes
+                    periodType={tab}
+                    typeUpdated={type => this.setState({ battleType: type })}
                   />
-                )}
-                {(tab === 2 || tab === 4) && (
-                  <Month
-                    monthUpdated={newMonth =>
-                      this.setState({ month: newMonth })
-                    }
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    marginBottom: '8px',
+                  }}
+                >
+                  <MinPlayed
+                    isUpdated={newMin => this.setState({ min: newMin })}
+                    min={min}
                   />
-                )}
-                {tab === 3 && (
-                  <Week
-                    weekUpdated={newWeek => this.setState({ week: newWeek })}
-                  />
-                )}
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  marginBottom: '8px',
-                }}
-              >
-                {tab === 4 && (
-                  <Day dayUpdated={newDay => this.setState({ day: newDay })} />
-                )}
-                <BattleTypes
-                  periodType={tab}
-                  typeUpdated={type => this.setState({ battleType: type })}
-                />
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  marginBottom: '8px',
-                }}
-              >
-                <MinPlayed
-                  isUpdated={newMin => this.setState({ min: newMin })}
-                  min={min}
-                />
-              </div>
+                </div>
+              </Paper>
             </Grid>
           </Grid>
         </Container>

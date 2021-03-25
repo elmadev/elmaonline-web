@@ -8,6 +8,7 @@ import {
   Icon,
 } from '@material-ui/core';
 import { BATTLETYPES, BATTLETYPES_LONG } from 'constants/ranking';
+import { theme } from 'theme';
 
 const periodTypes = ['all', 'year', 'month', 'week', 'day'];
 
@@ -59,7 +60,7 @@ class BattleTypes extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_left
@@ -87,7 +88,7 @@ class BattleTypes extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_right

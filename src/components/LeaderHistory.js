@@ -7,7 +7,7 @@ import Loading from 'components/Loading';
 const TimelineLine = styled.span`
   position: absolute;
   width: 2px;
-  background: #219653;
+  background: ${p => p.theme.primary};
   height: 100%;
   top: 0;
   left: 50%;
@@ -75,7 +75,7 @@ const TimelineMarker = styled.span`
   height: 6px;
   display: block;
   background: #fff;
-  border: 2px solid #219653;
+  border: 2px solid ${p => p.theme.primary};
   border-radius: 50%;
   margin: 6px;
   z-index: 2;

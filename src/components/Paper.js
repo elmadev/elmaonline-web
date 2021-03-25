@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const Paper = styled.div`
   display: flex;
   flex-direction: column;
-  width: ${p => (p.width ? p.width : '100%')};
+  width: ${p => (p.width ? p.width : p.padding ? `calc(100% - 32px)` : '100%')};
   background-color: ${p =>
     p.highlight ? p.theme.ongoing : p.theme.paperBackground};
   border: 1px solid

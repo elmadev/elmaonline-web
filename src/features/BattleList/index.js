@@ -106,7 +106,7 @@ const Popularity = styled.div`
   max-width: 150px;
   overflow: hidden;
   height: ${p => (p.bar ? '5px' : 'auto')};
-  background: ${p => (p.bar ? '#219653' : 'transparent')};
+  background: ${p => (p.bar ? p.theme.primary : 'transparent')};
 `;
 
 const Container = styled.div`

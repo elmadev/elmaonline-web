@@ -102,7 +102,7 @@ const Dl = styled.span`
   margin-right: 4px;
   margin-bottom: 16px;
   cursor: pointer;
-  color: #219653;
+  color: ${p => p.theme.linkColor};
 `;
 
 const Container = styled.div``;

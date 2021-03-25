@@ -8,6 +8,7 @@ import {
   FormControl,
   Icon,
 } from '@material-ui/core';
+import { theme } from 'theme';
 
 const monthsVisual = {
   1: 'January',
@@ -52,7 +53,7 @@ class Month extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_left
@@ -79,7 +80,7 @@ class Month extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_right

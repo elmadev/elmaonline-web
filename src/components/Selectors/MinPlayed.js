@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Icon from '@material-ui/core/Icon';
+import { theme } from 'theme';
 
 const values = [1, 2, 5, 10, 25, 50, 100];
 
@@ -31,7 +32,7 @@ class MinPlayed extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_left
@@ -61,7 +62,7 @@ class MinPlayed extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_right

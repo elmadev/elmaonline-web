@@ -4,6 +4,7 @@ import ReplayList from 'features/ReplayList';
 import ReplayListBattle from 'features/ReplayListBattle';
 import Upload from 'features/Upload';
 import Layout from 'components/Layout';
+import { Paper } from 'components/Paper';
 
 export default function Replays() {
   const [list, setList] = useState(0);
@@ -23,7 +24,9 @@ export default function Replays() {
           <Grid container>
             {list === 0 && (
               <Grid item xs={12} sm={12}>
-                <ReplayList showPagination showTags />
+                <Paper>
+                  <ReplayList showPagination showTags />
+                </Paper>
               </Grid>
             )}
             {list === 1 && (

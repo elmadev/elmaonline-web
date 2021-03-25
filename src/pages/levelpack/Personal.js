@@ -227,7 +227,7 @@ const ChoosePlayer = styled.div`
 `;
 
 const KuskiWith = styled.span`
-  color: #219653;
+  color: ${p => p.theme.linkColor};
   & :hover {
     font-weight: 500;
   }
@@ -239,7 +239,7 @@ const LegacyContainer = styled.span`
 `;
 
 const KuskiLink = styled.span`
-  color: #219653;
+  color: ${p => p.theme.linkColor};
 `;
 
 const EditIcon = styled(Edit)`

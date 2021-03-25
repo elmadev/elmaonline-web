@@ -184,7 +184,7 @@ const EventContainer = styled.div`
   cursor: pointer;
   background-color: ${props =>
     props.highlight ? props.theme.primary : 'transparent'};
-  color: ${props => (props.highlight ? 'white' : 'black')};
+  color: ${p => (p.highlight ? p.theme.buttonFontColor : p.theme.fontColor)};
   a {
     color: ${props => (props.highlight ? 'white' : props.theme.linkColor)};
   }

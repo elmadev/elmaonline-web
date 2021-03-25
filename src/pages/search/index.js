@@ -723,10 +723,10 @@ const LoadMore = styled.button`
   padding: 10px;
   cursor: pointer;
   font-size: 14px;
-  color: #219653;
+  color: ${p => p.theme.linkColor};
   :disabled {
     cursor: default;
-    color: #8c8c8c;
+    color: ${p => p.theme.lightTextColor};
   }
 `;
 

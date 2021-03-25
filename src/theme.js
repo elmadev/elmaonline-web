@@ -4,6 +4,7 @@ const pad = 4;
 
 const elmaGreen = {
   // colors
+  type: 'light',
   primary: '#219653',
   primaryLight: '#2ed175',
   primaryDark: '#17693a',
@@ -40,11 +41,13 @@ const elmaGreen = {
   fontSize: '1em',
   fontColor: '#222',
   lightTextColor: '#767676',
+  buttonFontColor: '#fff',
 };
 
 const powerPink = {
   ...elmaGreen,
   // colors
+  type: 'dark',
   primary: '#d81b60',
   primaryLight: '#ff5c8d',
   primaryDark: '#a00037',
@@ -75,8 +78,12 @@ const theme = powerPink;
 
 const muiTheme = createMuiTheme({
   palette: {
+    type: theme.type,
     primary: {
+      light: theme.primaryLight,
       main: theme.primary,
+      dark: theme.primaryDark,
+      contrastText: theme.buttonFontColor,
     },
     secondary: {
       main: theme.secondary,
@@ -89,11 +96,35 @@ const muiTheme = createMuiTheme({
     MuiPaper: {
       root: {
         backgroundColor: theme.paperBackground,
+        color: theme.fontColor,
       },
     },
     MuiButton: {
       root: {
         color: theme.fontColor,
+      },
+    },
+    MuiTablePagination: {
+      root: {
+        color: theme.fontColor,
+      },
+    },
+    MuiSelect: {
+      icon: {
+        color: theme.lightTextColor,
+      },
+    },
+    MuiMenuItem: {
+      root: {
+        color: theme.linkColor,
+      },
+    },
+    MuiChip: {
+      root: {
+        color: theme.lightTextColor,
+      },
+      outlined: {
+        border: `1px solid ${theme.lightTextColor}`,
       },
     },
   },

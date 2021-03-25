@@ -7,6 +7,7 @@ import {
   FormControl,
   Icon,
 } from '@material-ui/core';
+import { theme } from 'theme';
 
 class Day extends React.Component {
   update(number) {
@@ -31,7 +32,7 @@ class Day extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_left
@@ -56,7 +57,7 @@ class Day extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_right
