@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useStoreState } from 'easy-peasy';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 
 import TopBar from 'components/TopBar';
 import SideBar from 'components/SideBar';
@@ -11,7 +11,7 @@ import GlobalStyle from 'globalStyle';
 const Layout = ({ children, edge, t = '' }) => {
   const { sideBarVisible } = useStoreState(state => state.Page);
   return (
-    <HelmetProvider>
+    <>
       <GlobalStyle />
       <Helmet>
         <title>Elma Online - {t}</title>
@@ -21,7 +21,7 @@ const Layout = ({ children, edge, t = '' }) => {
         <SideBar />
         <ChildrenCon edge={edge}>{children}</ChildrenCon>
       </Container>
-    </HelmetProvider>
+    </>
   );
 };
 
