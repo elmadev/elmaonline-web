@@ -5,6 +5,7 @@ import { nickId } from 'utils/nick';
 import { forEach } from 'lodash';
 import { format } from 'date-fns';
 import { Grid, Checkbox } from '@material-ui/core';
+import { Paper } from 'components/Paper';
 import Header from 'components/Header';
 import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
@@ -62,114 +63,119 @@ const Personal = () => {
   return (
     <Container>
       {nickId() > 0 && (
-        <Grid container spacing={0}>
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <Header h2>My uploaded replays</Header>
-            <div>
-              List of all replays you&apos;ve uploaded in all events. Check mark
-              means online verified (note that verification only happens after
-              an event is done). Check box is for sharing replay with team.
-            </div>
-            {myReplays.sort(eventSort).map((e, i) => (
-              <Fragment key={e.CupIndex}>
-                <Header h3 top>
-                  Event {i + 1}
-                </Header>
-                {e.CupTimes.filter(t => t.Replay).map(replay => (
-                  <Fragment key={replay.CupTimeIndex}>
-                    <ReplayCon>
-                      <Checkbox
-                        checked={replay.ShareReplay === 1}
-                        onChange={() =>
-                          updateReplay({
-                            field: 'ShareReplay',
-                            value: replay.ShareReplay ? 'false' : 'true',
-                            CupGroupIndex: cup.CupGroupIndex,
-                            CupTimeIndex: replay.CupTimeIndex,
-                          })
-                        }
-                      />
-                      <Rec
-                        href={getPrivateCupRecUri(
-                          replay.CupTimeIndex,
-                          cup.ShortName,
-                          replay.KuskiData.Kuski,
-                          replay.Code,
-                          i + 1,
+            <Paper padding>
+              <Header h2>My uploaded replays</Header>
+              <div>
+                List of all replays you&apos;ve uploaded in all events. Check
+                mark means online verified (note that verification only happens
+                after an event is done). Check box is for sharing replay with
+                team.
+              </div>
+              {myReplays.sort(eventSort).map((e, i) => (
+                <Fragment key={e.CupIndex}>
+                  <Header h3 top>
+                    Event {i + 1}
+                  </Header>
+                  {e.CupTimes.filter(t => t.Replay).map(replay => (
+                    <Fragment key={replay.CupTimeIndex}>
+                      <ReplayCon>
+                        <Checkbox
+                          checked={replay.ShareReplay === 1}
+                          onChange={() =>
+                            updateReplay({
+                              field: 'ShareReplay',
+                              value: replay.ShareReplay ? 'false' : 'true',
+                              CupGroupIndex: cup.CupGroupIndex,
+                              CupTimeIndex: replay.CupTimeIndex,
+                            })
+                          }
+                        />
+                        <Rec
+                          href={getPrivateCupRecUri(
+                            replay.CupTimeIndex,
+                            cup.ShortName,
+                            replay.KuskiData.Kuski,
+                            replay.Code,
+                            i + 1,
+                          )}
+                        >
+                          {replay.TimeExists === 1 && <>✓ </>}
+                          <Time time={replay.Time} apples={-1} />
+                        </Rec>
+                        <PreviewRecButton
+                          isPlaying={isPlayingPreview(replay.CupTimeIndex)}
+                          setPreviewRecIndex={handlePreviewRecButtonClick}
+                          CupTimeIndex={replay.CupTimeIndex}
+                        />
+                        {replay.Comment !== '0' && replay.Comment !== '' && (
+                          <Desc>{replay.Comment}</Desc>
                         )}
-                      >
-                        {replay.TimeExists === 1 && <>✓ </>}
-                        <Time time={replay.Time} apples={-1} />
-                      </Rec>
-                      <PreviewRecButton
-                        isPlaying={isPlayingPreview(replay.CupTimeIndex)}
-                        setPreviewRecIndex={handlePreviewRecButtonClick}
-                        CupTimeIndex={replay.CupTimeIndex}
-                      />
-                      {replay.Comment !== '0' && replay.Comment !== '' && (
-                        <Desc>{replay.Comment}</Desc>
+                      </ReplayCon>
+                      {isPlayingPreview(replay.CupTimeIndex) && (
+                        <Recplayer
+                          rec={getPrivateCupRecUri(
+                            replay.CupTimeIndex,
+                            cup.ShortName,
+                            replay.KuskiData.Kuski,
+                            replay.Code,
+                            i + 1,
+                          )}
+                          lev={`${config.dlUrl}level/${e.LevelIndex}`}
+                          height={400}
+                          controls
+                        />
                       )}
-                    </ReplayCon>
-                    {isPlayingPreview(replay.CupTimeIndex) && (
-                      <Recplayer
-                        rec={getPrivateCupRecUri(
-                          replay.CupTimeIndex,
-                          cup.ShortName,
-                          replay.KuskiData.Kuski,
-                          replay.Code,
-                          i + 1,
-                        )}
-                        lev={`${config.dlUrl}level/${e.LevelIndex}`}
-                        height={400}
-                        controls
-                      />
-                    )}
-                  </Fragment>
-                ))}
-              </Fragment>
-            ))}
+                    </Fragment>
+                  ))}
+                </Fragment>
+              ))}
+            </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Header h2>Current event times</Header>
-            <div>
-              This shows your online times for current event. Can be used to
-              verify that your times was registered on the server, as you
-              can&apos;t see these anywhere else. Apples results are not shown
-              here.
-            </div>
-            {myTimes && (
-              <>
-                {events.sort(eventSort).map((e, i) => {
-                  const myTimesInLev = myTimes.filter(
-                    m => m.level === e.LevelIndex,
-                  );
-                  if (myTimesInLev.length === 0) return null;
-                  return (
-                    <>
-                      <Header h3 top>
-                        Event {i + 1}
-                      </Header>
-                      {myTimesInLev[0].times.map(t => (
-                        <ReplayCon key={t.TimeIndex}>
-                          <div>
-                            <Time time={t.Time} />
-                          </div>
-                          <Desc>
-                            (
-                            <LocalTime
-                              date={t.Driven}
-                              format="dddd HH:mm:ss"
-                              parse="X"
-                            />
-                            )
-                          </Desc>
-                        </ReplayCon>
-                      ))}
-                    </>
-                  );
-                })}
-              </>
-            )}
+            <Paper padding>
+              <Header h2>Current event times</Header>
+              <div>
+                This shows your online times for current event. Can be used to
+                verify that your times was registered on the server, as you
+                can&apos;t see these anywhere else. Apples results are not shown
+                here.
+              </div>
+              {myTimes && (
+                <>
+                  {events.sort(eventSort).map((e, i) => {
+                    const myTimesInLev = myTimes.filter(
+                      m => m.level === e.LevelIndex,
+                    );
+                    if (myTimesInLev.length === 0) return null;
+                    return (
+                      <>
+                        <Header h3 top>
+                          Event {i + 1}
+                        </Header>
+                        {myTimesInLev[0].times.map(t => (
+                          <ReplayCon key={t.TimeIndex}>
+                            <div>
+                              <Time time={t.Time} />
+                            </div>
+                            <Desc>
+                              (
+                              <LocalTime
+                                date={t.Driven}
+                                format="dddd HH:mm:ss"
+                                parse="X"
+                              />
+                              )
+                            </Desc>
+                          </ReplayCon>
+                        ))}
+                      </>
+                    );
+                  })}
+                </>
+              )}
+            </Paper>
           </Grid>
         </Grid>
       )}

@@ -15,6 +15,7 @@ const elmaGreenLight = {
   secondaryLight: '#00cfe6',
   secondaryDark: '#005c66',
   linkColor: '#219653',
+  linkHover: '#2ed175',
   pageBackground: '#f1f1f1',
   paperBackground: 'white',
   headerColor: '#1b3a57',
@@ -59,11 +60,12 @@ const powerPinkDark = {
   secondaryLight: '#00cfe6',
   secondaryDark: '#005c66',
   linkColor: '#ff5c8d',
+  linkHover: '#ff80a6',
   pageBackground: '#263238',
   paperBackground: '#102027',
   headerColor: '#fafafa',
   selectedColor: '#34444c',
-  hoverColor: '#263238',
+  hoverColor: '#0C191E',
   borderColor: '#37474f',
 
   //battles

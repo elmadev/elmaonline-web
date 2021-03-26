@@ -338,7 +338,7 @@ const ClickCloseIcon = styled(CloseIcon)`
 `;
 
 const FormLabel = styled.legend`
-  color: rgba(0, 0, 0, 0.54);
+  color: ${p => p.theme.lightTextColor};
   font-size: 1rem;
   letter-spacing: 0.00938em;
 `;

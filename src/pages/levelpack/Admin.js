@@ -217,12 +217,10 @@ const Add = styled(PlaylistAdd)`
 
 const Row = styled.div`
   display: table-row;
-  background: ${p => (p.selected ? '#219653' : 'transparent')};
-  color: ${p => (p.selected ? '#fff' : 'inherit')};
+  background: transparent;
   color: ${p => (p.color ? '#b3b3b3' : 'inherit')};
   :hover {
-    background: ${p => (p.selected ? '#219653' : '#f9f9f9')};
-    color: ${p => (p.selected ? '#fff' : 'inherit')};
+    background: ${p => p.theme.hoverColor};
   }
 `;
 

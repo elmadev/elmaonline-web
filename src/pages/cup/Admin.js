@@ -73,8 +73,8 @@ const Admin = () => {
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <Header h2>Add event</Header>
-          <Paper>
+          <Paper padding>
+            <Header h2>Add event</Header>
             <form {...formal.getFormProps()}>
               <FieldAutoComplete
                 label="Level"
@@ -105,8 +105,8 @@ const Admin = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Header h2>How to add events</Header>
-          <Paper>
+          <Paper padding>
+            <Header h2>How to add events</Header>
             <ol>
               <li>
                 Play level in EOL locked (turn lock new levels on in
@@ -122,10 +122,8 @@ const Admin = () => {
               </li>
             </ol>
           </Paper>
-          <Header h2 top>
-            Editing events
-          </Header>
-          <Paper>
+          <Paper padding top>
+            <Header h2>Editing events</Header>
             <ul>
               <li>
                 To edit Designer or LevelIndex click on it in the table below to
@@ -153,10 +151,8 @@ const Admin = () => {
           </Paper>
         </Grid>
       </Grid>
-      <Header h2 top>
-        Events
-      </Header>
-      <Paper>
+      <Paper padding top>
+        <Header h2>Events</Header>
         <DerpTable
           headers={[
             'Designer',
@@ -200,7 +196,7 @@ const Admin = () => {
                 />
               </ListCell>
               <ListCell>
-                <Checkbox
+                <CheckboxNoPad
                   checked={e.ShowResults === 1}
                   onChange={() =>
                     editEvent({
@@ -274,6 +270,12 @@ const Admin = () => {
 
 const Container = styled.div`
   padding: 8px;
+`;
+
+const CheckboxNoPad = styled(Checkbox)`
+  && {
+    padding: 0;
+  }
 `;
 
 export default Admin;

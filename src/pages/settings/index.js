@@ -162,8 +162,8 @@ const Settings = () => {
             {tab === 2 && (
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <Header h2>Chat ignore a player</Header>
                   <Setting
+                    header="Chat ignore a player"
                     label={['Ignore nick']}
                     update={() => ignoreKuski(ignoreNick)}
                     value={[ignoreNick]}
@@ -171,18 +171,16 @@ const Settings = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Header h2>Currently ignored</Header>
-                  <Paper>
-                    <PaperCon>
-                      {ignored.map(i => (
-                        <IgnoreCon
-                          key={i.IgnoreIndex}
-                          onClick={() => unignore(i.IgnoredKuskiIndex)}
-                        >
-                          <Remove /> {i.KuskiData.Kuski}
-                        </IgnoreCon>
-                      ))}
-                    </PaperCon>
+                  <Paper padding>
+                    <Header h2>Currently ignored</Header>
+                    {ignored.map(i => (
+                      <IgnoreCon
+                        key={i.IgnoreIndex}
+                        onClick={() => unignore(i.IgnoredKuskiIndex)}
+                      >
+                        <Remove /> {i.KuskiData.Kuski}
+                      </IgnoreCon>
+                    ))}
                   </Paper>
                 </Grid>
               </Grid>

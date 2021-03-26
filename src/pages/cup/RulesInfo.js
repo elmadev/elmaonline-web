@@ -23,8 +23,8 @@ const RulesInfo = props => {
     <Container>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <Header h2>Cup description</Header>
-          <Paper>
+          <Paper padding>
+            <Header h2>Cup description</Header>
             <Text dangerouslySetInnerHTML={{ __html: description }} />
             {owner.length > 0 && owner.indexOf(nickId()) > -1 && (
               <>
@@ -63,8 +63,8 @@ const RulesInfo = props => {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Header h2>How to play cups</Header>
-          <Paper>
+          <Paper padding>
+            <Header h2>How to play cups</Header>
             <Text>
               If you want to participate in a cup, the only thing you have to do
               is to play the level of the current event online in EOL. Your time
@@ -79,10 +79,8 @@ const RulesInfo = props => {
               do so. All deadlines are shown in your local timezone.
             </Text>
           </Paper>
-          <Header h2 top>
-            Hiding of times
-          </Header>
-          <Paper>
+          <Paper padding top>
+            <Header h2>Hiding of times</Header>
             <Text>
               During an event the given level will have its &quot;Hidden&quot;
               flag turned on. This means that the shift+F5 (Best Times) list is
@@ -96,23 +94,23 @@ const RulesInfo = props => {
               anywhere.
             </Text>
           </Paper>
-          <Header h2 top>
-            Points awarded
-          </Header>
-          <DerpTable headers={['#', 'Points']} length={points.length}>
-            {points.map((p, no) => (
-              <ListRow key={p}>
-                <ListCell>{no + 1}.</ListCell>
-                <ListCell right>
-                  {p} point{p > 1 ? 's' : ''}
-                </ListCell>
+          <Paper padding top>
+            <Header h2>Points awarded</Header>
+            <DerpTable headers={['#', 'Points']} length={points.length}>
+              {points.map((p, no) => (
+                <ListRow key={p}>
+                  <ListCell>{no + 1}.</ListCell>
+                  <ListCell right>
+                    {p} point{p > 1 ? 's' : ''}
+                  </ListCell>
+                </ListRow>
+              ))}
+              <ListRow hover key="51">
+                <ListCell>51...</ListCell>
+                <ListCell right>1 point</ListCell>
               </ListRow>
-            ))}
-            <ListRow hover key="51">
-              <ListCell>51...</ListCell>
-              <ListCell right>1 point</ListCell>
-            </ListRow>
-          </DerpTable>
+            </DerpTable>
+          </Paper>
         </Grid>
       </Grid>
     </Container>
@@ -125,7 +123,6 @@ const Container = styled.div`
 
 const Text = styled.div`
   margin-bottom: 8px;
-  padding: 8px;
 `;
 
 export default RulesInfo;

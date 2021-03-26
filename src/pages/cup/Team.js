@@ -2,6 +2,7 @@
 import React, { useEffect, Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { nickId } from 'utils/nick';
+import { Paper } from 'components/Paper';
 import { Grid } from '@material-ui/core';
 import Header from 'components/Header';
 import Time from 'components/Time';
@@ -70,77 +71,80 @@ const Team = () => {
   return (
     <Container>
       {nickId() > 0 && (
-        <Grid container spacing={0}>
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <Header h2>Team replays</Header>
-            <div>List of all team replays that has been set to shared.</div>
-            <FieldBoolean
-              label="Sort by time"
-              value={sortByTime}
-              onChange={() =>
-                setTeamOptions({ sortByTime: !sortByTime, showOngoing })
-              }
-            />
-            <FieldBoolean
-              label="Show ongoing"
-              value={showOngoing}
-              onChange={() =>
-                setTeamOptions({ sortByTime, showOngoing: !showOngoing })
-              }
-            />
-            {teamReplays
-              .sort(eventSort)
-              .filter(isOngoingFilter)
-              .map(e => (
-                <Fragment key={e.CupIndex}>
-                  <Header h3 top>
-                    Event {getEventNumber(e.CupIndex)}
-                  </Header>
-                  {e.CupTimes.sort(sortByTime ? timeSort : kuskiSort)
-                    .filter(t => t.Replay)
-                    .map(replay => (
-                      <Fragment key={replay.CupTimeIndex}>
-                        <ReplayCon>
-                          <Rec
-                            href={getPrivateCupRecUri(
-                              replay.CupTimeIndex,
-                              cup.ShortName,
-                              replay.KuskiData.Kuski,
-                              replay.Code,
-                              getEventNumber(e.CupIndex),
-                            )}
-                          >
-                            {replay.TimeExists === 1 && <>✓ </>}
-                            <Time time={replay.Time} apples={-1} />
-                          </Rec>
-                          by {replay.KuskiData.Kuski}
-                          <PreviewRecButton
-                            isPlaying={isPlayingPreview(replay.CupTimeIndex)}
-                            setPreviewRecIndex={handlePreviewRecButtonClick}
-                            CupTimeIndex={replay.CupTimeIndex}
-                          />
-                          {replay.Comment !== '0' && replay.Comment !== '' && (
-                            <Desc>{replay.Comment}</Desc>
+            <Paper padding>
+              <Header h2>Team replays</Header>
+              <div>List of all team replays that has been set to shared.</div>
+              <FieldBoolean
+                label="Sort by time"
+                value={sortByTime}
+                onChange={() =>
+                  setTeamOptions({ sortByTime: !sortByTime, showOngoing })
+                }
+              />
+              <FieldBoolean
+                label="Show ongoing"
+                value={showOngoing}
+                onChange={() =>
+                  setTeamOptions({ sortByTime, showOngoing: !showOngoing })
+                }
+              />
+              {teamReplays
+                .sort(eventSort)
+                .filter(isOngoingFilter)
+                .map(e => (
+                  <Fragment key={e.CupIndex}>
+                    <Header h3 top>
+                      Event {getEventNumber(e.CupIndex)}
+                    </Header>
+                    {e.CupTimes.sort(sortByTime ? timeSort : kuskiSort)
+                      .filter(t => t.Replay)
+                      .map(replay => (
+                        <Fragment key={replay.CupTimeIndex}>
+                          <ReplayCon>
+                            <Rec
+                              href={getPrivateCupRecUri(
+                                replay.CupTimeIndex,
+                                cup.ShortName,
+                                replay.KuskiData.Kuski,
+                                replay.Code,
+                                getEventNumber(e.CupIndex),
+                              )}
+                            >
+                              {replay.TimeExists === 1 && <>✓ </>}
+                              <Time time={replay.Time} apples={-1} />
+                            </Rec>
+                            by {replay.KuskiData.Kuski}
+                            <PreviewRecButton
+                              isPlaying={isPlayingPreview(replay.CupTimeIndex)}
+                              setPreviewRecIndex={handlePreviewRecButtonClick}
+                              CupTimeIndex={replay.CupTimeIndex}
+                            />
+                            {replay.Comment !== '0' &&
+                              replay.Comment !== '' && (
+                                <Desc>{replay.Comment}</Desc>
+                              )}
+                          </ReplayCon>
+                          {isPlayingPreview(replay.CupTimeIndex) && (
+                            <Recplayer
+                              rec={getPrivateCupRecUri(
+                                replay.CupTimeIndex,
+                                cup.ShortName,
+                                replay.KuskiData.Kuski,
+                                replay.Code,
+                                getEventNumber(e.CupIndex),
+                              )}
+                              lev={`${config.dlUrl}level/${e.LevelIndex}`}
+                              height={400}
+                              controls
+                            />
                           )}
-                        </ReplayCon>
-                        {isPlayingPreview(replay.CupTimeIndex) && (
-                          <Recplayer
-                            rec={getPrivateCupRecUri(
-                              replay.CupTimeIndex,
-                              cup.ShortName,
-                              replay.KuskiData.Kuski,
-                              replay.Code,
-                              getEventNumber(e.CupIndex),
-                            )}
-                            lev={`${config.dlUrl}level/${e.LevelIndex}`}
-                            height={400}
-                            controls
-                          />
-                        )}
-                      </Fragment>
-                    ))}
-                </Fragment>
-              ))}
+                        </Fragment>
+                      ))}
+                  </Fragment>
+                ))}
+            </Paper>
           </Grid>
         </Grid>
       )}

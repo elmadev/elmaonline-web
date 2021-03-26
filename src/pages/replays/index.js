@@ -3,6 +3,7 @@ import { Grid, Box, Tab, Tabs } from '@material-ui/core';
 import ReplayList from 'features/ReplayList';
 import ReplayListBattle from 'features/ReplayListBattle';
 import Upload from 'features/Upload';
+import Header from 'components/Header';
 import Layout from 'components/Layout';
 import { Paper } from 'components/Paper';
 
@@ -38,7 +39,10 @@ export default function Replays() {
         </Grid>
         <Grid item xs={12} sm={4}>
           <Box p={2}>
-            <Upload filetype=".rec" />
+            <Paper padding>
+              <Header h2>Upload replay</Header>
+              <Upload filetype=".rec" />
+            </Paper>
           </Box>
         </Grid>
       </Grid>

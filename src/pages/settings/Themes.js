@@ -4,8 +4,9 @@ import { themes, previews } from 'theme';
 import Header from 'components/Header';
 import { Column, Row } from 'components/Containers';
 import styled from 'styled-components';
-import { Radio } from '@material-ui/core';
+import { Radio, Grid } from '@material-ui/core';
 import { alphaNumeric } from 'utils/misc';
+import { Paper } from 'components/Paper';
 
 const Themes = () => {
   const {
@@ -13,27 +14,31 @@ const Themes = () => {
   } = useStoreState(state => state.Settings);
   const { setSiteTheme } = useStoreActions(actions => actions.Settings);
   return (
-    <Column>
-      <Header h2>Select Site Theme</Header>
-      <Column>
-        {themes.map((theme, index) => (
-          <Column key={theme.name} t="Large">
-            <Row>
-              <Header h3>{theme.name}</Header>
-              <ThemeRadio
-                checked={siteTheme === index}
-                onChange={() => setSiteTheme(index)}
-                value={alphaNumeric(theme.name)}
-                name="themeRadios"
-              />
-            </Row>
-            <Link target="_blank" rel="noreferrer" href={previews[index]}>
-              <PreviewImage src={previews[index]} alt={theme.name} />
-            </Link>
+    <Grid container spacing={2}>
+      <Grid item sm={6} xs={12}>
+        <Paper padding width="auto">
+          <Header h2>Select Site Theme</Header>
+          <Column>
+            {themes.map((theme, index) => (
+              <Column key={theme.name} t="Large">
+                <Row>
+                  <Header h3>{theme.name}</Header>
+                  <ThemeRadio
+                    checked={siteTheme === index}
+                    onChange={() => setSiteTheme(index)}
+                    value={alphaNumeric(theme.name)}
+                    name="themeRadios"
+                  />
+                </Row>
+                <Link target="_blank" rel="noreferrer" href={previews[index]}>
+                  <PreviewImage src={previews[index]} alt={theme.name} />
+                </Link>
+              </Column>
+            ))}
           </Column>
-        ))}
-      </Column>
-    </Column>
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
 

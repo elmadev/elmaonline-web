@@ -5,7 +5,7 @@ import { Tabs, Tab, Grid } from '@material-ui/core';
 import Layout from 'components/Layout';
 import Header from 'components/Header';
 import RankingTable from 'features/RankingTable';
-import { Paper } from 'components/Paper';
+import { Paper, Content } from 'components/Paper';
 import {
   Year,
   Month,
@@ -74,52 +74,56 @@ class Ranking extends React.Component {
         <Container>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={8}>
-              <Header>Ranking</Header>
-              {tab === 0 && (
-                <RankingTable
-                  battleType={battleType}
-                  minPlayed={min}
-                  index="RankingIndex"
-                  periodType="overall"
-                  period="overall"
-                />
-              )}
-              {tab === 1 && (
-                <RankingTable
-                  battleType={battleType}
-                  minPlayed={min}
-                  index="RankingYearlyIndex"
-                  periodType="year"
-                  period={year}
-                />
-              )}
-              {tab === 2 && (
-                <RankingTable
-                  battleType={battleType}
-                  minPlayed={min}
-                  index="RankingMonthlyIndex"
-                  periodType="month"
-                  period={formatPeriod('month', year, month, week, day)}
-                />
-              )}
-              {tab === 3 && (
-                <RankingTable
-                  battleType={battleType}
-                  minPlayed={min}
-                  index="RankingWeeklyIndex"
-                  periodType="week"
-                  period={formatPeriod('week', year, month, week, day)}
-                />
-              )}
-              {tab === 4 && (
-                <RankingTable
-                  battleType={battleType}
-                  minPlayed={min}
-                  index="RankingDailyIndex"
-                  periodType="day"
-                  period={formatPeriod('day', year, month, week, day)}
-                />
-              )}
+              <Paper>
+                <Content>
+                  <Header>Ranking</Header>
+                </Content>
+                {tab === 0 && (
+                  <RankingTable
+                    battleType={battleType}
+                    minPlayed={min}
+                    index="RankingIndex"
+                    periodType="overall"
+                    period="overall"
+                  />
+                )}
+                {tab === 1 && (
+                  <RankingTable
+                    battleType={battleType}
+                    minPlayed={min}
+                    index="RankingYearlyIndex"
+                    periodType="year"
+                    period={year}
+                  />
+                )}
+                {tab === 2 && (
+                  <RankingTable
+                    battleType={battleType}
+                    minPlayed={min}
+                    index="RankingMonthlyIndex"
+                    periodType="month"
+                    period={formatPeriod('month', year, month, week, day)}
+                  />
+                )}
+                {tab === 3 && (
+                  <RankingTable
+                    battleType={battleType}
+                    minPlayed={min}
+                    index="RankingWeeklyIndex"
+                    periodType="week"
+                    period={formatPeriod('week', year, month, week, day)}
+                  />
+                )}
+                {tab === 4 && (
+                  <RankingTable
+                    battleType={battleType}
+                    minPlayed={min}
+                    index="RankingDailyIndex"
+                    periodType="day"
+                    period={formatPeriod('day', year, month, week, day)}
+                  />
+                )}
+              </Paper>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Paper padding>

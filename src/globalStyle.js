@@ -64,7 +64,7 @@ const GlobalStyle = createGlobalStyle`
     color: ${p => p.theme.linkColor};
     text-decoration: none;
     :hover {
-      color: ${p => p.theme.primaryDark};
+      color: ${p => p.theme.linkHover};
     }
   }
   h2,
