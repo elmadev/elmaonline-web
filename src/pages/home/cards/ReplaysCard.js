@@ -14,13 +14,16 @@ export default function ReplaysCard() {
       <CardContent>
         <ReplayList
           defaultPage={0}
-          defaultPageSize={5}
+          defaultPageSize={20}
           showPagination={false}
         />
       </CardContent>
       <CardActions>
         <Button size="small" color="primary">
           <Link to="/replays">Show more</Link>
+        </Button>
+        <Button size="small" color="primary" style={{ marginLeft: 'auto' }}>
+          <Link to="/replays/upload">Upload</Link>
         </Button>
       </CardActions>
     </Card>
