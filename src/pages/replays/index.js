@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Box, Tab, Tabs } from '@material-ui/core';
+import { Tab, Tabs } from '@material-ui/core';
 import ReplayList from 'features/ReplayList';
 import ReplayListBattle from 'features/ReplayListBattle';
 import Upload from 'features/Upload';
@@ -7,6 +7,7 @@ import Layout from 'components/Layout';
 import styled from 'styled-components';
 import { Router, navigate } from '@reach/router';
 import Admin from './Admin';
+import { mod } from 'utils/nick';
 
 export default function Replays(props) {
   const [tab, setTab] = useState('');
@@ -28,11 +29,11 @@ export default function Replays(props) {
         <Tab label="Recently uploaded" value="" />
         <Tab label="Battle replays" value="battle" />
         <Tab label="Upload" value="upload" />
-        <Tab label="Admin" value="admin" />
+        {mod() > 0 && <Tab label="Admin" value="admin" />}
       </Tabs>
       <Container>
         <Router primary={false}>
-          <ReplayList default showPagination showTags />
+          <ReplayList default defaultPageSize={10000} showPagination showTags />
           <ReplayListBattle path="battle" showPagination />
           <Upload path="upload" filetype=".rec" />
           <Admin path="admin" />

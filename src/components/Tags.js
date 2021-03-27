@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import Tag from 'components/Tag';
 
 const TagsContainer = styled.div`
-  display: 'flex';
-  justify-content: 'center';
-  flex-wrap: 'wrap';
+  display: flex;
+  flex-wrap: wrap;
   & > * {
     margin: 2px;
   }
