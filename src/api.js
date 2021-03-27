@@ -263,3 +263,9 @@ export const GetDonations = () => api.get(`donate/`);
 // upload
 export const UploadFile = data => apiUpload.post(`upload/file`, data);
 export const UpdateFile = data => api.post(`upload`, data);
+
+// tags
+export const GetTags = () => api.get(`tag`);
+export const CreateTag = data => api.post(`tag`, data);
+export const UpdateTag = (TagIndex, data) => api.put(`tag/${TagIndex}`, data);
+export const DeleteTag = TagIndex => api.delete(`tag/${TagIndex}`);
