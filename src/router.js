@@ -68,7 +68,7 @@ const Routes = () => {
       <Ranking path="ranking" />
       <Register path="register" />
       <Replay path="r/:ReplayUuid" />
-      <Replays path="replays" />
+      <Replays path="replays/*" />
       <Search path="search" />
       <Settings path="settings" />
       <Team path="team/:TeamName" />
