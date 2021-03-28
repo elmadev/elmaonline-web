@@ -57,8 +57,11 @@ const Routes = () => {
       <Kuski path="kuskis/:name" />
       <Kuskis path="kuskis" />
       <Level path="levels/:LevelId" />
-      <LevelPack path="levels/packs/:name" />
-      <Levels path="levels" />
+      <LevelPack path="levels/packs/:name" tab="" />
+      <LevelPack path="levels/packs/:name/:tab" />
+      <Levels path="levels" tab="" />
+      {/* can't use levels/:tab due to conflict with levels/:LevelId above*/}
+      <Levels path="levels/collections" tab="collections" />
       <LevelsAdd path="levels/add" />
       <LevelsAddCollection path="levels/collections/add" />
       <LevelpackCollection path="levels/collections/:name" />
