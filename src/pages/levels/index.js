@@ -11,10 +11,10 @@ import GridItem from 'components/GridItem';
 
 const promote = 'Int';
 
-const Levels = () => {
+const Levels = ({ tab }) => {
   const navigate = useNavigate();
   const [packs, setPacks] = useState([]);
-  const [tab, setTab] = useState(0);
+
   const { levelpacks, favs, collections } = useStoreState(
     state => state.Levels,
   );
@@ -35,7 +35,7 @@ const Levels = () => {
   }, []);
 
   useEffect(() => {
-    if (tab === 1) {
+    if (tab === 'collections') {
       getCollections();
     }
   }, [tab]);
@@ -68,12 +68,14 @@ const Levels = () => {
           variant="scrollable"
           scrollButtons="auto"
           value={tab}
-          onChange={(e, value) => setTab(value)}
+          onChange={(e, value) =>
+            navigate(['/levels', value].filter(Boolean).join('/'))
+          }
         >
-          <Tab label="Packs" />
-          <Tab label="Collections" />
+          <Tab label="Packs" value="" />
+          <Tab label="Collections" value="collections" />
         </Tabs>
-        {tab === 0 && (
+        {!tab && (
           <>
             {packs.length > 0 &&
               packs
@@ -133,7 +135,7 @@ const Levels = () => {
             </FabCon>
           </>
         )}
-        {tab === 1 && (
+        {tab === 'collections' && (
           <>
             {collections && (
               <>
