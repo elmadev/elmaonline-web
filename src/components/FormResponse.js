@@ -15,18 +15,16 @@ const FormResponse = ({ msgs, showIfEmpty = false, isError }) => {
   );
 };
 
-const Root = styled.div`  
-  border: 1px solid white;
+const Root = styled.div`
   border: 1px solid lightGrey;
   padding: 15px;
   > * {
-    color: 
     margin-bottom: 8px;
     &:last-child {
       margin-bottom: 0;
     }
   }
-  border-left: ${p => (p.isError ? '4px solid red' : '4px solid green')};  
+  border-left: ${p => (p.isError ? '4px solid red' : '4px solid green')};
 `;
 
 export default FormResponse;
