@@ -46,15 +46,26 @@ const RightBarContainer = props => {
         </AccordionSummary>
         <AccordionDetails>
           <BattleStyleDescription>
-            {battle.Duration} minute{' '}
-            <span className="battleType">
-              <BattleType type={battle.BattleType} />
-            </span>{' '}
-            battle in{' '}
-            <Download href={`level/${battle.LevelIndex}`}>
-              {battle.LevelData ? battle.LevelData.LevelName : '?'}
-              .lev
-            </Download>
+            {battle.BattleType === 'HT' ? (
+              <>
+                <span className="battleType">
+                  <BattleType type={battle.BattleType} />
+                </span>{' '}
+                battle
+              </>
+            ) : (
+              <>
+                {battle.Duration} minute{' '}
+                <span className="battleType">
+                  <BattleType type={battle.BattleType} />
+                </span>{' '}
+                battle in{' '}
+                <Download href={`level/${battle.LevelIndex}`}>
+                  {battle.LevelData ? battle.LevelData.LevelName : '?'}
+                  .lev
+                </Download>
+              </>
+            )}
             {' by '}
             {battle.KuskiData.Kuski}
             <CrippleText>{crippleOptions(battle)}</CrippleText>
