@@ -68,10 +68,7 @@ export default {
       actions.setTt(levels);
     }
   }),
-  designedBattles: {
-    count: 0,
-    rows: [],
-  },
+  designedBattles: [],
   setDesignedBattes: action((state, payload) => {
     state.designedBattles = payload;
   }),
