@@ -28,6 +28,7 @@ import Kuskis from 'pages/kuskis/store';
 import Help from 'pages/help/store';
 import Level from 'pages/level/store';
 import Mod from 'pages/mod/store';
+import Replays from 'pages/replays/store';
 import Battle from 'pages/battle/store';
 import Levels from 'pages/levels/store';
 import News from 'features/News/store';
@@ -68,6 +69,7 @@ export default {
   Login,
   ReplayList,
   FileUpload,
+  Replays,
   Page: {
     sideBarVisible: true,
     showSideBar: action(state => {

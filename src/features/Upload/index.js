@@ -11,13 +11,16 @@ import {
   FormControlLabel,
   Button,
   Grid,
+  Chip,
 } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Dropzone from 'components/Dropzone';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Alert from 'components/Alert';
 import Link from 'components/Link';
 import config from 'config';
 import { authToken } from 'utils/nick';
+import { xor } from 'lodash';
 
 const Upload = ({ onUpload, filetype }) => {
   const {
@@ -25,8 +28,9 @@ const Upload = ({ onUpload, filetype }) => {
     updateReplay,
     setError,
     getKuskiByName,
+    getTagOptions,
   } = useStoreActions(actions => actions.Upload);
-  const { inserted, updated, error, kuskiInfo } = useStoreState(
+  const { inserted, updated, error, kuskiInfo, tagOptions } = useStoreState(
     state => state.Upload,
   );
   const [files, setFiles] = useState([]);
@@ -53,6 +57,7 @@ const Upload = ({ onUpload, filetype }) => {
         index,
         kuskiIndex: 0,
         comment: '',
+        tags: [],
       };
     });
     setFileInfo(newFileInfo);
@@ -61,6 +66,10 @@ const Upload = ({ onUpload, filetype }) => {
     setDuplicateReplayIndex(0);
     setUploaded([]);
   };
+
+  useEffect(() => {
+    getTagOptions();
+  }, []);
 
   useEffect(() => {
     if (inserted) {
@@ -96,30 +105,18 @@ const Upload = ({ onUpload, filetype }) => {
     setUpdate(Math.random());
   };
 
-  const handleTas = (name, event) => {
-    const newFileInfo = fileInfo;
-    newFileInfo[name].tas = event.target.checked;
-    setFileInfo(newFileInfo);
-    setUpdate(Math.random());
-  };
-
-  const handleBug = (name, event) => {
-    const newFileInfo = fileInfo;
-    newFileInfo[name].bug = event.target.checked;
-    setFileInfo(newFileInfo);
-    setUpdate(Math.random());
-  };
-
-  const handleNitro = (name, event) => {
-    const newFileInfo = fileInfo;
-    newFileInfo[name].nitro = event.target.checked;
-    setFileInfo(newFileInfo);
-    setUpdate(Math.random());
-  };
-
   const handleComment = (name, event) => {
     const newFileInfo = fileInfo;
     newFileInfo[name].comment = event.target.value;
+    setFileInfo(newFileInfo);
+    setUpdate(Math.random());
+  };
+
+  const handleTags = (name, value) => {
+    const newFileInfo = fileInfo;
+    newFileInfo[name].tags = xor(newFileInfo[name].tags, [value]);
+    console.log(newFileInfo[name].tags);
+    console.log(value);
     setFileInfo(newFileInfo);
     setUpdate(Math.random());
   };
@@ -230,6 +227,7 @@ const Upload = ({ onUpload, filetype }) => {
               Comment: fileInfo[body.file].comment,
               MD5: body.MD5,
               DrivenByText: fileInfo[body.file].drivenBy,
+              Tags: fileInfo[body.file].tags,
             });
           }
         });
@@ -287,6 +285,29 @@ const Upload = ({ onUpload, filetype }) => {
                             />
                           </div>
                         </Grid>
+                        <Grid item xs={12}>
+                          <Typography color="textSecondary">Tags</Typography>
+                          {tagOptions.map(option => {
+                            if (fileInfo[rec.name].tags.includes(option)) {
+                              return (
+                                <Chip
+                                  label={option.Name}
+                                  onDelete={() => handleTags(rec.name, option)}
+                                  color="primary"
+                                  style={{ margin: 4 }}
+                                />
+                              );
+                            } else {
+                              return (
+                                <Chip
+                                  label={option.Name}
+                                  onClick={() => handleTags(rec.name, option)}
+                                  style={{ margin: 4 }}
+                                />
+                              );
+                            }
+                          })}
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                           <div>
                             <FormControlLabel
@@ -299,47 +320,6 @@ const Upload = ({ onUpload, filetype }) => {
                                 />
                               }
                               label="Unlisted"
-                            />
-                          </div>
-                          <div>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={fileInfo[rec.name].tas}
-                                  onChange={e => handleTas(rec.name, e)}
-                                  value="tas"
-                                  color="primary"
-                                />
-                              }
-                              label="TAS"
-                            />
-                          </div>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <div>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={fileInfo[rec.name].bug}
-                                  onChange={e => handleBug(rec.name, e)}
-                                  value="bug"
-                                  color="primary"
-                                />
-                              }
-                              label="Bug"
-                            />
-                          </div>
-                          <div>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={fileInfo[rec.name].nitro}
-                                  onChange={e => handleNitro(rec.name, e)}
-                                  value="nitro"
-                                  color="primary"
-                                />
-                              }
-                              label="Modded"
                             />
                           </div>
                         </Grid>

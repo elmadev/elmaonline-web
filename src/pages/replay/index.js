@@ -57,13 +57,7 @@ const Replay = props => {
   }
 
   const getTags = () => {
-    return [
-      replay.TAS ? 'TAS' : undefined,
-      replay.Unlisted ? 'Unlisted' : undefined,
-      !replay.Finished ? 'DNF' : undefined,
-      replay.Bug ? 'Bug' : undefined,
-      replay.Nitro ? 'Mod' : undefined,
-    ].filter(Boolean);
+    return replay.Tags.map(tag => tag.Name);
   };
 
   return (
