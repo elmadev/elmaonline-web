@@ -92,6 +92,8 @@ const LevelPack = ({ name, tab }) => {
       </Layout>
     );
 
+  const adminAuth = nickId() === levelPackInfo.KuskiIndex || mod();
+
   return (
     <Layout edge t={`Level pack - ${levelPackInfo.LevelPackName}`}>
       <RootStyle>
@@ -108,9 +110,7 @@ const LevelPack = ({ name, tab }) => {
           <Tab label="King list" value="king-list" />
           <Tab label="Personal" value="personal" />
           <Tab label="Multi records" value="multi" />
-          {(nickId() === levelPackInfo.KuskiIndex || mod()) && (
-            <Tab label="Admin" value="admin" />
-          )}
+          {adminAuth && <Tab label="Admin" value="admin" />}
         </Tabs>
         <LevelPackName>
           <ShortNameStyled>{levelPackInfo.LevelPackName}</ShortNameStyled>{' '}
@@ -123,6 +123,7 @@ const LevelPack = ({ name, tab }) => {
           {levelPackInfo.LevelPackDesc} - Maintainer:{' '}
           <Kuski kuskiData={levelPackInfo.KuskiData} />
         </DescriptionStyle>
+        <br />
         <Settings>
           {openSettings ? (
             <ClickAwayListener onClickAway={() => setOpenSettings(false)}>
@@ -249,7 +250,7 @@ const LevelPack = ({ name, tab }) => {
             highlightWeeks={highlightWeeks}
           />
         )}
-        {tab === 'admin' && (
+        {tab === 'admin' && adminAuth && (
           <Admin records={records} LevelPack={levelPackInfo} />
         )}
       </RootStyle>
