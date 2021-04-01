@@ -8,7 +8,6 @@ import { nickId } from 'utils/nick';
 import Layout from 'components/Layout';
 import Loading from 'components/Loading';
 import { admins } from 'utils/cups';
-import { Paper } from 'components/Paper';
 import Events from './Events';
 import Standings from './Standings';
 import RulesInfo from './RulesInfo';

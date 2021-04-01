@@ -6,7 +6,6 @@ import {
   TablePagination,
   CircularProgress,
 } from '@material-ui/core';
-import { Paper } from 'components/Paper';
 import { ListContainer, ListHeader, ListCell } from 'components/List';
 import PaginationActions from 'components/Table/PaginationActions';
 import styled from 'styled-components';

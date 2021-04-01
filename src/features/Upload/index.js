@@ -13,7 +13,6 @@ import {
   Grid,
   Chip,
 } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import Dropzone from 'components/Dropzone';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Alert from 'components/Alert';
@@ -115,8 +114,6 @@ const Upload = ({ onUpload, filetype }) => {
   const handleTags = (name, value) => {
     const newFileInfo = fileInfo;
     newFileInfo[name].tags = xor(newFileInfo[name].tags, [value]);
-    console.log(newFileInfo[name].tags);
-    console.log(value);
     setFileInfo(newFileInfo);
     setUpdate(Math.random());
   };
