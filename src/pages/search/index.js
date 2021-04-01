@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useMediaQuery } from '@material-ui/core';
 import LocalTime from 'components/LocalTime';
+import { BattleType } from 'components/Names';
 import Link from 'components/Link';
 import SearchBar from 'components/SearchBar';
 import Kuski from 'components/Kuski';
@@ -533,7 +534,15 @@ const Search = () => {
                       to={`/battles/${b.BattleIndex}`}
                       key={b.BattleIndex}
                     >
-                      <div>{b.LevelData.LevelName}.lev</div>
+                      {b.BattleType === 'HT' ? (
+                        <div className="battleType">
+                          <BattleType type={b.BattleType} />
+                        </div>
+                      ) : (
+                        <div>
+                          {b.LevelData ? b.LevelData.LevelName : '?'}.lev
+                        </div>
+                      )}
                       <ResultSecondaryData>
                         {b.BattleIndex} / <Kuski kuskiData={b.KuskiData} /> /{' '}
                         {b.LevelIndex} /{' '}
