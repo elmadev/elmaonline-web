@@ -14,6 +14,7 @@ import {
   LevelPackSortLevel,
   LevelPackSort,
   LevelPack,
+  UpdateLevelPack,
 } from 'api';
 
 export default {
@@ -25,6 +26,21 @@ export default {
     const get = await LevelPack(payload);
     if (get.ok) {
       actions.setLevelPackInfo(get.data);
+    }
+  }),
+  // update long name, desc.
+  updateLevelPack: thunk(async (actions, payload) => {
+    const response = await UpdateLevelPack(payload.LevelPackIndex, payload);
+
+    if (response.ok) {
+      const { LevelPack, errors = [], success = false } = response.data;
+      if (success) {
+        actions.setLevelPackInfo(LevelPack);
+      }
+
+      return errors;
+    } else {
+      return ['Server error.'];
     }
   }),
   highlight: [9999999999, 9999999999, 9999999999, 9999999999, 9999999999],

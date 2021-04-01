@@ -16,6 +16,7 @@ import Layout from 'components/Layout';
 import { Paper } from 'components/Paper';
 import { Row } from 'components/Containers';
 import Header from 'components/Header';
+import { BattleType } from 'components/Names';
 
 const Search = () => {
   const location = useLocation();
@@ -555,7 +556,15 @@ const Search = () => {
                         to={`/battles/${b.BattleIndex}`}
                         key={b.BattleIndex}
                       >
-                        <div>{b.LevelData.LevelName}.lev</div>
+                        {b.BattleType === 'HT' ? (
+                          <div className="battleType">
+                            <BattleType type={b.BattleType} />
+                          </div>
+                        ) : (
+                          <div>
+                            {b.LevelData ? b.LevelData.LevelName : '?'}.lev
+                          </div>
+                        )}
                         <ResultSecondaryData>
                           {b.BattleIndex} / <Kuski kuskiData={b.KuskiData} /> /{' '}
                           {b.LevelIndex} /{' '}

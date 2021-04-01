@@ -142,6 +142,8 @@ export const LevelsSearch = data =>
 export const LevelsSearchAll = data =>
   api.get(`levelpack/searchLevel/${data.q}/${data.ShowLocked}`);
 export const AddLevelPack = data => api.post('levelpack/add', data);
+export const UpdateLevelPack = (index, data) =>
+  api.post(`levelpack/update/${index}`, data);
 export const LevelPackDeleteLevel = data =>
   api.post('levelpack/admin/deleteLevel', data);
 export const LevelPackAddLevel = data =>
@@ -263,3 +265,9 @@ export const GetDonations = () => api.get(`donate/`);
 // upload
 export const UploadFile = data => apiUpload.post(`upload/file`, data);
 export const UpdateFile = data => api.post(`upload`, data);
+
+// tags
+export const GetTags = () => api.get(`tag`);
+export const CreateTag = data => api.post(`tag`, data);
+export const UpdateTag = (TagIndex, data) => api.put(`tag/${TagIndex}`, data);
+export const DeleteTag = TagIndex => api.delete(`tag/${TagIndex}`);

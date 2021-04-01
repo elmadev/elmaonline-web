@@ -68,8 +68,11 @@ const Routes = () => {
           <Kuski path="kuskis/:name" />
           <Kuskis path="kuskis" />
           <Level path="levels/:LevelId" />
-          <LevelPack path="levels/packs/:name" />
-          <Levels path="levels" />
+          <LevelPack path="levels/packs/:name" tab="" />
+          <LevelPack path="levels/packs/:name/:tab" />
+          <Levels path="levels" tab="" />
+          {/* can't use levels/:tab due to conflict with levels/:LevelId above*/}
+          <Levels path="levels/collections" tab="collections" />
           <LevelsAdd path="levels/add" />
           <LevelsAddCollection path="levels/collections/add" />
           <LevelpackCollection path="levels/collections/:name" />
@@ -79,7 +82,7 @@ const Routes = () => {
           <Ranking path="ranking" />
           <Register path="register" />
           <Replay path="r/:ReplayUuid" />
-          <Replays path="replays" />
+          <Replays path="replays/*" />
           <Search path="search" />
           <Settings path="settings" />
           <Team path="team/:TeamName" />

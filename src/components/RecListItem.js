@@ -7,37 +7,39 @@ import Time from 'components/Time';
 import Link from 'components/Link';
 import Tags from 'components/Tags';
 import { useNavigate } from '@reach/router';
-import { formatDistance } from 'date-fns';
+import { formatDistanceStrict } from 'date-fns';
 
-const RecListItem = ({ replay, selected, columns, openReplay }) => {
+const RecListItem = ({
+  replay,
+  selected,
+  columns,
+  openReplay,
+  previewReplay,
+}) => {
   const navigate = useNavigate();
-  const handleOpenReplay = uuid => {
+  const handleOpenReplay = replay => {
     if (openReplay) {
-      openReplay(uuid);
+      openReplay(replay.UUID);
+    } else if (previewReplay) {
+      previewReplay(replay);
     } else {
-      navigate(`/r/${uuid}`);
+      navigate(`/r/${replay.UUID}`);
     }
   };
 
   const getTags = () => {
-    return [
-      replay.TAS ? 'TAS' : undefined,
-      replay.Unlisted ? 'Unlisted' : undefined,
-      !replay.Finished ? 'DNF' : undefined,
-      replay.Bug ? 'Bug' : undefined,
-      replay.Nitro ? 'Mod' : undefined,
-    ].filter(Boolean);
+    return replay.Tags.map(tag => tag.Name);
   };
 
   return (
     <ListRow
       key={replay.ReplayIndex}
-      onClick={() => handleOpenReplay(replay.UUID)}
+      onClick={() => handleOpenReplay(replay)}
       selected={selected}
     >
       {columns.indexOf('Uploaded') !== -1 && (
         <ListCell width={170}>
-          {formatDistance(replay.Uploaded * 1000, new Date(), {
+          {formatDistanceStrict(replay.Uploaded * 1000, new Date(), {
             addSuffix: true,
           })}
         </ListCell>

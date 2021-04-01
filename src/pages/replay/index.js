@@ -49,17 +49,15 @@ const Replay = props => {
     );
 
   if (isWindow) {
-    link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
+    if (replay.UUID.substring(0, 5) === 'local') {
+      link = `${config.url}temp/${replay.UUID}-${replay.RecFileName}`;
+    } else {
+      link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
+    }
   }
 
   const getTags = () => {
-    return [
-      replay.TAS ? 'TAS' : undefined,
-      replay.Unlisted ? 'Unlisted' : undefined,
-      !replay.Finished ? 'DNF' : undefined,
-      replay.Bug ? 'Bug' : undefined,
-      replay.Nitro ? 'Mod' : undefined,
-    ].filter(Boolean);
+    return replay.Tags.map(tag => tag.Name);
   };
 
   return (
