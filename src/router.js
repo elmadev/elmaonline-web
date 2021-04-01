@@ -54,7 +54,8 @@ const Routes = () => {
       <Error path="error" />
       <ForgotPassword path="forgot" />
       <Help path="help/*" />
-      <Kuski path="kuskis/:name" />
+      <Kuski path="kuskis/:name" tab="" />
+      <Kuski path="kuskis/:name/:tab" />
       <Kuskis path="kuskis" />
       <Level path="levels/:LevelId" />
       <LevelPack path="levels/packs/:name" tab="" />
