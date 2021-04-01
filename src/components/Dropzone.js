@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDropzone from 'react-dropzone';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import config from 'config';
 import { nickId } from 'utils/nick';
 
@@ -13,6 +13,7 @@ const Dropzone = ({
   warning,
   minHeight = '100px',
 }) => {
+  const theme = useContext(ThemeContext);
   return (
     <ReactDropzone
       accept={filetype}
@@ -23,10 +24,12 @@ const Dropzone = ({
         width: '100%',
         height: 'auto',
         minHeight,
-        border: '2px dashed rgba(0,0,0,0.3)',
+        border: `2px dashed ${theme.borderColor}`,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: theme.paperBackground,
+        color: theme.fontColor,
       }}
     >
       {(!login || nickId() !== 0) && (

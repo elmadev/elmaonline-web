@@ -5,6 +5,7 @@ import AchievementsHacktober from 'components/AchievementsHacktober';
 import Header from 'components/Header';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { mod, admin } from 'utils/nick';
+import { Paper } from 'components/Paper';
 import LocalTime from 'components/LocalTime';
 import { ListCell, ListRow, ListHeader, ListContainer } from 'components/List';
 import {
@@ -52,40 +53,46 @@ const Info = ({ kuskiInfo }) => {
   };
   return (
     <SubContainer>
-      <Header h3>Rights</Header>
-      <Rights>
-        {kuskiInfo.RPlay === 1 && <img src={RPlay} alt="RPlay" title="Play" />}
-        {kuskiInfo.RMultiPlay === 1 && (
-          <img src={RMultiPlay} alt="RMultiPlay" title="Multiplay" />
-        )}
-        {kuskiInfo.RChat === 1 && <img src={RChat} alt="RChat" title="Chat" />}
-        {kuskiInfo.RStartBattle === 1 && (
-          <img src={RStartBattle} alt="RStartBattle" title="Start battle" />
-        )}
-        {kuskiInfo.RSpecialBattle === 1 && (
-          <img
-            src={RSpecialBattle}
-            alt="RSpecialBattle"
-            title="Start special battle"
-          />
-        )}
-        {kuskiInfo.RStart24htt === 1 && (
-          <img src={RStart24htt} alt="RStart24htt" title="Start 24 hour TT" />
-        )}
-        {kuskiInfo.RStartCup === 1 && (
-          <img src={RStartCup} alt="RStartCup" title="Start cup" />
-        )}
-        {kuskiInfo.RStop === 1 && (
-          <img src={RStop} alt="RStop" title="Abort/Stop battle" />
-        )}
-        {kuskiInfo.RBan === 1 && <img src={RBan} alt="RBan" title="Ban" />}
-        {kuskiInfo.RMod === 1 && <img src={RMod} alt="RMod" title="Mod" />}
-        {kuskiInfo.RAdmin === 1 && (
-          <img src={RAdmin} alt="RAdmin" title="Admin" />
-        )}
-      </Rights>
+      <Paper padding>
+        <Header h2>Rights</Header>
+        <Rights>
+          {kuskiInfo.RPlay === 1 && (
+            <img src={RPlay} alt="RPlay" title="Play" />
+          )}
+          {kuskiInfo.RMultiPlay === 1 && (
+            <img src={RMultiPlay} alt="RMultiPlay" title="Multiplay" />
+          )}
+          {kuskiInfo.RChat === 1 && (
+            <img src={RChat} alt="RChat" title="Chat" />
+          )}
+          {kuskiInfo.RStartBattle === 1 && (
+            <img src={RStartBattle} alt="RStartBattle" title="Start battle" />
+          )}
+          {kuskiInfo.RSpecialBattle === 1 && (
+            <img
+              src={RSpecialBattle}
+              alt="RSpecialBattle"
+              title="Start special battle"
+            />
+          )}
+          {kuskiInfo.RStart24htt === 1 && (
+            <img src={RStart24htt} alt="RStart24htt" title="Start 24 hour TT" />
+          )}
+          {kuskiInfo.RStartCup === 1 && (
+            <img src={RStartCup} alt="RStartCup" title="Start cup" />
+          )}
+          {kuskiInfo.RStop === 1 && (
+            <img src={RStop} alt="RStop" title="Abort/Stop battle" />
+          )}
+          {kuskiInfo.RBan === 1 && <img src={RBan} alt="RBan" title="Ban" />}
+          {kuskiInfo.RMod === 1 && <img src={RMod} alt="RMod" title="Mod" />}
+          {kuskiInfo.RAdmin === 1 && (
+            <img src={RAdmin} alt="RAdmin" title="Admin" />
+          )}
+        </Rights>
+      </Paper>
       {mod() === 1 && (
-        <>
+        <Paper padding top>
           <Header h3>Give Rights</Header>
           <Rights>
             {kuskiInfo.RStartBattle === 0 && (
@@ -173,145 +180,155 @@ const Info = ({ kuskiInfo }) => {
               />
             )}
           </Rights>
-        </>
+        </Paper>
       )}
-      <AchievementsCups KuskiIndex={kuskiInfo.KuskiIndex} />
-      <AchievementsHacktober KuskiIndex={kuskiInfo.KuskiIndex} />
+      <Paper padding top>
+        <AchievementsCups KuskiIndex={kuskiInfo.KuskiIndex} />
+      </Paper>
+      <Paper padding top>
+        <AchievementsHacktober KuskiIndex={kuskiInfo.KuskiIndex} />
+      </Paper>
       {mod() === 1 && (
         <>
-          <Header h3>IP Logs</Header>
-          {iplogs.length > 0 ? (
-            <ListContainer>
-              <ListHeader>
-                <ListCell>Log From</ListCell>
-                <ListCell>Log To</ListCell>
-                <ListCell>Player</ListCell>
-                <ListCell>IP</ListCell>
-              </ListHeader>
-              {iplogs.map(i => (
-                <ListRow key={i.LogIndex}>
-                  <ListCell>
-                    <LocalTime
-                      date={i.LogFrom}
-                      format="D MMM YYYY HH:mm:ss"
-                      parse="X"
-                    />
-                  </ListCell>
-                  <ListCell>
-                    <LocalTime
-                      date={i.LogTo}
-                      format="D MMM YYYY HH:mm:ss"
-                      parse="X"
-                    />
-                  </ListCell>
-                  <ListCell>{i.Player}</ListCell>
-                  <ListCell>{i.IP}</ListCell>
-                </ListRow>
-              ))}
-            </ListContainer>
-          ) : (
-            <Button
-              variant="contained"
-              onClick={() => getIplogs(kuskiInfo.KuskiIndex)}
-            >
-              Get IP logs
+          <Paper padding top>
+            <Header h2>IP Logs</Header>
+            {iplogs.length > 0 ? (
+              <ListContainer>
+                <ListHeader>
+                  <ListCell>Log From</ListCell>
+                  <ListCell>Log To</ListCell>
+                  <ListCell>Player</ListCell>
+                  <ListCell>IP</ListCell>
+                </ListHeader>
+                {iplogs.map(i => (
+                  <ListRow key={i.LogIndex}>
+                    <ListCell>
+                      <LocalTime
+                        date={i.LogFrom}
+                        format="D MMM YYYY HH:mm:ss"
+                        parse="X"
+                      />
+                    </ListCell>
+                    <ListCell>
+                      <LocalTime
+                        date={i.LogTo}
+                        format="D MMM YYYY HH:mm:ss"
+                        parse="X"
+                      />
+                    </ListCell>
+                    <ListCell>{i.Player}</ListCell>
+                    <ListCell>{i.IP}</ListCell>
+                  </ListRow>
+                ))}
+              </ListContainer>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={() => getIplogs(kuskiInfo.KuskiIndex)}
+              >
+                Get IP logs
+              </Button>
+            )}
+          </Paper>
+          <Paper padding top>
+            <Header h2>Bans</Header>
+            {kuskiBans.ips.length > 0 && (
+              <ListContainer>
+                <ListHeader>
+                  <ListCell width={150}>IP</ListCell>
+                  <ListCell width={150}>Expires</ListCell>
+                  <ListCell width={150}>Severeness</ListCell>
+                  <ListCell>Reason</ListCell>
+                </ListHeader>
+                {kuskiBans.ips.map(i => (
+                  <ListRow key={i.BanIndex}>
+                    <ListCell width={150}>{i.IP}</ListCell>
+                    <ListCell width={150}>
+                      <LocalTime
+                        date={i.Expires}
+                        format="D MMM YYYY HH:mm:ss"
+                        parse="X"
+                      />
+                    </ListCell>
+                    <ListCell width={150}>{i.Type}</ListCell>
+                    <ListCell>{i.Reason}</ListCell>
+                  </ListRow>
+                ))}
+              </ListContainer>
+            )}
+            {kuskiBans.flags.length > 0 && (
+              <ListContainer>
+                <ListHeader>
+                  <ListCell width={150}>Type</ListCell>
+                  <ListCell width={150}>Expires</ListCell>
+                  <ListCell width={150}>Severeness</ListCell>
+                  <ListCell>Reason</ListCell>
+                </ListHeader>
+                {kuskiBans.flags.map(i => (
+                  <ListRow key={i.FlagBanIndex}>
+                    <ListCell width={150}>{i.BanType}</ListCell>
+                    <ListCell width={150}>
+                      <LocalTime
+                        date={i.ExpireDate}
+                        format="D MMM YYYY HH:mm:ss"
+                        parse="X"
+                      />
+                    </ListCell>
+                    <ListCell width={150}>{i.Severeness}</ListCell>
+                    <ListCell>{i.Reason}</ListCell>
+                  </ListRow>
+                ))}
+              </ListContainer>
+            )}
+          </Paper>
+          <Paper padding top>
+            <Header h3>Give Ban</Header>
+            <FormControl>
+              <InputLabel htmlFor="type-simple">Ban Type</InputLabel>
+              <Select
+                value={banType}
+                onChange={e => setBanType(e.target.value)}
+                inputProps={{
+                  name: 'type',
+                  id: 'type-simple',
+                }}
+                style={{ minWidth: '250px' }}
+              >
+                <MenuItem value="PlayBan">Play</MenuItem>
+                <MenuItem value="ChatBan">Chat</MenuItem>
+                <MenuItem value="StartBan">Start</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl>
+              <InputLabel htmlFor="severity-simple">Severity</InputLabel>
+              <Select
+                value={severity}
+                onChange={e => setSeverity(e.target.value)}
+                inputProps={{
+                  name: 'severity',
+                  id: 'severity-simple',
+                }}
+                style={{ minWidth: '250px' }}
+              >
+                <MenuItem value="warning">Warning</MenuItem>
+                <MenuItem value="week">1 week</MenuItem>
+                <MenuItem value="twoweek">2 weeks</MenuItem>
+                <MenuItem value="year">Year</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              id="outlined-name"
+              label="Reason"
+              value={banText}
+              onChange={e => setBanText(e.target.value)}
+              margin="normal"
+              variant="outlined"
+              fullWidth
+            />
+            <Button variant="contained" onClick={() => ban()}>
+              Ban
             </Button>
-          )}
-          <Header h3>Bans</Header>
-          {kuskiBans.ips.length > 0 && (
-            <ListContainer>
-              <ListHeader>
-                <ListCell width={150}>IP</ListCell>
-                <ListCell width={150}>Expires</ListCell>
-                <ListCell width={150}>Severeness</ListCell>
-                <ListCell>Reason</ListCell>
-              </ListHeader>
-              {kuskiBans.ips.map(i => (
-                <ListRow key={i.BanIndex}>
-                  <ListCell width={150}>{i.IP}</ListCell>
-                  <ListCell width={150}>
-                    <LocalTime
-                      date={i.Expires}
-                      format="D MMM YYYY HH:mm:ss"
-                      parse="X"
-                    />
-                  </ListCell>
-                  <ListCell width={150}>{i.Type}</ListCell>
-                  <ListCell>{i.Reason}</ListCell>
-                </ListRow>
-              ))}
-            </ListContainer>
-          )}
-          {kuskiBans.flags.length > 0 && (
-            <ListContainer>
-              <ListHeader>
-                <ListCell width={150}>Type</ListCell>
-                <ListCell width={150}>Expires</ListCell>
-                <ListCell width={150}>Severeness</ListCell>
-                <ListCell>Reason</ListCell>
-              </ListHeader>
-              {kuskiBans.flags.map(i => (
-                <ListRow key={i.FlagBanIndex}>
-                  <ListCell width={150}>{i.BanType}</ListCell>
-                  <ListCell width={150}>
-                    <LocalTime
-                      date={i.ExpireDate}
-                      format="D MMM YYYY HH:mm:ss"
-                      parse="X"
-                    />
-                  </ListCell>
-                  <ListCell width={150}>{i.Severeness}</ListCell>
-                  <ListCell>{i.Reason}</ListCell>
-                </ListRow>
-              ))}
-            </ListContainer>
-          )}
-          <Header h3>Give Ban</Header>
-          <FormControl>
-            <InputLabel htmlFor="type-simple">Ban Type</InputLabel>
-            <Select
-              value={banType}
-              onChange={e => setBanType(e.target.value)}
-              inputProps={{
-                name: 'type',
-                id: 'type-simple',
-              }}
-              style={{ minWidth: '250px' }}
-            >
-              <MenuItem value="PlayBan">Play</MenuItem>
-              <MenuItem value="ChatBan">Chat</MenuItem>
-              <MenuItem value="StartBan">Start</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl>
-            <InputLabel htmlFor="severity-simple">Severity</InputLabel>
-            <Select
-              value={severity}
-              onChange={e => setSeverity(e.target.value)}
-              inputProps={{
-                name: 'severity',
-                id: 'severity-simple',
-              }}
-              style={{ minWidth: '250px' }}
-            >
-              <MenuItem value="warning">Warning</MenuItem>
-              <MenuItem value="week">1 week</MenuItem>
-              <MenuItem value="twoweek">2 weeks</MenuItem>
-              <MenuItem value="year">Year</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            id="outlined-name"
-            label="Reason"
-            value={banText}
-            onChange={e => setBanText(e.target.value)}
-            margin="normal"
-            variant="outlined"
-            fullWidth
-          />
-          <Button variant="contained" onClick={() => ban()}>
-            Ban
-          </Button>
+          </Paper>
         </>
       )}
     </SubContainer>
@@ -332,7 +349,7 @@ const Rights = styled.div`
 `;
 
 const SubContainer = styled.div`
-  margin-left: 8px;
+  margin: 8px;
 `;
 
 export default Info;

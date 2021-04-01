@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import { Level, BattleType } from 'components/Names';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
@@ -11,6 +11,7 @@ import { toServerTime } from 'utils/time';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 
 const BattleList = ({ start, end, limit = 250, condensed }) => {
+  const theme = useContext(ThemeContext);
   const { battles } = useStoreState(state => state.BattleList);
   const { getBattles } = useStoreActions(actions => actions.BattleList);
   useEffect(() => {
@@ -37,7 +38,7 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
             {battles.map(b => {
               const sorted = [...b.Results].sort(sortResults(b.BattleType));
               return (
-                <ListRow key={b.BattleIndex} bg={battleStatusBgColor(b)}>
+                <ListRow key={b.BattleIndex} bg={battleStatusBgColor(b, theme)}>
                   <ListCell width={80} to={`/battles/${b.BattleIndex}`}>
                     <LocalTime date={b.Started} format="HH:mm" parse="X" />
                   </ListCell>
@@ -106,19 +107,13 @@ const Popularity = styled.div`
   max-width: 150px;
   overflow: hidden;
   height: ${p => (p.bar ? '5px' : 'auto')};
-  background: ${p => (p.bar ? '#219653' : 'transparent')};
+  background: ${p => (p.bar ? p.theme.primary : 'transparent')};
 `;
 
 const Container = styled.div`
   display: block;
   max-width: 100%;
   overflow: auto;
-  a {
-    color: black;
-    :hover {
-      color: #219653;
-    }
-  }
 `;
 
 const CondensedCon = styled.div`

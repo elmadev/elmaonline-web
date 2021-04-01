@@ -2,37 +2,37 @@ import React from 'react';
 import styled from 'styled-components';
 import { TextField, Button } from '@material-ui/core';
 import { Paper } from 'components/Paper';
+import Header from 'components/Header';
 
-const Setting = ({ value, label, setValue, update, password }) => {
+const Setting = ({ value, label, setValue, update, password, header }) => {
   return (
     <Container>
-      <Paper>
-        <PaperCon>
-          {label.map((l, i) => (
-            <TextField
-              type={password ? 'password' : 'text'}
-              key={l}
-              id="outlined-name"
-              label={l}
-              value={value[i]}
-              onChange={e => setValue(e.target.value, i)}
-              margin="normal"
-              variant="outlined"
-              fullWidth
-            />
-          ))}
-          {update && (
-            <Buttons>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => update()}
-              >
-                Update
-              </Button>
-            </Buttons>
-          )}
-        </PaperCon>
+      <Paper padding>
+        {header && <Header h2>{header}</Header>}
+        {label.map((l, i) => (
+          <TextField
+            type={password ? 'password' : 'text'}
+            key={l}
+            id="outlined-name"
+            label={l}
+            value={value[i]}
+            onChange={e => setValue(e.target.value, i)}
+            margin="normal"
+            variant="outlined"
+            fullWidth
+          />
+        ))}
+        {update && (
+          <Buttons>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => update()}
+            >
+              Update
+            </Button>
+          </Buttons>
+        )}
       </Paper>
     </Container>
   );
@@ -40,12 +40,6 @@ const Setting = ({ value, label, setValue, update, password }) => {
 
 const Container = styled.div`
   padding-bottom: 20px;
-`;
-
-const PaperCon = styled.div`
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
 `;
 
 const Buttons = styled.div`

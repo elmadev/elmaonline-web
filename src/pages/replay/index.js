@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Typography,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -16,6 +15,7 @@ import LocalTime from 'components/LocalTime';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Link from 'components/Link';
+import Header from 'components/Header';
 import RecList from 'features/RecList';
 import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
@@ -77,9 +77,9 @@ const Replay = props => {
         <ChatContainer>
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography variant="body2">
+              <Header h3>
                 <>{replay.RecFileName}</>
-              </Typography>
+              </Header>
             </AccordionSummary>
             <AccordionDetails style={{ flexDirection: 'column' }}>
               <ReplayDescription>
@@ -111,11 +111,11 @@ const Replay = props => {
           </Accordion>
           {/* <ExpansionPanel defaultExpanded>
             <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-              <Typography variant="body1">
+              <Header h3>
                 <React.Fragment>
                   <Level LevelData={replay.LevelData} noLink/>.lev
                 </React.Fragment>
-              </Typography>
+              </Header>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails style={{ flexDirection: 'column' }}>
               <div>1. Zweq 01:22,49</div>
@@ -126,7 +126,7 @@ const Replay = props => {
           </ExpansionPanel> */}
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography variant="body2">Other replays in level</Typography>
+              <Header h3>Other replays in level</Header>
             </AccordionSummary>
             <AccordionDetails style={{ flexDirection: 'column' }}>
               <RecList
@@ -179,7 +179,7 @@ const PlayerContainer = styled.div`
 `;
 
 const Player = styled.div`
-  background: #f1f1f1;
+  background: ${p => p.theme.pageBackground};
   height: 600px;
   display: flex;
   align-items: center;

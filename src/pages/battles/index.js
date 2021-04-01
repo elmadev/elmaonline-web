@@ -55,17 +55,18 @@ const Battles = () => {
 };
 
 const Container = styled.div`
-  background: #fff;
+  background: ${p => p.theme.paperBackground};
   min-height: 100%;
   box-sizing: border-box;
   font-size: 14px;
 `;
 
 const Datepicker = styled.div`
-  background: #f1f1f1;
+  background: ${p => p.theme.pageBackground};
   font-weight: 500;
   font-size: 16px;
   button {
+    color: ${p => p.theme.fontColor};
     padding: 15px 10px;
     border: 0;
     background: transparent;

@@ -30,16 +30,16 @@ const battleStatus = data => {
   return status;
 };
 
-const battleStatusBgColor = data => {
+const battleStatusBgColor = (data, theme) => {
   let bgColor;
   if (data.Aborted === 1) {
-    bgColor = '#ffb3ba';
+    bgColor = theme.aborted;
   }
   if (data.Aborted === 0 && data.InQueue === 1) {
-    bgColor = '#baffc9';
+    bgColor = theme.inqueue;
   }
   if (data.Aborted === 0 && data.InQueue === 0 && data.Finished === 0) {
-    bgColor = '#bae1ff';
+    bgColor = theme.ongoing;
   }
   return bgColor;
 };

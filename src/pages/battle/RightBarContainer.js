@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  Typography,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -11,6 +10,7 @@ import { ExpandMore } from '@material-ui/icons';
 import { BattleType } from 'components/Names';
 import Link from 'components/Link';
 import Download from 'components/Download';
+import Header from 'components/Header';
 import ChatView from 'features/ChatView';
 import LocalTime from 'components/LocalTime';
 import LeaderHistory from 'components/LeaderHistory';
@@ -42,7 +42,7 @@ const RightBarContainer = props => {
     <Root>
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="body2">Battle info</Typography>
+          <Header h3>Battle info</Header>
         </AccordionSummary>
         <AccordionDetails>
           <BattleStyleDescription>
@@ -111,7 +111,7 @@ const RightBarContainer = props => {
       {battle.Finished === 1 && battle.BattleType === 'NM' && (
         <Accordion defaultExpanded>
           <AccordionSummary expandIcon={<ExpandMore />}>
-            <Typography variant="body1">Leader history</Typography>
+            <Header h3>Leader history</Header>
           </AccordionSummary>
           <AccordionDetails>
             {allBattleTimes !== null && allBattleTimes !== [] ? (
@@ -124,7 +124,7 @@ const RightBarContainer = props => {
         {!(battleStatus(battle) === 'Queued') && (
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography variant="body1">Chat</Typography>
+              <Header h3>Chat</Header>
             </AccordionSummary>
             <AccordionDetails>
               <ChatView

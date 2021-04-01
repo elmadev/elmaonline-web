@@ -8,6 +8,7 @@ import {
   FormControl,
   Icon,
 } from '@material-ui/core';
+import { withTheme } from 'styled-components';
 
 class Day extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class Day extends React.Component {
   }
 
   render() {
+    const { theme } = this.props;
     const days = [];
     for (let y = 1; y <= 31; y += 1) {
       days.push(y);
@@ -37,7 +39,7 @@ class Day extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_left
@@ -64,7 +66,7 @@ class Day extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_right
@@ -78,4 +80,4 @@ Day.propTypes = {
   dayUpdated: PropTypes.func.isRequired,
 };
 
-export default Day;
+export default withTheme(Day);

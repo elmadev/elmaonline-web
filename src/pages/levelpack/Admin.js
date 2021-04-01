@@ -16,6 +16,7 @@ import {
 } from '@material-ui/icons';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
+import Header from 'components/Header';
 import UpdateForm from './UpdateForm';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ListCell, ListContainer, ListHeader } from 'components/List';
@@ -72,7 +73,9 @@ const Admin = ({ records, LevelPack }) => {
   return (
     <Grid container spacing={3} style={{ padding: '0 8px' }}>
       <Grid item xs={12} md={6}>
-        <h2>Current levels</h2>
+        <Header h2 mLeft>
+          Current levels
+        </Header>
         <ListContainer>
           <ListHeader>
             <ListCell width={70}>Filename</ListCell>
@@ -144,7 +147,9 @@ const Admin = ({ records, LevelPack }) => {
         <br />
         <Accordion defaultExpanded>
           <AccordionSummary expandIcon={<ExpandMore />}>
-            <Typography variant="body2">Search Levels</Typography>
+            <Header h2 mLeft>
+              Search Levels
+            </Header>
           </AccordionSummary>
           <AccordionDetails style={{ display: 'block' }}>
             <TextBox>
@@ -236,12 +241,10 @@ const Add = styled(PlaylistAdd)`
 
 const Row = styled.div`
   display: table-row;
-  background: ${p => (p.selected ? '#219653' : 'transparent')};
-  color: ${p => (p.selected ? '#fff' : 'inherit')};
+  background: transparent;
   color: ${p => (p.color ? '#b3b3b3' : 'inherit')};
   :hover {
-    background: ${p => (p.selected ? '#219653' : '#f9f9f9')};
-    color: ${p => (p.selected ? '#fff' : 'inherit')};
+    background: ${p => p.theme.hoverColor};
   }
 `;
 

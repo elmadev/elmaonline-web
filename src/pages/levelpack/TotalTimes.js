@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStoreState } from 'easy-peasy';
 import styled from 'styled-components';
-
+import Header from 'components/Header';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
@@ -13,7 +13,9 @@ const TotalTimes = ({ highlight, highlightWeeks }) => {
 
   return (
     <>
-      <h2>Total Times</h2>
+      <Header h2 mLeft>
+        Total Times
+      </Header>
       <ListContainer>
         <ListHeader>
           <ListCell width={70}>#</ListCell>

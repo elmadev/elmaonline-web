@@ -245,7 +245,7 @@ const Upload = ({ onUpload, filetype }) => {
           uploaded.map(u => (
             <UploadCard key={u.RecFileName}>
               <CardContent>
-                <Typography color="textSecondary">{u.RecFileName}</Typography>
+                {u.RecFileName}
                 <Link to={`/r/${u.UUID}`}>
                   <div>{u.url}</div>
                 </Link>
@@ -259,7 +259,7 @@ const Upload = ({ onUpload, filetype }) => {
                 {fileInfo[rec.name] && (
                   <UploadCard key={rec.name}>
                     <CardContent>
-                      <Typography color="textSecondary">{rec.name}</Typography>
+                      {rec.name}
                       <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                           <div>

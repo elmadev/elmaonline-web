@@ -108,7 +108,7 @@ const Width100 = styled.div`
 
 const Container = styled.div`
   min-height: 100%;
-  background: #fff;
+  background: ${p => p.theme.paperBackground};
   padding-bottom: 200px;
 `;
 

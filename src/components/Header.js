@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Header = props => {
-  const { h1, h2, h3, children, nomargin, right, top, onClick } = props;
+  const { h1, h2, h3, children, nomargin, right, top, onClick, mLeft } = props;
   return (
     <>
       {h1 && !h2 && !h3 && (
@@ -13,6 +13,7 @@ const Header = props => {
           right={right}
           top={top}
           nomargin={nomargin}
+          mLeft={mLeft}
         >
           {children}
         </Container1>
@@ -24,6 +25,7 @@ const Header = props => {
           right={right}
           top={top}
           nomargin={nomargin}
+          mLeft={mLeft}
         >
           {children}
         </Container2>
@@ -35,6 +37,7 @@ const Header = props => {
           right={right}
           top={top}
           nomargin={nomargin}
+          mLeft={mLeft}
         >
           {children}
         </Container3>
@@ -45,10 +48,10 @@ const Header = props => {
 
 const Container1 = styled.h1`
   margin: ${p => (p.nomargin ? '0' : '10px')};
-  margin-left: 0;
+  margin-left: ${p => (p.mLeft ? '10px' : 0)};
   margin-bottom: 16px;
   margin-top: ${p => (p.top ? '16px' : '0')};
-  color: ${p => (p.link ? '#219653' : '#1b3a57')};
+  color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
   font-size: 36px;
@@ -59,10 +62,10 @@ const Container1 = styled.h1`
 
 const Container2 = styled.h2`
   margin: ${p => (p.nomargin ? '0' : '10px')};
-  margin-left: 0;
+  margin-left: ${p => (p.mLeft ? '10px' : 0)};
   margin-bottom: 8px;
   margin-top: ${p => (p.top ? '16px' : '0')};
-  color: ${p => (p.link ? '#219653' : '#1b3a57')};
+  color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
   font-size: 22px;
@@ -73,10 +76,10 @@ const Container2 = styled.h2`
 
 const Container3 = styled.h3`
   margin: ${p => (p.nomargin ? '0' : '10px')};
-  margin-left: 0;
+  margin-left: ${p => (p.mLeft ? '10px' : 0)};
   margin-bottom: 0px;
   margin-top: ${p => (p.top ? '16px' : '0')};
-  color: ${p => (p.link ? '#219653' : '#1b3a57')};
+  color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
   font-size: 1em;

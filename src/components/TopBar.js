@@ -34,7 +34,7 @@ const TopBar = () => {
 const Root = styled.div`
   top: 0;
   left: 0;
-  background: #219653;
+  background: ${p => p.theme.primary};
   color: #f1f1f1;
   position: fixed;
   width: 100%;

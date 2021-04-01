@@ -17,8 +17,9 @@ export const ListCell = ({
         width={width}
         right={right}
         highlight={highlight}
+        to={to}
       >
-        <Link to={to}>{children}</Link>
+        <CellLink to={to}>{children}</CellLink>
       </Cell>
     );
   }
@@ -34,13 +35,19 @@ export const ListCell = ({
   );
 };
 
+const CellLink = styled(Link)`
+  padding: 10px;
+  display: block;
+`;
+
 const Cell = styled.span`
+  color: ${p => p.theme.fontColor};
   display: table-cell;
-  padding: ${p => (p.pad ? p.pad : '10px')};
+  padding: ${p => (p.to ? 0 : '10px')};
   border-bottom: 1px solid #eaeaea;
   width: ${p => (p.width ? `${p.width}px` : 'auto')};
   text-align: ${p => (p.right ? 'right' : 'left')};
-  background: ${p => (p.highlight ? '#dddddd' : 'transparent')};
+  background: ${p => (p.highlight ? p.theme.highlightColor : 'transparent')};
   position: relative;
   white-space: ${p => (p.whiteSpace ? p.whiteSpace : 'normal')};
   button {
@@ -101,9 +108,14 @@ export const ListRow = ({
 
 const Row = styled.div`
   display: table-row;
-  background: ${p => (p.selected ? '#f5f5f5' : p.highlight ? '#ddd' : p.bg)};
+  background: ${p =>
+    p.selected
+      ? p.theme.selectedColor
+      : p.highlight
+      ? p.theme.highlightColor
+      : p.bg};
   cursor: ${p => (p.pointer ? 'pointer' : 'auto')};
   :hover {
-    background: #ededed;
+    background: ${p => p.theme.hoverColor};
   }
 `;

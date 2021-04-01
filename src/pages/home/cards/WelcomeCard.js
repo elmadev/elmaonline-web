@@ -1,14 +1,14 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Welcome from 'components/Welcome';
+import Header from 'components/Header';
 
 export default function WelcomeCard() {
   return (
     <Card>
-      <CardHeader title="Welcome" />
       <CardContent>
+        <Header h2>Welcome</Header>
         <Welcome />
       </CardContent>
     </Card>

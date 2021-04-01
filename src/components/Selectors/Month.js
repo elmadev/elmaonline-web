@@ -8,6 +8,7 @@ import {
   FormControl,
   Icon,
 } from '@material-ui/core';
+import { withTheme } from 'styled-components';
 
 const monthsVisual = {
   1: 'January',
@@ -39,6 +40,7 @@ class Month extends React.Component {
   }
 
   render() {
+    const { theme } = this.props;
     const months = [];
     for (let y = 1; y <= 12; y += 1) {
       months.push(y);
@@ -52,7 +54,7 @@ class Month extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_left
@@ -79,7 +81,7 @@ class Month extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_right
@@ -93,4 +95,4 @@ Month.propTypes = {
   monthUpdated: PropTypes.func.isRequired,
 };
 
-export default Month;
+export default withTheme(Month);
