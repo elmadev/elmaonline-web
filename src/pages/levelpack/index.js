@@ -58,16 +58,18 @@ const LevelPack = ({ name, tab }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getLevelPackInfo(name);
-    getStats({ name, eolOnly: showLegacy ? 0 : 1 });
-    getHighlight();
-    const PersonalKuskiIndex = nick();
-    if (PersonalKuskiIndex !== '') {
-      getPersonalTimes({
-        PersonalKuskiIndex,
-        name,
-        eolOnly: showLegacy ? 0 : 1,
-      });
+    if (levelPackInfo.LevelPackName !== name) {
+      getLevelPackInfo(name);
+      getStats({ name, eolOnly: showLegacy ? 0 : 1 });
+      getHighlight();
+      const PersonalKuskiIndex = nick();
+      if (PersonalKuskiIndex !== '') {
+        getPersonalTimes({
+          PersonalKuskiIndex,
+          name,
+          eolOnly: showLegacy ? 0 : 1,
+        });
+      }
     }
   }, [name]);
 

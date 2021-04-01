@@ -6,7 +6,7 @@ import Upload from 'features/Upload';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
 import { Router, navigate } from '@reach/router';
-import Admin from './Admin';
+import Mod from './Mod';
 import { mod } from 'utils/nick';
 
 export default function Replays(props) {
@@ -29,14 +29,14 @@ export default function Replays(props) {
         <Tab label="Recently uploaded" value="" />
         <Tab label="Battle replays" value="battle" />
         <Tab label="Upload" value="upload" />
-        {mod() > 0 && <Tab label="Admin" value="admin" />}
+        {mod() > 0 && <Tab label="Mod" value="mod" />}
       </Tabs>
       <Container>
         <Router primary={false}>
           <ReplayList default defaultPageSize={10000} showPagination showTags />
           <ReplayListBattle path="battle" showPagination />
           <Upload path="upload" filetype=".rec" />
-          <Admin path="admin" />
+          <Mod path="mod" />
         </Router>
       </Container>
     </Layout>

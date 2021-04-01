@@ -12,7 +12,7 @@ import Alert from '@material-ui/lab/Alert';
 
 const initialForm = { Name: '', Hidden: false };
 
-export default function Admin() {
+export default function Mod() {
   const [form, setForm] = useState(initialForm);
   const { tags, error } = useStoreState(state => state.Replays);
   const { getTags, addTag, updateTag, deleteTag, setError } = useStoreActions(
