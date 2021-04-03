@@ -5,6 +5,8 @@ React based frontend for the [elmaonline site](https://elma.online). The backend
 - [test.elma.online](http://test.elma.online) New features will be tested here first, this site uses a secondary copy of the database, so you can mess up as much as you want here, and nothing you do here will be saved on the real site.
 - [elma.online](http://elma.online) This site will be using the live database.
 
+- [storybook.elma.online](https://storybook.elma.online) UI library of the components that exists in the code
+
 ## Branches
 
 - **develop**
@@ -22,6 +24,8 @@ React based frontend for the [elmaonline site](https://elma.online). The backend
 - You can connect to the test server backend or run [elmaonline-site](https://github.com/elmadev/elmaonline-site) locally, use config.js to change this.
 
 - Run `yarn build` in terminal to make a production build.
+
+- Run `yarn storybook` in terminal to run the storybook site
 
 ## Tech stack
 
@@ -56,7 +60,7 @@ If you don't know react it's worth checking out the official [tutorial](https://
     ├── /easypeasy.js      # Store, update when adding new store.js files
     ├── /globalStyle.js    # Global css
     ├── /index.js          # Entry point
-    ├── /muiTheme.js       # Material UI theme changes
+    ├── /theme.js          # Theme objects
     ├── /router.js         # Add new pages here
 ├── /templates             # Templates for generating new files
 ```
@@ -66,7 +70,11 @@ If you don't know react it's worth checking out the official [tutorial](https://
 Use the generator to add new pages, features and components
 Run `yarn g` in terminal and follow the prompts
 
-Most styling should happen in components which should be mostly style and as little state as possible, no easypeasy, at most some react useState. Features will be built up of components and maintain some state in easy-peasy and/or call the api. Pages will be built of mostly of features and some layout components to comprise a full screen, these can also maintain state and call api.
+- Most styling should happen in components which should be mostly style and as little state as possible, no easypeasy, at most some react useState. For padding, margin and colors make sure you use variables from the theme and not static values.
+- Features will be built up of components to create the UI and maintain some state in easy-peasy and/or call the api. Optimally you should be able to use layout components like Grid, Row, Column, Paper, Header etc. to built up basic layouts and not rely on creating new css when making a feature.
+- Pages will be built mostly of features and some layout components to comprise a full screen.
+
+Use `yarn commit` or follow [guidelines](https://github.com/elmadev/elmaonline-site/blob/dev/docs/contributing.md) when committing code to maintain consistent commit messages.
 
 ### Pages
 
@@ -91,7 +99,7 @@ Most styling should happen in components which should be mostly style and as lit
 - Type name of component in CamelCase
 - Import in relevant screens/features
 
-## Setup editor
+## Setting up editor
 
 The project is configured to use eslint and prettier to ensure good coding practices. Make sure you install relevant plugins for your editor.
 
@@ -110,4 +118,8 @@ The config is set up to use a test database. Bear in mind the following:
 
 ## Communication
 
-Feel free to create issues here on github in order to discuss things related to the project. You can also join the [elma discord](https://discord.gg/j5WMFC6) #developers channel to chat.
+Feel free to create issues/discussions here on github in order to discuss things related to the project. Unless it's specifically related to only frontend, issues and discussions should be made in the [elmaonline-site repo](https://github.com/elmadev/elmaonline-site/issues). You can also join the [elma discord](https://discord.gg/j5WMFC6) #developers channel to chat.
+
+When working on a feature make sure you assign yourself to the related issue so we avoid multiple people doing the same work.
+
+For major chances on big ticket features such as replays, battles, profile, levels (and code architecture) make sure you join the discussion first, there most likely is one already, and reach some kind of consensus. Of course some experimentation to aid the discussion is fine.
