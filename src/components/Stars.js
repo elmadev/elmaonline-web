@@ -1,51 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Star, StarBorder } from '@material-ui/icons';
+import { StarBorder } from '@material-ui/icons';
+import Rating from '@material-ui/lab/Rating';
 
-const ten = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-const Stars = props => {
-  const { voted, average, vote, clickable } = props;
-  return (
-    <Container>
-      <StarContainer>
-        {ten.map(t => (
-          <StarColor clickable={clickable} onClick={() => vote(t)} key={t}>
-            {t <= voted ? <Star /> : <StarBorder />}
-          </StarColor>
-        ))}
-      </StarContainer>
-      <Rating>{+average.toFixed(2)}</Rating>
-    </Container>
-  );
-};
+const Stars = ({ voted, average, vote, clickable }) => (
+  <Container>
+    <Rating
+      name="replay-rating"
+      value={voted}
+      onChange={(_event, newValue) => {
+        vote(newValue);
+      }}
+      emptyIcon={<StarBorder fontSize="inherit" />}
+      readOnly={!clickable}
+      max={10}
+    />
+    <AverageRating>{Number(average)?.toFixed(2)}</AverageRating>
+  </Container>
+);
 
 const Container = styled.div`
+  font-size: 16px;
   height: 19px;
   display: flex;
   flex-direction: row;
+  align-items: center;
 `;
 
-const StarContainer = styled.div`
-  margin-right: 2px;
-  margin-top: -3px;
-`;
-
-const Rating = styled.div`
-  font-size: 16px;
+const AverageRating = styled.div`
+  margin-left: 0.35em;
   font-weight: bold;
-  line-height: 16px;
-`;
-
-const StarColor = styled.span`
-  cursor: ${props => (props.clickable ? 'pointer' : 'auto')};
-  svg {
-    color: #e4bb24;
-    &:hover {
-      color: ${props => (props.clickable ? 'black' : '#e4bb24')};
-    }
-  }
 `;
 
 Stars.propTypes = {

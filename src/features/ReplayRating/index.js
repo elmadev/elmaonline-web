@@ -13,8 +13,10 @@ const ReplayRating = props => {
   const { getRatings, addRating } = useStoreActions(
     actions => actions.ReplayRating,
   );
+  const isCurrentReplay = lastReplayIndex !== ReplayIndex;
+
   useEffect(() => {
-    if (lastReplayIndex !== ReplayIndex) {
+    if (isCurrentReplay) {
       getRatings(ReplayIndex);
     }
   }, []);
@@ -41,7 +43,7 @@ const ReplayRating = props => {
 
   return (
     <Stars
-      clickable={nickId() > 0}
+      clickable={nickId() > 0 && isCurrentReplay}
       voted={userRating}
       average={avg}
       vote={rating => rate(rating)}
