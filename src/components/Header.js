@@ -47,10 +47,10 @@ const Header = props => {
 };
 
 const Container1 = styled.h1`
-  margin: ${p => (p.nomargin ? '0' : '10px')};
-  margin-left: ${p => (p.mLeft ? '10px' : 0)};
-  margin-bottom: 16px;
-  margin-top: ${p => (p.top ? '16px' : '0')};
+  margin: ${p => (p.nomargin ? '0' : p.theme.padSmall)};
+  margin-left: ${p => (p.mLeft ? p.theme.padSmall : 0)};
+  margin-bottom: ${p => p.theme.padMedium};
+  margin-top: ${p => (p.top ? p.theme.padMedium : '0')};
   color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
@@ -61,10 +61,10 @@ const Container1 = styled.h1`
 `;
 
 const Container2 = styled.h2`
-  margin: ${p => (p.nomargin ? '0' : '10px')};
-  margin-left: ${p => (p.mLeft ? '10px' : 0)};
-  margin-bottom: 8px;
-  margin-top: ${p => (p.top ? '16px' : '0')};
+  margin: ${p => (p.nomargin ? '0' : p.theme.padSmall)};
+  margin-left: ${p => (p.mLeft ? p.theme.padSmall : 0)};
+  margin-bottom: ${p => p.theme.padSmall};
+  margin-top: ${p => (p.top ? p.theme.padMedium : '0')};
   color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
@@ -75,10 +75,10 @@ const Container2 = styled.h2`
 `;
 
 const Container3 = styled.h3`
-  margin: ${p => (p.nomargin ? '0' : '10px')};
-  margin-left: ${p => (p.mLeft ? '10px' : 0)};
+  margin: ${p => (p.nomargin ? '0' : p.theme.padSmall)};
+  margin-left: ${p => (p.mLeft ? p.theme.padSmall : 0)};
   margin-bottom: 0px;
-  margin-top: ${p => (p.top ? '16px' : '0')};
+  margin-top: ${p => (p.top ? p.theme.padMedium : '0')};
   color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
@@ -96,6 +96,8 @@ Header.propTypes = {
   nomargin: PropTypes.bool,
   top: PropTypes.bool,
   onClick: PropTypes.func,
+  right: PropTypes.bool,
+  mLeft: PropTypes.bool,
 };
 
 Header.defaultProps = {
@@ -106,6 +108,8 @@ Header.defaultProps = {
   nomargin: false,
   top: false,
   onClick: null,
+  right: false,
+  mLeft: false,
 };
 
 export default Header;

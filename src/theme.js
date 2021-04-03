@@ -30,13 +30,13 @@ const elmaGreenLight = {
   aborted: '#ffb3ba',
 
   // paddings
-  padXXSmall: `${pad}px`,
-  padXSmall: `${pad * 1.5}px`,
-  padSmall: `${pad * 2}px`,
-  padMedium: `${pad * 4}px`,
-  padLarge: `${pad * 6}px`,
-  padXLarge: `${pad * 9}px`,
-  padXXLarge: `${pad * 12}px`,
+  padXXSmall: `${pad}px`, // 4px
+  padXSmall: `${pad * 1.5}px`, // 6px
+  padSmall: `${pad * 2}px`, // 8px
+  padMedium: `${pad * 4}px`, // 16px
+  padLarge: `${pad * 6}px`, // 24px
+  padXLarge: `${pad * 9}px`, // 36px
+  padXXLarge: `${pad * 12}px`, // 48px
 
   // texts
   fontFamily: `'Segoe UI', 'HelveticaNeue-Light', sans-serif`,

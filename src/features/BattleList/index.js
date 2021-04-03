@@ -67,14 +67,20 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
                       />
                     )}
                   </ListCell>
-                  <ListCell width={150}>
-                    {b.Finished === 1 && b.Results.length > 0 ? (
+                  {b.Finished === 1 && b.Results.length > 0 ? (
+                    <ListCell width={150}>
                       <Kuski kuskiData={sorted[0].KuskiData} team flag />
-                    ) : (
-                      battleStatus(b)
-                    )}
-                  </ListCell>
-                  <ListCell whiteSpace="nowrap" width={60}>
+                    </ListCell>
+                  ) : (
+                    <ListCell width={150} to={`/battles/${b.BattleIndex}`}>
+                      {battleStatus(b)}
+                    </ListCell>
+                  )}
+                  <ListCell
+                    whiteSpace="nowrap"
+                    width={60}
+                    to={`/battles/${b.BattleIndex}`}
+                  >
                     {b.Results.length > 0 && (
                       <Time time={sorted[0].Time} apples={sorted[0].Apples} />
                     )}

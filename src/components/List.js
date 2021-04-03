@@ -38,6 +38,7 @@ export const ListCell = ({
 const CellLink = styled(Link)`
   padding: 10px;
   display: block;
+  color: ${p => p.theme.fontColor};
 `;
 
 const Cell = styled.span`

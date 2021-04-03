@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Stars from '../components/Stars';
+import Stars from 'components/Stars';
 
 export default {
-  title: 'Example/Stars',
+  title: 'Data/Stars',
   component: Stars,
 };
 
