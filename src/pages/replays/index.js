@@ -33,7 +33,7 @@ export default function Replays(props) {
       </Tabs>
       <Container>
         <Router primary={false}>
-          <ReplayList default defaultPageSize={10000} showPagination showTags />
+          <ReplayList default />
           <ReplayListBattle path="battle" showPagination />
           <Upload path="upload" filetype=".rec" />
           <Mod path="mod" />

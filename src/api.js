@@ -49,8 +49,15 @@ export const ReplaysByLevelIndex = LevelIndex =>
   api.get(`replay/byLevelIndex/${LevelIndex}`);
 export const InsertReplay = data => api.post('replay', data);
 export const UpdateReplay = data => api.post('replay/update', data);
-export const Replays = data =>
-  api.get(`replay?page=${data.page}&pageSize=${data.pageSize}`);
+export const Replays = ({ page, pageSize, tags, sortBy, order }) => {
+  return api.get(`replay`, {
+    page,
+    pageSize,
+    tags,
+    sortBy,
+    order,
+  });
+};
 
 // country
 export const Country = () => api.get('country');
