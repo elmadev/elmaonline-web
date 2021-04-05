@@ -65,7 +65,8 @@ const Routes = () => {
           <Error path="error" />
           <ForgotPassword path="forgot" />
           <Help path="help/*" />
-          <Kuski path="kuskis/:name" />
+          <Kuski path="kuskis/:name" tab="" />
+          <Kuski path="kuskis/:name/:tab" />
           <Kuskis path="kuskis" tab="" />
           <Kuskis path="kuskis/search" tab="search" />
           <Level path="levels/:LevelId" />
