@@ -1,60 +1,40 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk } from 'easy-peasy';
-import { Players, Ranking } from 'api';
+import { Players } from 'api';
 import { getSetter } from 'utils/easy-peasy';
-import { groupBy, sortBy, values, mapValues, orderBy } from 'lodash';
-
-const sortCountries = (countries, sort) => {
-  if (sort === 'rankedPlayers') {
-    return sortBy(countries, [c => c.rankedCount]).reverse();
-  }
-
-  if (sort === 'allPlayers') {
-    return sortBy(countries, [c => c.playerCount]).reverse();
-  }
-
-  if (sort === 'topPlayer') {
-    return sortBy(countries, [c => c.topRanking]).reverse();
-  }
-
-  return sortBy(countries, [c => c.avgTopRanking]).reverse();
-};
+import { groupBy, sumBy, orderBy, round, values, mapValues } from 'lodash';
 
 export default {
   playerList: [],
   playersByCountry: [],
   setPlayerList: getSetter('playerList'),
   setPlayersByCountry: getSetter('playersByCountry'),
-  // for component to use when sort option changes
-  sortCountries: thunk((actions, sort, helpers) => {
-    const countries = helpers.getState().playersByCountry;
-
-    actions.setPlayersByCountry(sortCountries(countries, sort));
-  }),
   // for use in store only
   _buildPlayersByCountry: thunk((actions, players) => {
     // object with country codes as keys, containing arrays of player objects
     const byCountry = groupBy(players, 'Country');
 
     const avgTop = (players, howMany) => {
-      return (
-        players
-          .slice(0, howMany)
-          .map(p => p.RankingData.RankingAll)
-          .reduce((a, c) => a + c, 0) / howMany
-      );
+      if (howMany > 0) {
+        return round(
+          sumBy(players.slice(0, howMany), p => p.RankingData.RankingAll) /
+            howMany,
+          2,
+        );
+      }
+
+      return 0;
     };
 
     // convert countries to array and map values
     let byCountryArr = values(
       mapValues(byCountry, (players, index) => {
         // the array of player objects
-        let ps = mapValues(players, p => {
+        let ps = players.map(p => {
           const r = p.RankingData || {};
 
-          // ensure all players have predictable RankingData object,
-          // its just too repetitive to always check if object is null,
-          // and format numeric values and stuff.
+          // ensure all players always have predictable RankingData
+          // (some players do not have a ranking data entry in db)
           p.RankingData = {
             ...r,
             RankingAll: +r.RankingAll || 0,
@@ -63,29 +43,31 @@ export default {
             DesignedAll: +r.DesignedAll || 0,
           };
 
+          p.RankingData.WinPct =
+            p.RankingData.PlayedAll > 0
+              ? round(
+                  (100 * p.RankingData.WinsAll) / p.RankingData.PlayedAll,
+                  2,
+                )
+              : 0;
+
           return p;
         });
 
-        // sort players within country
-        ps = orderBy(
-          ps,
-          [p => p.RankingData.RankingAll, p => p.Kuski],
-          ['desc', 'asc'],
-        );
+        // have to sort players here to extract the avgTopRanking.
+        // later (in component), players sorted according to diff options.
+        ps = orderBy(ps, [p => p.RankingData.RankingAll], ['desc']);
 
         return {
           country: index,
           avgTopRanking: avgTop(ps, 5),
-          topRanking: avgTop(ps, 1),
           playerCount: ps.length,
           rankedCount: ps.filter(p => p.RankingData.RankingAll > 0).length,
-          highestRating: ps.length && ps[0].RankingData.RankingAll,
+          battlesDesigned: sumBy(ps, p => p.RankingData.DesignedAll),
           players: ps,
         };
       }),
     );
-
-    byCountryArr = sortCountries(byCountryArr, 'avgTop');
 
     actions.setPlayersByCountry(byCountryArr);
   }),
