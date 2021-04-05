@@ -32,10 +32,12 @@ const Kuski = ({ name, tab, ...props }) => {
         <Container>
           <Head>
             <Picture>
-              <img
-                src={`${config.dlUrl}shirt/${kuski.KuskiIndex}`}
-                alt="shirt"
-              />
+              {kuski.BmpCRC !== 0 && (
+                <img
+                  src={`${config.dlUrl}shirt/${kuski.KuskiIndex}`}
+                  alt="shirt"
+                />
+              )}
             </Picture>
             <Profile>
               <Name>
