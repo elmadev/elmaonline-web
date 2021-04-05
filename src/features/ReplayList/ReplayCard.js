@@ -37,11 +37,12 @@ export default function ReplayCard({ replay, onPreviewClick }) {
     >
       <CardHeader
         avatar={
-          replay.DrivenByData?.KuskiIndex && picExists ? (
+          replay.DrivenByData?.BmpCRC && picExists ? (
             <img
               src={`${config.dlUrl}shirt/${replay.DrivenByData.KuskiIndex}`}
               onError={() => setPicExists(false)}
               height="40"
+              alt="shirt"
             />
           ) : (
             <Avatar>{replay.DrivenByData?.Kuski[0] || '?'}</Avatar>

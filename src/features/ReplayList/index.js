@@ -24,7 +24,7 @@ export default function ReplayList({
   const [selectedTags, setSelectedTags] = useState([]);
   const [previewRec, setPreviewRec] = useState(null);
   const [page, setPage] = useState(defaultPage);
-  const [pageSize, setPageSize] = useState(defaultPageSize);
+  const [pageSize] = useState(defaultPageSize);
   const { replays, tagOptions, settings } = useStoreState(
     state => state.ReplayList,
   );
