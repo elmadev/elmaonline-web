@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { action, thunk } from 'easy-peasy';
+import { action, thunk, persist } from 'easy-peasy';
 import { Replays, BattleListPeriod, GetTags } from 'api';
 
 export default {
@@ -33,5 +33,15 @@ export default {
     if (get.ok) {
       actions.setTagOptions(get.data);
     }
+  }),
+  settings: persist(
+    {
+      grid: true,
+      sortBy: 'uploaded',
+    },
+    { storage: 'localStorage' },
+  ),
+  setSettings: action((state, payload) => {
+    state.settings = { ...state.settings, ...payload };
   }),
 };

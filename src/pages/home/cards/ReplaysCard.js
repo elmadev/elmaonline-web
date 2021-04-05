@@ -12,11 +12,7 @@ export default function ReplaysCard() {
     <Card>
       <CardContent>
         <Header h2>Latest Replays</Header>
-        <ReplayList
-          defaultPage={0}
-          defaultPageSize={20}
-          showPagination={false}
-        />
+        <ReplayList defaultPage={0} defaultPageSize={20} summary />
       </CardContent>
       <CardActions>
         <Button size="small" color="primary">

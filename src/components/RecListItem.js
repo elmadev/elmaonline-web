@@ -9,19 +9,11 @@ import Tags from 'components/Tags';
 import { useNavigate } from '@reach/router';
 import { formatDistanceStrict } from 'date-fns';
 
-const RecListItem = ({
-  replay,
-  selected,
-  columns,
-  openReplay,
-  previewReplay,
-}) => {
+const RecListItem = ({ replay, selected, columns, openReplay }) => {
   const navigate = useNavigate();
   const handleOpenReplay = replay => {
     if (openReplay) {
       openReplay(replay.UUID);
-    } else if (previewReplay) {
-      previewReplay(replay);
     } else {
       navigate(`/r/${replay.UUID}`);
     }
@@ -68,6 +60,10 @@ const RecListItem = ({
           )}
         </ListCell>
       )}
+      {columns.indexOf('Rating') !== -1 && (
+        <ListCell>{replay.ratingAvg}</ListCell>
+      )}
+
       {columns.indexOf('Tags') !== -1 && (
         <ListCell width={300}>
           <Tags tags={getTags()} />
