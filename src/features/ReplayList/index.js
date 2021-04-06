@@ -207,7 +207,7 @@ export default function ReplayList({
       {!summary && (
         <Box p={2}>
           <Pagination
-            count={Math.ceil(replays.count / pageSize)}
+            count={Math.ceil(replays.count.length / pageSize)}
             onChange={(event, value) => setPage(value - 1)}
             page={page + 1}
             showFirstButton
