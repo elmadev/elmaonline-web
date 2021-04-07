@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { TextField, Button } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { useStoreActions } from 'easy-peasy';
 import moment from 'moment';
+import Button from 'components/Buttons';
 import { nick } from 'utils/nick';
 
 const AddComment = props => {
@@ -43,12 +44,10 @@ const AddComment = props => {
         />
       </TextBox>
       <Buttons>
-        <Button variant="contained" onClick={() => setText('')}>
+        <Button secondary onClick={() => setText('')}>
           Reset
         </Button>
-        <Button variant="contained" color="primary" onClick={() => addText()}>
-          Add
-        </Button>
+        <Button onClick={() => addText()}>Add</Button>
       </Buttons>
     </Container>
   );

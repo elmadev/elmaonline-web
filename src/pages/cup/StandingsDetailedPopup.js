@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'components/Link';
+import Header from 'components/Header';
 
 const StandingsDetailedPopup = ({ data, events, close }) => {
   return (
@@ -19,7 +20,9 @@ const StandingsDetailedPopup = ({ data, events, close }) => {
             &times;
           </CloseButton>
         </Title>
-        <h2>Detailed results</h2>
+        <Header h2 mLeft>
+          Detailed results
+        </Header>
         <Results>
           <TableHead>
             <span>Event</span>
@@ -68,7 +71,7 @@ const DetailedPopup = styled.div`
   right: 0;
   left: 800px;
   height: 100vh;
-  background: #fff;
+  background: ${p => p.theme.paperBackground};
   box-sizing: border-box;
   padding-top: var(--top-bar-height);
   border-left: 1px solid #eaeaea;

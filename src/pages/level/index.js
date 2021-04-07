@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -6,7 +6,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -15,7 +14,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@material-ui/core';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import Layout from 'components/Layout';
 import { ExpandMore } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
@@ -24,6 +23,7 @@ import Kuski from 'components/Kuski';
 import Download from 'components/Download';
 import Recplayer from 'components/Recplayer';
 import RecList from 'features/RecList';
+import Header from 'components/Header';
 import Loading from 'components/Loading';
 import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
@@ -37,6 +37,7 @@ import { nickId } from 'utils/nick';
 import LeaderHistory from 'components/LeaderHistory';
 
 const Level = ({ LevelId }) => {
+  const theme = useContext(ThemeContext);
   const LevelIndex = parseInt(LevelId, 10);
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
@@ -151,7 +152,7 @@ const Level = ({ LevelId }) => {
           {!loading && (
             <Accordion defaultExpanded>
               <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography variant="body2">Level info</Typography>
+                <Header h3>Level info</Header>
               </AccordionSummary>
               <AccordionDetails>
                 <LevelDescription>
@@ -174,7 +175,7 @@ const Level = ({ LevelId }) => {
           )}
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography variant="body2">Battles in level</Typography>
+              <Header h3>Battles in level</Header>
             </AccordionSummary>
             <AccordionBattles>
               <BattlesContainer>
@@ -195,7 +196,7 @@ const Level = ({ LevelId }) => {
                         );
                         return (
                           <BattleRow
-                            bg={battleStatusBgColor(i)}
+                            bg={battleStatusBgColor(i, theme)}
                             hover
                             key={i.BattleIndex}
                             onClick={() => {
@@ -236,7 +237,7 @@ const Level = ({ LevelId }) => {
           </Accordion>
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography variant="body2">Replays in level</Typography>
+              <Header h3>Replays in level</Header>
             </AccordionSummary>
             <AccordionReplays>
               <RecList
@@ -377,7 +378,7 @@ const PlayerContainer = styled.div`
 `;
 
 const Player = styled.div`
-  background: #f1f1f1;
+  background: ${p => p.theme.pageBackground};
   height: 400px;
   display: flex;
   align-items: center;

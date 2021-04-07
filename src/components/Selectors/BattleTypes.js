@@ -8,6 +8,7 @@ import {
   Icon,
 } from '@material-ui/core';
 import { BATTLETYPES, BATTLETYPES_LONG } from 'constants/ranking';
+import { withTheme } from 'styled-components';
 
 const periodTypes = ['all', 'year', 'month', 'week', 'day'];
 
@@ -45,7 +46,7 @@ class BattleTypes extends React.Component {
 
   render() {
     const { type } = this.state;
-    const { periodType } = this.props;
+    const { periodType, theme } = this.props;
     const types = BATTLETYPES[periodTypes[periodType]];
     let selected = type;
     if (types.indexOf(type) === -1) {
@@ -59,7 +60,7 @@ class BattleTypes extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_left
@@ -87,7 +88,7 @@ class BattleTypes extends React.Component {
           style={{
             fontSize: 36,
             cursor: 'pointer',
-            color: 'rgba(0, 0, 0, 0.54)',
+            color: theme.lightTextColor,
           }}
         >
           chevron_right
@@ -102,4 +103,4 @@ BattleTypes.propTypes = {
   periodType: PropTypes.number.isRequired,
 };
 
-export default BattleTypes;
+export default withTheme(BattleTypes);

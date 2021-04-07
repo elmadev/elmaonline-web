@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useNavigate } from '@reach/router';
 import PropTypes from 'prop-types';
 import { Tabs, Tab } from '@material-ui/core';
 import styled from 'styled-components';
@@ -14,13 +15,10 @@ import KuskiHeader from './KuskiHeader';
 import LatestTimes from './LatestTimes';
 import Info from './Info';
 
-const Kuski = props => {
-  const [tab, setTab] = useState(0);
-
-  const { name } = props;
-
+const Kuski = ({ name, tab, ...props }) => {
   const { getKuskiByName } = useStoreActions(state => state.Kuski);
   const { kuski, kuskiLoading } = useStoreState(state => state.Kuski);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getKuskiByName(name);
@@ -34,10 +32,12 @@ const Kuski = props => {
         <Container>
           <Head>
             <Picture>
-              <img
-                src={`${config.dlUrl}shirt/${kuski.KuskiIndex}`}
-                alt="shirt"
-              />
+              {kuski.BmpCRC !== 0 && (
+                <img
+                  src={`${config.dlUrl}shirt/${kuski.KuskiIndex}`}
+                  alt="shirt"
+                />
+              )}
             </Picture>
             <Profile>
               <Name>
@@ -54,37 +54,41 @@ const Kuski = props => {
             variant="scrollable"
             scrollButtons="auto"
             value={tab}
-            onChange={(e, t) => setTab(t)}
+            onChange={(e, t) =>
+              navigate(['/kuskis', name, t].filter(Boolean).join('/'))
+            }
           >
-            <Tab label="Played Battles" />
-            <Tab label="Designed Battles" />
-            <Tab label="Latest times" />
-            <Tab label="Replays Uploaded" />
-            <Tab label="Replays Driven" />
-            <Tab label="Info" />
+            <Tab label="Played Battles" value="" />
+            <Tab label="Designed Battles" value="designed-battles" />
+            <Tab label="Latest times" value="latest-times" />
+            <Tab label="Replays Uploaded" value="replays-uploaded" />
+            <Tab label="Replays Driven" value="replays-driven" />
+            <Tab label="Info" value="info" />
           </Tabs>
-          {tab === 0 && (
+          {!tab && (
             <Width100>
               <PlayedBattles KuskiIndex={kuski.KuskiIndex} />
             </Width100>
           )}
-          {tab === 1 && (
+          {tab === 'designed-battles' && (
             <Width100>
               <DesignedBattles KuskiIndex={kuski.KuskiIndex} />
             </Width100>
           )}
-          {tab === 2 && <LatestTimes KuskiIndex={kuski.KuskiIndex} />}
-          {tab === 3 && (
+          {tab === 'latest-times' && (
+            <LatestTimes KuskiIndex={kuski.KuskiIndex} />
+          )}
+          {tab === 'replays-uploaded' && (
             <Width100>
               <ReplaysBy type="uploaded" KuskiIndex={kuski.KuskiIndex} />
             </Width100>
           )}
-          {tab === 4 && (
+          {tab === 'replays-driven' && (
             <Width100>
               <ReplaysBy type="driven" KuskiIndex={kuski.KuskiIndex} />
             </Width100>
           )}
-          {tab === 5 && <Info kuskiInfo={kuski} />}
+          {tab === 'info' && <Info kuskiInfo={kuski} />}
         </Container>
       )}
     </Layout>
@@ -106,7 +110,7 @@ const Width100 = styled.div`
 
 const Container = styled.div`
   min-height: 100%;
-  background: #fff;
+  background: ${p => p.theme.paperBackground};
   padding-bottom: 200px;
 `;
 

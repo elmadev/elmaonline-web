@@ -35,7 +35,7 @@ const CupWidget = ({ ShortName }) => {
 
 const Text = styled.div`
   cursor: pointer;
-  color: #219653;
+  color: ${p => p.theme.linkColor};
 `;
 
 export default CupWidget;

@@ -12,7 +12,7 @@ import Dropzone from 'components/Dropzone';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import CupCurrent from 'components/CupCurrent';
-import { Paper } from 'components/Paper';
+import { Paper, Content } from 'components/Paper';
 import { ListRow, ListCell } from 'components/List';
 import config from 'config';
 import { authToken } from 'utils/nick';
@@ -96,103 +96,113 @@ const Dashboard = props => {
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <Header h2>Upload</Header>
-          <DropContainer>
-            <Dropzone
-              filetype=".rec"
-              error={error}
-              success={success}
-              warning={warning}
-              onDrop={e => onDrop(e)}
-              login
-            />
-            {file && (
-              <Paper highlight style={{ marginTop: '8px' }}>
-                <UploadInput>
-                  {file.name}
-                  <Checkbox
-                    color="primary"
-                    checked={share}
-                    onChange={() => setShare(!share)}
-                  />
-                  Share replay with team
-                </UploadInput>
-                <UploadInput>
-                  <TextField
-                    id="Comment"
-                    label="Comment"
-                    margin="normal"
-                    fullWidth
-                    type="text"
-                    value={comment}
-                    onChange={e => setComment(e.target.value)}
-                  />
-                </UploadInput>
-                <Buttons>
-                  <Button
-                    onClick={() => {
-                      cancel();
-                    }}
-                    variant="contained"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      upload();
-                    }}
-                    style={{
-                      marginLeft: '8px',
-                    }}
-                    variant="contained"
-                    color="primary"
-                  >
-                    Upload
-                  </Button>
-                </Buttons>
-              </Paper>
-            )}
-          </DropContainer>
-          <Header h2 top>
-            Current Event
-          </Header>
-          <CupCurrent events={events} />
+          <Paper padding>
+            <Header h2>Upload</Header>
+            <DropContainer>
+              <Dropzone
+                filetype=".rec"
+                error={error}
+                success={success}
+                warning={warning}
+                onDrop={e => onDrop(e)}
+                login
+              />
+              {file && (
+                <Paper highlight style={{ marginTop: '8px' }}>
+                  <UploadInput>
+                    {file.name}
+                    <Checkbox
+                      color="primary"
+                      checked={share}
+                      onChange={() => setShare(!share)}
+                    />
+                    Share replay with team
+                  </UploadInput>
+                  <UploadInput>
+                    <TextField
+                      id="Comment"
+                      label="Comment"
+                      margin="normal"
+                      fullWidth
+                      type="text"
+                      value={comment}
+                      onChange={e => setComment(e.target.value)}
+                    />
+                  </UploadInput>
+                  <Buttons>
+                    <Button
+                      onClick={() => {
+                        cancel();
+                      }}
+                      variant="contained"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        upload();
+                      }}
+                      style={{
+                        marginLeft: '8px',
+                      }}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Upload
+                    </Button>
+                  </Buttons>
+                </Paper>
+              )}
+            </DropContainer>
+          </Paper>
+          <Paper padding top>
+            <Header h2>Current Event</Header>
+            <CupCurrent events={events} />
+          </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Header h2>
-            <Link to={`/cup/${cup.ShortName}/events/${lastEvent + 1}`}>
-              Last Event
-            </Link>
-          </Header>
-          {events[lastEvent] && (
-            <CupResults
-              CupIndex={events[lastEvent].CupIndex}
-              ShortName={cup.ShortName}
-              eventNo={lastEvent + 1}
-              results={events[lastEvent].CupTimes.slice(0, 5)}
-            />
-          )}
-          <Header h2>
-            <Link to={`/cup/${cup.ShortName}/standings`}>Standings</Link>
-          </Header>
-          {standings.player && (
-            <DerpTable
-              headers={['#', 'Player', { t: 'Points', r: true, w: 'auto' }]}
-              length={standings.player.length}
-            >
-              {standings.player.slice(0, 5).map((r, no) => (
-                <ListRow key={r.KuskiIndex}>
-                  <ListCell>{no + 1}.</ListCell>
-                  <ListCell>
-                    <Kuski kuskiData={r.KuskiData} team flag />
-                  </ListCell>
-                  <ListCell right>
-                    {r.Points} point{r.Points > 1 ? 's' : ''}
-                  </ListCell>
-                </ListRow>
-              ))}
-            </DerpTable>
-          )}
+          <Paper>
+            <Content>
+              <Header h2>
+                <Link to={`/cup/${cup.ShortName}/events/${lastEvent + 1}`}>
+                  Last Event
+                </Link>
+              </Header>
+            </Content>
+            {events[lastEvent] && (
+              <CupResults
+                CupIndex={events[lastEvent].CupIndex}
+                ShortName={cup.ShortName}
+                eventNo={lastEvent + 1}
+                results={events[lastEvent].CupTimes.slice(0, 5)}
+              />
+            )}
+          </Paper>
+          <Paper top>
+            <Content>
+              <Header h2>
+                <Link to={`/cup/${cup.ShortName}/standings`}>Standings</Link>
+              </Header>
+            </Content>
+            {standings.player && (
+              <DerpTable
+                headers={['#', 'Player', { t: 'Points', r: true, w: 'auto' }]}
+                length={standings.player.length}
+              >
+                {standings.player.slice(0, 5).map((r, no) => (
+                  <ListRow key={r.KuskiIndex}>
+                    <ListCell>{no + 1}.</ListCell>
+                    <ListCell>
+                      <Kuski kuskiData={r.KuskiData} team flag />
+                    </ListCell>
+                    <ListCell right>
+                      {r.Points} point{r.Points > 1 ? 's' : ''}
+                    </ListCell>
+                  </ListRow>
+                ))}
+              </DerpTable>
+            )}
+          </Paper>
         </Grid>
       </Grid>
     </Container>

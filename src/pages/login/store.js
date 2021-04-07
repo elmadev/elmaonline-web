@@ -9,11 +9,15 @@ const cookies = new Cookies();
 export default {
   loggedIn: cookies.get('token') !== undefined,
   username: cookies.get('username'),
+  userid: cookies.get('userid'),
   setLoggedIn: action((state, payload) => {
     state.loggedIn = payload;
   }),
   setUsername: action((state, payload) => {
     state.username = payload;
+  }),
+  setUserId: action((state, payload) => {
+    state.userid = payload;
   }),
   login: thunk(async (actions, payload) => {
     const login = await fetch(`${config.url}token`, {
@@ -45,6 +49,7 @@ export default {
     }
     actions.setLoggedIn(true);
     actions.setUsername(body.Response.username);
+    actions.setUserId(body.Response.userid);
     return Promise.resolve();
   }),
   logout: thunk(async actions => {

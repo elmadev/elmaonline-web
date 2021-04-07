@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Header = props => {
-  const { h1, h2, h3, children, nomargin, right, top, onClick } = props;
+  const { h1, h2, h3, children, nomargin, right, top, onClick, mLeft } = props;
   return (
     <>
       {h1 && !h2 && !h3 && (
@@ -13,6 +13,7 @@ const Header = props => {
           right={right}
           top={top}
           nomargin={nomargin}
+          mLeft={mLeft}
         >
           {children}
         </Container1>
@@ -24,6 +25,7 @@ const Header = props => {
           right={right}
           top={top}
           nomargin={nomargin}
+          mLeft={mLeft}
         >
           {children}
         </Container2>
@@ -35,6 +37,7 @@ const Header = props => {
           right={right}
           top={top}
           nomargin={nomargin}
+          mLeft={mLeft}
         >
           {children}
         </Container3>
@@ -44,11 +47,11 @@ const Header = props => {
 };
 
 const Container1 = styled.h1`
-  margin: ${p => (p.nomargin ? '0' : '10px')};
-  margin-left: 0;
-  margin-bottom: 16px;
-  margin-top: ${p => (p.top ? '16px' : '0')};
-  color: ${p => (p.link ? '#219653' : '#1b3a57')};
+  margin: ${p => (p.nomargin ? '0' : p.theme.padSmall)};
+  margin-left: ${p => (p.mLeft ? p.theme.padSmall : 0)};
+  margin-bottom: ${p => p.theme.padMedium};
+  margin-top: ${p => (p.top ? p.theme.padMedium : '0')};
+  color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
   font-size: 36px;
@@ -58,11 +61,11 @@ const Container1 = styled.h1`
 `;
 
 const Container2 = styled.h2`
-  margin: ${p => (p.nomargin ? '0' : '10px')};
-  margin-left: 0;
-  margin-bottom: 8px;
-  margin-top: ${p => (p.top ? '16px' : '0')};
-  color: ${p => (p.link ? '#219653' : '#1b3a57')};
+  margin: ${p => (p.nomargin ? '0' : p.theme.padSmall)};
+  margin-left: ${p => (p.mLeft ? p.theme.padSmall : 0)};
+  margin-bottom: ${p => p.theme.padSmall};
+  margin-top: ${p => (p.top ? p.theme.padMedium : '0')};
+  color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
   font-size: 22px;
@@ -72,11 +75,11 @@ const Container2 = styled.h2`
 `;
 
 const Container3 = styled.h3`
-  margin: ${p => (p.nomargin ? '0' : '10px')};
-  margin-left: 0;
+  margin: ${p => (p.nomargin ? '0' : p.theme.padSmall)};
+  margin-left: ${p => (p.mLeft ? p.theme.padSmall : 0)};
   margin-bottom: 0px;
-  margin-top: ${p => (p.top ? '16px' : '0')};
-  color: ${p => (p.link ? '#219653' : '#1b3a57')};
+  margin-top: ${p => (p.top ? p.theme.padMedium : '0')};
+  color: ${p => (p.link ? p.theme.linkColor : p.theme.headerColor)};
   cursor: ${p => (p.link ? 'pointer' : 'auto')};
   font-weight: 600;
   font-size: 1em;
@@ -93,6 +96,8 @@ Header.propTypes = {
   nomargin: PropTypes.bool,
   top: PropTypes.bool,
   onClick: PropTypes.func,
+  right: PropTypes.bool,
+  mLeft: PropTypes.bool,
 };
 
 Header.defaultProps = {
@@ -103,6 +108,8 @@ Header.defaultProps = {
   nomargin: false,
   top: false,
   onClick: null,
+  right: false,
+  mLeft: false,
 };
 
 export default Header;

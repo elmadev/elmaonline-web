@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  CardHeader,
-} from '@material-ui/core';
+import { Card, CardContent, Grid } from '@material-ui/core';
 import { Level, BattleType } from 'components/Names';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';
@@ -87,14 +81,14 @@ const BattleCard = props => {
     <CardFlex>
       <Grid container spacing={0}>
         <Grid item xs={12} md={6}>
-          <CardHeader title="Current Battle" />
           <CardContent>
-            <Header h2 nomargin>
+            <Header h2>Current Battle</Header>
+            <Header h3 nomargin>
               <Level LevelData={battle.LevelData} noLink />
             </Header>
-            <Typography variant="body1" color="textSecondary">
+            <Header h3>
               <Level long LevelData={battle.LevelData} noLink />
-            </Typography>
+            </Header>
             <Text>
               <span>Designer: </span>
               <strong>
@@ -138,7 +132,7 @@ const CardFlex = styled(Card)`
 `;
 
 const Text = styled.div`
-  color: rgba(0, 0, 0, 0.54);
+  color: ${p => p.theme.lightTextColor};
   font-size: 14px;
 `;
 

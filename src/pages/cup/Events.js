@@ -11,6 +11,7 @@ import { Tabs, Tab, Grid } from '@material-ui/core';
 import Recplayer from 'components/Recplayer';
 import Download from 'components/Download';
 import config from 'config';
+import { Paper } from 'components/Paper';
 import Interviews from './Interviews';
 import Leaders from './Leaders';
 
@@ -137,28 +138,30 @@ const Cups = props => {
               {hasEnded && <Tab label="Interviews" value="interviews" />}
               {hasEnded && <Tab label="Leaders" value="leaders" />}
             </Tabs>
-            {eventTab === 'results' && (
-              <CupResults
-                CupIndex={event.CupIndex}
-                ShortName={cup.ShortName}
-                eventNo={eventIndex + 1}
-                results={event.CupTimes}
-              />
-            )}
-            {eventTab === 'map' && hasEnded && (
-              <PlayerContainer>
-                <Recplayer
-                  lev={`${config.dlUrl}level/${events[eventIndex].LevelIndex}`}
-                  controls
+            <Paper>
+              {eventTab === 'results' && (
+                <CupResults
+                  CupIndex={event.CupIndex}
+                  ShortName={cup.ShortName}
+                  eventNo={eventIndex + 1}
+                  results={event.CupTimes}
                 />
-              </PlayerContainer>
-            )}
-            {eventTab === 'interviews' && hasEnded && (
-              <Interviews cup={cup} event={events[eventIndex]} />
-            )}
-            {eventTab === 'leaders' && hasEnded && (
-              <Leaders event={events[eventIndex]} />
-            )}
+              )}
+              {eventTab === 'map' && hasEnded && (
+                <PlayerContainer>
+                  <Recplayer
+                    lev={`${config.dlUrl}level/${events[eventIndex].LevelIndex}`}
+                    controls
+                  />
+                </PlayerContainer>
+              )}
+              {eventTab === 'interviews' && hasEnded && (
+                <Interviews cup={cup} event={events[eventIndex]} />
+              )}
+              {eventTab === 'leaders' && hasEnded && (
+                <Leaders event={events[eventIndex]} />
+              )}
+            </Paper>
           </Grid>
         );
       })()}
@@ -182,10 +185,11 @@ const EventContainer = styled.div`
   flex-direction: row;
   height: 100px;
   cursor: pointer;
-  background-color: ${props => (props.highlight ? '#219653' : 'transparent')};
-  color: ${props => (props.highlight ? 'white' : 'black')};
+  background-color: ${props =>
+    props.highlight ? props.theme.primary : 'transparent'};
+  color: ${p => (p.highlight ? p.theme.buttonFontColor : p.theme.fontColor)};
   a {
-    color: ${props => (props.highlight ? 'white' : '#219653')};
+    color: ${props => (props.highlight ? 'white' : props.theme.linkColor)};
   }
 `;
 

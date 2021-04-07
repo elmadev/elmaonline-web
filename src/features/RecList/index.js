@@ -1,32 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortBy, filter } from 'lodash';
-import { Checkbox, FormControlLabel } from '@material-ui/core';
+import { Chip, Typography, Box } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
+import Header from 'components/Header';
 import RecListItem from 'components/RecListItem';
 import { useNavigate } from '@reach/router';
+import { xor, intersectionBy } from 'lodash';
 
 const widths = { Replay: 200, Time: 100, Level: null, By: null };
 
 const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
   const navigate = useNavigate();
-  const isRehydrated = useStoreRehydrated();
-  const {
-    show: { showTAS, showDNF, showBug, showNitro },
-    loading,
-    replays,
-  } = useStoreState(state => state.RecList);
-  const {
-    setShowTAS,
-    setShowDNF,
-    setShowBug,
-    setShowNitro,
-    getReplays,
-  } = useStoreActions(actions => actions.RecList);
+
+  const { loading, replays, tagOptions } = useStoreState(
+    state => state.RecList,
+  );
+  const { getTagOptions, getReplays } = useStoreActions(
+    actions => actions.RecList,
+  );
+  const [selectedTags, setSelectedTags] = useState([]);
 
   useEffect(() => {
     getReplays(LevelIndex);
+    getTagOptions();
   }, [LevelIndex]);
 
   const isSelected = uuid => {
@@ -37,73 +35,45 @@ const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
     navigate(`/r/${uuid}`);
   };
 
-  const filterFunction = o => {
-    let show = true;
-    if (!showTAS && o.TAS) {
-      show = false;
-    }
-    if (!showDNF && !o.Finished) {
-      show = false;
-    }
-    if (!showBug && o.Bug) {
-      show = false;
-    }
-    if (!showNitro && o.Nitro) {
-      show = false;
-    }
-    return show;
+  const handleTagClick = tag => {
+    setSelectedTags(xor(selectedTags, [tag]));
   };
-  if (!isRehydrated) return null;
+
+  const filterByTags = i => {
+    return (
+      selectedTags.length === 0 ||
+      intersectionBy(i.Tags, selectedTags, 'TagIndex').length >
+        selectedTags.length - 1
+    );
+  };
+
   return (
     <>
-      <div>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={showTAS}
-              onChange={() => setShowTAS(!showTAS)}
-              value="ShowTAS"
-              color="primary"
-            />
+      <Header h3>Filter</Header>
+      <Box display="flex" flexWrap="wrap">
+        {tagOptions.map(option => {
+          if (selectedTags.includes(option)) {
+            return (
+              <Chip
+                size="small"
+                label={option.Name}
+                onDelete={() => handleTagClick(option)}
+                color="primary"
+                style={{ margin: 4 }}
+              />
+            );
+          } else {
+            return (
+              <Chip
+                size="small"
+                label={option.Name}
+                onClick={() => handleTagClick(option)}
+                style={{ margin: 4 }}
+              />
+            );
           }
-          label="Show TAS"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={showDNF}
-              onChange={() => setShowDNF(!showDNF)}
-              value="ShowDNF"
-              color="primary"
-            />
-          }
-          label="Show Unfinished"
-        />
-      </div>
-      <div>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={showBug}
-              onChange={() => setShowBug(!showBug)}
-              value="showBug"
-              color="primary"
-            />
-          }
-          label="Show Bugged"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={showNitro}
-              onChange={() => setShowNitro(!showNitro)}
-              value="showNitro"
-              color="primary"
-            />
-          }
-          label="Show Modded"
-        />
-      </div>
+        })}
+      </Box>
       <ListContainer
         horizontalMargin={`${horizontalMargin}px`}
         width={`calc(100% - ${horizontalMargin * 2}px)`}
@@ -120,7 +90,7 @@ const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
             <ListCell>Loading...</ListCell>
           </ListRow>
         ) : (
-          sortBy(filter(replays, filterFunction), ['ReplayTime']).map(i => (
+          sortBy(filter(replays, filterByTags), ['ReplayTime']).map(i => (
             <RecListItem
               key={i.ReplayIndex}
               replay={i}

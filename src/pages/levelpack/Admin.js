@@ -1,6 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
-import { Grid, TextField } from '@material-ui/core';
+import {
+  Grid,
+  Typography,
+  TextField,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@material-ui/core';
 import styled from 'styled-components';
 import {
   Delete as DeleteIcon,
@@ -9,8 +16,11 @@ import {
 } from '@material-ui/icons';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
+import Header from 'components/Header';
+import UpdateForm from './UpdateForm';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ListCell, ListContainer, ListHeader } from 'components/List';
+import { ExpandMore } from '@material-ui/icons';
 
 const Admin = ({ records, LevelPack }) => {
   const [search, setSearch] = useState('');
@@ -61,9 +71,11 @@ const Admin = ({ records, LevelPack }) => {
   };
 
   return (
-    <Grid container spacing={0}>
+    <Grid container spacing={3} style={{ padding: '0 8px' }}>
       <Grid item xs={12} md={6}>
-        <h2>Current levels</h2>
+        <Header h2 mLeft>
+          Current levels
+        </Header>
         <ListContainer>
           <ListHeader>
             <ListCell width={70}>Filename</ListCell>
@@ -124,61 +136,78 @@ const Admin = ({ records, LevelPack }) => {
         </DragDropContext>
       </Grid>
       <Grid item xs={12} md={6}>
-        <h2>Search levels</h2>
-        <TextBox>
-          <TextField
-            id="outlined-name"
-            label="Filename"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            margin="normal"
-            variant="outlined"
-            fullWidth
-            onKeyUp={e => {
-              if (e.key === 'Enter') {
-                if (e.target.value === '') {
-                  setSearch('');
-                } else if (search.length > 1) {
-                  searchLevel({ q: search, ShowLocked: 0 });
-                }
-              }
-              if (e.key === 'Escape') {
-                setSearch('');
-              }
-            }}
-          />
-        </TextBox>
-        <ListContainer>
-          <ListHeader>
-            <ListCell width={70}>Filename</ListCell>
-            <ListCell width={300}>Level name</ListCell>
-            <ListCell width={180}>Add</ListCell>
-          </ListHeader>
-          {levelsFound.map(l => (
-            <Row color={isAlreadyAdded(l.LevelIndex)} key={l.LevelIndex}>
-              <ListCell width={70}>
-                <Link to={`/levels/${l.LevelIndex}`}>{l.LevelName}</Link>
-              </ListCell>
-              <ListCell width={300}>{l.LongName}</ListCell>
-              <ListCell width={180}>
-                {!isAlreadyAdded(l.LevelIndex) && (
-                  <Add
-                    onClick={() =>
-                      addLevel({
-                        LevelIndex: l.LevelIndex,
-                        LevelPackIndex: LevelPack.LevelPackIndex,
-                        name: LevelPack.LevelPackName,
-                        levels: records.length,
-                        last: records[records.length - 1],
-                        showLegacy,
-                      })
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Typography variant="body2">Edit Level Pack Details</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <UpdateForm />
+          </AccordionDetails>
+        </Accordion>
+        <br />
+        <Accordion defaultExpanded>
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Header h2 mLeft>
+              Search Levels
+            </Header>
+          </AccordionSummary>
+          <AccordionDetails style={{ display: 'block' }}>
+            <TextBox>
+              <TextField
+                id="outlined-name"
+                label="Filename"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                margin="normal"
+                variant="outlined"
+                fullWidth
+                onKeyUp={e => {
+                  if (e.key === 'Enter') {
+                    if (e.target.value === '') {
+                      setSearch('');
+                    } else if (search.length > 1) {
+                      searchLevel({ q: search, ShowLocked: 0 });
                     }
-                  />
-                )}
-              </ListCell>
-            </Row>
-          ))}
-        </ListContainer>
+                  }
+                  if (e.key === 'Escape') {
+                    setSearch('');
+                  }
+                }}
+              />
+            </TextBox>
+            <ListContainer>
+              <ListHeader>
+                <ListCell width={70}>Filename</ListCell>
+                <ListCell width={300}>Level name</ListCell>
+                <ListCell width={180}>Add</ListCell>
+              </ListHeader>
+              {levelsFound.map(l => (
+                <Row color={isAlreadyAdded(l.LevelIndex)} key={l.LevelIndex}>
+                  <ListCell width={70}>
+                    <Link to={`/levels/${l.LevelIndex}`}>{l.LevelName}</Link>
+                  </ListCell>
+                  <ListCell width={300}>{l.LongName}</ListCell>
+                  <ListCell width={180}>
+                    {!isAlreadyAdded(l.LevelIndex) && (
+                      <Add
+                        onClick={() =>
+                          addLevel({
+                            LevelIndex: l.LevelIndex,
+                            LevelPackIndex: LevelPack.LevelPackIndex,
+                            name: LevelPack.LevelPackName,
+                            levels: records.length,
+                            last: records[records.length - 1],
+                            showLegacy,
+                          })
+                        }
+                      />
+                    )}
+                  </ListCell>
+                </Row>
+              ))}
+            </ListContainer>
+          </AccordionDetails>
+        </Accordion>
       </Grid>
     </Grid>
   );
@@ -212,12 +241,10 @@ const Add = styled(PlaylistAdd)`
 
 const Row = styled.div`
   display: table-row;
-  background: ${p => (p.selected ? '#219653' : 'transparent')};
-  color: ${p => (p.selected ? '#fff' : 'inherit')};
+  background: transparent;
   color: ${p => (p.color ? '#b3b3b3' : 'inherit')};
   :hover {
-    background: ${p => (p.selected ? '#219653' : '#f9f9f9')};
-    color: ${p => (p.selected ? '#fff' : 'inherit')};
+    background: ${p => p.theme.hoverColor};
   }
 `;
 

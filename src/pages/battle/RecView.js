@@ -64,7 +64,7 @@ const PlayerContainer = styled.div`
   padding: 7px;
   box-sizing: border-box;
   .player {
-    background: #f1f1f1;
+    background: ${p => p.theme.pageBackground};
     height: 550px;
     display: flex;
     align-items: center;

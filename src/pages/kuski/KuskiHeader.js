@@ -66,7 +66,7 @@ const StatsContainer = styled.div`
   flex: 1;
   font-size: 30px;
   font-weight: 500;
-  color: #219653;
+  color: ${p => p.theme.primary};
   min-width: 150px;
   flex-basis: auto;
   flex-grow: 1;

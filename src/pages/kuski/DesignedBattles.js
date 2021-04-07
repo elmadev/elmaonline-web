@@ -40,7 +40,7 @@ function DesignedBattles({ KuskiIndex }) {
           <ListCell width={60}>Time</ListCell>
           <ListCell>Started</ListCell>
         </ListHeader>
-        {designedBattles.rows.map(b => {
+        {designedBattles.map(b => {
           const sorted = [...b.Results].sort(sortResults(b.BattleType));
           return (
             <ListRow
@@ -79,7 +79,7 @@ function DesignedBattles({ KuskiIndex }) {
       <TablePagination
         style={{ width: '600px' }}
         component="div"
-        count={designedBattles.count}
+        count={-1}
         rowsPerPage={pageSize}
         page={page}
         backIconButtonProps={{

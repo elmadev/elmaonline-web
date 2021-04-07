@@ -101,8 +101,8 @@ const TypesContainer = styled.div`
   align-items: center;
   position: relative;
   border: 0;
-  background-color: white;
-  color: #767676;
+  background-color: ${p => p.theme.paperBackground};
+  color: ${p => p.theme.lightTextColor};
   padding: 5px 8px 5px 12px;
   border-radius: 4px;
 `;

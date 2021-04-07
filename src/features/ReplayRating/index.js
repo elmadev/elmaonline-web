@@ -13,11 +13,13 @@ const ReplayRating = props => {
   const { getRatings, addRating } = useStoreActions(
     actions => actions.ReplayRating,
   );
+  const isCurrentReplay = lastReplayIndex === ReplayIndex;
+
   useEffect(() => {
-    if (lastReplayIndex !== ReplayIndex) {
+    if (!isCurrentReplay) {
       getRatings(ReplayIndex);
     }
-  }, []);
+  }, [ReplayIndex, isCurrentReplay]);
 
   const rate = rating => {
     if (nick()) {
@@ -33,17 +35,15 @@ const ReplayRating = props => {
   if (ratings.length > 0) {
     avg =
       ratings.reduce((total, next) => total + next.Vote, 0) / ratings.length;
-    const findUserRating = ratings.filter(r => r.KuskiIndex === nickId());
-    if (findUserRating.length > 0) {
-      userRating = findUserRating[0].Vote;
-    }
+    const findUserRating = ratings.find(r => r.KuskiIndex === nickId());
+    userRating = findUserRating?.Vote ?? 0;
   }
 
   return (
     <Stars
-      clickable={nickId() > 0}
-      voted={userRating}
-      average={avg}
+      clickable={nickId() > 0 && isCurrentReplay}
+      voted={isCurrentReplay && userRating}
+      average={isCurrentReplay && avg}
       vote={rating => rate(rating)}
     />
   );

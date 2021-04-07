@@ -282,7 +282,7 @@ const Text = styled.div`
 `;
 
 const Clickable = styled.span`
-  color: #219653;
+  color: ${p => p.theme.linkColor};
   height: 100%;
   width: 100%;
   &:hover {

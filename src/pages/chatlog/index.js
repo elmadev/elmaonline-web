@@ -23,6 +23,7 @@ import { useLocation, useNavigate } from '@reach/router';
 import ChatView from 'features/ChatView';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';
+import { Paper } from 'components/Paper';
 
 const LISTBOX_PADDING = 8; // px
 
@@ -222,156 +223,160 @@ const ChatLog = props => {
 
   return (
     <Layout t="Chat Log">
-      <Header h2>Chat Log Filter</Header>
-      <ChatFilter container spacing={2} alignItems="center">
-        <Grid item xs={12} sm={6} lg={3}>
-          {playerList.length > 0 ? (
-            <Autocomplete
-              id="filter-kuski"
-              options={playerList}
-              multiple
-              filterSelectedOptions
-              getOptionLabel={option => option.Kuski}
-              getOptionSelected={(option, value) =>
-                option.KuskiIndex === value.KuskiIndex
-              }
-              onChange={(event, newValue) => {
-                const ids = newValue.map(value => value.KuskiIndex);
-                setKuskiIds(ids);
-                setKuskiValue(newValue);
-                urlSync({ KuskiIds: ids });
-              }}
-              renderInput={params => (
-                <TextField
-                  // eslint-disable-next-line react/jsx-props-no-spreading
-                  {...params}
-                  label="Kuski"
-                  placeholder="Name(s)"
-                  variant="outlined"
-                />
-              )}
-              renderOption={option => (
-                <Kuski kuskiData={option} flag team noLink />
-              )}
-              value={kuskiValue}
-              ListboxComponent={ListboxComponent}
-              renderGroup={renderGroup}
-              classes={acClasses}
-            />
-          ) : (
-            <CircularProgress />
-          )}
-        </Grid>
-
-        <Grid item xs={12} sm={6} lg={3}>
-          <TextField
-            id="filter-text"
-            label="Text"
-            value={text}
-            onChange={({ target: { value = '' } }) => {
-              setText(value);
-              urlSync({ text: value });
-            }}
-            fullWidth
-            variant="outlined"
-          />
-        </Grid>
-
-        <Grid item xs>
-          <TextField
-            id="datetime-start"
-            label="Start"
-            type="datetime-local"
-            defaultValue={start}
-            onChange={({ target: { value = 0 } }) => {
-              setStart(value);
-              urlSync({ start: value });
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Grid>
-
-        <Grid item xs>
-          <TextField
-            id="datetime-end"
-            label="End"
-            type="datetime-local"
-            defaultValue={end}
-            onChange={({ target: { value = 0 } }) => {
-              setEnd(value);
-              urlSync({ end: value });
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Grid>
-
-        <Grid item xs>
-          <Typography component="div">
-            <Grid component="label" container alignItems="center" spacing={1}>
-              <Grid item>ASC</Grid>
-              <Grid item>
-                <Switch
-                  checked={order}
-                  onChange={(e, value) => {
-                    setOrder(value);
-                    urlSync({ order: value ? 'DESC' : 'ASC' });
-                  }}
-                  name="order"
-                  size="small"
-                  color="primary"
-                />
-              </Grid>
-              <Grid item>DESC</Grid>
-            </Grid>
-          </Typography>
-        </Grid>
-
-        <Grid item xs>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={count}
-                onChange={(e, value) => {
-                  if (value) {
-                    urlSync({ count: null });
-                  } else urlSync({ count: false });
-                  setCount(value);
+      <Paper padding>
+        <Header h2>Chat Log Filter</Header>
+        <ChatFilter container spacing={2} alignItems="center">
+          <Grid item xs={12} sm={6} lg={3}>
+            {playerList.length > 0 ? (
+              <Autocomplete
+                id="filter-kuski"
+                options={playerList}
+                multiple
+                filterSelectedOptions
+                getOptionLabel={option => option.Kuski}
+                getOptionSelected={(option, value) =>
+                  option.KuskiIndex === value.KuskiIndex
+                }
+                onChange={(event, newValue) => {
+                  const ids = newValue.map(value => value.KuskiIndex);
+                  setKuskiIds(ids);
+                  setKuskiValue(newValue);
+                  urlSync({ KuskiIds: ids });
                 }}
-                name="cbCount"
+                renderInput={params => (
+                  <TextField
+                    // eslint-disable-next-line react/jsx-props-no-spreading
+                    {...params}
+                    label="Kuski"
+                    placeholder="Name(s)"
+                    variant="outlined"
+                  />
+                )}
+                renderOption={option => (
+                  <Kuski kuskiData={option} flag team noLink />
+                )}
+                value={kuskiValue}
+                ListboxComponent={ListboxComponent}
+                renderGroup={renderGroup}
+                classes={acClasses}
               />
-            }
-            label="Count (slow!)"
-          />
-        </Grid>
-      </ChatFilter>
+            ) : (
+              <CircularProgress />
+            )}
+          </Grid>
 
-      <ChatView
-        KuskiIds={KuskiIds}
-        text={debouncedText}
-        start={Math.floor(new Date(debouncedStart).getTime() / 1000)}
-        end={Math.floor(new Date(debouncedEnd).getTime() / 1000)}
-        limit={rowsPerPage}
-        order={order ? 'DESC' : 'ASC'}
-        count={count}
-        timestamp="YYYY-MM-DD HH:mm:ss"
-        fullHeight
-      />
+          <Grid item xs={12} sm={6} lg={3}>
+            <TextField
+              id="filter-text"
+              label="Text"
+              value={text}
+              onChange={({ target: { value = '' } }) => {
+                setText(value);
+                urlSync({ text: value });
+              }}
+              fullWidth
+              variant="outlined"
+            />
+          </Grid>
 
-      {chatLines && (
-        <PaginationStyled
-          component="div"
-          count={chatLineCount}
-          page={chatPage}
-          onChangePage={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[10, 25, 50, 100, 250, 1000]}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          <Grid item xs>
+            <TextField
+              id="datetime-start"
+              label="Start"
+              type="datetime-local"
+              defaultValue={start}
+              onChange={({ target: { value = 0 } }) => {
+                setStart(value);
+                urlSync({ start: value });
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs>
+            <TextField
+              id="datetime-end"
+              label="End"
+              type="datetime-local"
+              defaultValue={end}
+              onChange={({ target: { value = 0 } }) => {
+                setEnd(value);
+                urlSync({ end: value });
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs>
+            <Typography component="div">
+              <Grid component="label" container alignItems="center" spacing={1}>
+                <Grid item>ASC</Grid>
+                <Grid item>
+                  <Switch
+                    checked={order}
+                    onChange={(e, value) => {
+                      setOrder(value);
+                      urlSync({ order: value ? 'DESC' : 'ASC' });
+                    }}
+                    name="order"
+                    size="small"
+                    color="primary"
+                  />
+                </Grid>
+                <Grid item>DESC</Grid>
+              </Grid>
+            </Typography>
+          </Grid>
+
+          <Grid item xs>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={count}
+                  onChange={(e, value) => {
+                    if (value) {
+                      urlSync({ count: null });
+                    } else urlSync({ count: false });
+                    setCount(value);
+                  }}
+                  name="cbCount"
+                />
+              }
+              label="Count (slow!)"
+            />
+          </Grid>
+        </ChatFilter>
+      </Paper>
+
+      <Paper padding top>
+        <ChatView
+          KuskiIds={KuskiIds}
+          text={debouncedText}
+          start={Math.floor(new Date(debouncedStart).getTime() / 1000)}
+          end={Math.floor(new Date(debouncedEnd).getTime() / 1000)}
+          limit={rowsPerPage}
+          order={order ? 'DESC' : 'ASC'}
+          count={count}
+          timestamp="YYYY-MM-DD HH:mm:ss"
+          fullHeight
         />
-      )}
+
+        {chatLines && (
+          <PaginationStyled
+            component="div"
+            count={chatLineCount}
+            page={chatPage}
+            onChangePage={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[10, 25, 50, 100, 250, 1000]}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        )}
+      </Paper>
     </Layout>
   );
 };

@@ -11,6 +11,7 @@ import LocalTime from 'components/LocalTime';
 import Link from 'components/Link';
 import { sortResults } from 'utils/battle';
 import { useNavigate } from '@reach/router';
+import { Paper } from 'components/Paper';
 
 export default function ReplayListBattle({
   defaultPage = 0,
@@ -53,7 +54,7 @@ export default function ReplayListBattle({
   }
 
   return (
-    <>
+    <Paper>
       <ListContainer>
         <ListHeader>
           <ListCell>Started</ListCell>
@@ -130,6 +131,6 @@ export default function ReplayListBattle({
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       )}
-    </>
+    </Paper>
   );
 }

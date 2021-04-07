@@ -6,7 +6,6 @@ import {
   TablePagination,
   CircularProgress,
 } from '@material-ui/core';
-import { Paper } from 'components/Paper';
 import { ListContainer, ListHeader, ListCell } from 'components/List';
 import PaginationActions from 'components/Table/PaginationActions';
 import styled from 'styled-components';
@@ -62,7 +61,7 @@ class DerpTable extends React.Component {
     } = this.props;
     const { page, rowsPerPage } = this.state;
     return (
-      <Paper width={width}>
+      <Container width={width}>
         <ListContainer>
           <ListHeader>
             {headers.map(h => (
@@ -106,14 +105,21 @@ class DerpTable extends React.Component {
             </TableFooter>
           </table>
         )}
-      </Paper>
+      </Container>
     );
   }
 }
 
+const Container = styled.div`
+  width: ${p => (p.width ? p.width : 'auto')};
+`;
+
 const BareTablePagination = styled(TablePagination)`
   && {
     border-bottom: medium none;
+    .MuiTablePagination-spacer {
+      display: none;
+    }
   }
 `;
 

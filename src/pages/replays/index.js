@@ -1,44 +1,51 @@
-import React, { useState } from 'react';
-import { Grid, Box, Tab, Tabs } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Tab, Tabs } from '@material-ui/core';
 import ReplayList from 'features/ReplayList';
 import ReplayListBattle from 'features/ReplayListBattle';
 import Upload from 'features/Upload';
 import Layout from 'components/Layout';
+import styled from 'styled-components';
+import { Router, navigate } from '@reach/router';
+import Mod from './Mod';
+import { mod } from 'utils/nick';
 
-export default function Replays() {
-  const [list, setList] = useState(0);
+export default function Replays(props) {
+  const [tab, setTab] = useState('');
+
+  useEffect(() => {
+    setTab(props['*']);
+  }, [props]);
+
   return (
-    <Layout t="Replays">
-      <Grid container>
-        <Grid item xs={12} sm={8}>
-          <Tabs
-            variant="scrollable"
-            scrollButtons="auto"
-            value={list}
-            onChange={(_e, t) => setList(t)}
-          >
-            <Tab label="Recently uploaded" />
-            <Tab label="Battle replays" />
-          </Tabs>
-          <Grid container>
-            {list === 0 && (
-              <Grid item xs={12} sm={12}>
-                <ReplayList showPagination showTags />
-              </Grid>
-            )}
-            {list === 1 && (
-              <Grid item xs={12} sm={12}>
-                <ReplayListBattle showPagination />
-              </Grid>
-            )}
-          </Grid>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Box p={2}>
-            <Upload filetype=".rec" />
-          </Box>
-        </Grid>
-      </Grid>
+    <Layout edge t="Replays">
+      <Tabs
+        variant="scrollable"
+        scrollButtons="auto"
+        value={tab}
+        onChange={(_e, value) =>
+          navigate(['/replays', value].filter(Boolean).join('/'))
+        }
+      >
+        <Tab label="Recently uploaded" value="" />
+        <Tab label="Battle replays" value="battle" />
+        <Tab label="Upload" value="upload" />
+        {mod() > 0 && <Tab label="Mod" value="mod" />}
+      </Tabs>
+      <Container>
+        <Router primary={false}>
+          <ReplayList default />
+          <ReplayListBattle path="battle" showPagination />
+          <Upload path="upload" filetype=".rec" />
+          <Mod path="mod" />
+        </Router>
+      </Container>
     </Layout>
   );
 }
+
+const Container = styled.div`
+  background: #fff;
+  min-height: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+`;

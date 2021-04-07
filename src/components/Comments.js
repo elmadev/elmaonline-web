@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import LocalTime from 'components/LocalTime';
+import { Column, Row } from 'components/Containers';
 
 const colorMap = {};
 
@@ -47,47 +48,44 @@ const Comments = props => {
           <Timestamp>
             <LocalTime date={c.Entered} format="D MMM YYYY" parse="X" />
           </Timestamp>{' '}
-          <Message>
-            <Kuski>
-              &lt;
-              <span style={{ color: getColor(c.KuskiIndex) }}>
-                {c.KuskiData.Kuski}
-              </span>
-              &gt;
-            </Kuski>{' '}
-            <span>{c.Text}</span>
-          </Message>
+          <Kuski>
+            &lt;
+            <span style={{ color: getColor(c.KuskiIndex) }}>
+              {c.KuskiData.Kuski}
+            </span>
+            &gt;
+          </Kuski>{' '}
+          <span>{c.Text}</span>
         </Chatline>
       ))}
     </Chat>
   );
 };
 
-const Chat = styled.div`
+const Chat = styled(Column)`
   margin: 0;
   max-height: 400px;
   width: 100%;
   overflow: auto;
 `;
 
-const Chatline = styled.div`
+const Chatline = styled(Row)`
   font-size: 14px;
   margin-bottom: 4px;
   position: relative;
 `;
 
-const Message = styled.div`
-  margin-left: 60px;
-`;
-
 const Kuski = styled.span`
   font-weight: 400;
+  margin-right: ${p => p.theme.padSmall};
 `;
 
 const Timestamp = styled.div`
   color: #7d7d7d;
   width: 78px;
   float: left;
+  white-space: nowrap;
+  margin-right: ${p => p.theme.padSmall};
 `;
 
 Comments.propTypes = {

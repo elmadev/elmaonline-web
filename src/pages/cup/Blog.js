@@ -37,7 +37,7 @@ const Standings = props => {
   return (
     <Container>
       {owner.length > 0 && owner.indexOf(nickId()) > -1 && (
-        <>
+        <Paper padding>
           <Header h2>Add new blog entry</Header>
           <TextField
             id="outlined-name"
@@ -61,15 +61,13 @@ const Standings = props => {
           <Button variant="contained" color="primary" onClick={() => save()}>
             Save
           </Button>
-        </>
+        </Paper>
       )}
       {items
         .sort((a, b) => b.Written - a.Written)
         .map(i => (
-          <>
-            <Header h2 top>
-              {i.Headline}
-            </Header>
+          <Paper padding top>
+            <Header h2>{i.Headline}</Header>
             <SubHeadline>
               by <Kuski kuskiData={i.KuskiData} /> at{' '}
               <LocalTime
@@ -78,10 +76,8 @@ const Standings = props => {
                 parse="X"
               />
             </SubHeadline>
-            <Paper>
-              <Text dangerouslySetInnerHTML={{ __html: addLinks(i.Text) }} />
-            </Paper>
-          </>
+            <Text dangerouslySetInnerHTML={{ __html: addLinks(i.Text) }} />
+          </Paper>
         ))}
     </Container>
   );
@@ -94,10 +90,10 @@ const Container = styled.div`
 
 const SubHeadline = styled.div`
   padding-bottom: 8px;
+  color: ${p => p.theme.lightTextColor};
 `;
 
 const Text = styled.div`
-  padding: 8px;
   white-space: pre-line;
 `;
 

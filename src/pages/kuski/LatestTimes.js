@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
 import { Level } from 'components/Names';
+import Header from 'components/Header';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 const LatestTimes = ({ KuskiIndex }) => {
@@ -23,7 +24,7 @@ const LatestTimes = ({ KuskiIndex }) => {
     <Grid container spacing={0}>
       <Grid item xs={12} md={6}>
         <Container>
-          <Header>Latest finishes</Header>
+          <Header h2>Latest finishes</Header>
         </Container>
         {latestTimes.length > 0 && (
           <DerpTable
@@ -60,7 +61,7 @@ const LatestTimes = ({ KuskiIndex }) => {
       </Grid>
       <Grid item xs={12} md={6}>
         <Container>
-          <Header>Latest PRs</Header>
+          <Header h2>Latest PRs</Header>
         </Container>
         {latestPRs.length > 0 && (
           <DerpTable
@@ -104,17 +105,6 @@ const LatestTimes = ({ KuskiIndex }) => {
 
 const Container = styled.div`
   margin: 8px;
-`;
-
-const Header = styled.h3`
-  margin: ${p => (p.nomargin ? '0' : '10px')};
-  margin-left: 0;
-  margin-bottom: 0px;
-  color: #1b3a57;
-  font-weight: 600;
-  font-size: 1em;
-  text-transform: none;
-  letter-spacing: 0.5px;
 `;
 
 export default LatestTimes;

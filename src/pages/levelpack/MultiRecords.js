@@ -5,6 +5,7 @@ import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import Header from 'components/Header';
 import { Level } from 'components/Names';
 import Loading from 'components/Loading';
 import { recordsTT } from 'utils/calcs';
@@ -27,7 +28,9 @@ const Records = ({ highlight, highlightWeeks, name }) => {
 
   return (
     <>
-      <h2>Levels</h2>
+      <Header h2 mLeft>
+        Levels
+      </Header>
       <ListContainer>
         <ListHeader>
           <ListCell width={100}>Filename</ListCell>

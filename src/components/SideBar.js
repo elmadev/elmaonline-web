@@ -42,7 +42,7 @@ const SideBar = () => {
   };
   if (!isRehydrated) return null;
   return (
-    <Root sideBarVisible={sideBarVisible}>
+    <Root expanded={+sideBarVisible}>
       <Container>
         <Title>
           <Burger
@@ -55,11 +55,11 @@ const SideBar = () => {
           >
             &#9776;
           </Burger>
-          <Header to="/" sideBarVisible={sideBarVisible}>
+          <Header to="/" expanded={+sideBarVisible}>
             Elma Online
           </Header>
         </Title>
-        <Content sideBarVisible={sideBarVisible}>
+        <Content expanded={+sideBarVisible}>
           {menu.map(m => (
             <SideBarSubItem
               key={m.header}
@@ -100,18 +100,18 @@ const Root = styled.div`
   top: 0;
   left: 0;
   z-index: 11;
-  height: ${p => (p.sideBarVisible ? '100%' : 'auto')};
+  height: ${p => (p.expanded ? '100%' : 'auto')};
   @media (max-width: 768px) {
-    width: ${p => (p.sideBarVisible ? '175px' : '50px')};
+    width: ${p => (p.expanded ? '175px' : '50px')};
     opacity: 0.9;
   }
 `;
 
 const Header = styled(Link)`
   color: #fff;
-  display: ${p => (p.sideBarVisible ? 'inline-block' : 'initial')};
+  display: ${p => (p.expanded ? 'inline-block' : 'initial')};
   @media (max-width: 768px) {
-    display: ${p => (p.sideBarVisible ? 'inline-block' : 'none')};
+    display: ${p => (p.expanded ? 'inline-block' : 'none')};
   }
 `;
 
@@ -144,7 +144,7 @@ const Content = styled.div`
   height: 100%;
   max-height: 100%;
   overflow-y: auto;
-  display: ${p => (p.sideBarVisible ? 'block' : 'none')};
+  display: ${p => (p.expanded ? 'block' : 'none')};
   background: #1f1f1f;
 `;
 

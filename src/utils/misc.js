@@ -19,3 +19,25 @@ export const downloadWithAuth = async (path, filename, mime) => {
     window.URL.revokeObjectURL(objectUrl);
   }, 250);
 };
+
+export const camelToTitleCase = text => {
+  if (typeof text !== 'string') {
+    return '';
+  }
+  const t = text.replace(/([A-Z])/g, ' $1').trim();
+  return `${t.charAt(0).toUpperCase()}${t.slice(1)}`;
+};
+
+export const stripSpace = text => {
+  if (typeof text === 'string') {
+    return text.replace(/\s/g, '').trim();
+  }
+  return '';
+};
+
+export const alphaNumeric = text => {
+  if (typeof text === 'string') {
+    return text.replace(/[^0-9a-z]/gi, '');
+  }
+  return '';
+};

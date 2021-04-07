@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useStoreState } from 'easy-peasy';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import TopBar from 'components/TopBar';
 import SideBar from 'components/SideBar';

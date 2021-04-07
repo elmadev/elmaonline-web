@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   Button,
   Grid,
+  Chip,
 } from '@material-ui/core';
 import Dropzone from 'components/Dropzone';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -18,6 +19,7 @@ import Alert from 'components/Alert';
 import Link from 'components/Link';
 import config from 'config';
 import { authToken } from 'utils/nick';
+import { xor } from 'lodash';
 
 const Upload = ({ onUpload, filetype }) => {
   const {
@@ -25,10 +27,13 @@ const Upload = ({ onUpload, filetype }) => {
     updateReplay,
     setError,
     getKuskiByName,
+    getTagOptions,
+    cleanup,
   } = useStoreActions(actions => actions.Upload);
-  const { inserted, updated, error, kuskiInfo } = useStoreState(
+  const { inserted, updated, error, kuskiInfo, tagOptions } = useStoreState(
     state => state.Upload,
   );
+  const { loggedIn, username, userid } = useStoreState(state => state.Login);
   const [files, setFiles] = useState([]);
   const [fileInfo, setFileInfo] = useState({});
   const [duplicate, setDuplicate] = useState(false);
@@ -53,7 +58,13 @@ const Upload = ({ onUpload, filetype }) => {
         index,
         kuskiIndex: 0,
         comment: '',
+        tags: [],
       };
+      if (loggedIn) {
+        newFileInfo[file.name].drivenBy = username;
+        newFileInfo[file.name].error = '';
+        newFileInfo[file.name].kuskiIndex = userid;
+      }
     });
     setFileInfo(newFileInfo);
     setFiles(newFiles);
@@ -61,6 +72,14 @@ const Upload = ({ onUpload, filetype }) => {
     setDuplicateReplayIndex(0);
     setUploaded([]);
   };
+
+  useEffect(() => {
+    getTagOptions();
+    return () => {
+      setUploaded([]);
+      cleanup();
+    };
+  }, []);
 
   useEffect(() => {
     if (inserted) {
@@ -96,30 +115,16 @@ const Upload = ({ onUpload, filetype }) => {
     setUpdate(Math.random());
   };
 
-  const handleTas = (name, event) => {
-    const newFileInfo = fileInfo;
-    newFileInfo[name].tas = event.target.checked;
-    setFileInfo(newFileInfo);
-    setUpdate(Math.random());
-  };
-
-  const handleBug = (name, event) => {
-    const newFileInfo = fileInfo;
-    newFileInfo[name].bug = event.target.checked;
-    setFileInfo(newFileInfo);
-    setUpdate(Math.random());
-  };
-
-  const handleNitro = (name, event) => {
-    const newFileInfo = fileInfo;
-    newFileInfo[name].nitro = event.target.checked;
-    setFileInfo(newFileInfo);
-    setUpdate(Math.random());
-  };
-
   const handleComment = (name, event) => {
     const newFileInfo = fileInfo;
     newFileInfo[name].comment = event.target.value;
+    setFileInfo(newFileInfo);
+    setUpdate(Math.random());
+  };
+
+  const handleTags = (name, value) => {
+    const newFileInfo = fileInfo;
+    newFileInfo[name].tags = xor(newFileInfo[name].tags, [value]);
     setFileInfo(newFileInfo);
     setUpdate(Math.random());
   };
@@ -219,7 +224,10 @@ const Upload = ({ onUpload, filetype }) => {
               ReplayTime: body.time,
               Finished: body.finished,
               LevelIndex: body.LevelIndex,
-              Unlisted: +fileInfo[body.file].unlisted,
+              Unlisted:
+                body.uuid.substring(0, 5) === 'local'
+                  ? 1
+                  : +fileInfo[body.file].unlisted,
               DrivenBy: fileInfo[body.file].kuskiIndex,
               TAS: +fileInfo[body.file].tas,
               Bug: +fileInfo[body.file].bug,
@@ -227,6 +235,7 @@ const Upload = ({ onUpload, filetype }) => {
               Comment: fileInfo[body.file].comment,
               MD5: body.MD5,
               DrivenByText: fileInfo[body.file].drivenBy,
+              Tags: fileInfo[body.file].tags,
             });
           }
         });
@@ -244,7 +253,7 @@ const Upload = ({ onUpload, filetype }) => {
           uploaded.map(u => (
             <UploadCard key={u.RecFileName}>
               <CardContent>
-                <Typography color="textSecondary">{u.RecFileName}</Typography>
+                {u.RecFileName}
                 <Link to={`/r/${u.UUID}`}>
                   <div>{u.url}</div>
                 </Link>
@@ -258,7 +267,7 @@ const Upload = ({ onUpload, filetype }) => {
                 {fileInfo[rec.name] && (
                   <UploadCard key={rec.name}>
                     <CardContent>
-                      <Typography color="textSecondary">{rec.name}</Typography>
+                      {rec.name}
                       <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                           <div>
@@ -284,6 +293,29 @@ const Upload = ({ onUpload, filetype }) => {
                             />
                           </div>
                         </Grid>
+                        <Grid item xs={12}>
+                          <Typography color="textSecondary">Tags</Typography>
+                          {tagOptions.map(option => {
+                            if (fileInfo[rec.name].tags.includes(option)) {
+                              return (
+                                <Chip
+                                  label={option.Name}
+                                  onDelete={() => handleTags(rec.name, option)}
+                                  color="primary"
+                                  style={{ margin: 4 }}
+                                />
+                              );
+                            } else {
+                              return (
+                                <Chip
+                                  label={option.Name}
+                                  onClick={() => handleTags(rec.name, option)}
+                                  style={{ margin: 4 }}
+                                />
+                              );
+                            }
+                          })}
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                           <div>
                             <FormControlLabel
@@ -296,47 +328,6 @@ const Upload = ({ onUpload, filetype }) => {
                                 />
                               }
                               label="Unlisted"
-                            />
-                          </div>
-                          <div>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={fileInfo[rec.name].tas}
-                                  onChange={e => handleTas(rec.name, e)}
-                                  value="tas"
-                                  color="primary"
-                                />
-                              }
-                              label="TAS"
-                            />
-                          </div>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <div>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={fileInfo[rec.name].bug}
-                                  onChange={e => handleBug(rec.name, e)}
-                                  value="bug"
-                                  color="primary"
-                                />
-                              }
-                              label="Bug"
-                            />
-                          </div>
-                          <div>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={fileInfo[rec.name].nitro}
-                                  onChange={e => handleNitro(rec.name, e)}
-                                  value="nitro"
-                                  color="primary"
-                                />
-                              }
-                              label="Modded"
                             />
                           </div>
                         </Grid>

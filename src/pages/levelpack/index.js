@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from '@reach/router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
@@ -29,7 +30,7 @@ import Kinglist from './Kinglist';
 import MultiRecords from './MultiRecords';
 import Admin from './Admin';
 
-const LevelPack = ({ name }) => {
+const LevelPack = ({ name, tab }) => {
   const isRehydrated = useStoreRehydrated();
   const {
     levelPackInfo,
@@ -54,19 +55,21 @@ const LevelPack = ({ name }) => {
   } = useStoreActions(actions => actions.LevelPack);
   const lastShowLegacy = useRef(showLegacy);
   const [openSettings, setOpenSettings] = useState(false);
-  const [tab, setTab] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getLevelPackInfo(name);
-    getStats({ name, eolOnly: showLegacy ? 0 : 1 });
-    getHighlight();
-    const PersonalKuskiIndex = nick();
-    if (PersonalKuskiIndex !== '') {
-      getPersonalTimes({
-        PersonalKuskiIndex,
-        name,
-        eolOnly: showLegacy ? 0 : 1,
-      });
+    if (levelPackInfo.LevelPackName !== name) {
+      getLevelPackInfo(name);
+      getStats({ name, eolOnly: showLegacy ? 0 : 1 });
+      getHighlight();
+      const PersonalKuskiIndex = nick();
+      if (PersonalKuskiIndex !== '') {
+        getPersonalTimes({
+          PersonalKuskiIndex,
+          name,
+          eolOnly: showLegacy ? 0 : 1,
+        });
+      }
     }
   }, [name]);
 
@@ -91,6 +94,8 @@ const LevelPack = ({ name }) => {
       </Layout>
     );
 
+  const adminAuth = nickId() === levelPackInfo.KuskiIndex || mod();
+
   return (
     <Layout edge t={`Level pack - ${levelPackInfo.LevelPackName}`}>
       <RootStyle>
@@ -98,16 +103,16 @@ const LevelPack = ({ name }) => {
           variant="scrollable"
           scrollButtons="auto"
           value={tab}
-          onChange={(e, t) => setTab(t)}
+          onChange={(e, value) =>
+            navigate(['/levels/packs', name, value].filter(Boolean).join('/'))
+          }
         >
-          <Tab label="Records" />
-          <Tab label="Total Times" />
-          <Tab label="King list" />
-          <Tab label="Personal" />
-          <Tab label="Multi records" />
-          {(nickId() === levelPackInfo.KuskiIndex || mod()) && (
-            <Tab label="Admin" />
-          )}
+          <Tab label="Records" value="" />
+          <Tab label="Total Times" value="total-times" />
+          <Tab label="King list" value="king-list" />
+          <Tab label="Personal" value="personal" />
+          <Tab label="Multi records" value="multi" />
+          {adminAuth && <Tab label="Admin" value="admin" />}
         </Tabs>
         <LevelPackName>
           <ShortNameStyled>{levelPackInfo.LevelPackName}</ShortNameStyled>{' '}
@@ -120,6 +125,7 @@ const LevelPack = ({ name }) => {
           {levelPackInfo.LevelPackDesc} - Maintainer:{' '}
           <Kuski kuskiData={levelPackInfo.KuskiData} />
         </DescriptionStyle>
+        <br />
         <Settings>
           {openSettings ? (
             <ClickAwayListener onClickAway={() => setOpenSettings(false)}>
@@ -204,7 +210,7 @@ const LevelPack = ({ name }) => {
             <ClickSettingsIcon onClick={() => setOpenSettings(true)} />
           )}
         </Settings>
-        {tab === 0 && (
+        {!tab && (
           <Records
             records={records}
             highlight={highlight}
@@ -213,13 +219,13 @@ const LevelPack = ({ name }) => {
             showLegacyIcon={showLegacyIcon}
           />
         )}
-        {tab === 1 && (
+        {tab === 'total-times' && (
           <TotalTimes highlight={highlight} highlightWeeks={highlightWeeks} />
         )}
-        {tab === 2 && (
+        {tab === 'king-list' && (
           <Kinglist highlight={highlight} highlightWeeks={highlightWeeks} />
         )}
-        {tab === 3 && (
+        {tab === 'personal' && (
           <Personal
             timesError={timesError}
             setError={e => setError(e)}
@@ -239,14 +245,16 @@ const LevelPack = ({ name }) => {
             kuski={personalKuski}
           />
         )}
-        {tab === 4 && (
+        {tab === 'multi' && (
           <MultiRecords
             name={name}
             highlight={multiHighlight}
             highlightWeeks={highlightWeeks}
           />
         )}
-        {tab === 5 && <Admin records={records} LevelPack={levelPackInfo} />}
+        {tab === 'admin' && adminAuth && (
+          <Admin records={records} LevelPack={levelPackInfo} />
+        )}
       </RootStyle>
     </Layout>
   );
@@ -261,7 +269,7 @@ LevelPack.defaultProps = {
 };
 
 const RootStyle = styled.div`
-  background: #fff;
+  background: ${p => p.theme.paperBackground};
   min-height: 100%;
   box-sizing: border-box;
 `;
@@ -338,7 +346,7 @@ const ClickCloseIcon = styled(CloseIcon)`
 `;
 
 const FormLabel = styled.legend`
-  color: rgba(0, 0, 0, 0.54);
+  color: ${p => p.theme.lightTextColor};
   font-size: 1rem;
   letter-spacing: 0.00938em;
 `;

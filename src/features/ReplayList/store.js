@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { action, thunk } from 'easy-peasy';
-import { Replays, BattleListPeriod } from 'api';
+import { action, thunk, persist } from 'easy-peasy';
+import { Replays, BattleListPeriod, GetTags } from 'api';
 
 export default {
   replays: null,
@@ -22,5 +22,26 @@ export default {
     if (get.ok) {
       actions.setBattles(get.data);
     }
+  }),
+
+  tagOptions: [],
+  setTagOptions: action((state, payload) => {
+    state.tagOptions = payload;
+  }),
+  getTagOptions: thunk(async actions => {
+    const get = await GetTags();
+    if (get.ok) {
+      actions.setTagOptions(get.data);
+    }
+  }),
+  settings: persist(
+    {
+      grid: true,
+      sortBy: 'uploaded',
+    },
+    { storage: 'localStorage' },
+  ),
+  setSettings: action((state, payload) => {
+    state.settings = { ...state.settings, ...payload };
   }),
 };

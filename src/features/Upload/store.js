@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk } from 'easy-peasy';
-import { InsertReplay, UpdateReplay, UserInfoByIdentifier } from 'api';
+import { InsertReplay, UpdateReplay, UserInfoByIdentifier, GetTags } from 'api';
 
 export default {
   inserted: {},
@@ -39,5 +39,22 @@ export default {
     if (get.ok) {
       actions.setKuskiInfo({ ...get.data, RecFileName: payload.RecFileName });
     }
+  }),
+  tagOptions: [],
+  setTagOptions: action((state, payload) => {
+    state.tagOptions = payload;
+  }),
+  getTagOptions: thunk(async actions => {
+    const get = await GetTags();
+    if (get.ok) {
+      const tagOptions = get.data.filter(tag => !tag.Hidden);
+      actions.setTagOptions(tagOptions);
+    }
+  }),
+  cleanup: action(state => {
+    state.inserted = {};
+    state.updated = {};
+    state.error = '';
+    state.kuskiInfo = {};
   }),
 };
