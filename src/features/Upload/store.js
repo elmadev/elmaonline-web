@@ -51,4 +51,10 @@ export default {
       actions.setTagOptions(tagOptions);
     }
   }),
+  cleanup: action(state => {
+    state.inserted = {};
+    state.updated = {};
+    state.error = '';
+    state.kuskiInfo = {};
+  }),
 };

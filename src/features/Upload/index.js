@@ -28,10 +28,12 @@ const Upload = ({ onUpload, filetype }) => {
     setError,
     getKuskiByName,
     getTagOptions,
+    cleanup,
   } = useStoreActions(actions => actions.Upload);
   const { inserted, updated, error, kuskiInfo, tagOptions } = useStoreState(
     state => state.Upload,
   );
+  const { loggedIn, username, userid } = useStoreState(state => state.Login);
   const [files, setFiles] = useState([]);
   const [fileInfo, setFileInfo] = useState({});
   const [duplicate, setDuplicate] = useState(false);
@@ -58,6 +60,11 @@ const Upload = ({ onUpload, filetype }) => {
         comment: '',
         tags: [],
       };
+      if (loggedIn) {
+        newFileInfo[file.name].drivenBy = username;
+        newFileInfo[file.name].error = '';
+        newFileInfo[file.name].kuskiIndex = userid;
+      }
     });
     setFileInfo(newFileInfo);
     setFiles(newFiles);
@@ -68,6 +75,10 @@ const Upload = ({ onUpload, filetype }) => {
 
   useEffect(() => {
     getTagOptions();
+    return () => {
+      setUploaded([]);
+      cleanup();
+    };
   }, []);
 
   useEffect(() => {
