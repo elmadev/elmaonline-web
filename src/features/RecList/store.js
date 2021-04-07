@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk, persist } from 'easy-peasy';
-import { ReplaysByLevelIndex } from 'api';
+import { ReplaysByLevelIndex, GetTags } from 'api';
 
 export default {
   loading: false,
@@ -19,25 +19,14 @@ export default {
     }
     actions.setLoading(false);
   }),
-  show: persist(
-    {
-      showTAS: false,
-      showDNF: false,
-      showBug: false,
-      showNitro: false,
-    },
-    { storage: 'localStorage' },
-  ),
-  setShowTAS: action((state, payload) => {
-    state.show.showTAS = payload;
+  tagOptions: [],
+  setTagOptions: action((state, payload) => {
+    state.tagOptions = payload;
   }),
-  setShowDNF: action((state, payload) => {
-    state.show.showDNF = payload;
-  }),
-  setShowBug: action((state, payload) => {
-    state.show.showBug = payload;
-  }),
-  setShowNitro: action((state, payload) => {
-    state.show.showNitro = payload;
+  getTagOptions: thunk(async actions => {
+    const get = await GetTags();
+    if (get.ok) {
+      actions.setTagOptions(get.data);
+    }
   }),
 };
