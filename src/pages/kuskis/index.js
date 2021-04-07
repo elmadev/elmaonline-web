@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Tabs, Tab, Grid } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { Tabs, Tab } from '@material-ui/core';
 import { useNavigate } from '@reach/router';
 import Layout from 'components/Layout';
 import Alphabetical from './Alphabetical';
@@ -13,7 +13,9 @@ const Kuskis = ({ tab }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getPlayers();
+    if (playerList.length === 0) {
+      getPlayers();
+    }
   }, []);
 
   return (

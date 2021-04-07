@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { action, thunk } from 'easy-peasy';
+import { thunk } from 'easy-peasy';
 import { Players } from 'api';
 import { getSetter } from 'utils/easy-peasy';
 import { groupBy, sumBy, orderBy, round, values, mapValues } from 'lodash';
@@ -41,12 +41,13 @@ export default {
             PlayedAll: +r.PlayedAll || 0,
             WinsAll: +r.WinsAll || 0,
             DesignedAll: +r.DesignedAll || 0,
+            Played5All: +r.Played5All || 0,
           };
 
           p.RankingData.WinPct =
-            p.RankingData.PlayedAll > 0
+            p.RankingData.Played5All > 0
               ? round(
-                  (100 * p.RankingData.WinsAll) / p.RankingData.PlayedAll,
+                  (100 * p.RankingData.WinsAll) / p.RankingData.Played5All,
                   2,
                 )
               : 0;

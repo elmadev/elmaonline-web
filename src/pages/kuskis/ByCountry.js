@@ -127,7 +127,9 @@ const ByCountry = ({ playersByCountry }) => {
   };
 
   useEffect(() => {
-    getCountries();
+    if (countries.length === 0) {
+      getCountries();
+    }
   }, []);
 
   if (!playersByCountry.length) {
