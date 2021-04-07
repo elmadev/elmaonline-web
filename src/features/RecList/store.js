@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { action, thunk, persist } from 'easy-peasy';
+import { action, thunk } from 'easy-peasy';
 import { ReplaysByLevelIndex, GetTags } from 'api';
 
 export default {

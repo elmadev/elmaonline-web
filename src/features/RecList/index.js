@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortBy, filter } from 'lodash';
-import { Chip, Typography, Box } from '@material-ui/core';
+import { Chip, Box } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Header from 'components/Header';
 import RecListItem from 'components/RecListItem';
