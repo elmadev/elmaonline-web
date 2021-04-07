@@ -67,7 +67,8 @@ const Routes = () => {
           <Help path="help/*" />
           <Kuski path="kuskis/:name" tab="" />
           <Kuski path="kuskis/:name/:tab" />
-          <Kuskis path="kuskis" />
+          <Kuskis path="kuskis" tab="" />
+          <Kuskis path="kuskis/search" tab="search" />
           <Level path="levels/:LevelId" />
           <LevelPack path="levels/packs/:name" tab="" />
           <LevelPack path="levels/packs/:name/:tab" />
