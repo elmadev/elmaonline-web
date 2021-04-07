@@ -13,17 +13,13 @@ const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
   const navigate = useNavigate();
   const isRehydrated = useStoreRehydrated();
   const {
-    show: { showTAS, showDNF, showBug, showNitro },
+    show: { showDNF },
     loading,
     replays,
   } = useStoreState(state => state.RecList);
-  const {
-    setShowTAS,
-    setShowDNF,
-    setShowBug,
-    setShowNitro,
-    getReplays,
-  } = useStoreActions(actions => actions.RecList);
+  const { setShowDNF, getReplays } = useStoreActions(
+    actions => actions.RecList,
+  );
 
   useEffect(() => {
     getReplays(LevelIndex);
@@ -39,16 +35,7 @@ const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
 
   const filterFunction = o => {
     let show = true;
-    if (!showTAS && o.TAS) {
-      show = false;
-    }
     if (!showDNF && !o.Finished) {
-      show = false;
-    }
-    if (!showBug && o.Bug) {
-      show = false;
-    }
-    if (!showNitro && o.Nitro) {
       show = false;
     }
     return show;
@@ -60,17 +47,6 @@ const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
         <FormControlLabel
           control={
             <Checkbox
-              checked={showTAS}
-              onChange={() => setShowTAS(!showTAS)}
-              value="ShowTAS"
-              color="primary"
-            />
-          }
-          label="Show TAS"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
               checked={showDNF}
               onChange={() => setShowDNF(!showDNF)}
               value="ShowDNF"
@@ -78,30 +54,6 @@ const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
             />
           }
           label="Show Unfinished"
-        />
-      </div>
-      <div>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={showBug}
-              onChange={() => setShowBug(!showBug)}
-              value="showBug"
-              color="primary"
-            />
-          }
-          label="Show Bugged"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={showNitro}
-              onChange={() => setShowNitro(!showNitro)}
-              value="showNitro"
-              color="primary"
-            />
-          }
-          label="Show Modded"
         />
       </div>
       <ListContainer
