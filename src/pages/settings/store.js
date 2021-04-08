@@ -54,9 +54,12 @@ export default {
       actions.getIgnored();
     }
   }),
-  settings: persist({
-    siteTheme: 0,
-  }),
+  settings: persist(
+    {
+      siteTheme: 0,
+    },
+    { storage: 'localStorage' },
+  ),
   setSiteTheme: action((state, payload) => {
     state.settings.siteTheme = payload;
   }),

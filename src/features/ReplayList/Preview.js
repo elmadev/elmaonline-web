@@ -93,7 +93,7 @@ export default function Preview({
 }
 
 const Container = styled(Grid)`
-  background: #fff;
+  background: ${p => p.theme.paperBackground};
   width: 80% !important;
   @media (max-width: 730px) {
     width: 100% !important;
@@ -101,15 +101,15 @@ const Container = styled(Grid)`
 `;
 
 const Comment = styled.blockquote`
-  border-left: 4px solid #c4c4c4;
-  background: #f1f1f1;
+  border-left: 4px solid ${p => p.theme.pageBackgroundDark};
+  background: ${p => p.theme.pageBackground};
   margin: 1em 5px;
   padding: 0.5em 5px;
 `;
 
 const Close = styled(CloseIcon)`
   cursor: pointer;
-  color: #c4c4c4;
+  color: ${p => p.theme.lightTextColor};
 
   :hover {
     color: red;
@@ -118,7 +118,7 @@ const Close = styled(CloseIcon)`
 
 const Next = styled(NavigateNextIcon)`
   cursor: pointer;
-  color: #c4c4c4;
+  color: ${p => p.theme.lightTextColor};
 
   :hover {
     color: blue;
@@ -127,7 +127,7 @@ const Next = styled(NavigateNextIcon)`
 
 const Previous = styled(NavigateBeforeIcon)`
   cursor: pointer;
-  color: #c4c4c4;
+  color: ${p => p.theme.lightTextColor};
 
   :hover {
     color: blue;
