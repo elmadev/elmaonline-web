@@ -248,26 +248,26 @@ const EditIcon = styled(Edit)`
 `;
 
 const TimeRow = styled(ListRow)`
-  background: ${p => (p.selected ? '#219653' : 'transparent')};
+  background: ${p => (p.selected ? p.theme.primary : 'transparent')};
   height: 19px;
   cursor: pointer;
   a {
-    color: ${p => (p.selected ? 'white' : '#219653')};
+    color: ${p => (p.selected ? 'white' : p.theme.linkColor)};
   }
   span {
     color: ${p => (p.selected ? 'white' : 'inherit')};
   }
   :hover {
-    background: ${p => (p.selected ? '#219653' : '#f9f9f9')};
+    background: ${p => (p.selected ? p.theme.primary : p.theme.hoverColor)};
     color: ${p => (p.selected ? '#fff' : 'inherit')};
   }
 `;
 
 const TTRow = styled(ListRow)`
-  background: ${p => (p.selected ? '#219653' : 'transparent')};
+  background: ${p => (p.selected ? p.theme.primary : 'transparent')};
   color: ${p => (p.selected ? '#fff' : 'inherit')};
   :hover {
-    background: ${p => (p.selected ? '#219653' : '#f9f9f9')};
+    background: ${p => (p.selected ? p.theme.primary : p.theme.hoverColor)};
     color: ${p => (p.selected ? '#fff' : 'inherit')};
   }
 `;
