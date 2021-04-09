@@ -8,6 +8,7 @@ export const ListContainer = ({
   chin,
   horizontalMargin,
   width,
+  flex,
 }) => {
   return (
     <Container
@@ -15,6 +16,7 @@ export const ListContainer = ({
       chin={chin}
       horizontalMargin={horizontalMargin}
       width={width}
+      flex={flex}
     >
       {children}
     </Container>
@@ -28,6 +30,22 @@ const Container = styled.div`
   font-size: 14px;
   margin-left: ${p => (p.horizontalMargin ? p.horizontalMargin : '0')};
   margin-right: ${p => (p.horizontalMargin ? p.horizontalMargin : '0')};
+  ${p =>
+    p.flex &&
+    `display: flex;
+    flex-direction: column;
+    ${Row} {
+      display: flex;
+      flex-direction: row;
+    }
+    ${Header} {
+      display: flex;
+      flex-direction: row;
+    }
+    ${Cell} {
+      display: flex;
+    }
+  `};
 `;
 
 export const ListRow = ({
@@ -132,6 +150,8 @@ const Cell = styled.span`
   background: ${p => (p.highlight ? p.theme.highlightColor : 'transparent')};
   position: relative;
   white-space: ${p => (p.whiteSpace ? p.whiteSpace : 'normal')};
+  flex: ${p => (p.width ? 'none' : '1')};
+  justify-content: ${p => (p.right ? 'flex-end' : 'flex-start')};
   button {
     max-height: 20px;
   }
