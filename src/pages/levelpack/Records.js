@@ -33,6 +33,10 @@ const Records = ({
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
 
+  if (recordsLoading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Header h2 mLeft>
@@ -46,7 +50,6 @@ const Records = ({
           <ListCell>Time</ListCell>
           {hasSource(records) && <ListCell />}
         </ListHeader>
-        {recordsLoading && <Loading />}
         {records.map(r => (
           <TimeRow
             key={r.LevelIndex}

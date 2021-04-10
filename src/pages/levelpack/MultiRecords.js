@@ -15,16 +15,18 @@ const Records = ({ highlight, highlightWeeks, name }) => {
   const [level, selectLevel] = useState(-1);
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
-  const { multiRecords, multiRecordsLoading, lastMultiName } = useStoreState(
+  const { multiRecords, multiRecordsLoading } = useStoreState(
     state => state.LevelPack,
   );
   const { getMultiRecords } = useStoreActions(actions => actions.LevelPack);
 
   useEffect(() => {
-    if (lastMultiName !== name) {
-      getMultiRecords(name);
-    }
+    getMultiRecords(name);
   }, [name]);
+
+  if (multiRecordsLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -39,7 +41,6 @@ const Records = ({ highlight, highlightWeeks, name }) => {
           <ListCell width={200}>Kuski</ListCell>
           <ListCell>Time</ListCell>
         </ListHeader>
-        {multiRecordsLoading && <Loading />}
         {multiRecords.map(r => (
           <TimeRow
             key={r.LevelIndex}

@@ -7,6 +7,10 @@ import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 const Kinglist = ({ highlight, highlightWeeks }) => {
   const { kinglist, recordsLoading } = useStoreState(state => state.LevelPack);
 
+  if (recordsLoading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Header h2 mLeft>
@@ -19,7 +23,6 @@ const Kinglist = ({ highlight, highlightWeeks }) => {
           <ListCell width={200}>Points</ListCell>
           <ListCell />
         </ListHeader>
-        {recordsLoading && <Loading />}
         {kinglist.length > 0 && (
           <>
             {kinglist

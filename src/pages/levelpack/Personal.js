@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useStoreRehydrated } from 'easy-peasy';
 import styled from 'styled-components';
 import { Edit } from '@material-ui/icons';
+import { useStoreState } from 'easy-peasy';
 import Time from 'components/Time';
 import { Level } from 'components/Names';
 import ClickToEdit from 'components/ClickToEdit';
@@ -47,6 +48,11 @@ const Personal = ({
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
   const isRehydrated = useStoreRehydrated();
+  const { recordsLoading } = useStoreState(state => state.LevelPack);
+
+  if (recordsLoading || !isRehydrated) {
+    return <Loading />;
+  }
 
   let levels = [];
   if (isRehydrated) {
@@ -92,104 +98,100 @@ const Personal = ({
             <ListCell width={200}>Difference</ListCell>
           )}
         </ListHeader>
-        {!isRehydrated ? (
-          <Loading />
-        ) : (
-          levels.length !== 0 && (
-            <>
-              {levels.map(r => (
-                <TimeRow
-                  key={r.LevelIndex}
-                  selected={level === r.LevelIndex}
-                  onClick={e => {
-                    e.preventDefault();
-                    if (r.single.Time || r.multi.Time) {
-                      selectLevel(level === r.LevelIndex ? -1 : r.LevelIndex);
-                      setLongName(r.Level.LongName);
-                      setLevelName(r.Level.LevelName);
-                    }
-                  }}
+        {levels.length !== 0 && (
+          <>
+            {levels.map(r => (
+              <TimeRow
+                key={r.LevelIndex}
+                selected={level === r.LevelIndex}
+                onClick={e => {
+                  e.preventDefault();
+                  if (r.single.Time || r.multi.Time) {
+                    selectLevel(level === r.LevelIndex ? -1 : r.LevelIndex);
+                    setLongName(r.Level.LongName);
+                    setLevelName(r.Level.LevelName);
+                  }
+                }}
+              >
+                <ListCell width={100}>
+                  <Level LevelIndex={r.LevelIndex} LevelData={r.Level} />
+                </ListCell>
+                <ListCell>{r.Level.LongName}</ListCell>
+                <ListCell
+                  highlight={r.single.TimeIndex >= highlight[highlightWeeks]}
                 >
-                  <ListCell width={100}>
-                    <Level LevelIndex={r.LevelIndex} LevelData={r.Level} />
-                  </ListCell>
-                  <ListCell>{r.Level.LongName}</ListCell>
+                  {r.single.Time && <Time time={r.single.Time} />}
+                  {r.single.Source !== null && (
+                    <LegacyContainer>
+                      <LegacyIcon
+                        source={r.single.Source || 0}
+                        show={showLegacyIcon}
+                      />
+                    </LegacyContainer>
+                  )}
+                </ListCell>
+                {tts[1].finished !== 0 && (
                   <ListCell
-                    highlight={r.single.TimeIndex >= highlight[highlightWeeks]}
+                    highlight={
+                      r.multi.MultiTimeIndex >= multiHighlight[highlightWeeks]
+                    }
                   >
-                    {r.single.Time && <Time time={r.single.Time} />}
-                    {r.single.Source !== null && (
-                      <LegacyContainer>
-                        <LegacyIcon
-                          source={r.single.Source || 0}
-                          show={showLegacyIcon}
-                        />
-                      </LegacyContainer>
+                    {r.multi.Time && <Time time={r.multi.Time} />}
+                    {typeof r.multi.OtherKuski === 'object' ? (
+                      <OtherKuskiLink
+                        otherKuski={r.multi.OtherKuski.Kuski}
+                        getTimes={getTimes}
+                      />
+                    ) : (
+                      !r.multi.OtherKuski || ' (' + r.multi.OtherKuski + ')'
                     )}
                   </ListCell>
-                  {tts[1].finished !== 0 && (
-                    <ListCell
-                      highlight={
-                        r.multi.MultiTimeIndex >= multiHighlight[highlightWeeks]
-                      }
-                    >
-                      {r.multi.Time && <Time time={r.multi.Time} />}
-                      {typeof r.multi.OtherKuski === 'object' ? (
-                        <OtherKuskiLink
-                          otherKuski={r.multi.OtherKuski.Kuski}
-                          getTimes={getTimes}
-                        />
-                      ) : (
-                        !r.multi.OtherKuski || ' (' + r.multi.OtherKuski + ')'
+                )}
+                {tts[0].finished !== 0 && tts[1].finished !== 0 && (
+                  <ListCell
+                    highlight={
+                      r.multi.MultiTimeIndex >=
+                        multiHighlight[highlightWeeks] ||
+                      r.single.TimeIndex >= highlight[highlightWeeks]
+                    }
+                  >
+                    <Compare bettertime={r.multi.Time > r.single.Time}>
+                      {r.multi.Time &&
+                        r.single.Time &&
+                        (r.multi.Time > r.single.Time ? '-' : '+')}
+                      {r.multi.Time && r.single.Time && (
+                        <Time time={Math.abs(r.multi.Time - r.single.Time)} />
                       )}
-                    </ListCell>
-                  )}
-                  {tts[0].finished !== 0 && tts[1].finished !== 0 && (
-                    <ListCell
-                      highlight={
-                        r.multi.MultiTimeIndex >=
-                          multiHighlight[highlightWeeks] ||
-                        r.single.TimeIndex >= highlight[highlightWeeks]
-                      }
-                    >
-                      <Compare bettertime={r.multi.Time > r.single.Time}>
-                        {r.multi.Time &&
-                          r.single.Time &&
-                          (r.multi.Time > r.single.Time ? '-' : '+')}
-                        {r.multi.Time && r.single.Time && (
-                          <Time time={Math.abs(r.multi.Time - r.single.Time)} />
-                        )}
-                      </Compare>
-                    </ListCell>
-                  )}
-                </TimeRow>
-              ))}
-              {isRehydrated ? (
-                <TTRow>
-                  <ListCell />
-                  <ListCell>Total Time</ListCell>
-                  <ListCell>
-                    <Time time={tts[0]} />
+                    </Compare>
                   </ListCell>
-                  {tts[1].finished !== 0 && (
-                    <ListCell>
-                      <Time time={tts[1]} />
-                    </ListCell>
-                  )}
-                  {tts[0].finished !== 0 && tts[1].finished !== 0 && (
-                    <ListCell>
-                      <Time time={tts[2]} />
-                    </ListCell>
-                  )}
-                  <ListCell />
-                </TTRow>
-              ) : (
-                <TTRow>
-                  <ListCell>...</ListCell>
-                </TTRow>
-              )}
-            </>
-          )
+                )}
+              </TimeRow>
+            ))}
+            {isRehydrated ? (
+              <TTRow>
+                <ListCell />
+                <ListCell>Total Time</ListCell>
+                <ListCell>
+                  <Time time={tts[0]} />
+                </ListCell>
+                {tts[1].finished !== 0 && (
+                  <ListCell>
+                    <Time time={tts[1]} />
+                  </ListCell>
+                )}
+                {tts[0].finished !== 0 && tts[1].finished !== 0 && (
+                  <ListCell>
+                    <Time time={tts[2]} />
+                  </ListCell>
+                )}
+                <ListCell />
+              </TTRow>
+            ) : (
+              <TTRow>
+                <ListCell>...</ListCell>
+              </TTRow>
+            )}
+          </>
         )}
       </ListContainer>
       {level !== -1 && (
