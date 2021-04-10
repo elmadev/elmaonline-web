@@ -35,7 +35,7 @@ export default function Home() {
             <CurrentBattleCard />
           </Grid>
           <Grid item xs={12}>
-            <FeedCard cupShortName="CPC" />
+            <FeedCard />
           </Grid>
           <Grid item xs={12}>
             <News amount={5} />

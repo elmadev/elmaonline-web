@@ -3,6 +3,7 @@ import { action, persist, thunk } from 'easy-peasy';
 import {
   LeaderHistory,
   Cup,
+  CupsOngoing,
   CupEvents,
   UpdateCup,
   UpdateCupBlog,
@@ -37,6 +38,21 @@ export default {
       const getCupEvents = await CupEvents(getCup.data.CupGroupIndex);
       if (getCupEvents.ok) {
         actions.setCupEvents(getCupEvents.data);
+      }
+    }
+  }),
+  getOngoing: thunk(async (actions, payload) => {
+    const getCup = await CupsOngoing();
+    if (getCup.ok && getCup.data) {
+      if (getCup.data.length > 0) {
+        actions.setCupGroup({
+          cup: getCup.data[0],
+          last: getCup.data[0].CupName,
+        });
+        const getCupEvents = await CupEvents(getCup.data[0].CupGroupIndex);
+        if (getCupEvents.ok) {
+          actions.setCupEvents(getCupEvents.data);
+        }
       }
     }
   }),
