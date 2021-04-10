@@ -71,6 +71,7 @@ export const ResetPassword = data => api.post('register/reset', data);
 
 // cups
 export const Cups = () => api.get('cups');
+export const CupsOngoing = () => api.get('cups/ongoing');
 export const Cup = shortName => api.get(`cups/${shortName}`);
 export const CupEvents = cupGroupIndex =>
   api.get(`cups/events/${cupGroupIndex}`);

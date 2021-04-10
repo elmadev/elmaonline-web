@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
@@ -9,6 +9,9 @@ import Header from 'components/Header';
 import Link from 'components/Link';
 import LegacyIcon from 'components/LegacyIcon';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
+import { FixedSizeList as List } from 'react-window';
+import useElementSize from 'utils/useWindowSize';
+import { Column, Row } from 'components/Containers';
 
 const LevelPopup = ({
   levelId,
@@ -32,6 +35,12 @@ const LevelPopup = ({
     getLevelMultiBesttimes,
   } = useStoreActions(actions => actions.LevelPack);
   const [timesLimit, setTimesLimit] = useState(10);
+
+  // calculate height for react-window
+  const HeaderConRef = useRef(null);
+  const LevelPopUpConSize = useElementSize();
+  const listHeight =
+    LevelPopUpConSize.height - 50 - HeaderConRef?.current?.clientHeight - 40;
 
   useEffect(() => {
     if (levelId !== -1) {
@@ -59,67 +68,119 @@ const LevelPopup = ({
   return (
     <LevelPopUpCon>
       <LevelTimesContainer>
-        <Title>
-          <Link to={`/levels/${levelId}`}>{levelName}.lev</Link>
-          <br />
-          {longName}
-          <ClosePopUp
-            tabIndex="0"
-            role="button"
-            onClick={close}
-            onKeyPress={close}
-          >
-            &times;
-          </ClosePopUp>
-        </Title>
-        <LevelMap LevelIndex={levelId} width="50%" />
-        <Header h2 mLeft>
-          Top-{timesLimit.toLocaleString()} times
-        </Header>
-        <ListContainer>
-          <ListHeader>
-            <ListCell width={40}>#</ListCell>
-            {!KuskiIndex && !multi && <ListCell width={220}>Kuski</ListCell>}
-            {multi && (
-              <>
-                <ListCell width={220}>Kuski</ListCell>
-                <ListCell width={220}>Kuski</ListCell>
-              </>
-            )}
-            <ListCell>Time</ListCell>
-            {times.length > 0 && times[0].Source !== undefined && <ListCell />}
-            {personalAllFinished.length > 0 &&
-              personalAllFinished[0].Source !== undefined && <ListCell />}
-          </ListHeader>
+        <HeaderCon ref={HeaderConRef}>
+          <Row jc="space-between" r="XLarge">
+            <Column jc="space-between">
+              <Title>
+                <Link to={`/levels/${levelId}`}>{levelName}.lev</Link>
+                <br />
+                {longName}
+              </Title>
+              <Header h2 mLeft>
+                Top-{timesLimit.toLocaleString()} times
+              </Header>
+            </Column>
+            <LevelMap LevelIndex={levelId} width="50%" />
+            <ClosePopUp
+              tabIndex="0"
+              role="button"
+              onClick={close}
+              onKeyPress={close}
+            >
+              &times;
+            </ClosePopUp>
+          </Row>
+          <ListContainer>
+            <ListHeader>
+              <ListCell width={40}>#</ListCell>
+              {!KuskiIndex && !multi && <ListCell width={220}>Kuski</ListCell>}
+              {multi && (
+                <>
+                  <ListCell width={176}>Kuski</ListCell>
+                  <ListCell width={176}>Kuski</ListCell>
+                </>
+              )}
+              <ListCell>Time</ListCell>
+              {times.length > 0 && times[0].Source !== undefined && (
+                <ListCell />
+              )}
+              {personalAllFinished.length > 0 &&
+                personalAllFinished[0].Source !== undefined && <ListCell />}
+            </ListHeader>
+          </ListContainer>
+        </HeaderCon>
+        <ListContainer flex>
           {!KuskiIndex ? (
             <>
-              {times.map((t, i) => {
-                return (
-                  <ListRow key={multi ? t.BestMultiTimeIndex : t.BestTimeIndex}>
-                    <ListCell width={40}>{i + 1}.</ListCell>
-                    {multi ? (
-                      <>
-                        <ListCell width={220}>
-                          <Kuski kuskiData={t.Kuski1Data} team flag />
-                        </ListCell>
-                        <ListCell width={220}>
-                          <Kuski kuskiData={t.Kuski2Data} team flag />
-                        </ListCell>
-                        <ListCell
-                          highlight={
-                            multi
-                              ? t.MultiTimeIndex >= highlight
-                              : t.TimeIndex >= highlight
-                          }
-                        >
-                          <Time time={t.Time} />
-                        </ListCell>
-                      </>
-                    ) : (
-                      <>
-                        <ListCell width={220}>
-                          <Kuski kuskiData={t.KuskiData} team flag />
-                        </ListCell>
+              <List
+                height={!isNaN(listHeight) ? listHeight : 0}
+                itemCount={times.length}
+                itemSize={40}
+              >
+                {({ index, style }) => {
+                  const t = times[index];
+                  return (
+                    <div
+                      style={style}
+                      key={multi ? t.BestMultiTimeIndex : t.BestTimeIndex}
+                    >
+                      <ListRow>
+                        <ListCell width={40}>{index + 1}.</ListCell>
+                        {multi ? (
+                          <>
+                            <ListCell width={176}>
+                              <Kuski kuskiData={t.Kuski1Data} team flag />
+                            </ListCell>
+                            <ListCell width={176}>
+                              <Kuski kuskiData={t.Kuski2Data} team flag />
+                            </ListCell>
+                            <ListCell
+                              highlight={
+                                multi
+                                  ? t.MultiTimeIndex >= highlight
+                                  : t.TimeIndex >= highlight
+                              }
+                            >
+                              <Time time={t.Time} />
+                            </ListCell>
+                          </>
+                        ) : (
+                          <>
+                            <ListCell width={220}>
+                              <Kuski kuskiData={t.KuskiData} team flag />
+                            </ListCell>
+                            <ListCell highlight={t.TimeIndex >= highlight}>
+                              <Time time={t.Time} />
+                            </ListCell>
+                            {t.Source !== undefined && (
+                              <ListCell right>
+                                <LegacyIcon
+                                  source={t.Source}
+                                  show={showLegacyIcon}
+                                />
+                              </ListCell>
+                            )}
+                          </>
+                        )}
+                      </ListRow>
+                    </div>
+                  );
+                }}
+              </List>
+            </>
+          ) : (
+            <>
+              <List
+                height={!isNaN(listHeight) ? listHeight : 0}
+                itemCount={personalAllFinished.length}
+                itemSize={40}
+              >
+                {({ index, style }) => {
+                  const t = personalAllFinished[index];
+                  return (
+                    <div style={style} key={`${t.TimeIndex}${t.Time}`}>
+                      <ListRow>
+                        <ListCell width={40}>{index + 1}.</ListCell>
                         <ListCell highlight={t.TimeIndex >= highlight}>
                           <Time time={t.Time} />
                         </ListCell>
@@ -131,29 +192,11 @@ const LevelPopup = ({
                             />
                           </ListCell>
                         )}
-                      </>
-                    )}
-                  </ListRow>
-                );
-              })}
-            </>
-          ) : (
-            <>
-              {personalAllFinished.map((t, i) => {
-                return (
-                  <ListRow key={`${t.TimeIndex}${t.Time}`}>
-                    <ListCell width={40}>{i + 1}.</ListCell>
-                    <ListCell highlight={t.TimeIndex >= highlight}>
-                      <Time time={t.Time} />
-                    </ListCell>
-                    {t.Source !== undefined && (
-                      <ListCell right>
-                        <LegacyIcon source={t.Source} show={showLegacyIcon} />
-                      </ListCell>
-                    )}
-                  </ListRow>
-                );
-              })}
+                      </ListRow>
+                    </div>
+                  );
+                }}
+              </List>
             </>
           )}
         </ListContainer>
@@ -168,6 +211,11 @@ const LevelPopup = ({
     </LevelPopUpCon>
   );
 };
+
+const HeaderCon = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const ShowMore = styled.span`
   color: ${p => p.theme.linkColor};
@@ -202,7 +250,7 @@ const LevelPopUpCon = styled.div`
 
 const LevelTimesContainer = styled.div`
   max-height: 100%;
-  overflow: auto;
+  overflow: hidden;
 `;
 
 const Title = styled.div`
@@ -219,6 +267,7 @@ const ClosePopUp = styled.div`
   padding: 10px;
   padding-top: 0;
   cursor: pointer;
+  margin-top: 50px;
 `;
 
 export default LevelPopup;

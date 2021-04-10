@@ -67,6 +67,7 @@ const powerPinkDark = {
   paperBackground: '#102027',
   headerColor: '#fafafa',
   selectedColor: '#34444c',
+  highlightColor: '#1d3d49',
   hoverColor: '#0C191E',
   borderColor: '#37474f',
 
