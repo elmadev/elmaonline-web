@@ -1,12 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
-const RecPlayer =
-  typeof document !== 'undefined' && require('recplayer-react').default; // eslint-disable-line global-require
+import Recplay from './Rec/Recplay';
 
 const Recplayer = props => {
-  const { rec, lev, width, height, controls, imageUrl, autoPlay } = props;
+  const {
+    rec,
+    lev,
+    width,
+    height,
+    controls,
+    imageUrl,
+    autoPlay,
+    startAtFrame,
+    onFrameChange,
+  } = props;
 
   let defaultZoom = 1;
 
@@ -38,23 +46,33 @@ const Recplayer = props => {
     shouldAutoPlay = true;
   }
 
-  return (
-    <>
-      {RecPlayer && lev ? (
-        <RecPlayer
-          recUrl={rec}
-          levUrl={lev}
-          width={width}
-          height={height}
-          zoom={zoom}
-          controls={controls}
-          imageUrl={imageUrl}
-          autoPlay={shouldAutoPlay}
-        />
-      ) : (
-        <span>Loading..</span>
-      )}
-    </>
+  return lev ? (
+    <Recplay
+      recUrl={rec}
+      levUrl={lev}
+      width={width}
+      height={height}
+      zoom={zoom}
+      controls={controls}
+      imageUrl={imageUrl}
+      autoPlay={shouldAutoPlay}
+      onInitialize={controller => {
+        if (controller && startAtFrame) {
+          // on init the frame is set to 0 somewhere,
+          // so used timeout to set start frame after that...
+          setTimeout(() => {
+            controller.setFrame(startAtFrame);
+            controller.player().setFrame(startAtFrame);
+          }, 500);
+        }
+      }}
+      onFrameChange={onFrameChange}
+      showGrass={true}
+      showPictures={true}
+      showCustomBackgroundSky={true}
+    />
+  ) : (
+    <span>Loading..</span>
   );
 };
 
@@ -67,6 +85,7 @@ Recplayer.propTypes = {
   controls: PropTypes.bool,
   imageUrl: PropTypes.string,
   autoPlay: PropTypes.oneOf(['if-visible', 'yes', 'no']),
+  startAtFrame: PropTypes.number,
 };
 
 Recplayer.defaultProps = {
@@ -77,6 +96,7 @@ Recplayer.defaultProps = {
   controls: true,
   imageUrl: 'https://api.elma.online/recplayer',
   autoPlay: 'if-visible',
+  startAtFrame: 0,
 };
 
 export default Recplayer;

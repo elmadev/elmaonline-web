@@ -11,6 +11,7 @@ import { battleStatus } from 'utils/battle';
 import RecView from './RecView';
 import RightBarContainer from './RightBarContainer';
 import LevelStatsContainer from './LevelStatsContainer';
+import config from 'config';
 
 const runData = runs => {
   if (runs.count === 0) {
@@ -106,12 +107,13 @@ const Battle = ({ BattleId }) => {
             <Time time={winner.Time} apples={winner.Apples} />
           </WinnerTitle>
         )}
-        {battle && battle.LevelIndex ? (
+        {battle &&
+        battle.LevelIndex &&
+        isWindow &&
+        battleStatus !== 'Queued' ? (
           <RecView
-            isWindow={isWindow}
-            BattleIndex={BattleIndex}
-            levelIndex={battle.LevelIndex}
-            battleStatus={battleStatus(battle)}
+            rec={`${config.dlUrl}battlereplay/${BattleIndex}`}
+            lev={`${config.dlUrl}level/${battle.LevelIndex}`}
           />
         ) : (
           <div />
