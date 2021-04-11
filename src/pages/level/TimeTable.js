@@ -26,12 +26,12 @@ const TimeTable = ({ data, latestBattle, loading }) => {
         (!latestBattle ||
           latestBattle.Finished === 1 ||
           latestBattle.Aborted === 1) && (
-          <ListContainer>
+          <ListContainer flex>
             <List
               className="List"
               height={600}
               itemCount={data.length}
-              itemSize={35}
+              itemSize={40}
             >
               {({ index, style }) => {
                 const t = data[index];
@@ -41,7 +41,7 @@ const TimeTable = ({ data, latestBattle, loading }) => {
                       <ListCell right width={30}>
                         {index + 1}.
                       </ListCell>
-                      <ListCell width={200}>
+                      <ListCell whiteSpace="nowrap" width={200}>
                         {t.KuskiData.Kuski}{' '}
                         {t.KuskiData.TeamData &&
                           `[${t.KuskiData.TeamData.Team}]`}

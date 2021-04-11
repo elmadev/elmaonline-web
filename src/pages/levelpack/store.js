@@ -154,15 +154,11 @@ export default {
   }),
   multiRecords: [],
   multiRecordsLoading: false,
-  lastMultiName: '',
   setMultiRecords: action((state, payload) => {
     state.multiRecords = payload;
   }),
   setMultiRecordsLoading: action((state, payload) => {
     state.multiRecordsLoading = payload;
-  }),
-  setLastMultiName: action((state, payload) => {
-    state.lastMultiName = payload;
   }),
   getMultiRecords: thunk(async (actions, payload) => {
     actions.setMultiRecordsLoading(true);

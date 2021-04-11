@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useStoreState } from 'easy-peasy';
-import styled from 'styled-components';
 import Header from 'components/Header';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
+import { FixedSizeList as List } from 'react-window';
+import useElementSize from 'utils/useWindowSize';
 
 const TotalTimes = ({ highlight, highlightWeeks }) => {
   const { totaltimes, recordsLoading } = useStoreState(
     state => state.LevelPack,
   );
+
+  // calculate height for react-window
+  const windowSize = useElementSize();
+  const listHeight = windowSize.height - 319;
+
+  const tts = useMemo(() => totaltimes.sort((a, b) => a.tt - b.tt), [
+    totaltimes,
+  ]);
+
+  if (recordsLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -23,35 +36,36 @@ const TotalTimes = ({ highlight, highlightWeeks }) => {
           <ListCell width={200}>Total Time</ListCell>
           <ListCell />
         </ListHeader>
-        {recordsLoading && <Loading />}
-        {totaltimes.length > 0 && (
-          <>
-            {totaltimes
-              .sort((a, b) => a.tt - b.tt)
-              .map((r, no) => (
-                <TimeRow key={r.KuskiIndex}>
-                  <ListCell width={70}>{no + 1}</ListCell>
-                  <ListCell width={320}>{r.KuskiData.Kuski}</ListCell>
-                  <ListCell
-                    highlight={r.TimeIndex >= highlight[highlightWeeks]}
-                  >
-                    <Time time={r.tt} />
-                  </ListCell>
-                  <ListCell />
-                </TimeRow>
-              ))}
-          </>
+      </ListContainer>
+      <ListContainer flex>
+        {tts.length > 0 && (
+          <List
+            height={!isNaN(listHeight) ? listHeight : 0}
+            itemCount={tts.length}
+            itemSize={40}
+          >
+            {({ index, style }) => {
+              const r = tts[index];
+              return (
+                <div style={style} key={r.KuskiIndex}>
+                  <ListRow>
+                    <ListCell width={70}>{index + 1}</ListCell>
+                    <ListCell width={320}>{r.KuskiData.Kuski}</ListCell>
+                    <ListCell
+                      highlight={r.TimeIndex >= highlight[highlightWeeks]}
+                    >
+                      <Time time={r.tt} />
+                    </ListCell>
+                    <ListCell />
+                  </ListRow>
+                </div>
+              );
+            }}
+          </List>
         )}
       </ListContainer>
     </>
   );
 };
-
-const TimeRow = styled(ListRow)`
-  display: table-row;
-  color: inherit;
-  font-size: 14px;
-  padding: 10px;
-`;
 
 export default TotalTimes;

@@ -44,7 +44,6 @@ export default function Replays(props) {
 }
 
 const Container = styled.div`
-  background: #fff;
   min-height: 100%;
   box-sizing: border-box;
   font-size: 14px;

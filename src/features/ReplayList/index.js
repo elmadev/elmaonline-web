@@ -221,14 +221,15 @@ export default function ReplayList({
 
 const Container = styled.div`
   display: block;
-  background: ${p => (p.grid ? '#c4c4c4' : 'inherit')};
+  background: ${p =>
+    p.grid ? p.theme.pageBackgroundDark : p.theme.paperBackground};
   min-width: 100%;
   max-height: ${p => (p.small ? '300px' : 'auto')};
   overflow: ${p => (p.small ? 'auto' : 'visible')};
   a {
-    color: black;
+    color: ${p => p.theme.fontColor};
     :hover {
-      color: #219653;
+      color: ${p => p.theme.linkColor};
     }
   }
 `;
@@ -241,7 +242,7 @@ const CardGrid = styled.div`
 `;
 
 const StickyContainer = styled.div`
-  background: #f1f1f1;
+  background: ${p => p.theme.pageBackground};
   position: sticky;
   display: flex;
   justify-content: space-between;
@@ -250,7 +251,7 @@ const StickyContainer = styled.div`
 `;
 
 const Filter = styled(Autocomplete)`
-  background: #f1f1f1;
+  background: ${p => p.theme.pageBackground};
   padding: 0.7rem 1rem 0.5rem 1rem;
   flex-grow: 1;
 

@@ -5,26 +5,24 @@ import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useNavigate } from '@reach/router';
 
-const CupWidget = ({ ShortName }) => {
+const CupWidget = () => {
   const navigate = useNavigate();
-  const { events, cup, lastCupShortName } = useStoreState(state => state.Cup);
-  const { getCup } = useStoreActions(actions => actions.Cup);
+  const { events, cup } = useStoreState(state => state.Cup);
+  const { getOngoing } = useStoreActions(actions => actions.Cup);
 
   useEffect(() => {
-    if (lastCupShortName !== ShortName) {
-      getCup(ShortName);
-    }
+    getOngoing();
   }, []);
 
   return (
     <>
-      {cup.ShortName === ShortName && (
+      {cup.CupName && (
         <>
-          <Header onClick={() => navigate(`/cup/${ShortName}`)} h2>
+          <Header onClick={() => navigate(`/cup/${cup.ShortName}`)} h2>
             {cup.CupName}
           </Header>
-          <CupCurrent events={events} ShortName={ShortName} />
-          <Text onClick={() => navigate(`/cup/${ShortName}`)}>
+          <CupCurrent events={events} ShortName={cup.ShortName} />
+          <Text onClick={() => navigate(`/cup/${cup.ShortName}`)}>
             Open cup page to upload replays
           </Text>
         </>
