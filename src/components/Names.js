@@ -5,7 +5,7 @@ import Link from 'components/Link';
 
 const formatLevel = level => {
   if (
-    level.substring(0, 6) === 'QWQUU0' &&
+    level.substring(0, 6).toUpperCase() === 'QWQUU0' &&
     parseInt(level.substring(6, 8), 10) <= 55
   ) {
     return `Internal ${level.substring(6, 8)}`;
