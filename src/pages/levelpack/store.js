@@ -143,7 +143,7 @@ export default {
   }),
   getStats: thunk(async (actions, payload) => {
     actions.setRecordsLoading(true);
-    const times = await LevelPackStats(payload);
+    const times = await LevelPackStats({ ...payload, cache: 1 });
     if (times.ok) {
       actions.setRecords(times.data.records);
       actions.setTotalTimes(times.data.tts);
@@ -151,6 +151,12 @@ export default {
     }
     actions.setRecordsLoading(false);
     actions.setAdminLoading(false);
+    const times2 = await LevelPackStats(payload);
+    if (times2.ok) {
+      actions.setRecords(times2.data.records);
+      actions.setTotalTimes(times2.data.tts);
+      actions.setKinglist(times2.data.points);
+    }
   }),
   multiRecords: [],
   multiRecordsLoading: false,
