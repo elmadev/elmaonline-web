@@ -82,7 +82,7 @@ class Ranking extends React.Component {
                   <RankingTable
                     battleType={battleType}
                     minPlayed={min}
-                    index="RankingIndex"
+                    tableIndex="RankingIndex"
                     periodType="overall"
                     period="overall"
                   />
@@ -91,7 +91,7 @@ class Ranking extends React.Component {
                   <RankingTable
                     battleType={battleType}
                     minPlayed={min}
-                    index="RankingYearlyIndex"
+                    tableIndex="RankingYearlyIndex"
                     periodType="year"
                     period={year}
                   />
@@ -100,7 +100,7 @@ class Ranking extends React.Component {
                   <RankingTable
                     battleType={battleType}
                     minPlayed={min}
-                    index="RankingMonthlyIndex"
+                    tableIndex="RankingMonthlyIndex"
                     periodType="month"
                     period={formatPeriod('month', year, month, week, day)}
                   />
@@ -109,7 +109,7 @@ class Ranking extends React.Component {
                   <RankingTable
                     battleType={battleType}
                     minPlayed={min}
-                    index="RankingWeeklyIndex"
+                    tableIndex="RankingWeeklyIndex"
                     periodType="week"
                     period={formatPeriod('week', year, month, week, day)}
                   />
@@ -118,7 +118,7 @@ class Ranking extends React.Component {
                   <RankingTable
                     battleType={battleType}
                     minPlayed={min}
-                    index="RankingDailyIndex"
+                    tableIndex="RankingDailyIndex"
                     periodType="day"
                     period={formatPeriod('day', year, month, week, day)}
                   />
