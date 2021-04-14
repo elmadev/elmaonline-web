@@ -5,6 +5,8 @@ import { ListRow, ListCell, ListContainer } from 'components/List';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Kuski from 'components/Kuski';
 import SortableList from 'components/SortableList';
+import Loading from 'components/Loading';
+import styled from 'styled-components';
 import { FixedSizeList as List } from 'react-window';
 
 const RankingTable = ({
@@ -14,7 +16,7 @@ const RankingTable = ({
   tableIndex,
   periodType,
 }) => {
-  const { rankingData } = useStoreState(state => state.RankingTable);
+  const { rankingData, loading } = useStoreState(state => state.RankingTable);
   const { getRankingData } = useStoreActions(actions => actions.RankingTable);
   useEffect(() => {
     getRankingData({ period, periodType });
@@ -39,6 +41,9 @@ const RankingTable = ({
       return b[sort] - a[sort];
     });
   }
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <>
       {FilteredRanking && (
@@ -50,7 +55,7 @@ const RankingTable = ({
               { name: 'Ranking', sort: true, width: 76, right: 1 },
               { name: 'Points', sort: true, width: 76, right: 1 },
               { name: 'Wins', sort: true, width: 76, right: 1 },
-              { name: 'Win %', sort: true, width: 76, right: 1 },
+              { name: 'Win %', sort: false, width: 76, right: 1 },
               { name: 'Designed', sort: true, width: 76, right: 1 },
               { name: 'Played', sort: true, width: 93, right: 1 },
             ]}
@@ -94,12 +99,19 @@ const RankingTable = ({
                 );
               }}
             </List>
+            <Amount>Players: {FilteredRanking.length}</Amount>
           </ListContainer>
         </>
       )}
     </>
   );
 };
+
+const Amount = styled.div`
+  padding: ${p => p.theme.padSmall};
+  padding-top: ${p => p.theme.padLarge};
+  height: 20px;
+`;
 
 RankingTable.propTypes = {
   battleType: PropTypes.string.isRequired,

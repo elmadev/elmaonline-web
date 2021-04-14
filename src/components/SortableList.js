@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ListCell, ListContainer, ListHeader } from 'components/List';
+import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 
 export const SortableList = ({
   children,
@@ -38,10 +39,14 @@ export const SortableList = ({
         {headers.length > 0 &&
           headers.map(h => (
             <ListCell
+              whiteSpace="nowrap"
               right={h.right || null}
               width={h.width || null}
               onClick={() => h.sort && doSort(h.name)}
             >
+              {sortHeader === h.name && (
+                <>{order === 'asc' ? <ArrowDropUp /> : <ArrowDropDown />}</>
+              )}
               {h.name}
             </ListCell>
           ))}
