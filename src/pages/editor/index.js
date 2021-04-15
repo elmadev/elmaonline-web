@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
-// import LevelEditorGui from 'level-editor-gui';
+import LevelEditorGui from 'level-editor-gui';
 
 const EditorContainer = styled.div`
   height: calc(100vh - 50px);
@@ -9,14 +9,14 @@ const EditorContainer = styled.div`
 
 class Editor extends React.Component {
   componentDidMount() {
-    /* this.editor = new LevelEditorGui({
+    this.editor = new LevelEditorGui({
       element: 'level-editor',
-      server: 'https://janka.la:3123',
-    }); */
+      server: 'https://editor.elma.online',
+    });
   }
 
   componentWillUnmount() {
-    // this.editor.stopAnimationLoop();
+    this.editor.stopAnimationLoop();
   }
 
   render() {
