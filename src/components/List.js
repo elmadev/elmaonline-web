@@ -106,6 +106,7 @@ export const ListCell = ({
   highlight,
   to,
   whiteSpace,
+  onClick,
 }) => {
   if (to) {
     return (
@@ -128,6 +129,7 @@ export const ListCell = ({
       width={width}
       right={right}
       highlight={highlight}
+      onClick={() => onClick && onClick()}
     >
       {children}
     </Cell>
@@ -152,6 +154,7 @@ const Cell = styled.span`
   white-space: ${p => (p.whiteSpace ? p.whiteSpace : 'normal')};
   flex: ${p => (p.width ? 'none' : '1')};
   justify-content: ${p => (p.right ? 'flex-end' : 'flex-start')};
+  ${p => p.onClick && 'cursor: pointer;'}
   button {
     max-height: 20px;
   }

@@ -47,7 +47,7 @@ const SpecialResult = (time, type) => {
 };
 
 const LevelStatsContainer = props => {
-  const [extra, setExtra] = useState('');
+  const [extra, setExtra] = useState('RankingAll');
   const { battle, rankingHistory, runStats } = props;
 
   if (!battle) return <Root>loading</Root>;
@@ -79,7 +79,7 @@ const LevelStatsContainer = props => {
                   displayEmpty
                 >
                   <MenuItem value="" disabled>
-                    Extra
+                    Ranking
                   </MenuItem>
                   <MenuItem value="RankingAll">Ranking (all)</MenuItem>
                   <MenuItem value="RankingType">Ranking (type)</MenuItem>
