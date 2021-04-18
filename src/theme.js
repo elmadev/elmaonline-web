@@ -42,6 +42,7 @@ const elmaGreenLight = {
   // texts
   fontFamily: `'Segoe UI', 'HelveticaNeue-Light', sans-serif`,
   fontSize: '1em',
+  smallFont: '14px',
   fontColor: '#222',
   lightTextColor: '#767676',
   buttonFontColor: '#fff',

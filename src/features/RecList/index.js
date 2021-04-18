@@ -6,14 +6,17 @@ import { Chip, Box } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Header from 'components/Header';
 import RecListItem from 'components/RecListItem';
-import { useNavigate } from '@reach/router';
 import { xor, intersectionBy } from 'lodash';
 
 const widths = { Replay: 200, Time: 100, Level: null, By: null };
 
-const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
-  const navigate = useNavigate();
-
+const RecList = ({
+  currentUUID,
+  columns,
+  horizontalMargin,
+  LevelIndex,
+  mergable = false,
+}) => {
   const { loading, replays, tagOptions } = useStoreState(
     state => state.RecList,
   );
@@ -28,11 +31,10 @@ const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
   }, [LevelIndex]);
 
   const isSelected = uuid => {
-    return currentUUID === uuid;
-  };
-
-  const handleOpenReplay = uuid => {
-    navigate(`/r/${uuid}`);
+    if (!currentUUID) {
+      return false;
+    }
+    return currentUUID.indexOf(uuid) !== -1;
   };
 
   const handleTagClick = tag => {
@@ -94,9 +96,9 @@ const RecList = ({ currentUUID, columns, horizontalMargin, LevelIndex }) => {
             <RecListItem
               key={i.ReplayIndex}
               replay={i}
-              openReplay={uuid => handleOpenReplay(uuid)}
               selected={isSelected(i.UUID)}
               columns={columns}
+              mergable={mergable}
             />
           ))
         )}

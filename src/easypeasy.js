@@ -34,6 +34,7 @@ import Levels from 'pages/levels/store';
 import News from 'features/News/store';
 import FileUpload from 'pages/upload/store';
 import ReplayList from 'features/ReplayList/store';
+import ReplaySettings from 'features/ReplaySettings/store';
 
 export default {
   ReplayComments,
@@ -64,6 +65,7 @@ export default {
   ReplayByUUID,
   RecList,
   RankingTable,
+  ReplaySettings,
   Level,
   Battle,
   Login,

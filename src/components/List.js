@@ -56,6 +56,7 @@ export const ListRow = ({
   bg = 'transparent',
   title = '',
   highlight = false,
+  onHover,
 }) => {
   return (
     <Row
@@ -66,6 +67,8 @@ export const ListRow = ({
       onClick={e => onClick && onClick(e)}
       title={title}
       highlight={highlight}
+      onMouseEnter={() => onHover && onHover(true)}
+      onMouseLeave={() => onHover && onHover(false)}
     >
       {children}
     </Row>
