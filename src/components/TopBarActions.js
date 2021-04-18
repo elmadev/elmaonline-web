@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
 import { useNavigate } from '@reach/router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import styled from 'styled-components';
+import Badge from '@material-ui/core/Badge';
 
 const StyledButton = styled(Button)`
   a {
@@ -24,8 +26,16 @@ export default function TopBarActions() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const { loggedIn, username } = useStoreState(state => state.Login);
-  const { logout } = useStoreActions(actions => actions.Login);
+  const { loggedIn, username, notificationsCount } = useStoreState(
+    state => state.Login,
+  );
+  const { logout, getNotificationsCount } = useStoreActions(
+    actions => actions.Login,
+  );
+
+  useEffect(() => {
+    getNotificationsCount();
+  }, []);
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget);
@@ -44,6 +54,10 @@ export default function TopBarActions() {
     navigate('/');
   };
 
+  const handleNotificationsClick = () => {
+    navigate(`/kuskis/${username}/notifications`);
+  };
+
   return (
     <>
       {!loggedIn && (
@@ -53,6 +67,17 @@ export default function TopBarActions() {
       )}
       {loggedIn && (
         <div>
+          <IconButton
+            aria-label="notifications"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleNotificationsClick}
+            color="inherit"
+          >
+            <Badge badgeContent={notificationsCount} color="error">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"

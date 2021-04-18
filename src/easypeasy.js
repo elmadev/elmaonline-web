@@ -34,6 +34,7 @@ import Levels from 'pages/levels/store';
 import News from 'features/News/store';
 import FileUpload from 'pages/upload/store';
 import ReplayList from 'features/ReplayList/store';
+import Notifications from 'features/Notifications/store';
 
 export default {
   ReplayComments,
@@ -70,6 +71,7 @@ export default {
   ReplayList,
   FileUpload,
   Replays,
+  Notifications,
   Page: {
     sideBarVisible: true,
     showSideBar: action(state => {
