@@ -165,6 +165,10 @@ export const LevelPackFavRemove = data =>
   api.post('levelpack/favourite/remove', data);
 export const LevelPackFavs = () => api.get('levelpack/favourite');
 
+export const IntBestTimes = kuskiIndex => {
+  return api.get(`levelpack/internals/besttimes/${kuskiIndex}`);
+};
+
 // collections
 export const AddCollection = data =>
   api.post('levelpack/collections/add', data);
