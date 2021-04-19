@@ -17,6 +17,8 @@ import Time from 'components/Time';
 import Link from 'components/Link';
 import Header from 'components/Header';
 import RecList from 'features/RecList';
+import { useLocation, useNavigate } from '@reach/router';
+import queryString from 'query-string';
 import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment';
@@ -26,12 +28,14 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import config from 'config';
 import ReplaySettings from 'features/ReplaySettings';
 
-const Replay = props => {
-  const { ReplayUuid } = props;
+const Replay = ({ ReplayUuid, RecFileName }) => {
   const isWindow = typeof window !== 'undefined';
   let link = '';
   let linkArray = [];
   let uuidarray = [];
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { merge } = queryString.parse(location.search);
 
   const { getReplayByUUID } = useStoreActions(state => state.ReplayByUUID);
   const { replay, loading, replays } = useStoreState(
@@ -43,11 +47,21 @@ const Replay = props => {
 
   useEffect(() => {
     if (ReplayUuid) {
-      getReplayByUUID(ReplayUuid);
+      getReplayByUUID({ ReplayUuid, merge, RecFileName });
     }
-  }, [ReplayUuid]);
+  }, [ReplayUuid, merge]);
 
-  if (!replay)
+  if (!RecFileName && replay) {
+    navigate(
+      `${location.pathname}/${replay.RecFileName.replace('.rec', '')}`,
+      false,
+    );
+  }
+
+  if (
+    !replay ||
+    (replay?.RecFileName.replace('.rec', '') !== RecFileName && RecFileName)
+  )
     return (
       <Layout t={`rec - ${ReplayUuid}`}>
         {loading ? <Loading /> : <div>not found</div>}

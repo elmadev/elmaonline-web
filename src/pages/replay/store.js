@@ -18,11 +18,19 @@ export default {
   getReplayByUUID: thunk(async (actions, payload) => {
     actions.setReplays([]);
     actions.setLoading(true);
-    const replays = await ReplayByUUID(payload);
+    let uuids = payload.ReplayUuid;
+    if (payload.merge) {
+      uuids = `${uuids},${payload.merge}`;
+    }
+    const replays = await ReplayByUUID(uuids);
     if (replays.ok) {
       if (Array.isArray(replays.data)) {
         actions.setReplays(replays.data);
-        actions.setReplayByUUID(replays.data[0]);
+        actions.setReplayByUUID(
+          replays.data.filter(
+            d => d.RecFileName === `${payload.RecFileName}.rec`,
+          )[0],
+        );
       } else {
         actions.setReplayByUUID(replays.data);
       }
