@@ -84,6 +84,7 @@ const Routes = () => {
           <Ranking path="ranking" />
           <Register path="register" />
           <Replay path="r/:ReplayUuid" />
+          <Replay path="r/:ReplayUuid/:RecFileName" />
           <Replays path="replays/*" />
           <Search path="search" />
           <Settings path="settings" />

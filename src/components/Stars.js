@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { StarBorder } from '@material-ui/icons';
 import Rating from '@material-ui/lab/Rating';
 
-const Stars = ({ voted, average, vote, clickable }) => (
+const Stars = ({ voted, average, vote, clickable, amount = 0 }) => (
   <Container>
     <Rating
       name="replay-rating"
@@ -16,7 +16,12 @@ const Stars = ({ voted, average, vote, clickable }) => (
       readOnly={!clickable}
       max={10}
     />
-    <AverageRating>{Number(average)?.toFixed(2)}</AverageRating>
+    <AverageRating title="Vote average">
+      {Number(average)?.toFixed(2)}
+    </AverageRating>
+    {amount !== 0 && (
+      <AverageRating title="Amount of votes">({amount})</AverageRating>
+    )}
   </Container>
 );
 
