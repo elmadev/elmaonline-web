@@ -57,6 +57,7 @@ export const ListRow = ({
   title = '',
   highlight = false,
   onHover,
+  verticalAlign = 'baseline',
 }) => {
   return (
     <Row
@@ -69,6 +70,7 @@ export const ListRow = ({
       highlight={highlight}
       onMouseEnter={() => onHover && onHover(true)}
       onMouseLeave={() => onHover && onHover(false)}
+      verticalAlign={verticalAlign}
     >
       {children}
     </Row>
@@ -77,6 +79,7 @@ export const ListRow = ({
 
 const Row = styled.div`
   display: table-row;
+  vertical-align: ${p => p.verticalAlign};
   background: ${p =>
     p.selected
       ? p.theme.selectedColor
@@ -110,6 +113,8 @@ export const ListCell = ({
   to,
   whiteSpace,
   onClick,
+  verticalAlign = 'baseline',
+  textAlign = 'left',
 }) => {
   if (to) {
     return (
@@ -120,6 +125,8 @@ export const ListCell = ({
         right={right}
         highlight={highlight}
         to={to}
+        verticalAlign={verticalAlign}
+        textAlign={textAlign}
       >
         <CellLink to={to}>{children}</CellLink>
       </Cell>
@@ -133,6 +140,8 @@ export const ListCell = ({
       right={right}
       highlight={highlight}
       onClick={() => onClick && onClick()}
+      verticalAlign={verticalAlign}
+      textAlign={textAlign}
     >
       {children}
     </Cell>
@@ -157,6 +166,8 @@ const Cell = styled.span`
   white-space: ${p => (p.whiteSpace ? p.whiteSpace : 'normal')};
   flex: ${p => (p.width ? 'none' : '1')};
   justify-content: ${p => (p.right ? 'flex-end' : 'flex-start')};
+  vertical-align: ${p => p.verticalAlign};
+  text-align: ${p => p.textAlign};
   ${p => p.onClick && 'cursor: pointer;'}
   button {
     max-height: 20px;
