@@ -87,7 +87,8 @@ const Routes = () => {
           <Replay path="r/:ReplayUuid/:RecFileName" />
           <Replays path="replays/*" />
           <Search path="search" />
-          <Settings path="settings" />
+          <Settings path="settings" tab="" />
+          <Settings path="settings/:tab" />
           <Team path="team/:TeamName" />
           <Teams path="teams" />
           <Upload path="up" />
