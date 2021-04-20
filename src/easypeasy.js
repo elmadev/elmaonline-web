@@ -36,8 +36,10 @@ import FileUpload from 'pages/upload/store';
 import ReplayList from 'features/ReplayList/store';
 import ReplaySettings from 'features/ReplaySettings/store';
 import Notifications from 'features/Notifications/store';
+import ReplayCommentArchive from 'features/ReplayCommentArchive/store';
 
 export default {
+  ReplayCommentArchive,
   ReplayComments,
   ReplayRating,
   ReplaysBy,

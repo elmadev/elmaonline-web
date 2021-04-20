@@ -31,6 +31,7 @@ export const setApiAuth = authToken => {
 export const ReplayComment = replayIndex =>
   api.get(`replay_comment/${replayIndex}`);
 export const AddReplayComment = data => api.post(`replay_comment/add`, data);
+export const AllReplayComments = () => api.get('replay_comment/');
 export const ReplayRating = replayIndex =>
   api.get(`replay_rating/${replayIndex}`);
 export const AddReplayRating = data => api.post(`replay_rating/add`, data);
