@@ -80,6 +80,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
           linkArray.push(`${config.s3Url}replays/${r.UUID}/${r.RecFileName}`);
           uuidarray.push(r.UUID);
         });
+        link = linkArray.join(';');
       }
     }
   }
@@ -94,7 +95,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
         <Player>
           {isWindow && (
             <Recplayer
-              rec={linkArray.length > 0 ? linkArray : link}
+              rec={link}
               lev={`${config.dlUrl}level/${replay.LevelIndex}`}
               controls
             />

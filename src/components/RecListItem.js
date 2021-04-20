@@ -21,15 +21,15 @@ const RecListItem = ({ replay, selected, columns, mergable = false }) => {
 
   const updateUrl = (unmerge = false) => {
     if (unmerge) {
-      return merge?.includes(',')
+      return merge?.includes(';')
         ? `${location.pathname}${location.search.replace(
-            `,${replay.UUID}`,
+            `;${replay.UUID}`,
             '',
           )}`
         : location.pathname;
     }
     return merge
-      ? `${location.pathname}${location.search},${replay.UUID}`
+      ? `${location.pathname}${location.search};${replay.UUID}`
       : `${location.pathname}?merge=${replay.UUID}`;
   };
 

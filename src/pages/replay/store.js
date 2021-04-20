@@ -20,7 +20,7 @@ export default {
     actions.setLoading(true);
     let uuids = payload.ReplayUuid;
     if (payload.merge) {
-      uuids = `${uuids},${payload.merge}`;
+      uuids = `${uuids};${payload.merge}`;
     }
     const replays = await ReplayByUUID(uuids);
     if (replays.ok) {
