@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Tab, Tabs } from '@material-ui/core';
 import ReplayList from 'features/ReplayList';
 import ReplayListBattle from 'features/ReplayListBattle';
+import ReplayCommentArchive from 'features/ReplayCommentArchive';
 import Upload from 'features/Upload';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
@@ -29,6 +30,7 @@ export default function Replays(props) {
         <Tab label="Recently uploaded" value="" />
         <Tab label="Battle replays" value="battle" />
         <Tab label="Upload" value="upload" />
+        <Tab label="Comments" value="comments" />
         {mod() > 0 && <Tab label="Mod" value="mod" />}
       </Tabs>
       <Container>
@@ -36,6 +38,7 @@ export default function Replays(props) {
           <ReplayList default />
           <ReplayListBattle path="battle" showPagination />
           <Upload path="upload" filetype=".rec" />
+          <ReplayCommentArchive path="comments" />
           <Mod path="mod" />
         </Router>
       </Container>

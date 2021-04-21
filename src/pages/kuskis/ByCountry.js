@@ -181,7 +181,7 @@ const ByCountry = ({ playersByCountry }) => {
           >
             <MenuItem value={5}>Top 5</MenuItem>
             <MenuItem value={10}>Top 10</MenuItem>
-            <MenuItem value={15}>Top 15</MenuItem>
+            <MenuItem value={20}>Top 20</MenuItem>
             <MenuItem value={30}>Top 30</MenuItem>
             <MenuItem value={50}>Top 50</MenuItem>
             <MenuItem value="all">All (Slow!)</MenuItem>
@@ -199,7 +199,7 @@ const ByCountry = ({ playersByCountry }) => {
       </Grid>
       {playersByCountrySorted.map((country, countryIndex) => {
         return (
-          <Item>
+          <Item key={countryIndex}>
             <ItemHeading>
               <Header h1>
                 <span>
@@ -231,7 +231,7 @@ const ByCountry = ({ playersByCountry }) => {
 
                   {country.players.map((player, index) => {
                     return (
-                      <ListRow className="player-row">
+                      <ListRow className="player-row" key={player.KuskiIndex}>
                         <ListCell>
                           {index + 1}.{` `}
                           <Kuski flag={false} team={true} kuskiData={player} />
