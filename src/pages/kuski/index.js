@@ -51,7 +51,7 @@ const Kuski = ({ name, tab, ...props }) => {
                 {kuski.TeamData && `Team: ${kuski.TeamData.Team}`}
               </TeamNat>
             </Profile>
-            <KuskiHeader Kuski={kuski.Kuski} KuskiIndex={kuski.KuskiIndex} />
+            <KuskiHeader KuskiIndex={kuski.KuskiIndex} />
           </Head>
           <Tabs
             variant="scrollable"

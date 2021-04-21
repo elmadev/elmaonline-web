@@ -4,8 +4,6 @@ import {
   PersonalLatest,
   PersonalLatestPRs,
   PersonalRanking,
-  LevelPackStats,
-  PersonalTimes,
   BattlesByDesigner,
   GiveRights,
   IPlogs,
@@ -13,6 +11,7 @@ import {
   BanKuski,
   UserInfoByIdentifier,
   BattlesByPlayer,
+  IntBestTimes,
 } from 'api';
 
 export default {
@@ -46,26 +45,18 @@ export default {
       actions.setRanking(call.data);
     }
   }),
-  tt: false,
-  setTt: action((state, payload) => {
-    state.tt = payload;
+  intTotalTime: false,
+  setIntTotalTime: action((state, payload) => {
+    state.intTotalTime = payload;
   }),
-  getTt: thunk(async (actions, payload) => {
-    const records = await LevelPackStats({ name: 'Int', eolOnly: 0 });
-    const times = await PersonalTimes({
-      PersonalKuskiIndex: payload,
-      name: 'Int',
-      eolOnly: 0,
-    });
-    if (records.ok && times.ok) {
-      const levels = records.data.records.map(r => {
-        const personal = times.data.filter(t => t.LevelIndex === r.LevelIndex);
-        if (personal.length > 0) {
-          return { ...r, LevelBesttime: personal[0].LevelBesttime };
-        }
-        return { ...r, LevelBesttime: [] };
-      });
-      actions.setTt(levels);
+  getIntTotalTime: thunk(async (actions, payload) => {
+    // weird things happen when we do this and switch between first tab.
+    // actions.setIntTotalTime(false);
+
+    const response = await IntBestTimes(payload);
+
+    if (response.ok) {
+      actions.setIntTotalTime(response.data);
     }
   }),
   designedBattles: [],
