@@ -1,5 +1,5 @@
-import { action, thunk } from 'easy-peasy';
-import { getSetter, getUpdater } from 'utils/easy-peasy';
+import { thunk } from 'easy-peasy';
+import { getSetter } from 'utils/easy-peasy';
 import { AllReplayComments } from '../../api';
 
 export default {
