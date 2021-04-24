@@ -11,11 +11,13 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import Layout from 'components/Layout';
 import Setting from './Setting';
 import Themes from './Themes';
+import { useNavigate } from '@reach/router';
 
-const Settings = () => {
+const Settings = ({ tab }) => {
   const { userInfo, error, message, ignored } = useStoreState(
     state => state.Settings,
   );
+
   const {
     getUserInfo,
     updateUserInfo,
@@ -33,12 +35,13 @@ const Settings = () => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordAgain, setNewPasswordAgain] = useState('');
-  const [tab, setTab] = useState(0);
   const [info, openInfo] = useState(false);
   const [locked, setLocked] = useState(
     userInfo.TeamData ? userInfo.TeamData.Locked === 1 : 0,
   );
   const [ignoreNick, setIgnoreNick] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const KuskiIndex = nickId();
@@ -68,17 +71,19 @@ const Settings = () => {
         variant="scrollable"
         scrollButtons="auto"
         value={tab}
-        onChange={(e, value) => setTab(value)}
+        onChange={(e, value) => {
+          navigate(['/settings', value].filter(Boolean).join('/'));
+        }}
       >
-        <Tab label="User info" />
-        <Tab label="Team" />
-        <Tab label="Ignore" />
-        <Tab label="Site theme" />
+        <Tab label="User info" value="" />
+        <Tab label="Team" value="team" />
+        <Tab label="Ignore" value="ignore" />
+        <Tab label="Site theme" value="themes" />
       </Tabs>
       <Container>
         {nickId() > 0 ? (
           <>
-            {tab === 0 && (
+            {!tab && (
               <Grid container spacing={0}>
                 <Grid item xs={12} sm={6}>
                   <Setting
@@ -134,7 +139,7 @@ const Settings = () => {
                 </Grid>
               </Grid>
             )}
-            {tab === 1 && (
+            {tab === 'team' && (
               <Grid container spacing={0}>
                 <Grid item xs={12} sm={6}>
                   <Paper>
@@ -159,7 +164,7 @@ const Settings = () => {
                 </Grid>
               </Grid>
             )}
-            {tab === 2 && (
+            {tab === 'ignore' && (
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Setting
@@ -185,7 +190,7 @@ const Settings = () => {
                 </Grid>
               </Grid>
             )}
-            {tab === 3 && <Themes />}
+            {tab === 'themes' && <Themes />}
           </>
         ) : (
           <div>Log in to change settings.</div>

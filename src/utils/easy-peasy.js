@@ -5,3 +5,10 @@ export const getSetter = key => {
     state[key] = payload;
   });
 };
+
+export const getUpdater = () => {
+  return action((state, payload) => {
+    state = payload(state);
+    return state;
+  });
+};

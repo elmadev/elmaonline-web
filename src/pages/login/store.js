@@ -2,7 +2,7 @@
 import { action, thunk } from 'easy-peasy';
 import Cookies from 'universal-cookie';
 import config from 'config';
-import { setApiAuth } from 'api';
+import { setApiAuth, GetNotificationsCount } from 'api';
 
 const cookies = new Cookies();
 
@@ -60,5 +60,16 @@ export default {
     cookies.remove('mod', { path: '/' });
     cookies.remove('admin', { path: '/' });
     actions.setLoggedIn(false);
+  }),
+
+  notificationsCount: 0,
+  setNotificationsCount: action((state, payload) => {
+    state.notificationsCount = payload;
+  }),
+  getNotificationsCount: thunk(async actions => {
+    const response = await GetNotificationsCount();
+    if (response.ok) {
+      actions.setNotificationsCount(response.data);
+    }
   }),
 };

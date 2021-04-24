@@ -17,31 +17,51 @@ import Time from 'components/Time';
 import Link from 'components/Link';
 import Header from 'components/Header';
 import RecList from 'features/RecList';
+import { useLocation, useNavigate } from '@reach/router';
+import queryString from 'query-string';
 import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment';
 import Tags from 'components/Tags';
 import Loading from 'components/Loading';
-import { useNavigate } from '@reach/router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import config from 'config';
+import ReplaySettings from 'features/ReplaySettings';
 
-const Replay = props => {
-  const navigate = useNavigate();
-  const { ReplayUuid } = props;
+const Replay = ({ ReplayUuid, RecFileName }) => {
   const isWindow = typeof window !== 'undefined';
   let link = '';
+  let linkArray = [];
+  let uuidarray = [];
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { merge } = queryString.parse(location.search);
 
   const { getReplayByUUID } = useStoreActions(state => state.ReplayByUUID);
-  const { replay, loading } = useStoreState(state => state.ReplayByUUID);
+  const { replay, loading, replays } = useStoreState(
+    state => state.ReplayByUUID,
+  );
+  const {
+    settings: { theater },
+  } = useStoreState(state => state.ReplaySettings);
 
   useEffect(() => {
     if (ReplayUuid) {
-      getReplayByUUID(ReplayUuid);
+      getReplayByUUID({ ReplayUuid, merge, RecFileName });
     }
-  }, [ReplayUuid]);
+  }, [ReplayUuid, merge]);
 
-  if (!replay)
+  if (!RecFileName && replay) {
+    navigate(
+      `${location.pathname}/${replay.RecFileName.replace('.rec', '')}`,
+      false,
+    );
+  }
+
+  if (
+    !replay ||
+    (replay?.RecFileName.replace('.rec', '') !== RecFileName && RecFileName)
+  )
     return (
       <Layout t={`rec - ${ReplayUuid}`}>
         {loading ? <Loading /> : <div>not found</div>}
@@ -53,6 +73,15 @@ const Replay = props => {
       link = `${config.url}temp/${replay.UUID}-${replay.RecFileName}`;
     } else {
       link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
+      uuidarray.push(replay.UUID);
+      if (replays.length > 0) {
+        uuidarray = [];
+        replays.forEach(r => {
+          linkArray.push(`${config.s3Url}replays/${r.UUID}/${r.RecFileName}`);
+          uuidarray.push(r.UUID);
+        });
+        link = linkArray.join(';');
+      }
     }
   }
 
@@ -62,7 +91,7 @@ const Replay = props => {
 
   return (
     <Layout t={`rec - ${replay.RecFileName}`}>
-      <PlayerContainer>
+      <PlayerContainer theater={theater}>
         <Player>
           {isWindow && (
             <Recplayer
@@ -72,6 +101,7 @@ const Replay = props => {
             />
           )}
         </Player>
+        <ReplaySettings />
       </PlayerContainer>
       <RightBarContainer>
         <ChatContainer>
@@ -131,10 +161,10 @@ const Replay = props => {
             <AccordionDetails style={{ flexDirection: 'column' }}>
               <RecList
                 LevelIndex={replay.LevelIndex}
-                currentUUID={replay.UUID}
-                openReplay={uuid => navigate(`/r/${uuid}`)}
+                currentUUID={uuidarray}
                 columns={['Replay', 'Time', 'By']}
                 horizontalMargin={-16}
+                mergable
               />
             </AccordionDetails>
           </Accordion>
@@ -168,7 +198,7 @@ const Replay = props => {
 };
 
 const PlayerContainer = styled.div`
-  width: 70%;
+  width: ${p => (p.theater ? '100%' : '70%')};
   float: left;
   padding: 7px;
   box-sizing: border-box;

@@ -32,6 +32,7 @@ const ReplayRating = props => {
 
   let avg = 0;
   let userRating = 0;
+  const amount = ratings.length;
   if (ratings.length > 0) {
     avg =
       ratings.reduce((total, next) => total + next.Vote, 0) / ratings.length;
@@ -45,6 +46,7 @@ const ReplayRating = props => {
       voted={isCurrentReplay && userRating}
       average={isCurrentReplay && avg}
       vote={rating => rate(rating)}
+      amount={amount}
     />
   );
 };

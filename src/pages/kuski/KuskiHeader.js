@@ -4,14 +4,16 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import styled from 'styled-components';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
-import { recordsTT } from 'utils/calcs';
 
-const KuskiHeader = ({ KuskiIndex, Kuski }) => {
-  const { ranking, tt } = useStoreState(state => state.Kuski);
-  const { getRanking, getTt } = useStoreActions(actions => actions.Kuski);
+const KuskiHeader = ({ KuskiIndex }) => {
+  const { ranking, intTotalTime: tt } = useStoreState(state => state.Kuski);
+  const { getRanking, getIntTotalTime } = useStoreActions(
+    actions => actions.Kuski,
+  );
+
   useEffect(() => {
     getRanking(KuskiIndex);
-    getTt(Kuski);
+    getIntTotalTime(KuskiIndex);
   }, [KuskiIndex]);
   let playedAll = 0;
   let winsAll = 0;
@@ -25,7 +27,22 @@ const KuskiHeader = ({ KuskiIndex, Kuski }) => {
     <Container>
       <StatsContainer>
         <div>
-          {!tt ? <Loading /> : <Time time={recordsTT(tt, 'LevelBesttime')} />}
+          {tt === false ? (
+            <Loading />
+          ) : (
+            <>
+              {tt.allFinished && <Time time={tt.timeSum} />}
+              {!tt.allFinished && (
+                <Time
+                  time={{
+                    unfinished: true,
+                    finished: tt.finishCount || '0',
+                    levs: tt.levelCount,
+                  }}
+                />
+              )}
+            </>
+          )}
         </div>
         <StatsTitle>Int total time</StatsTitle>
       </StatsContainer>

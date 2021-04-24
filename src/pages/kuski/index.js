@@ -9,6 +9,7 @@ import Layout from 'components/Layout';
 import Loading from 'components/Loading';
 import Flag from 'components/Flag';
 import ReplaysBy from 'features/ReplaysBy';
+import Notifications from 'features/Notifications';
 import PlayedBattles from './PlayedBattles';
 import DesignedBattles from './DesignedBattles';
 import KuskiHeader from './KuskiHeader';
@@ -18,6 +19,8 @@ import Info from './Info';
 const Kuski = ({ name, tab, ...props }) => {
   const { getKuskiByName } = useStoreActions(state => state.Kuski);
   const { kuski, kuskiLoading } = useStoreState(state => state.Kuski);
+  const { username } = useStoreState(state => state.Login);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,7 +51,7 @@ const Kuski = ({ name, tab, ...props }) => {
                 {kuski.TeamData && `Team: ${kuski.TeamData.Team}`}
               </TeamNat>
             </Profile>
-            <KuskiHeader Kuski={kuski.Kuski} KuskiIndex={kuski.KuskiIndex} />
+            <KuskiHeader KuskiIndex={kuski.KuskiIndex} />
           </Head>
           <Tabs
             variant="scrollable"
@@ -64,6 +67,9 @@ const Kuski = ({ name, tab, ...props }) => {
             <Tab label="Replays Uploaded" value="replays-uploaded" />
             <Tab label="Replays Driven" value="replays-driven" />
             <Tab label="Info" value="info" />
+            {username === name && (
+              <Tab label="Notifications" value="notifications" />
+            )}
           </Tabs>
           {!tab && (
             <Width100>
@@ -89,6 +95,7 @@ const Kuski = ({ name, tab, ...props }) => {
             </Width100>
           )}
           {tab === 'info' && <Info kuskiInfo={kuski} />}
+          {tab === 'notifications' && username === name && <Notifications />}
         </Container>
       )}
     </Layout>

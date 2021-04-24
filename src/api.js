@@ -31,6 +31,7 @@ export const setApiAuth = authToken => {
 export const ReplayComment = replayIndex =>
   api.get(`replay_comment/${replayIndex}`);
 export const AddReplayComment = data => api.post(`replay_comment/add`, data);
+export const AllReplayComments = () => api.get('replay_comment/');
 export const ReplayRating = replayIndex =>
   api.get(`replay_rating/${replayIndex}`);
 export const AddReplayRating = data => api.post(`replay_rating/add`, data);
@@ -165,6 +166,10 @@ export const LevelPackFavRemove = data =>
   api.post('levelpack/favourite/remove', data);
 export const LevelPackFavs = () => api.get('levelpack/favourite');
 
+export const IntBestTimes = kuskiIndex => {
+  return api.get(`levelpack/internals/besttimes/${kuskiIndex}`);
+};
+
 // collections
 export const AddCollection = data =>
   api.post('levelpack/collections/add', data);
@@ -279,3 +284,8 @@ export const GetTags = () => api.get(`tag`);
 export const CreateTag = data => api.post(`tag`, data);
 export const UpdateTag = (TagIndex, data) => api.put(`tag/${TagIndex}`, data);
 export const DeleteTag = TagIndex => api.delete(`tag/${TagIndex}`);
+
+// notifications
+export const GetNotifications = () => api.get(`notification`);
+export const GetNotificationsCount = () => api.get(`notification/count`);
+export const MarkNotificationsSeen = () => api.post(`notification/markSeen`);

@@ -34,8 +34,12 @@ import Levels from 'pages/levels/store';
 import News from 'features/News/store';
 import FileUpload from 'pages/upload/store';
 import ReplayList from 'features/ReplayList/store';
+import ReplaySettings from 'features/ReplaySettings/store';
+import Notifications from 'features/Notifications/store';
+import ReplayCommentArchive from 'features/ReplayCommentArchive/store';
 
 export default {
+  ReplayCommentArchive,
   ReplayComments,
   ReplayRating,
   ReplaysBy,
@@ -64,12 +68,14 @@ export default {
   ReplayByUUID,
   RecList,
   RankingTable,
+  ReplaySettings,
   Level,
   Battle,
   Login,
   ReplayList,
   FileUpload,
   Replays,
+  Notifications,
   Page: {
     sideBarVisible: true,
     showSideBar: action(state => {
