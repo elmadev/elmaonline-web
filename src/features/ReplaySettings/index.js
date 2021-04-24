@@ -27,7 +27,7 @@ const ReplaySettings = ({ battle = false }) => {
   return (
     <Row jc="flex-end" ai="center">
       {openSettings && (
-        <>
+        <SettingsContainer>
           <Text light small noPad r="XSmall">
             Refresh to apply changes
           </Text>
@@ -63,21 +63,35 @@ const ReplaySettings = ({ battle = false }) => {
             label="Custom sky/ground"
             onChange={() => toggleSetting('customSkyGround')}
           />
-        </>
+        </SettingsContainer>
       )}
       <Icon onClick={() => setSettings(!openSettings)}>
         {openSettings ? <Close /> : <Settings />}
       </Icon>
-      <Icon onClick={() => toggleSetting('theater')}>
+      <IconTheater onClick={() => toggleSetting('theater')}>
         {theater ? <Crop75 /> : <CropLandscape />}
-      </Icon>
+      </IconTheater>
     </Row>
   );
 };
 
+const SettingsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media (max-width: 1100px) {
+    flex-direction: column;
+  }
+`;
+
 const Icon = styled.div`
   padding: ${p => p.theme.padXSmall};
   cursor: pointer;
+`;
+
+const IconTheater = styled(Icon)`
+  @media (max-width: 1100px) {
+    display: none;
+  }
 `;
 
 export default ReplaySettings;
