@@ -8,19 +8,22 @@ import { useNavigate } from '@reach/router';
 import Layout from 'components/Layout';
 import { Star, StarBorder } from '@material-ui/icons';
 import GridItem from 'components/GridItem';
+import LevelpacksDetailed from './LevelpacksDetailed';
+import { Switch, FormControlLabel } from '@material-ui/core';
 
 const promote = 'Int';
 
-const Levels = ({ tab }) => {
+const Levels = ({ tab, detailed }) => {
   const navigate = useNavigate();
-  const [packs, setPacks] = useState([]);
 
-  const { levelpacks, favs, collections } = useStoreState(
+  const { levelpacks, stats, favs, collections } = useStoreState(
     state => state.Levels,
   );
+
   const { loggedIn } = useStoreState(state => state.Login);
   const {
     getLevelpacks,
+    getStats,
     addFav,
     removeFav,
     getFavs,
@@ -29,6 +32,7 @@ const Levels = ({ tab }) => {
 
   useEffect(() => {
     getLevelpacks();
+    getStats();
     if (loggedIn) {
       getFavs();
     }
@@ -39,27 +43,6 @@ const Levels = ({ tab }) => {
       getCollections();
     }
   }, [tab]);
-
-  useEffect(() => {
-    if (levelpacks.length > 0) {
-      if (loggedIn) {
-        setPacks(
-          levelpacks.map(lp => {
-            if (loggedIn && favs) {
-              if (
-                favs.findIndex(f => f.LevelPackIndex === lp.LevelPackIndex) > -1
-              ) {
-                return { ...lp, Fav: true };
-              }
-            }
-            return { ...lp, Fav: false };
-          }),
-        );
-      } else {
-        setPacks(levelpacks);
-      }
-    }
-  }, [favs, levelpacks]);
 
   return (
     <Layout edge t="Levels">
@@ -77,53 +60,64 @@ const Levels = ({ tab }) => {
         </Tabs>
         {!tab && (
           <>
-            {packs.length > 0 &&
-              packs
-                .sort((a, b) => {
-                  if (a.LevelPackName === promote) return -1;
-                  if (b.LevelPackName === promote) return 1;
-                  if (a.Fav !== b.Fav) {
-                    if (a.Fav) return -1;
-                    if (b.Fav) return 1;
-                  }
-                  return a.LevelPackName.toLowerCase().localeCompare(
-                    b.LevelPackName.toLowerCase(),
-                  );
-                })
-                .map(p => (
-                  <GridItem
-                    promote={p.LevelPackName === promote}
-                    key={p.LevelPackIndex}
-                    to={`/levels/packs/${p.LevelPackName}`}
-                    name={p.LevelPackName}
-                    longname={p.LevelPackLongName}
-                  >
-                    {loggedIn && (
-                      <>
-                        {p.Fav ? (
-                          <StarCon
-                            title="Remove favourite"
-                            selected
-                            onClick={() =>
-                              removeFav({ LevelPackIndex: p.LevelPackIndex })
-                            }
-                          >
-                            <Star />
-                          </StarCon>
-                        ) : (
-                          <StarCon
-                            title="Add as favourite"
-                            onClick={() =>
-                              addFav({ LevelPackIndex: p.LevelPackIndex })
-                            }
-                          >
-                            <StarBorder />
-                          </StarCon>
-                        )}
-                      </>
-                    )}
-                  </GridItem>
-                ))}
+            <SwitchWrapper>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={detailed}
+                    onChange={e =>
+                      navigate(
+                        e.target.checked ? '/levels/detailed' : '/levels',
+                      )
+                    }
+                    color="primary"
+                  />
+                }
+                label="Detailed View"
+              />
+            </SwitchWrapper>
+            {detailed && (
+              <LevelpacksDetailed levelpacks={levelpacks} stats={stats} />
+            )}
+            {!detailed && (
+              <>
+                {levelpacks.length > 0 &&
+                  levelpacks.map(p => (
+                    <GridItem
+                      promote={p.LevelPackName === promote}
+                      key={p.LevelPackIndex}
+                      to={`/levels/packs/${p.LevelPackName}`}
+                      name={p.LevelPackName}
+                      longname={p.LevelPackLongName}
+                    >
+                      {loggedIn && (
+                        <>
+                          {p.Fav ? (
+                            <StarCon
+                              title="Remove favourite"
+                              selected
+                              onClick={() =>
+                                removeFav({ LevelPackIndex: p.LevelPackIndex })
+                              }
+                            >
+                              <Star />
+                            </StarCon>
+                          ) : (
+                            <StarCon
+                              title="Add as favourite"
+                              onClick={() =>
+                                addFav({ LevelPackIndex: p.LevelPackIndex })
+                              }
+                            >
+                              <StarBorder />
+                            </StarCon>
+                          )}
+                        </>
+                      )}
+                    </GridItem>
+                  ))}
+              </>
+            )}
             <FabCon>
               <Fab
                 color="primary"
@@ -186,8 +180,15 @@ const FabCon = styled.div`
 `;
 
 const Container = styled.div`
+  padding-top: 10px;
   padding-bottom: 50px;
   overflow: hidden;
+`;
+
+const SwitchWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
 `;
 
 export default Levels;

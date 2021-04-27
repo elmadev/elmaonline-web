@@ -133,6 +133,7 @@ export const AllFinishedLevel = LevelIndex =>
 
 // levelpack
 export const LevelPacks = () => api.get('levelpack');
+export const LevelPacksStats = () => api.get('levelpack/stats');
 export const LevelPack = LevelPackName => api.get(`levelpack/${LevelPackName}`);
 export const TotalTimes = data =>
   api.get(`levelpack/${data.levelPackIndex}/totaltimes/${data.eolOnly}`);
