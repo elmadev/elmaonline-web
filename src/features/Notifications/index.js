@@ -62,7 +62,14 @@ const Notifications = () => {
         return (
           <div>
             {meta.kuski} added comment to your replay{' '}
-            <Link to={`/r/${meta.replayUUID}`}>{meta.replayName}</Link>:{' '}
+            <Link
+              to={`/r/${meta.replayUUID}/${meta.replayName.replace(
+                '.rec',
+                '',
+              )}`}
+            >
+              {meta.replayName}
+            </Link>{' '}
             <i>"{meta.Text}"</i>
           </div>
         );

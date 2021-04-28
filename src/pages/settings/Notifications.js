@@ -69,12 +69,12 @@ const Notifications = () => {
           )}
           {userInfo?.Email && (
             <FieldBoolean
-              value={notifSettings.SendEmail}
+              value={notifSettings ? notifSettings.SendEmail : 1}
               label="Email"
               onChange={() =>
                 changeNotifSetting({
                   Setting: 'SendEmail',
-                  Value: 1 - notifSettings.SendEmail,
+                  Value: notifSettings ? 1 - notifSettings.SendEmail : 0,
                 })
               }
             />
