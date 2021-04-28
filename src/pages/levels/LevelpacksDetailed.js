@@ -1,144 +1,77 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
-import { forEach } from 'lodash';
-import { Paper } from 'components/Paper';
-import { Row } from 'components/Containers';
-import { orderBy } from 'lodash';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
-import {
-  FormControl,
-  FormControlLabel,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  Switch,
-} from '@material-ui/core';
-import { parseTime } from 'utils/recTime';
-import formatDuration from 'date-fns/formatDuration';
 
 const formatTimeSpent = time => {
-  const hours = Number(time / 36000).toFixed(0);
+  const hours = Math.round(time / 360000);
 
-  const h = Number(hours).toLocaleString();
+  if (hours < 1) {
+    return '<1h';
+  }
 
-  return `${h}`;
+  return hours.toLocaleString() + 'h';
 };
 
 const formatAttempts = num => {
-  if (num > 1000000) {
-    return '' + Number.parseFloat(num / 1000000).toFixed(1) + 'M';
-  }
-
-  if (num > 10000) {
-    return '' + Number.parseFloat(Math.floor(num / 1000)).toFixed(0) + 'k';
-  }
-
-  return num.toLocaleString();
+  return Number(num).toLocaleString();
 };
 
-const toPct = (num, precision = 2) => {
-  return Number.parseFloat(num * 100).toFixed(precision);
-};
+const formatPct = (num, div, precision = 2) => {
+  let pct = 0;
 
-const sortPacks = (packs, sort) => {
-  console.log('sort packs', 1);
-  if (!sort) {
-    return packs;
+  if (div > 0) {
+    pct = Number.parseFloat((num * 100) / div);
   }
 
-  console.log('sort packs', 2);
-
-  const ret = JSON.parse(JSON.stringify(packs));
-
-  return ret;
-
-  if (sort === '') {
-  }
+  return pct.toFixed(precision);
 };
 
 const LevelpacksDetailed = ({ levelpacks, stats }) => {
-  const [sort, setSort] = useState('');
-
-  const sorted = useMemo(() => sortPacks(levelpacks, sort), [
-    sort,
-    JSON.stringify(levelpacks),
-  ]);
-
   return (
     <Root>
-      <Grid container justify="flex-end" className="controls">
-        <FormControl style={{ minWidth: 175 }}>
-          <InputLabel id="levelpack-sort">Sort By</InputLabel>
-          <Select
-            id="levelpack-sort"
-            value={sort}
-            onChange={e => {
-              setSort(e.target.value);
-            }}
-          >
-            <MenuItem value="">Default</MenuItem>
-            <MenuItem value="levels"># Levels</MenuItem>
-            <MenuItem value="attempts"># Attempts</MenuItem>
-            <MenuItem value="time">Time Spent</MenuItem>
-            <MenuItem value="timePctF">Time % Finished</MenuItem>
-            <MenuItem value="timePctE">Time % Escaped</MenuItem>
-            <MenuItem value="timePctD">Time % Dead</MenuItem>
-            <MenuItem value="lengthMin">Shortest Level</MenuItem>
-            <MenuItem value="lengthAvg">Average Level Time</MenuItem>
-            <MenuItem value="lengthMax">Longest Level</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-
       <Table>
         <ListHeader>
-          <ListCell>Pack</ListCell>
           <ListCell>
-            <NewLineWrapper>Attempts</NewLineWrapper>
-            <NewLineWrapper>Time Spent (hours)</NewLineWrapper>
+            <NewLineWrapper>Pack</NewLineWrapper>
+            <NewLineWrapper>Long Name</NewLineWrapper>
           </ListCell>
           <ListCell>
-            Time %
-            <br />
-            (Dead/Esc/Finished)
+            <NewLineWrapper># Attempts</NewLineWrapper>
+            <NewLineWrapper>Total Time Played</NewLineWrapper>
           </ListCell>
-          <ListCell>Most Records</ListCell>
           <ListCell>
-            <NewLineWrapper>Min/Max Time</NewLineWrapper>
-            <NewLineWrapper>Avg. Level Time</NewLineWrapper>
+            <NewLineWrapper>Attempts %</NewLineWrapper>
+            <NewLineWrapper>Time %</NewLineWrapper>
+            <NewLineWrapper>(Dead/Esc/Finished)</NewLineWrapper>
+          </ListCell>
+          <ListCell>
+            <NewLineWrapper># Finished / # Levels</NewLineWrapper>
+            <NewLineWrapper title="The average number of kuski's that played each level. A good measure of overall popularity.">
+              (Avg. Kuski Count)
+            </NewLineWrapper>
+            <NewLineWrapper>Top Record Holder(s)</NewLineWrapper>
+          </ListCell>
+          <ListCell>
+            <NewLineWrapper title="The shortest and longest record time for levels in the pack.">
+              Shortest - Longest Record
+            </NewLineWrapper>
+            <NewLineWrapper title="The average time of first place finished for all levels in the pack.">
+              Avg. Record Time
+            </NewLineWrapper>
           </ListCell>
         </ListHeader>
-        {sorted.map(p => {
+        {levelpacks.map(p => {
           const st = (stats && stats[p.LevelPackIndex]) || null;
 
           const url = `/levels/packs/${p.LevelPackName}`;
 
-          const countUnfinished = st
-            ? st.CountLevels - st.CountLevelsFinished
-            : 0;
-
           return (
-            <ListRow>
+            <ListRow key={p.LevelPackIndex}>
               <ListCell to={url}>
-                {p.LevelPackName}
-                <br />
-                {p.LevelPackLongName}
-                {st && (
-                  <>
-                    <NewLineWrapper>
-                      {st.CountLevels || 0} Levels
-                    </NewLineWrapper>
-                    {countUnfinished > 0 && (
-                      <NewLineWrapper>
-                        ({countUnfinished} Unfinished)
-                      </NewLineWrapper>
-                    )}
-                  </>
-                )}
+                <ShortName>{p.LevelPackName}</ShortName>
+                <LongName>{p.LevelPackLongName}</LongName>
                 {!st && (
                   <NewLineWrapper>Level stats not available.</NewLineWrapper>
                 )}
@@ -156,13 +89,16 @@ const LevelpacksDetailed = ({ levelpacks, stats }) => {
               {st &&
                 (() => {
                   const timesPct = [
-                    ['D', st.TimeAll > 0 ? toPct(st.TimeD / st.TimeAll) : 0],
-                    ['E', st.TimeAll > 0 ? toPct(st.TimeE / st.TimeAll) : 0],
-                    ['F', st.TimeAll > 0 ? toPct(st.TimeF / st.TimeAll) : 0],
+                    ['D', formatPct(st.TimeD, st.TimeAll)],
+                    ['E', formatPct(st.TimeE, st.TimeAll)],
+                    ['F', formatPct(st.TimeF, st.TimeAll)],
                   ];
 
-                  const TopRecordPct =
-                    st.CountLevels > 0 ? st.TopWrCount / st.CountLevels : 0;
+                  const attemptsPct = [
+                    ['D', formatPct(st.AttemptsD, st.AttemptsAll)],
+                    ['E', formatPct(st.AttemptsE, st.AttemptsAll)],
+                    ['F', formatPct(st.AttemptsF, st.AttemptsAll)],
+                  ];
 
                   return (
                     <>
@@ -177,20 +113,37 @@ const LevelpacksDetailed = ({ levelpacks, stats }) => {
                         </NewLineWrapper>
                       </ListCell>
                       <ListCell to={url}>
-                        {timesPct[0][1]}
-                        {` / `}
-                        {timesPct[1][1]}
-                        {` / `}
-                        {timesPct[2][1]}
+                        <NewLineWrapper>
+                          {attemptsPct[0][1]}
+                          {` / `}
+                          {attemptsPct[1][1]}
+                          {` / `}
+                          {attemptsPct[2][1]}
+                        </NewLineWrapper>
+                        <NewLineWrapper>
+                          {timesPct[0][1]}
+                          {` / `}
+                          {timesPct[1][1]}
+                          {` / `}
+                          {timesPct[2][1]}
+                        </NewLineWrapper>
                       </ListCell>
                       <ListCell>
+                        <NewLineWrapper>
+                          {st.CountLevelsFinished || 0}
+                          {`/`}
+                          {st.CountLevels || 0}
+                          {` `}({Number(st.AvgKuskiPerLevel).toFixed(2)})
+                        </NewLineWrapper>
                         {st.TopWrKuskis &&
                           st.TopWrKuskis.map(k => (
                             <NewLineWrapper>
                               <Kuski kuskiData={k} flag={true} />
-                              {` `}({st.TopWrCount}){` `}(
-                              {toPct(TopRecordPct, 0)}
-                              %)
+                              {` (${st.TopWrCount}) (${formatPct(
+                                st.TopWrCount,
+                                st.CountLevels,
+                                0,
+                              )}%)`}
                             </NewLineWrapper>
                           ))}
                       </ListCell>
@@ -225,6 +178,16 @@ const NewLineWrapper = styled.div`
   &:last-child {
     margin-bottom: 0;
   }
+`;
+
+const ShortName = styled.div`
+  font-size: 15px;
+  font-weight: 500;
+  color: ${p => p.theme.linkColor};
+`;
+
+const LongName = styled.div`
+  font-size: 13px;
 `;
 
 export default LevelpacksDetailed;

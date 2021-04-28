@@ -16,6 +16,7 @@
     "date-fns": "^2.21.1",
     "easy-peasy": "^4.0.1",
     "elma-js": "https://github.com/ville-j/elma-js",
+    "fast-memoize": "^2.5.2",
     "flag-icon-css": "^3.5.0",
     "google-map-react": "^2.1.9",
     "level-editor-gui": "https://github.com/elmadev/level-editor-gui.git",
