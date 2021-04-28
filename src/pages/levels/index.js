@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Fab } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
 import { Tabs, Tab } from '@material-ui/core';
-import { useNavigate } from '@reach/router';
+import { useNavigate, useLocation } from '@reach/router';
+import { parse } from 'query-string';
 import Layout from 'components/Layout';
 import { Star, StarBorder } from '@material-ui/icons';
 import GridItem from 'components/GridItem';
 import LevelpacksDetailed from './LevelpacksDetailed';
-import { Switch, FormControlLabel } from '@material-ui/core';
+import Controls from './Controls';
 
 const promote = 'Int';
 
 const Levels = ({ tab, detailed }) => {
   const navigate = useNavigate();
 
-  const { levelpacks, stats, favs, collections } = useStoreState(
+  const { levelpacks, stats, collections } = useStoreState(
     state => state.Levels,
   );
 
@@ -24,15 +25,34 @@ const Levels = ({ tab, detailed }) => {
   const {
     getLevelpacks,
     getStats,
+    setSort,
     addFav,
     removeFav,
     getFavs,
     getCollections,
   } = useStoreActions(actions => actions.Levels);
 
+  const location = useLocation();
+  const urlArgs = parse(location.search);
+  const sort = (urlArgs && urlArgs.sort) || '';
+
   useEffect(() => {
-    getLevelpacks();
-    getStats();
+    setSort(sort);
+  }, [sort]);
+
+  useEffect(() => {
+    // sort/detailed use navigate, which causes this effect to run
+    // again. This avoids re-fetch while on the same page, but
+    // also means if we come from another page, it also doesn't
+    // re-fetch.
+    if (!levelpacks.length) {
+      getLevelpacks();
+    }
+
+    if (!Object.values(stats).length) {
+      getStats();
+    }
+
     if (loggedIn) {
       getFavs();
     }
@@ -60,22 +80,7 @@ const Levels = ({ tab, detailed }) => {
         </Tabs>
         {!tab && (
           <>
-            <SwitchWrapper>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={detailed}
-                    onChange={e =>
-                      navigate(
-                        e.target.checked ? '/levels/detailed' : '/levels',
-                      )
-                    }
-                    color="primary"
-                  />
-                }
-                label="Detailed View"
-              />
-            </SwitchWrapper>
+            <Controls detailed={detailed} sort={sort} />
             {detailed && (
               <LevelpacksDetailed levelpacks={levelpacks} stats={stats} />
             )}
@@ -183,12 +188,6 @@ const Container = styled.div`
   padding-top: 10px;
   padding-bottom: 50px;
   overflow: hidden;
-`;
-
-const SwitchWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 10px;
 `;
 
 export default Levels;
