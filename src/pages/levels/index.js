@@ -11,13 +11,14 @@ import { Star, StarBorder } from '@material-ui/icons';
 import GridItem from 'components/GridItem';
 import LevelpacksDetailed from './LevelpacksDetailed';
 import Controls from './Controls';
+import FavStar from './FavStar';
 
 const promote = 'Int';
 
 const Levels = ({ tab, detailed }) => {
   const navigate = useNavigate();
 
-  const { levelpacks, stats, collections } = useStoreState(
+  const { levelpacks, levelpacksSorted, stats, collections } = useStoreState(
     state => state.Levels,
   );
 
@@ -41,20 +42,11 @@ const Levels = ({ tab, detailed }) => {
   }, [sort]);
 
   useEffect(() => {
-    // sort/detailed use navigate, which causes this effect to run
-    // again. This avoids re-fetch while on the same page, but
-    // also means if we come from another page, it also doesn't
-    // re-fetch.
-    if (!levelpacks.length) {
-      getLevelpacks();
-    }
-
-    if (!Object.values(stats).length) {
-      getStats();
-    }
+    getLevelpacks(false);
+    getStats(false);
 
     if (loggedIn) {
-      getFavs();
+      getFavs(false);
     }
   }, []);
 
@@ -82,12 +74,18 @@ const Levels = ({ tab, detailed }) => {
           <>
             <Controls detailed={detailed} sort={sort} />
             {detailed && (
-              <LevelpacksDetailed levelpacks={levelpacks} stats={stats} />
+              <LevelpacksDetailed
+                levelpacksSorted={levelpacksSorted}
+                stats={stats}
+                addFav={addFav}
+                removeFav={removeFav}
+                loggedIn={loggedIn}
+              />
             )}
             {!detailed && (
               <>
-                {levelpacks.length > 0 &&
-                  levelpacks.map(p => (
+                {levelpacksSorted.length > 0 &&
+                  levelpacksSorted.map(p => (
                     <GridItem
                       promote={p.LevelPackName === promote}
                       key={p.LevelPackIndex}
@@ -95,30 +93,12 @@ const Levels = ({ tab, detailed }) => {
                       name={p.LevelPackName}
                       longname={p.LevelPackLongName}
                     >
-                      {loggedIn && (
-                        <>
-                          {p.Fav ? (
-                            <StarCon
-                              title="Remove favourite"
-                              selected
-                              onClick={() =>
-                                removeFav({ LevelPackIndex: p.LevelPackIndex })
-                              }
-                            >
-                              <Star />
-                            </StarCon>
-                          ) : (
-                            <StarCon
-                              title="Add as favourite"
-                              onClick={() =>
-                                addFav({ LevelPackIndex: p.LevelPackIndex })
-                              }
-                            >
-                              <StarBorder />
-                            </StarCon>
-                          )}
-                        </>
-                      )}
+                      <StarCon>
+                        <FavStar
+                          pack={p}
+                          {...{ loggedIn, addFav, removeFav }}
+                        />
+                      </StarCon>
                     </GridItem>
                   ))}
               </>
@@ -165,17 +145,11 @@ const Levels = ({ tab, detailed }) => {
   );
 };
 
-const StarCon = styled.span`
+const StarCon = styled.div`
   cursor: pointer;
   position: absolute;
   top: 4px;
   right: 4px;
-  svg {
-    color: ${p => (p.selected ? '#e4bb24' : '#e6e6e6')};
-    &:hover {
-      color: ${p => (p.selected ? '#e6e6e6' : '#e4bb24')};
-    }
-  }
 `;
 
 const FabCon = styled.div`
