@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import FavStar from './FavStar';
 
 const formatTimeSpent = time => {
   const hours = Math.round(time / 360000);
@@ -28,7 +29,13 @@ const formatPct = (num, div, precision = 2) => {
   return pct.toFixed(precision);
 };
 
-const LevelpacksDetailed = ({ levelpacks, stats }) => {
+const LevelpacksDetailed = ({
+  levelpacksSorted,
+  stats,
+  loggedIn,
+  addFav,
+  removeFav,
+}) => {
   return (
     <Root>
       <Table>
@@ -36,6 +43,9 @@ const LevelpacksDetailed = ({ levelpacks, stats }) => {
           <ListCell>
             <NewLineWrapper>Pack</NewLineWrapper>
             <NewLineWrapper>Long Name</NewLineWrapper>
+          </ListCell>
+          <ListCell>
+            <NewLineWrapper>Favorite</NewLineWrapper>
           </ListCell>
           <ListCell>
             <NewLineWrapper># Attempts</NewLineWrapper>
@@ -62,7 +72,7 @@ const LevelpacksDetailed = ({ levelpacks, stats }) => {
             </NewLineWrapper>
           </ListCell>
         </ListHeader>
-        {levelpacks.map(p => {
+        {levelpacksSorted.map(p => {
           const st = (stats && stats[p.LevelPackIndex]) || null;
 
           const url = `/levels/packs/${p.LevelPackName}`;
@@ -75,6 +85,9 @@ const LevelpacksDetailed = ({ levelpacks, stats }) => {
                 {!st && (
                   <NewLineWrapper>Level stats not available.</NewLineWrapper>
                 )}
+              </ListCell>
+              <ListCell>
+                <FavStar pack={p} {...{ loggedIn, addFav, removeFav }} />
               </ListCell>
 
               {!st && (

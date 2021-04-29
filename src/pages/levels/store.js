@@ -201,7 +201,7 @@ export default {
       actions.setSort,
     ],
     (state, target) => {
-      state.levelpacks = cachedSort(
+      state.levelpacksSorted = cachedSort(
         state.levelpacks,
         state.favs,
         state.stats,
@@ -214,46 +214,55 @@ export default {
   setSort: action((state, payload) => {
     state.sort = payload;
   }),
+  // sorted and with pack.Fav set on all packs. (use this).
+  levelpacksSorted: [],
+  // just the raw data from the server. Potentially not ever needed in component.
   levelpacks: [],
   setLevelpacks: action((state, payload) => {
     state.levelpacks = payload;
   }),
-  getLevelpacks: thunk(async (actions, sort, helpers) => {
+  // re-fetch should be avoided when possible. The issue is that sort and detailed view
+  // use navigation, which triggers component re-mounting, then component effects run
+  // and call this function, and even though we memoized the sort, it seems to fail
+  // sometimes due to inputs being objects which are JSON encoded in different orders,
+  // therefore, if we're not careful, changing sort options causes a re-fetch from several
+  // endpoints and then sorts the data 3 additional times which makes the page slow.
+  getLevelpacks: thunk(async (actions, refetch, helpers) => {
+    if (!refetch && helpers.getState().levelpacks.length) {
+      return;
+    }
+
     const get = await LevelPacks();
     if (get.ok) {
       actions.setLevelpacks(get.data);
     }
   }),
-  // avoid re-fetch of favs except on page reload or add/remove fav
-  favsDirty: true,
-  setFavsDirty: getSetter('favsDirty'),
+  favsFetched: false,
   favs: [],
   setFavs: action((state, payload) => {
     state.favs = payload;
+    state.favsFetched = true;
   }),
-  getFavs: thunk(async (actions, payload, helpers) => {
-    if (!helpers.getState().favsDirty) {
+  getFavs: thunk(async (actions, refetch, helpers) => {
+    if (!refetch && helpers.getState().favsFetched) {
       return;
     }
 
     const get = await LevelPackFavs();
     if (get.ok) {
       actions.setFavs(get.data);
-      actions.setFavsDirty(false);
     }
   }),
   addFav: thunk(async (actions, payload) => {
     const post = await LevelPackFavAdd(payload);
     if (post.ok) {
-      actions.setFavsDirty(true);
-      actions.getFavs();
+      actions.getFavs(true);
     }
   }),
   removeFav: thunk(async (actions, payload) => {
     const post = await LevelPackFavRemove(payload);
     if (post.ok) {
-      actions.setFavsDirty(true);
-      actions.getFavs();
+      actions.getFavs(true);
     }
   }),
   collections: [],
@@ -270,7 +279,11 @@ export default {
   setStats: action((state, payload) => {
     state.stats = payload;
   }),
-  getStats: thunk(async (actions, payload, helpers) => {
+  getStats: thunk(async (actions, refetch, helpers) => {
+    if (!refetch && helpers.getState().stats.length) {
+      return;
+    }
+
     const get = await LevelPacksStats();
     if (get.ok) {
       const indexed = get.data.reduce((acc, val) => {
