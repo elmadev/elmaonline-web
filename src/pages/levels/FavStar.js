@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const FavStar = ({ loggedIn, pack, removeFav, addFav }) => {
   if (!loggedIn) {
-    return;
+    return null;
   }
 
   return (
