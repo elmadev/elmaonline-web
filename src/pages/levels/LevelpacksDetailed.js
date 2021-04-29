@@ -77,6 +77,9 @@ const LevelpacksDetailed = ({
 
           const url = `/levels/packs/${p.LevelPackName}`;
 
+          const topRecordPct =
+            st && formatPct(st.TopRecordCount, st.LevelCountAll, 0);
+
           return (
             <ListRow key={p.LevelPackIndex}>
               <ListCell to={url}>
@@ -143,29 +146,25 @@ const LevelpacksDetailed = ({
                       </ListCell>
                       <ListCell>
                         <NewLineWrapper>
-                          {st.CountLevelsFinished || 0}
+                          {st.LevelCountF || 0}
                           {`/`}
-                          {st.CountLevels || 0}
+                          {st.LevelCountAll || 0}
                           {` `}({Number(st.AvgKuskiPerLevel).toFixed(2)})
                         </NewLineWrapper>
-                        {st.TopWrKuskis &&
-                          st.TopWrKuskis.map(k => (
+                        {st.TopRecordKuskis &&
+                          st.TopRecordKuskis.map(k => (
                             <NewLineWrapper>
                               <Kuski kuskiData={k} flag={true} />
-                              {` (${st.TopWrCount}) (${formatPct(
-                                st.TopWrCount,
-                                st.CountLevels,
-                                0,
-                              )}%)`}
+                              {` (${st.TopRecordCount}) (${topRecordPct}%)`}
                             </NewLineWrapper>
                           ))}
                       </ListCell>
                       <ListCell to={url}>
-                        {st.ShortestWrTime && <Time time={st.ShortestWrTime} />}
+                        {st.MinRecordTime && <Time time={st.MinRecordTime} />}
                         {` - `}
-                        {st.LongestWrTime && <Time time={st.LongestWrTime} />}
+                        {st.MaxRecordTime && <Time time={st.MaxRecordTime} />}
                         <NewLineWrapper>
-                          {st.AvgWrTime && <Time time={st.AvgWrTime} />}
+                          {st.AvgRecordTime && <Time time={st.AvgRecordTime} />}
                         </NewLineWrapper>
                       </ListCell>
                     </>

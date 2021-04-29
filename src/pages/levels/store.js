@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import React from 'react';
 import { action, thunk, actionOn } from 'easy-peasy';
 import {
   LevelPacks,
@@ -9,7 +8,6 @@ import {
   Collections,
   LevelPacksStats,
 } from 'api';
-import { getSetter } from 'utils/easy-peasy';
 import { orderBy, partition } from 'lodash';
 import memoize from 'fast-memoize';
 
@@ -70,7 +68,7 @@ const sortPacks = (packs, favs, stats, sort) => {
   }
 
   if (sort === 'levels') {
-    sorted = orderBy(packs, [p => st(p).CountLevels], ['desc']);
+    sorted = orderBy(packs, [p => st(p).LevelCountAll], ['desc']);
   }
 
   if (sort === 'avgKuskiCount') {
@@ -83,12 +81,14 @@ const sortPacks = (packs, favs, stats, sort) => {
       [
         p => {
           const s = st(p);
-          return s && s.TopWrKuskis !== undefined && s.TopWrKuskis.length
+          return s &&
+            s.TopRecordKuskis !== undefined &&
+            s.TopRecordKuskis.length
             ? 1
             : 0;
         },
-        p => pct(st(p).TopWrCount, st(p).CountLevels),
-        p => st(p).CountLevels,
+        p => pct(st(p).TopRecordCount, st(p).LevelCountAll),
+        p => st(p).LevelCountAll,
       ],
       ['desc', 'desc', 'desc'],
     );
@@ -100,12 +100,14 @@ const sortPacks = (packs, favs, stats, sort) => {
       [
         p => {
           const s = st(p);
-          return s && s.TopWrKuskis !== undefined && s.TopWrKuskis.length
+          return s &&
+            s.TopRecordKuskis !== undefined &&
+            s.TopRecordKuskis.length
             ? 1
             : 0;
         },
-        p => st(p).TopWrCount,
-        p => st(p).CountLevels,
+        p => st(p).TopRecordCount,
+        p => st(p).LevelCountAll,
       ],
       ['desc', 'desc'],
     );
@@ -160,7 +162,7 @@ const sortPacks = (packs, favs, stats, sort) => {
   }
 
   if (sort === 'minTime') {
-    sorted = orderBy(packs, [p => st(p).ShortestWrTime], ['asc']);
+    sorted = orderBy(packs, [p => st(p).MinRecordTime], ['asc']);
   }
 
   if (sort === 'maxTime') {
@@ -168,7 +170,7 @@ const sortPacks = (packs, favs, stats, sort) => {
       packs,
       [
         p => {
-          const t = st(p).LongestWrTime;
+          const t = st(p).MaxRecordTime;
 
           return t > 0 ? t : 0;
         },
@@ -178,7 +180,7 @@ const sortPacks = (packs, favs, stats, sort) => {
   }
 
   if (sort === 'avgTime') {
-    sorted = orderBy(packs, [p => st(p).AvgWrTime], ['desc']);
+    sorted = orderBy(packs, [p => st(p).AvgRecordTime], ['desc']);
   }
 
   // move items with no stats to bottom (they often all appear at top)
