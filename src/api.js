@@ -247,6 +247,10 @@ export const Ignored = () => api.get('player/ignored');
 export const Unignore = KuskiIndex => api.post(`player/unignore/${KuskiIndex}`);
 export const Players = () => api.get('player/');
 export const GetCrew = () => api.get('player/crew/');
+export const PlayerRecordCount = KuskiIndex =>
+  api.get(`player/record-count/${KuskiIndex}`);
+export const PlayerRecords = (KuskiIndex, opts) =>
+  api.get(`player/records/${KuskiIndex}`, opts);
 
 // teams
 export const Teams = () => api.get('teams');
