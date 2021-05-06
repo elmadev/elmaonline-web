@@ -253,6 +253,10 @@ export const Players = () => api.get('player/');
 export const GetCrew = () => api.get('player/crew/');
 export const NotificationSettings = () => api.get('player/settings');
 export const ChangeSettings = data => api.post('player/settings', data);
+export const PlayerRecordCount = KuskiIndex =>
+  api.get(`player/record-count/${KuskiIndex}`);
+export const PlayerRecords = (KuskiIndex, opts) =>
+  api.get(`player/records/${KuskiIndex}`, opts);
 
 // teams
 export const Teams = () => api.get('teams');

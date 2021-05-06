@@ -15,17 +15,27 @@ import DesignedBattles from './DesignedBattles';
 import KuskiHeader from './KuskiHeader';
 import LatestTimes from './LatestTimes';
 import Info from './Info';
+import Records from './Records';
+import { useQuery } from 'react-query';
+import { parseResponse, PlayerRecordCount } from '../../api';
 
 const Kuski = ({ name, tab, ...props }) => {
   const { getKuskiByName } = useStoreActions(state => state.Kuski);
   const { kuski, kuskiLoading } = useStoreState(state => state.Kuski);
   const { username } = useStoreState(state => state.Login);
-
   const navigate = useNavigate();
 
   useEffect(() => {
     getKuskiByName(name);
   }, [name]);
+
+  const { data: recordCount } = useQuery(
+    ['PlayerRecordCount', kuski.KuskiIndex],
+    parseResponse(PlayerRecordCount(kuski.KuskiIndex)),
+    {
+      enabled: !!kuski.KuskiIndex,
+    },
+  );
 
   return (
     <Layout edge t={`Kuski - ${name}`}>
@@ -51,7 +61,10 @@ const Kuski = ({ name, tab, ...props }) => {
                 {kuski.TeamData && `Team: ${kuski.TeamData.Team}`}
               </TeamNat>
             </Profile>
-            <KuskiHeader KuskiIndex={kuski.KuskiIndex} />
+            <KuskiHeader
+              KuskiIndex={kuski.KuskiIndex}
+              recordCount={recordCount}
+            />
           </Head>
           <Tabs
             variant="scrollable"
@@ -63,6 +76,7 @@ const Kuski = ({ name, tab, ...props }) => {
           >
             <Tab label="Played Battles" value="" />
             <Tab label="Designed Battles" value="designed-battles" />
+            <Tab label="Records" value="records" />
             <Tab label="Latest times" value="latest-times" />
             <Tab label="Replays Uploaded" value="replays-uploaded" />
             <Tab label="Replays Driven" value="replays-driven" />
@@ -83,6 +97,9 @@ const Kuski = ({ name, tab, ...props }) => {
           )}
           {tab === 'latest-times' && (
             <LatestTimes KuskiIndex={kuski.KuskiIndex} />
+          )}
+          {tab === 'records' && (
+            <Records KuskiIndex={kuski.KuskiIndex} recordCount={recordCount} />
           )}
           {tab === 'replays-uploaded' && (
             <Width100>
