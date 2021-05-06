@@ -4,8 +4,6 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import styled from 'styled-components';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
-import { useQuery } from 'react-query';
-import { parseResponse, PlayerRecordCount } from '../../api';
 
 const KuskiHeader = ({ KuskiIndex, recordCount }) => {
   const { ranking, intTotalTime: tt } = useStoreState(state => state.Kuski);
