@@ -27,6 +27,24 @@ export const setApiAuth = authToken => {
   api.setHeader('Authorization', authToken);
 };
 
+// meant to be used in conjunction with react-query which
+// requires errors to be thrown if, for example, status is not 200.
+// usage: useQuery( 'queryKey', parseResponse( ReplayComment(34) ) )
+// the promise here would be the return value from api.get/post/etc.
+export const parseResponse = promise => {
+  return async () => {
+    const res = await promise;
+    if (res.ok) {
+      return res.data;
+    }
+
+    // eslint-disable-next-line no-console
+    console.error('Status not ok.', res);
+
+    throw new Error('Status not ok.');
+  };
+};
+
 // replays
 export const ReplayComment = replayIndex =>
   api.get(`replay_comment/${replayIndex}`);
