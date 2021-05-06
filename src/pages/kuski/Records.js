@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useStoreState, useStoreActions } from 'easy-peasy';
-import { useNavigate } from '@reach/router';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { parseResponse, PlayerRecords } from '../../api';
 import { ListContainer, ListHeader, ListRow, ListCell } from 'components/List';
@@ -15,7 +13,6 @@ import styled from 'styled-components';
 import Loading from '../../components/Loading';
 import Time from '../../components/Time';
 import Link from '../../components/Link';
-import { format } from 'date-fns';
 import LocalTime from '../../components/LocalTime';
 
 // todo: refactor copy/pasted fn from levelpack archive (when merged)
@@ -40,7 +37,7 @@ const Records = ({ KuskiIndex, recordCount }) => {
     parseResponse(
       PlayerRecords(KuskiIndex, {
         sort,
-        offset: page,
+        offset: page * pageSize,
         limit: pageSize,
       }),
     ),
@@ -54,7 +51,7 @@ const Records = ({ KuskiIndex, recordCount }) => {
   }
 
   return (
-    <div>
+    <>
       <Controls>
         <TablePagination
           count={recordCount}
@@ -99,7 +96,7 @@ const Records = ({ KuskiIndex, recordCount }) => {
           const level = record.LevelData || {};
 
           return (
-            <ListRow>
+            <ListRow key={record.TimeIndex}>
               <ListCell>
                 <Link to={`/levels/${level.LevelIndex}`}>
                   {level.LevelName}
@@ -127,7 +124,7 @@ const Records = ({ KuskiIndex, recordCount }) => {
           );
         })}
       </ListContainer>
-    </div>
+    </>
   );
 };
 
