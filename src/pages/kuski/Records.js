@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { parseResponse, PlayerRecords } from '../../api';
+import { makeGetter, PlayerRecords } from 'api';
 import { ListContainer, ListHeader, ListRow, ListCell } from 'components/List';
 import {
   FormControl,
@@ -10,10 +10,10 @@ import {
   TablePagination,
 } from '@material-ui/core';
 import styled from 'styled-components';
-import Loading from '../../components/Loading';
-import Time from '../../components/Time';
-import Link from '../../components/Link';
-import LocalTime from '../../components/LocalTime';
+import Loading from 'components/Loading';
+import Time from 'components/Time';
+import Link from 'components/Link';
+import LocalTime from 'components/LocalTime';
 
 // todo: refactor copy/pasted fn from levelpack archive (when merged)
 const formatTimeSpent = time => {
@@ -34,15 +34,17 @@ const Records = ({ KuskiIndex, recordCount }) => {
 
   const { isSuccess: recordsSuccess, data: records } = useQuery(
     ['PlayerRecords', KuskiIndex, sort, page, pageSize],
-    parseResponse(
-      PlayerRecords(KuskiIndex, {
+    makeGetter(PlayerRecords, [
+      KuskiIndex,
+      {
         sort,
         offset: page * pageSize,
         limit: pageSize,
-      }),
-    ),
+      },
+    ]),
     {
       enabled: !!KuskiIndex,
+      staleTime: 60000,
     },
   );
 
