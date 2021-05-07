@@ -1,6 +1,8 @@
 import { create } from 'apisauce';
 import config from 'config';
 import { authToken } from 'utils/nick';
+import assert from 'assert';
+import { isArray } from 'lodash';
 
 let baseURL = config.api;
 const api = create({
@@ -27,13 +29,18 @@ export const setApiAuth = authToken => {
   api.setHeader('Authorization', authToken);
 };
 
-// meant to be used in conjunction with react-query which
-// requires errors to be thrown if, for example, status is not 200.
-// usage: useQuery( 'queryKey', parseResponse( ReplayComment(34) ) )
-// the promise here would be the return value from api.get/post/etc.
-export const parseResponse = promise => {
+// used to generate the 2nd parameter of react-query/useQuery.
+// func is one of the functions in this file or some other
+// function that returns a promise.
+// e.g. useQuery( 'queryKey', makeGetter( ReplayComment, [ 32 ] ));
+// note that react-query requires us to throw to indicate an
+// unsuccessful query attempt.
+export const makeGetter = (func, args = []) => {
+  assert(isArray(args));
+
   return async () => {
-    const res = await promise;
+    const res = await func(...args);
+
     if (res.ok) {
       return res.data;
     }
