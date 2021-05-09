@@ -7,6 +7,7 @@ import {
   Banlist,
   ErrorLog,
   ActionLog,
+  AddNews,
 } from 'api';
 
 export default {
@@ -60,6 +61,17 @@ export default {
     const get = await ActionLog(payload);
     if (get.ok) {
       actions.setActionLog(get.data);
+    }
+  }),
+  postNewsStatus: '',
+  setPostNewsStatus: action((state, payload) => {
+    state.postNewsStatus = payload;
+  }),
+  postNews: thunk(async (actions, payload) => {
+    actions.setPostNewsStatus('Posting news..');
+    const post = await AddNews(payload);
+    if (post) {
+      actions.setPostNewsStatus('News posted!');
     }
   }),
 };

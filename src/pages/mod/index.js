@@ -13,6 +13,7 @@ import Layout from 'components/Layout';
 import Bans from './Bans';
 import ErrorLog from './ErrorLog';
 import ActionLog from './ActionLog';
+import News from './News';
 
 const Mod = () => {
   const { nickChanges } = useStoreState(state => state.Mod);
@@ -38,7 +39,7 @@ const Mod = () => {
         <Tab label="Reports" />
         <Tab label="Error log" />
         <Tab label="Mod log" />
-        <Tab label="Level locking" />
+        <Tab label="News" />
       </Tabs>
       <Container>
         {mod() > 0 ? (
@@ -76,6 +77,7 @@ const Mod = () => {
             {tab === 1 && <Bans />}
             {tab === 3 && <ErrorLog />}
             {tab === 4 && <ActionLog />}
+            {tab === 5 && <News />}
           </>
         ) : (
           <div>You are not a mod or not logged in.</div>

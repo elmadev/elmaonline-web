@@ -4,6 +4,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListRow, ListCell, ListContainer } from 'components/List';
 import Avatar from '@material-ui/core/Avatar';
 import CommentIcon from '@material-ui/icons/Comment';
+import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
 import TrendingDownIcon from '@material-ui/icons/TrendingDown';
 import LooksOneIcon from '@material-ui/icons/LooksOne';
 import Badge from '@material-ui/core/Badge';
@@ -48,6 +49,12 @@ const Notifications = () => {
           <BestTimeAvatar>
             <LooksOneIcon />
           </BestTimeAvatar>
+        );
+      case 'news':
+        return (
+          <CommentAvatar>
+            <FormatAlignLeftIcon />
+          </CommentAvatar>
         );
       default:
         break;
@@ -95,6 +102,13 @@ const Notifications = () => {
             ] {meta.kuski} got record in level{' '}
             <Link to={`/levels/${meta.levelIndex}`}>{meta.level}</Link> with
             time {meta.time}
+          </div>
+        );
+      case 'news':
+        return (
+          <div>
+            {meta.kuski} posted a news article{' '}
+            <Link to="/">"{meta.Headline}"</Link>
           </div>
         );
       default:
