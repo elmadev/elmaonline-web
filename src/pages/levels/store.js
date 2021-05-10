@@ -8,8 +8,9 @@ import {
   Collections,
   LevelPacksStats,
 } from 'api';
-import { orderBy, partition } from 'lodash';
+import { orderBy, partition, isEmpty } from 'lodash';
 import memoize from 'fast-memoize';
+import { shiftedLogisticFn } from 'utils/calcs';
 
 /**
  *
@@ -20,9 +21,12 @@ import memoize from 'fast-memoize';
  * @returns {*[]|*}
  */
 const sortPacks = (packs, favs, stats, sort) => {
-  if (!packs) {
+  if (isEmpty(packs)) {
     return [];
   }
+
+  // deep clone
+  packs = JSON.parse(JSON.stringify(packs));
 
   // set pack.Fav on all packs
   packs = packs.map(lp => {
@@ -277,6 +281,7 @@ export default {
       actions.setCollections(get.data);
     }
   }),
+  // levelpack stats objects, indexed by LevelPackIndex
   stats: {},
   setStats: action((state, payload) => {
     state.stats = payload;
@@ -289,6 +294,11 @@ export default {
     const get = await LevelPacksStats();
     if (get.ok) {
       const indexed = get.data.reduce((acc, val) => {
+        val.NormalizedPopularity = shiftedLogisticFn(
+          0.968,
+          val.AvgKuskiPerLevel,
+        );
+
         acc[val.LevelPackIndex] = val;
         return acc;
       }, {});
