@@ -4,30 +4,7 @@ import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import FavStar from './FavStar';
-
-const formatTimeSpent = time => {
-  const hours = Math.round(time / 360000);
-
-  if (hours < 1) {
-    return '<1h';
-  }
-
-  return hours.toLocaleString() + 'h';
-};
-
-const formatAttempts = num => {
-  return Number(num).toLocaleString();
-};
-
-const formatPct = (num, div, precision = 2) => {
-  let pct = 0;
-
-  if (div > 0) {
-    pct = Number.parseFloat((num * 100) / div);
-  }
-
-  return pct.toFixed(precision);
-};
+import { formatTimeSpent, formatAttempts, formatPct } from 'utils/format';
 
 const LevelpacksDetailed = ({
   levelpacksSorted,
@@ -153,7 +130,7 @@ const LevelpacksDetailed = ({
                         </NewLineWrapper>
                         {st.TopRecordKuskis &&
                           st.TopRecordKuskis.map(k => (
-                            <NewLineWrapper>
+                            <NewLineWrapper key={k.KuskiIndex}>
                               <Kuski kuskiData={k} flag={true} />
                               {` (${st.TopRecordCount}) (${topRecordPct}%)`}
                             </NewLineWrapper>
@@ -182,7 +159,7 @@ const Root = styled.div``;
 
 const Table = styled(ListContainer)`
   margin-top: 10px;
-  background: white;
+  background: ${p => p.theme.paperBackground};
 `;
 
 const NewLineWrapper = styled.div`

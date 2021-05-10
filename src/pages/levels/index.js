@@ -7,8 +7,8 @@ import { Tabs, Tab } from '@material-ui/core';
 import { useNavigate, useLocation } from '@reach/router';
 import { parse } from 'query-string';
 import Layout from 'components/Layout';
-import { Star, StarBorder } from '@material-ui/icons';
 import GridItem from 'components/GridItem';
+import Popularity from 'components/Popularity';
 import LevelpacksDetailed from './LevelpacksDetailed';
 import Controls from './Controls';
 import FavStar from './FavStar';
@@ -18,7 +18,7 @@ const promote = 'Int';
 const Levels = ({ tab, detailed }) => {
   const navigate = useNavigate();
 
-  const { levelpacks, levelpacksSorted, stats, collections } = useStoreState(
+  const { levelpacksSorted, stats, collections } = useStoreState(
     state => state.Levels,
   );
 
@@ -85,22 +85,38 @@ const Levels = ({ tab, detailed }) => {
             {!detailed && (
               <>
                 {levelpacksSorted.length > 0 &&
-                  levelpacksSorted.map(p => (
-                    <GridItem
-                      promote={p.LevelPackName === promote}
-                      key={p.LevelPackIndex}
-                      to={`/levels/packs/${p.LevelPackName}`}
-                      name={p.LevelPackName}
-                      longname={p.LevelPackLongName}
-                    >
-                      <StarCon>
-                        <FavStar
-                          pack={p}
-                          {...{ loggedIn, addFav, removeFav }}
-                        />
-                      </StarCon>
-                    </GridItem>
-                  ))}
+                  levelpacksSorted.map(p => {
+                    const s = stats[p.LevelPackIndex] ?? {};
+
+                    const widthPct = (s.NormalizedPopularity || 0) * 100;
+                    const avg = (s.AvgKuskiPerLevel || 0).toFixed(1);
+                    const count = s.LevelCountAll || 0;
+
+                    return (
+                      <GridItem2
+                        promote={p.LevelPackName === promote}
+                        key={p.LevelPackIndex}
+                        to={`/levels/packs/${p.LevelPackName}`}
+                        name={p.LevelPackName}
+                        longname={p.LevelPackLongName}
+                        afterName={` (${count} levels)`}
+                        afterLongname={
+                          <Popularity2
+                            title={`Avg. number of kuski's played per level: ${avg}`}
+                            widthPct={widthPct}
+                            after={<span>{avg}</span>}
+                          />
+                        }
+                      >
+                        <StarCon>
+                          <FavStar
+                            pack={p}
+                            {...{ loggedIn, addFav, removeFav }}
+                          />
+                        </StarCon>
+                      </GridItem2>
+                    );
+                  })}
               </>
             )}
             <FabCon>
@@ -145,11 +161,31 @@ const Levels = ({ tab, detailed }) => {
   );
 };
 
+const GridItem2 = styled(GridItem)`
+  &:hover {
+    .pop-bar-1 {
+      background: ${p => p.theme.paperBackground};
+    }
+  }
+`;
+
+const Popularity2 = styled(Popularity)`
+  margin-top: 20px;
+  width: 100%;
+  max-width: 320px;
+  .pop-after {
+    min-width: 24px;
+    span {
+      font-size: 12px;
+    }
+  }
+`;
+
 const StarCon = styled.div`
   cursor: pointer;
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 12px;
+  right: 13px;
 `;
 
 const FabCon = styled.div`
