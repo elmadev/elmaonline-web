@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
 import { useQueryAlt, PlayerRecords } from 'api';
 import { ListContainer, ListHeader, ListRow, ListCell } from 'components/List';
 import {
