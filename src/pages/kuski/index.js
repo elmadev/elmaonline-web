@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useNavigate } from '@reach/router';
-import { useQuery } from 'react-query';
 import PropTypes from 'prop-types';
 import { Tabs, Tab } from '@material-ui/core';
 import styled from 'styled-components';
@@ -17,7 +16,7 @@ import KuskiHeader from './KuskiHeader';
 import LatestTimes from './LatestTimes';
 import Info from './Info';
 import Records from './Records';
-import { makeGetter, PlayerRecordCount } from 'api';
+import { useQueryAlt, PlayerRecordCount } from 'api';
 
 const Kuski = ({ name, tab, ...props }) => {
   const { getKuskiByName } = useStoreActions(state => state.Kuski);
@@ -29,9 +28,9 @@ const Kuski = ({ name, tab, ...props }) => {
     getKuskiByName(name);
   }, [name]);
 
-  const { data: recordCount } = useQuery(
+  const { data: recordCount } = useQueryAlt(
     ['PlayerRecordCount', kuski.KuskiIndex],
-    makeGetter(PlayerRecordCount, [kuski.KuskiIndex]),
+    async () => PlayerRecordCount(kuski.KuskiIndex),
     {
       enabled: !!kuski.KuskiIndex,
       staleTime: 60000,

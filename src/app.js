@@ -3,7 +3,7 @@ import { StoreProvider, createStore } from 'easy-peasy';
 import { HelmetProvider } from 'react-helmet-async';
 import Router from './router';
 import model from './easypeasy';
-import queryClient from './react-query';
+import { queryClient } from './react-query';
 import { QueryClientProvider } from 'react-query';
 
 const easyPeasyStore = createStore(model);

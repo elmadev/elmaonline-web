@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { makeGetter, PlayerRecords } from 'api';
+import { useQueryAlt, PlayerRecords } from 'api';
 import { ListContainer, ListHeader, ListRow, ListCell } from 'components/List';
 import {
   FormControl,
@@ -32,16 +32,14 @@ const Records = ({ KuskiIndex, recordCount }) => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(25);
 
-  const { isSuccess: recordsSuccess, data: records } = useQuery(
+  const { isSuccess: recordsSuccess, data: records } = useQueryAlt(
     ['PlayerRecords', KuskiIndex, sort, page, pageSize],
-    makeGetter(PlayerRecords, [
-      KuskiIndex,
-      {
+    async () =>
+      PlayerRecords(KuskiIndex, {
         sort,
         offset: page * pageSize,
         limit: pageSize,
-      },
-    ]),
+      }),
     {
       enabled: !!KuskiIndex,
       staleTime: 60000,

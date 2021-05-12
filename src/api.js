@@ -2,7 +2,8 @@ import { create } from 'apisauce';
 import config from 'config';
 import { authToken } from 'utils/nick';
 import assert from 'assert';
-import { isArray } from 'lodash';
+import { isObjectLike, isArray } from 'lodash';
+import { useQuery } from 'react-query';
 
 let baseURL = config.api;
 const api = create({
@@ -29,27 +30,52 @@ export const setApiAuth = authToken => {
   api.setHeader('Authorization', authToken);
 };
 
-// used to generate the 2nd parameter of react-query/useQuery.
-// func is one of the functions in this file or some other
-// function that returns a promise.
-// e.g. useQuery( 'queryKey', makeGetter( ReplayComment, [ 32 ] ));
-// note that react-query requires us to throw to indicate an
-// unsuccessful query attempt.
-export const makeGetter = (func, args = []) => {
-  assert(isArray(args));
+// wraps useQuery to parse the result of api.get/post/etc.,
+// usage: useQueryAlt( 'key', async () => api.get('replay_comment/23') );
+// You can set 4th param to true and have queryFn return a promise
+// that resolves to: [ success, payload ]. This might be useful if you have
+// to hit more than one endpoint or do some data manipulation on the response.
+export const useQueryAlt = (
+  queryKey,
+  queryFn,
+  queryOpts = {},
+  arrayFormat = false,
+) => {
+  return useQuery(
+    queryKey,
+    async (...args) => {
+      const res = await queryFn(...args);
 
-  return async () => {
-    const res = await func(...args);
+      let ok, data;
 
-    if (res.ok) {
-      return res.data;
-    }
+      if (arrayFormat) {
+        assert(
+          isArray(res) && res.length === 2,
+          'Expected an async queryFn resolved to an array of length 2.',
+        );
 
-    // eslint-disable-next-line no-console
-    console.error('Status not ok.', res);
+        [ok, data] = res;
+      } else {
+        assert(
+          isObjectLike(res),
+          'Expected an async queryFn that resolved to an object.',
+        );
 
-    throw new Error('Status not ok.');
-  };
+        ok = res.ok;
+        data = res.data;
+      }
+
+      if (ok) {
+        return data;
+      }
+
+      // perhaps we can improve error handling here later
+      // eslint-disable-next-line no-console
+      console.error('Status not OK', queryKey, data);
+      throw new Error('Status not OK');
+    },
+    queryOpts,
+  );
 };
 
 // replays
