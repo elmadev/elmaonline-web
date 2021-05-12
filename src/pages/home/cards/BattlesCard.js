@@ -16,7 +16,7 @@ export default function BattlesCard() {
         <BattleList
           start={subYears(new Date(), 1)}
           end={addHours(new Date(), 12)}
-          limit={5}
+          limit={6}
           condensed
         />
       </CardContent>

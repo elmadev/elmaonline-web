@@ -244,6 +244,17 @@ export const PersonalLatestPRs = data =>
 export const MultiBesttime = data =>
   api.get(`besttime/multi/${data.levelId}/${data.limit}`);
 
+export const RecentBestRecords = (
+  daysPast,
+  limit,
+  repeatLevels = 1,
+  opts = {},
+) =>
+  api.get(`besttime/best-records/0/0/${limit || 0}/${repeatLevels ? 1 : 0}`, {
+    ...opts,
+    daysPast,
+  });
+
 // battles
 export const BattlesSearchByFilename = data =>
   api.get(`battle/search/byFilename/${data.q}/${data.offset}`);
