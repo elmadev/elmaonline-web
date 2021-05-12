@@ -229,9 +229,11 @@ const ChoosePlayer = styled.div`
 `;
 
 const KuskiWith = styled.span`
-  color: ${p => p.theme.linkColor};
+  && {
+    color: ${p => p.theme.linkColor};
+  }
   & :hover {
-    font-weight: 500;
+    color: ${p => p.theme.linkHover};
   }
 `;
 
@@ -242,6 +244,9 @@ const LegacyContainer = styled.span`
 
 const KuskiLink = styled.span`
   color: ${p => p.theme.linkColor};
+  & :hover {
+    color: ${p => p.theme.linkHover};
+  }
 `;
 
 const EditIcon = styled(Edit)`
@@ -275,7 +280,9 @@ const TTRow = styled(ListRow)`
 `;
 
 const Compare = styled.span`
-  color: ${p => (p.bettertime ? '#009a00' : '#da0000')};
+  && {
+    color: ${p => (p.bettertime ? p.theme.linkColor : '#da0000')};
+  }
 `;
 
 export default Personal;
