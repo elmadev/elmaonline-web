@@ -7,6 +7,7 @@ const StyledButton = styled(MuiButton)`
   && {
     ${p => p.margin && `margin: ${p.margin};`}
     ${p => p.little && 'font-size: 0.8125rem;'}
+    ${p => p.right && `margin-right: ${p.theme.padXXSmall};`}
     padding: ${p =>
       p.little
         ? `${p.to ? 0 : p.theme.padXXSmall} ${p.to ? 0 : p.theme.padXXSmall}`
@@ -30,6 +31,7 @@ const Button = ({
   naked,
   little,
   to, // use this to create a normal link
+  right,
 }) => {
   let color = 'primary';
   let variant = 'contained';
@@ -42,6 +44,7 @@ const Button = ({
   }
   return (
     <StyledButton
+      right={right}
       disabled={disabled}
       margin={margin}
       variant={variant}
