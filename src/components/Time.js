@@ -46,6 +46,9 @@ class Time extends React.Component {
 
   render() {
     const { time } = this.props;
+    if (!time) {
+      return <span />;
+    }
     if (typeof time === 'object') {
       if (time.unfinished) {
         return (
