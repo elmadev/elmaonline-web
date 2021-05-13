@@ -61,6 +61,9 @@ const LevelPack = ({ name, tab }) => {
   const { data: levelStats } = useQueryAlt(
     ['LevelPackLevelStats', 1, name],
     async () => LevelPackLevelStats(1, name),
+    {
+      staleTime: 300000,
+    },
   );
 
   useEffect(() => {
