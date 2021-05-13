@@ -1,6 +1,6 @@
 // for levelstats. time likely many hours.
 export const formatTimeSpent = time => {
-  const hours = Math.round(time / 360000);
+  const hours = Math.round((time || 0) / 360000);
 
   if (hours < 1) {
     return '<1h';

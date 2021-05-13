@@ -113,6 +113,7 @@ export const ListCell = ({
   to,
   whiteSpace,
   onClick,
+  title,
   verticalAlign = 'baseline',
   textAlign = 'left',
 }) => {
@@ -127,6 +128,7 @@ export const ListCell = ({
         to={to}
         verticalAlign={verticalAlign}
         textAlign={textAlign}
+        title={title}
       >
         <CellLink to={to}>{children}</CellLink>
       </Cell>
@@ -142,6 +144,7 @@ export const ListCell = ({
       onClick={() => onClick && onClick()}
       verticalAlign={verticalAlign}
       textAlign={textAlign}
+      title={title}
     >
       {children}
     </Cell>

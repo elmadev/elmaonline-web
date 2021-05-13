@@ -3,17 +3,7 @@ import Link from 'components/Link';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import formatDistance from 'date-fns/formatDistance';
-
-// todo: refactor copy/pasted fn from levelpack archive (when merged)
-const formatTimeSpent = time => {
-  const hours = Math.round(time / 360000);
-
-  if (hours < 1) {
-    return '<1h';
-  }
-
-  return hours.toLocaleString() + 'h';
-};
+import { formatTimeSpent } from 'utils/format';
 
 const RecentRecords = ({ records }) => {
   return (
@@ -22,8 +12,8 @@ const RecentRecords = ({ records }) => {
         <ListHeader>
           <ListCell>Record</ListCell>
           <ListCell>Level</ListCell>
-          <ListCell title="Total time played on level by all players combined">
-            Total Level Time
+          <ListCell title="Total time played by all kuski's combined.">
+            Time Played
           </ListCell>
           <ListCell>Driven</ListCell>
         </ListHeader>

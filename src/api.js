@@ -2,7 +2,7 @@ import { create } from 'apisauce';
 import config from 'config';
 import { authToken } from 'utils/nick';
 import assert from 'assert';
-import { isObjectLike, isArray } from 'lodash';
+import { isObjectLike, isArray, mapValues, meanBy } from 'lodash';
 import { useQuery } from 'react-query';
 
 let baseURL = config.api;
@@ -185,6 +185,46 @@ export const AllFinishedLevel = LevelIndex =>
 // levelpack
 export const LevelPacks = () => api.get('levelpack');
 export const LevelPacksStats = () => api.get('levelpack/stats');
+
+// add some derived values.
+// perhaps we could just do this on server.
+const mapLevelPackLevelStats = levelStats => {
+  const arr = Object.values(levelStats);
+
+  const avgTimeAll = meanBy(arr, 'TimeAll');
+  const avgKuskiCountAll = meanBy(arr, 'KuskiCountAll');
+
+  return mapValues(levelStats, s => {
+    return {
+      ...s,
+      RelativeTimeAll: avgTimeAll > 0 ? s.TimeAll / avgTimeAll : 0,
+      RelativeKuskiCountAll:
+        avgKuskiCountAll > 0 ? s.KuskiCountAll / avgKuskiCountAll : 0,
+    };
+  });
+};
+
+export const LevelPackLevelStats = async (byName, NameOrIndex) => {
+  const ret = await api.get(
+    `levelpack/level-stats/${byName ? 1 : 0}/${NameOrIndex}`,
+  );
+
+  if (ret.ok) {
+    // endpoint returning data in unintentional format.
+    // Could fix api and remove this later.
+    ret.data = mapValues(ret.data, arrayOfObjects => {
+      if (isArray(arrayOfObjects)) {
+        return arrayOfObjects[0] || {};
+      }
+      return arrayOfObjects;
+    });
+
+    ret.data = mapLevelPackLevelStats(ret.data);
+  }
+
+  return ret;
+};
+
 export const LevelPack = LevelPackName => api.get(`levelpack/${LevelPackName}`);
 export const TotalTimes = data =>
   api.get(`levelpack/${data.levelPackIndex}/totaltimes/${data.eolOnly}`);

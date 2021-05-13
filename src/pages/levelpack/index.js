@@ -29,6 +29,7 @@ import Personal from './Personal';
 import Kinglist from './Kinglist';
 import MultiRecords from './MultiRecords';
 import Admin from './Admin';
+import { useQueryAlt, LevelPackLevelStats } from '../../api';
 
 const LevelPack = ({ name, tab }) => {
   const isRehydrated = useStoreRehydrated();
@@ -56,6 +57,11 @@ const LevelPack = ({ name, tab }) => {
   const lastShowLegacy = useRef(showLegacy);
   const [openSettings, setOpenSettings] = useState(false);
   const navigate = useNavigate();
+
+  const { data: levelStats } = useQueryAlt(
+    ['LevelPackLevelStats', 1, name],
+    async () => LevelPackLevelStats(1, name),
+  );
 
   useEffect(() => {
     if (levelPackInfo.LevelPackName !== name) {
@@ -212,6 +218,7 @@ const LevelPack = ({ name, tab }) => {
         </Settings>
         {!tab && (
           <Records
+            levelStats={levelStats}
             records={records}
             highlight={highlight}
             highlightWeeks={highlightWeeks}
