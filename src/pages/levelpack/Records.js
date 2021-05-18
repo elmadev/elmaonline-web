@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useStoreActions } from 'easy-peasy';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
@@ -12,6 +13,8 @@ import LevelPopup from './LevelPopup';
 import Popularity from 'components/Popularity';
 import { formatPct, formatTimeSpent } from '../../utils/format';
 import formatDistance from 'date-fns/formatDistance';
+import Switch from 'components/Switch';
+import { Row } from 'components/Containers';
 
 const hasSource = records => {
   if (records.length > 0) {
@@ -30,11 +33,14 @@ const Records = ({
   records,
   recordsLoading,
   showLegacyIcon,
+  showMoreStats,
   levelStats,
 }) => {
   const [level, selectLevel] = useState(-1);
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
+
+  const { setShowMoreStats } = useStoreActions(state => state.LevelPack);
 
   if (recordsLoading) {
     return <Loading />;
@@ -44,28 +50,55 @@ const Records = ({
   const anyAreLegacy = hasSource(records);
 
   const MaxRelativeTimeAll = Math.max(
-    ...Object.values(levelStats).map(v => v.RelativeTimeAll),
+    ...Object.values(levelStats || {}).map(v => v.RelativeTimeAll),
   );
 
   return (
     <>
-      <Header h2 mLeft>
-        Levels
-      </Header>
+      <Row ai="center" jc="space-between" width="100%">
+        <Header h2 mLeft>
+          Levels
+        </Header>
+        <Switch checked={showMoreStats} onChange={setShowMoreStats}>
+          Level Stats
+        </Switch>
+      </Row>
+
       <ListContainer>
         <ListHeader>
-          <ListCell width={80}>Filename</ListCell>
-          <ListCell width={250}>Level Name</ListCell>
-          <ListCell width={140}>Kuski's Played (% Finished)</ListCell>
+          <ListCell width={90}>Filename</ListCell>
+          <ListCell width={showMoreStats ? 260 : 320}>Level Name</ListCell>
+          <ListCell width={150}>Kuski</ListCell>
+          <ListCell width={150}>Time</ListCell>
+
+          {showMoreStats && <ListCell width={170}>Last Driven</ListCell>}
+
+          {showMoreStats && (
+            <ListCell width={140}>
+              Kuski's Played <br />
+              <span title="Percentage of kuski's that finished the level at least once.">
+                (% Finished)
+              </span>
+            </ListCell>
+          )}
+
+          {showMoreStats && (
+            <ListCell
+              width={50}
+              title="Total time played by all kuski's combined."
+            >
+              Time Played
+            </ListCell>
+          )}
+
           <ListCell
-            width={170}
-            title="Total time played by all kuski's combined."
+            width={150}
+            title="Time played on level (by all kuski's), relative to other levels in this pack."
           >
-            Time Played
+            Popularity
           </ListCell>
-          <ListCell width={170}>Last Driven</ListCell>
-          <ListCell width={140}>Kuski</ListCell>
-          <ListCell width={140}>Time</ListCell>
+
+          {!showMoreStats && <ListCell />}
         </ListHeader>
         {records.map(r => {
           // levels not played will not have stats objects.
@@ -114,28 +147,6 @@ const Records = ({
               <ListCell>{r.Level.LongName}</ListCell>
 
               <ListCell>
-                {stats.KuskiCountAll || 0}
-                {` (${finishPct}%)`}
-              </ListCell>
-
-              <ListCell
-                title={`Relative time played: ${(
-                  stats.RelativeTimeAll || 0
-                ).toFixed(2)}`}
-              >
-                <Popularity
-                  widthPct={timePct}
-                  before={
-                    <div style={{ minWidth: 42 }}>
-                      {stats.TimeAll ? formatTimeSpent(stats.TimeAll) : ''}
-                    </div>
-                  }
-                />
-              </ListCell>
-
-              <ListCell>{lastDriven}</ListCell>
-
-              <ListCell>
                 {r.LevelBesttime && (
                   <Kuski kuskiData={r.LevelBesttime.KuskiData} team flag />
                 )}
@@ -152,19 +163,50 @@ const Records = ({
                   </span>
                 )}
               </ListCell>
+
+              {showMoreStats && <ListCell>{lastDriven}</ListCell>}
+
+              {showMoreStats && (
+                <ListCell>
+                  {stats.KuskiCountAll || 0}
+                  {` (${finishPct}%)`}
+                </ListCell>
+              )}
+
+              {showMoreStats && (
+                <ListCell>
+                  {stats.TimeAll ? formatTimeSpent(stats.TimeAll) : ''}
+                </ListCell>
+              )}
+
+              <ListCell>
+                <div style={{ minWidth: 100 }}>
+                  <Popularity
+                    widthPct={timePct}
+                    title={stats.TimeAll ? formatTimeSpent(stats.TimeAll) : ''}
+                  />
+                </div>
+              </ListCell>
+
+              {!showMoreStats && <ListCell />}
             </TimeRow>
           );
         })}
         <TTRow>
           <ListCell />
           <ListCell />
-          <ListCell />
-          <ListCell />
-          <ListCell />
           <ListCell>Total Time</ListCell>
           <ListCell>
             <Time time={recordsTT(records, 'LevelBesttime')} />
           </ListCell>
+          <ListCell />
+          {showMoreStats && (
+            <>
+              <ListCell />
+              <ListCell />
+              <ListCell />
+            </>
+          )}
         </TTRow>
       </ListContainer>
       {level !== -1 && (

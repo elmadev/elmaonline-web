@@ -60,6 +60,7 @@ export default {
       highlightWeeks: 1,
       showLegacyIcon: true,
       showLegacy: true,
+      showMoreStats: false,
     },
     { storage: 'localStorage' },
   ),
@@ -71,6 +72,9 @@ export default {
   }),
   toggleShowLegacy: action(state => {
     state.settings.showLegacy = !state.settings.showLegacy;
+  }),
+  setShowMoreStats: action((state, payload) => {
+    state.settings.showMoreStats = payload;
   }),
   totaltimes: [],
   kinglist: [],

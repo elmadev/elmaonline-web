@@ -42,7 +42,7 @@ const LevelPack = ({ name, tab }) => {
     records,
     recordsLoading,
     personalKuski,
-    settings: { highlightWeeks, showLegacyIcon, showLegacy },
+    settings: { highlightWeeks, showLegacyIcon, showLegacy, showMoreStats },
   } = useStoreState(state => state.LevelPack);
   const {
     getLevelPackInfo,
@@ -227,6 +227,7 @@ const LevelPack = ({ name, tab }) => {
             highlightWeeks={highlightWeeks}
             recordsLoading={recordsLoading}
             showLegacyIcon={showLegacyIcon}
+            showMoreStats={showMoreStats}
           />
         )}
         {tab === 'total-times' && (
