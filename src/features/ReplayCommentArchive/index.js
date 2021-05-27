@@ -74,7 +74,7 @@ const ReplayCommentArchive = props => {
                   {replay.RecFileName}
                 </Link>
                 <Br />
-                <Time time={replay.ReplayTime} />
+                <Time thousands time={replay.ReplayTime} />
                 {` `}
               </ListCell>
               <ListCell>

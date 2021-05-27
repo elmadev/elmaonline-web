@@ -29,6 +29,5 @@ export const Content = styled.div`
   margin: ${p => p.theme.padMedium};
   display: flex;
   flex-direction: column;
-  width: 100%;
   ${p => p.center && 'justify-content: center; align-items: center;'}
 `;

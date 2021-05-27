@@ -11,6 +11,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import Layout from 'components/Layout';
 import Setting from './Setting';
 import Themes from './Themes';
+import Notifications from './Notifications';
 import { useNavigate } from '@reach/router';
 
 const Settings = ({ tab }) => {
@@ -79,6 +80,7 @@ const Settings = ({ tab }) => {
         <Tab label="Team" value="team" />
         <Tab label="Ignore" value="ignore" />
         <Tab label="Site theme" value="themes" />
+        <Tab label="Notifications" value="notifications" />
       </Tabs>
       <Container>
         {nickId() > 0 ? (
@@ -191,6 +193,7 @@ const Settings = ({ tab }) => {
               </Grid>
             )}
             {tab === 'themes' && <Themes />}
+            {tab === 'notifications' && <Notifications />}
           </>
         ) : (
           <div>Log in to change settings.</div>

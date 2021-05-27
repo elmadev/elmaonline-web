@@ -17,7 +17,7 @@ import Time from 'components/Time';
 import Link from 'components/Link';
 import Header from 'components/Header';
 import RecList from 'features/RecList';
-import { useLocation, useNavigate } from '@reach/router';
+import { useLocation } from '@reach/router';
 import queryString from 'query-string';
 import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
@@ -34,7 +34,6 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
   let linkArray = [];
   let uuidarray = [];
   const location = useLocation();
-  const navigate = useNavigate();
   const { merge } = queryString.parse(location.search);
 
   const { getReplayByUUID } = useStoreActions(state => state.ReplayByUUID);
@@ -51,10 +50,11 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
     }
   }, [ReplayUuid, merge]);
 
-  if (!RecFileName && replay) {
-    navigate(
-      `${location.pathname}/${replay.RecFileName.replace('.rec', '')}`,
-      false,
+  if (!RecFileName && replay && replay.UUID === ReplayUuid) {
+    window.history.replaceState(
+      '',
+      '',
+      `${location.href}/${replay.RecFileName.replace('.rec', '')}`,
     );
   }
 

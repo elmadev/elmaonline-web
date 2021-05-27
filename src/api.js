@@ -69,6 +69,9 @@ export const Confirm = data => api.post('register/confirm', data);
 export const ResetPasswordConfirm = data =>
   api.post('register/resetconfirm', data);
 export const ResetPassword = data => api.post('register/reset', data);
+export const DiscordAuthUrl = () => api.get('/register/discord');
+export const DiscordCode = data => api.post('/register/discord/code', data);
+export const DiscordRemove = () => api.post('/register/discord/remove');
 
 // cups
 export const Cups = () => api.get('cups');
@@ -229,6 +232,8 @@ export const Ignored = () => api.get('player/ignored');
 export const Unignore = KuskiIndex => api.post(`player/unignore/${KuskiIndex}`);
 export const Players = () => api.get('player/');
 export const GetCrew = () => api.get('player/crew/');
+export const NotificationSettings = () => api.get('player/settings');
+export const ChangeSettings = data => api.post('player/settings', data);
 
 // teams
 export const Teams = () => api.get('teams');
@@ -271,6 +276,7 @@ export const IPlogs = KuskiIndex => api.get(`mod/iplogs/${KuskiIndex}`);
 
 // news
 export const News = amount => api.get(`news/${amount}`);
+export const AddNews = data => api.post('news', data);
 
 // donations
 export const GetDonations = () => api.get(`donate/`);

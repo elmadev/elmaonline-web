@@ -1,6 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk, persist } from 'easy-peasy';
-import { UserInfo, UpdateUserInfo, Ignored, Ignore, Unignore } from 'api';
+import {
+  UserInfo,
+  UpdateUserInfo,
+  Ignored,
+  Ignore,
+  Unignore,
+  DiscordAuthUrl,
+  DiscordCode,
+  NotificationSettings,
+  DiscordRemove,
+  ChangeSettings,
+} from 'api';
 
 export default {
   userInfo: '',
@@ -62,5 +73,43 @@ export default {
   ),
   setSiteTheme: action((state, payload) => {
     state.settings.siteTheme = payload;
+  }),
+  url: '',
+  notifSettings: null,
+  setUrl: action((state, payload) => {
+    state.url = payload;
+  }),
+  setSettings: action((state, payload) => {
+    state.notifSettings = payload;
+  }),
+  getUrl: thunk(async actions => {
+    const get = await DiscordAuthUrl();
+    if (get.ok) {
+      actions.setUrl(get.data.url);
+    }
+  }),
+  getSettings: thunk(async actions => {
+    const get = await NotificationSettings();
+    if (get.ok) {
+      actions.setSettings(get.data);
+    }
+  }),
+  sendCode: thunk(async (actions, payload) => {
+    const post = await DiscordCode({ code: payload });
+    if (post.ok) {
+      actions.getSettings();
+    }
+  }),
+  removeDiscord: thunk(async actions => {
+    const post = await DiscordRemove();
+    if (post.ok) {
+      actions.getSettings();
+    }
+  }),
+  changeNotifSetting: thunk(async (actions, payload) => {
+    const post = await ChangeSettings(payload);
+    if (post.ok) {
+      actions.getSettings();
+    }
   }),
 };

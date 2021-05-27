@@ -22,6 +22,10 @@ const Item = styled(MenuItem)`
   }
 `;
 
+const Nick = styled.div`
+  padding: 6px 16px;
+`;
+
 export default function TopBarActions() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -102,6 +106,7 @@ export default function TopBarActions() {
             open={open}
             onClose={() => handleClose('')}
           >
+            <Nick>{username}</Nick>
             <Item onClick={() => handleClose(`/kuskis/${username}`)}>
               Profile
             </Item>

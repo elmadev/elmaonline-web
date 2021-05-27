@@ -37,7 +37,14 @@ export const Dropdown = ({ name, options, selected, update }) => {
   );
 };
 
-export const TextField = ({ name, error, date, value, onChange }) => {
+export const TextField = ({
+  name,
+  error,
+  date,
+  value,
+  onChange,
+  multiline = false,
+}) => {
   const id = name.replace(/\s/g, '');
   let isError = false;
   if (error) {
@@ -56,6 +63,7 @@ export const TextField = ({ name, error, date, value, onChange }) => {
         type={date ? 'date' : 'text'}
         onChange={e => onChange(e.target.value)}
         value={value}
+        multiline={multiline}
       />
     </Container>
   );
