@@ -55,26 +55,30 @@ const Notifications = () => {
             no options, make sure you have set an email and/or connected your
             Discord account.
           </Text>
-          {notifSettings?.DiscordId && (
-            <FieldBoolean
-              value={notifSettings.SendDiscord}
-              label="Discord PM"
-              onChange={() =>
-                changeNotifSetting({
-                  Setting: 'SendDiscord',
-                  Value: 1 - notifSettings.SendDiscord,
-                })
-              }
-            />
+          {notifSettings && (
+            <>
+              {notifSettings.DiscordId !== 0 && (
+                <FieldBoolean
+                  value={notifSettings.SendDiscord}
+                  label="Discord PM"
+                  onChange={() =>
+                    changeNotifSetting({
+                      Setting: 'SendDiscord',
+                      Value: 1 - notifSettings.SendDiscord,
+                    })
+                  }
+                />
+              )}
+            </>
           )}
           {userInfo?.Email && (
             <FieldBoolean
-              value={notifSettings ? notifSettings.SendEmail : 1}
+              value={notifSettings ? notifSettings.SendEmail : 0}
               label="Email"
               onChange={() =>
                 changeNotifSetting({
                   Setting: 'SendEmail',
-                  Value: notifSettings ? 1 - notifSettings.SendEmail : 0,
+                  Value: notifSettings ? 1 - notifSettings.SendEmail : 1,
                 })
               }
             />
