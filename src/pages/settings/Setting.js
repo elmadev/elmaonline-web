@@ -4,7 +4,15 @@ import { TextField, Button } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import Header from 'components/Header';
 
-const Setting = ({ value, label, setValue, update, password, header }) => {
+const Setting = ({
+  value,
+  label,
+  setValue,
+  update,
+  password,
+  header,
+  maxLength,
+}) => {
   return (
     <Container>
       <Paper padding>
@@ -20,6 +28,7 @@ const Setting = ({ value, label, setValue, update, password, header }) => {
             margin="normal"
             variant="outlined"
             fullWidth
+            inputProps={{ maxLength }}
           />
         ))}
         {update && (
