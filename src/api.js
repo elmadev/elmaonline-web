@@ -295,3 +295,6 @@ export const DeleteTag = TagIndex => api.delete(`tag/${TagIndex}`);
 export const GetNotifications = () => api.get(`notification`);
 export const GetNotificationsCount = () => api.get(`notification/count`);
 export const MarkNotificationsSeen = () => api.post(`notification/markSeen`);
+
+// status
+export const SystemStatus = () => api.get('news/status');

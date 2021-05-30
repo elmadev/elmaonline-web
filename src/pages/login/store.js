@@ -2,7 +2,7 @@
 import { action, thunk } from 'easy-peasy';
 import Cookies from 'universal-cookie';
 import config from 'config';
-import { setApiAuth, GetNotificationsCount } from 'api';
+import { setApiAuth, GetNotificationsCount, SystemStatus } from 'api';
 
 const cookies = new Cookies();
 
@@ -70,6 +70,16 @@ export default {
     const response = await GetNotificationsCount();
     if (response.ok) {
       actions.setNotificationsCount(response.data);
+    }
+  }),
+  status: { show: 0, headline: '', text: '', updated: null },
+  setStatus: action((state, payload) => {
+    state.status = payload;
+  }),
+  getStatus: thunk(async actions => {
+    const get = await SystemStatus();
+    if (get.ok) {
+      actions.setStatus({ ...get.data, updated: new Date() });
     }
   }),
 };
