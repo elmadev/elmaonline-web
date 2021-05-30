@@ -41,7 +41,7 @@ const Notifications = () => {
   }, [code]);
 
   const authDiscord = () => {
-    getUrl();
+    getUrl(location.origin);
   };
 
   return (

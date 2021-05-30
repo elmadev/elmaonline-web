@@ -69,7 +69,7 @@ export const Confirm = data => api.post('register/confirm', data);
 export const ResetPasswordConfirm = data =>
   api.post('register/resetconfirm', data);
 export const ResetPassword = data => api.post('register/reset', data);
-export const DiscordAuthUrl = () => api.get('/register/discord');
+export const DiscordAuthUrl = data => api.post('/register/discord', data);
 export const DiscordCode = data => api.post('/register/discord/code', data);
 export const DiscordRemove = () => api.post('/register/discord/remove');
 
