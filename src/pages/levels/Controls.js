@@ -15,12 +15,7 @@ const Controls = ({ detailed, sort }) => {
   const navigate = useNavigate();
 
   return (
-    <Grid2
-      container
-      justify="flex-end"
-      alignItems="center"
-      className="controls"
-    >
+    <Grid2 container justify="flex-end" alignItems="center">
       {!detailed && (
         <div style={{ paddingBottom: 4 }}>
           <div style={{ fontSize: 13, marginBottom: 3, textAlign: 'center' }}>

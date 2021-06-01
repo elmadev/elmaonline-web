@@ -245,13 +245,9 @@ const TimeRow = styled(ListRow)`
     background: ${p => (p.selected ? p.theme.primary : p.theme.hoverColor)};
     color: ${p => (p.selected ? '#fff' : 'inherit')};
   }
-  > span {
-    :hover {
-      .pop-wrapper {
-        .pop-bar-1 {
-          background: ${p => p.theme.paperBackground};
-        }
-      }
+  > span:hover {
+    .pop-bar-1 {
+      background: ${p => p.theme.paperBackground};
     }
   }
 `;
