@@ -10,7 +10,7 @@ const Switch = ({
   color = 'primary',
 }) => {
   return (
-    <Root className={['switch-root', className].filter(Boolean).join(' ')}>
+    <Root className={className}>
       <FormControlLabel
         control={
           <MUISwitch

@@ -1,16 +1,15 @@
 import { useNavigate } from '@reach/router';
 import {
   FormControl,
-  FormControlLabel,
   Grid,
   InputLabel,
   MenuItem,
   Select,
-  Switch,
 } from '@material-ui/core';
 import React from 'react';
 import Popularity from 'components/Popularity';
 import styled from 'styled-components';
+import Switch from 'components/Switch';
 
 const Controls = ({ detailed, sort }) => {
   const navigate = useNavigate();
@@ -69,27 +68,23 @@ const Controls = ({ detailed, sort }) => {
           </Select>
         </FormControl>
       )}
-      <SwitchWrapper style={detailed ? { marginBottom: -22 } : {}}>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={!!detailed}
-              onChange={e => {
-                navigate(
-                  [
-                    '/levels',
-                    e.target.checked && 'detailed',
-                    e.target.checked && sort && `?sort=${sort}`,
-                  ]
-                    .filter(Boolean)
-                    .join('/'),
-                );
-              }}
-              color="primary"
-            />
-          }
-          label="Detailed View"
-        />
+      <SwitchWrapper detailed={detailed}>
+        <Switch
+          checked={!!detailed}
+          onChange={checked => {
+            navigate(
+              [
+                '/levels',
+                checked && 'detailed',
+                checked && sort && `?sort=${sort}`,
+              ]
+                .filter(Boolean)
+                .join('/'),
+            );
+          }}
+        >
+          Detailed View
+        </Switch>
       </SwitchWrapper>
     </Grid2>
   );
@@ -108,6 +103,7 @@ const Grid2 = styled(Grid)`
 const SwitchWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-bottom: ${p => (p.detailed ? '-22px' : '0')};
 `;
 
 export default Controls;
