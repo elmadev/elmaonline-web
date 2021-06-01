@@ -13,17 +13,7 @@ import Loading from 'components/Loading';
 import Time from 'components/Time';
 import Link from 'components/Link';
 import LocalTime from 'components/LocalTime';
-
-// todo: refactor copy/pasted fn from levelpack archive (when merged)
-const formatTimeSpent = time => {
-  const hours = Math.round(time / 360000);
-
-  if (hours < 1) {
-    return '<1h';
-  }
-
-  return hours.toLocaleString() + 'h';
-};
+import { formatTimeSpent } from '../../utils/format';
 
 // ie. table row
 const Record = ({ record }) => {
@@ -132,7 +122,7 @@ const Records = ({ KuskiIndex, recordCount }) => {
 };
 
 const StyledFormControl = styled(FormControl)`
-  min-width: 200px;
+  min-width: 200px !important;
 `;
 
 const Controls = styled.div`
