@@ -16,6 +16,99 @@ import formatDistance from 'date-fns/formatDistance';
 import Switch from 'components/Switch';
 import { Row } from 'components/Containers';
 
+const TableRow = ({
+  record: r,
+  levelStats,
+  highlight,
+  highlightWeeks,
+  MaxRelativeTimeAll,
+  level,
+  selectLevel,
+  setLongName,
+  setLevelName,
+  showMoreStats,
+  showLegacyIcon,
+}) => {
+  // levels not played will not have stats objects.
+  const stats = levelStats?.[r.LevelIndex] || {};
+
+  const isLegacy = r.LevelBesttime && r.LevelBesttime.Source !== undefined;
+
+  const isHighlight =
+    r.LevelBesttime && r.LevelBesttime.TimeIndex >= highlight[highlightWeeks];
+
+  // ie. width of popularity bar
+  const timePct = formatPct(stats.RelativeTimeAll || 0, MaxRelativeTimeAll);
+
+  const finishPct = formatPct(stats.KuskiCountF, stats.KuskiCountAll, 0);
+
+  const lastDriven = formatDistance(
+    new Date((stats.LastDrivenAll || 0) * 1000),
+    new Date(),
+    { addSuffix: true },
+  );
+
+  return (
+    <TimeRow
+      key={r.LevelIndex}
+      onClick={e => {
+        e.preventDefault();
+        selectLevel(level === r.LevelIndex ? -1 : r.LevelIndex);
+        setLongName(r.Level.LongName);
+        setLevelName(r.Level.LevelName);
+      }}
+      selected={level === r.LevelIndex}
+    >
+      <ListCell>
+        <Level LevelIndex={r.LevelIndex} LevelData={r.Level} />
+      </ListCell>
+
+      <ListCell>{r.Level.LongName}</ListCell>
+
+      <ListCell>
+        {r.LevelBesttime && (
+          <Kuski kuskiData={r.LevelBesttime.KuskiData} team flag />
+        )}
+      </ListCell>
+
+      <ListCell highlight={isHighlight}>
+        {r.LevelBesttime && <Time time={r.LevelBesttime.Time} />}
+        {isLegacy && (
+          <span style={{ marginLeft: 10 }}>
+            <LegacyIcon source={r.LevelBesttime.Source} show={showLegacyIcon} />
+          </span>
+        )}
+      </ListCell>
+
+      {showMoreStats && <ListCell>{lastDriven}</ListCell>}
+
+      {showMoreStats && (
+        <ListCell>
+          {stats.KuskiCountAll || 0}
+          {` (${finishPct}%)`}
+        </ListCell>
+      )}
+
+      {showMoreStats && (
+        <ListCell>
+          {stats.TimeAll ? formatTimeSpent(stats.TimeAll) : ''}
+        </ListCell>
+      )}
+
+      <ListCell>
+        <div style={{ minWidth: 100 }}>
+          <Popularity
+            widthPct={timePct}
+            title={stats.TimeAll ? formatTimeSpent(stats.TimeAll) : ''}
+          />
+        </div>
+      </ListCell>
+
+      {!showMoreStats && <ListCell />}
+    </TimeRow>
+  );
+};
+
 const Records = ({
   highlight,
   highlightWeeks,
@@ -86,98 +179,26 @@ const Records = ({
 
           {!showMoreStats && <ListCell />}
         </ListHeader>
-        {records.map(r => {
-          // levels not played will not have stats objects.
-          const stats = levelStats?.[r.LevelIndex] || {};
 
-          const isLegacy =
-            r.LevelBesttime && r.LevelBesttime.Source !== undefined;
+        {records.map(record => (
+          <TableRow
+            {...{
+              key: record.LevelIndex,
+              record,
+              levelStats,
+              highlight,
+              highlightWeeks,
+              MaxRelativeTimeAll,
+              level,
+              selectLevel,
+              setLongName,
+              setLevelName,
+              showMoreStats,
+              showLegacyIcon,
+            }}
+          />
+        ))}
 
-          const isHighlight =
-            r.LevelBesttime &&
-            r.LevelBesttime.TimeIndex >= highlight[highlightWeeks];
-
-          // ie. width of popularity bar
-          const timePct = formatPct(
-            stats.RelativeTimeAll || 0,
-            MaxRelativeTimeAll,
-          );
-
-          const finishPct = formatPct(
-            stats.KuskiCountF,
-            stats.KuskiCountAll,
-            0,
-          );
-
-          const lastDriven = formatDistance(
-            new Date((stats.LastDrivenAll || 0) * 1000),
-            new Date(),
-            { addSuffix: true },
-          );
-
-          return (
-            <TimeRow
-              key={r.LevelIndex}
-              onClick={e => {
-                e.preventDefault();
-                selectLevel(level === r.LevelIndex ? -1 : r.LevelIndex);
-                setLongName(r.Level.LongName);
-                setLevelName(r.Level.LevelName);
-              }}
-              selected={level === r.LevelIndex}
-            >
-              <ListCell>
-                <Level LevelIndex={r.LevelIndex} LevelData={r.Level} />
-              </ListCell>
-
-              <ListCell>{r.Level.LongName}</ListCell>
-
-              <ListCell>
-                {r.LevelBesttime && (
-                  <Kuski kuskiData={r.LevelBesttime.KuskiData} team flag />
-                )}
-              </ListCell>
-
-              <ListCell highlight={isHighlight}>
-                {r.LevelBesttime && <Time time={r.LevelBesttime.Time} />}
-                {isLegacy && (
-                  <span style={{ marginLeft: 10 }}>
-                    <LegacyIcon
-                      source={r.LevelBesttime.Source}
-                      show={showLegacyIcon}
-                    />
-                  </span>
-                )}
-              </ListCell>
-
-              {showMoreStats && <ListCell>{lastDriven}</ListCell>}
-
-              {showMoreStats && (
-                <ListCell>
-                  {stats.KuskiCountAll || 0}
-                  {` (${finishPct}%)`}
-                </ListCell>
-              )}
-
-              {showMoreStats && (
-                <ListCell>
-                  {stats.TimeAll ? formatTimeSpent(stats.TimeAll) : ''}
-                </ListCell>
-              )}
-
-              <ListCell>
-                <div style={{ minWidth: 100 }}>
-                  <Popularity
-                    widthPct={timePct}
-                    title={stats.TimeAll ? formatTimeSpent(stats.TimeAll) : ''}
-                  />
-                </div>
-              </ListCell>
-
-              {!showMoreStats && <ListCell />}
-            </TimeRow>
-          );
-        })}
         <TTRow>
           <ListCell />
           <ListCell />
