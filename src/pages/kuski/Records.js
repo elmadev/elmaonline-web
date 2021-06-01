@@ -25,6 +25,39 @@ const formatTimeSpent = time => {
   return hours.toLocaleString() + 'h';
 };
 
+// ie. table row
+const Record = ({ record }) => {
+  const stats = record.LevelStatsData || {};
+  const level = record.LevelData || {};
+
+  return (
+    <ListRow key={record.TimeIndex}>
+      <ListCell>
+        <Link to={`/levels/${level.LevelIndex}`}>{level.LevelName}</Link>
+      </ListCell>
+      <ListCell>{level.LongName}</ListCell>
+      <ListCell>
+        {stats.KuskiCountF}
+        {`/`}
+        {stats.KuskiCountAll}
+      </ListCell>
+      <ListCell>{stats.LeaderCount}</ListCell>
+      <ListCell>{formatTimeSpent(stats.TimeAll)}</ListCell>
+      <ListCell>
+        <LocalTime
+          date={new Date(record.Driven * 1000)}
+          format="ddd D MMM YYYY HH:mm:ss"
+          parse={undefined}
+        />
+      </ListCell>
+      <ListCell>
+        <Time time={record.Time} />
+      </ListCell>
+    </ListRow>
+  );
+};
+
+// records tab content
 const Records = ({ KuskiIndex, recordCount }) => {
   const [sort, setSort] = useState('Driven');
 
@@ -63,7 +96,7 @@ const Records = ({ KuskiIndex, recordCount }) => {
             setPageSize(e.target.value);
           }}
         />
-        <FormControl style={{ minWidth: 200 }}>
+        <StyledFormControl>
           <InputLabel id="records-sort">Sort By</InputLabel>
           <Select
             id="records-sort"
@@ -75,7 +108,7 @@ const Records = ({ KuskiIndex, recordCount }) => {
             <MenuItem value="LeaderCount">Leader Count</MenuItem>
             <MenuItem value="TimeAll">Time Played</MenuItem>
           </Select>
-        </FormControl>
+        </StyledFormControl>
       </Controls>
       <ListContainer>
         <ListHeader>
@@ -90,42 +123,17 @@ const Records = ({ KuskiIndex, recordCount }) => {
           <ListCell>Time</ListCell>
         </ListHeader>
 
-        {records.map(record => {
-          const stats = record.LevelStatsData || {};
-          const level = record.LevelData || {};
-
-          return (
-            <ListRow key={record.TimeIndex}>
-              <ListCell>
-                <Link to={`/levels/${level.LevelIndex}`}>
-                  {level.LevelName}
-                </Link>
-              </ListCell>
-              <ListCell>{level.LongName}</ListCell>
-              <ListCell>
-                {stats.KuskiCountF}
-                {`/`}
-                {stats.KuskiCountAll}
-              </ListCell>
-              <ListCell>{stats.LeaderCount}</ListCell>
-              <ListCell>{formatTimeSpent(stats.TimeAll)}</ListCell>
-              <ListCell>
-                <LocalTime
-                  date={new Date(record.Driven * 1000)}
-                  format="ddd D MMM YYYY HH:mm:ss"
-                  parse={undefined}
-                />
-              </ListCell>
-              <ListCell>
-                <Time time={record.Time} />
-              </ListCell>
-            </ListRow>
-          );
-        })}
+        {records.map(record => (
+          <Record record={record} />
+        ))}
       </ListContainer>
     </>
   );
 };
+
+const StyledFormControl = styled(FormControl)`
+  min-width: 200px;
+`;
 
 const Controls = styled.div`
   display: flex;
