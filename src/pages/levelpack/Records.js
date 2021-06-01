@@ -16,17 +16,6 @@ import formatDistance from 'date-fns/formatDistance';
 import Switch from 'components/Switch';
 import { Row } from 'components/Containers';
 
-const hasSource = records => {
-  if (records.length > 0) {
-    if (records[0].LevelBesttime) {
-      if (records[0].LevelBesttime.Source !== undefined) {
-        return true;
-      }
-    }
-  }
-  return false;
-};
-
 const Records = ({
   highlight,
   highlightWeeks,
@@ -45,9 +34,6 @@ const Records = ({
   if (recordsLoading) {
     return <Loading />;
   }
-
-  // eslint-disable-next-line no-unused-vars
-  const anyAreLegacy = hasSource(records);
 
   const MaxRelativeTimeAll = Math.max(
     ...Object.values(levelStats || {}).map(v => v.RelativeTimeAll),
