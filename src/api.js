@@ -173,6 +173,9 @@ export const IntBestTimes = kuskiIndex => {
   return api.get(`levelpack/internals/besttimes/${kuskiIndex}`);
 };
 
+export const LevelPacksByLevel = LevelIndex =>
+  api.get(`levelpack/byLevel/${+LevelIndex}`);
+
 // collections
 export const AddCollection = data =>
   api.post('levelpack/collections/add', data);
