@@ -45,7 +45,7 @@ class Time extends React.Component {
 
   render() {
     const { time, apples, thousands } = this.props;
-    if (!time && !apples) {
+    if (!time && !Number.isInteger(apples)) {
       return <span />;
     }
     if (typeof time === 'object') {
