@@ -52,6 +52,7 @@ const Level = ({ LevelId }) => {
     eoltimes,
     eolLoading,
     timeStats,
+    levelpacks,
     statsLoading,
     settings: { fancyMap },
     personalLeaderHistory,
@@ -161,8 +162,18 @@ const Level = ({ LevelId }) => {
                   </Download>
                   <LevelFullName>{level.LongName}</LevelFullName>
                   <br />
-                  {'Level ID: '}
-                  {`${LevelIndex}`}
+                  <div>{`Level ID: ${LevelIndex}`}</div>
+                  {levelpacks.length > 0 && (
+                    <div>
+                      {`Level Pack: `}
+                      {levelpacks.map((pack, index) => [
+                        index > 0 && ', ',
+                        <Link to={`/levels/packs/${pack.LevelPackName}`}>
+                          {pack.LevelPackName}
+                        </Link>,
+                      ])}
+                    </div>
+                  )}
                   {level.Legacy !== 0 && (
                     <div>
                       This level has legacy times imported from a third party
