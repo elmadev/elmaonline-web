@@ -106,7 +106,7 @@ export default function TopBarActions() {
             open={open}
             onClose={() => handleClose('')}
           >
-            <Nick>Kopaka</Nick>
+            <Nick>{username}</Nick>
             <Item onClick={() => handleClose(`/kuskis/${username}`)}>
               Profile
             </Item>

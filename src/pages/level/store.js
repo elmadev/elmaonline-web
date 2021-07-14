@@ -7,12 +7,14 @@ import {
   AllFinishedLevel,
   LevelTimeStats,
   LeaderHistory,
+  LevelPacksByLevel,
 } from 'api';
 
 export default {
   besttimes: [],
   besttimesLoading: false,
   level: {},
+  levelpacks: [],
   battlesForLevel: [],
   loading: true,
   allfinished: [],
@@ -52,18 +54,30 @@ export default {
     state.level = payload;
     state.loading = false;
   }),
+  setLevelPacks: action((state, payload) => {
+    state.levelpacks = payload;
+  }),
   setBattlesForLevel: action((state, payload) => {
     state.battlesForLevel = payload;
   }),
   getLevel: thunk(async (actions, payload) => {
-    const lev = await Level(payload);
-    if (lev.ok) {
-      actions.setLevel(lev.data);
-    }
-    const battles = await BattlesByLevel(payload);
-    if (battles.ok) {
-      actions.setBattlesForLevel(battles.data);
-    }
+    Level(payload).then(res => {
+      if (res.ok) {
+        actions.setLevel(res.data);
+      }
+    });
+
+    BattlesByLevel(payload).then(res => {
+      if (res.ok) {
+        actions.setBattlesForLevel(res.data);
+      }
+    });
+
+    LevelPacksByLevel(payload).then(res => {
+      if (res.ok) {
+        actions.setLevelPacks(res.data);
+      }
+    });
   }),
   setAllfinished: action((state, payload) => {
     state.allfinished = payload.times;

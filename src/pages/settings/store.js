@@ -82,8 +82,8 @@ export default {
   setSettings: action((state, payload) => {
     state.notifSettings = payload;
   }),
-  getUrl: thunk(async actions => {
-    const get = await DiscordAuthUrl();
+  getUrl: thunk(async (actions, payload) => {
+    const get = await DiscordAuthUrl({ url: payload });
     if (get.ok) {
       actions.setUrl(get.data.url);
     }
