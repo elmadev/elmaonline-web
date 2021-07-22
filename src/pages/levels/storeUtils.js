@@ -25,7 +25,7 @@ const sortPacks = (packsRef, favs, stats, sort) => {
     return { ...lp, Fav };
   });
 
-  if (!sort) {
+  if (sort === 'default') {
     return packs.sort((a, b) => {
       if (a.LevelPackName === 'Int') return -1;
       if (b.LevelPackName === 'Int') return 1;

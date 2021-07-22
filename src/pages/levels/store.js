@@ -24,12 +24,12 @@ export default {
         state.levelpacks,
         state.favs,
         state.stats,
-        state.sort,
+        state.sort || 'default',
       );
     },
   ),
-  // sort lives in URL. Component needs to pass along to store.
-  sort: '',
+  // sort lives in URL. Component passes it to store.
+  sort: 'default',
   setSort: action((state, payload) => {
     state.sort = payload;
   }),
