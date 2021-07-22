@@ -9,6 +9,7 @@ export const ListContainer = ({
   horizontalMargin,
   width,
   flex,
+  direction = 'row',
 }) => {
   return (
     <Container
@@ -17,6 +18,7 @@ export const ListContainer = ({
       horizontalMargin={horizontalMargin}
       width={width}
       flex={flex}
+      direction={direction}
     >
       {children}
     </Container>
@@ -44,6 +46,7 @@ const Container = styled.div`
     }
     ${Cell} {
       display: flex;
+      flex-direction: ${p.direction};
     }
   `};
 `;
@@ -100,7 +103,6 @@ const Header = styled.div`
   display: table-row;
   color: inherit;
   font-size: 14px;
-  padding: 10px;
   font-weight: 600;
 `;
 

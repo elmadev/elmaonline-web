@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import { FixedSizeList as List } from 'react-window';
+import useElementSize from 'utils/useWindowSize';
 import FavStar from './FavStar';
 import { formatTimeSpent, formatAttempts, formatPct } from 'utils/format';
 
@@ -13,9 +15,11 @@ const LevelpacksDetailed = ({
   addFav,
   removeFav,
 }) => {
+  const windowSize = useElementSize();
+  const listHeight = windowSize.height - 264;
   return (
     <Root>
-      <Table>
+      <Table flex direction="column">
         <ListHeader>
           <ListCell>
             <NewLineWrapper>Pack</NewLineWrapper>
@@ -49,107 +53,130 @@ const LevelpacksDetailed = ({
             </NewLineWrapper>
           </ListCell>
         </ListHeader>
-        {levelpacksSorted.map(p => {
-          const st = (stats && stats[p.LevelPackIndex]) || null;
+        <List
+          height={listHeight}
+          itemCount={levelpacksSorted.length}
+          itemSize={63}
+        >
+          {({ index, style }) => {
+            const p = levelpacksSorted[index];
+            const st = (stats && stats[p.LevelPackIndex]) || null;
 
-          const url = `/levels/packs/${p.LevelPackName}`;
+            const url = `/levels/packs/${p.LevelPackName}`;
 
-          const topRecordPct =
-            st && formatPct(st.TopRecordCount, st.LevelCountAll, 0);
+            const topRecordPct =
+              st && formatPct(st.TopRecordCount, st.LevelCountAll, 0);
 
-          return (
-            <ListRow key={p.LevelPackIndex}>
-              <ListCell to={url}>
-                <ShortName>{p.LevelPackName}</ShortName>
-                <LongName>{p.LevelPackLongName}</LongName>
-                {!st && (
-                  <NewLineWrapper>Level stats not available.</NewLineWrapper>
-                )}
-              </ListCell>
-              <ListCell>
-                <FavStar pack={p} {...{ loggedIn, addFav, removeFav }} />
-              </ListCell>
+            return (
+              <div style={style} key={p.LevelPackIndex}>
+                <Row>
+                  <ListCell to={url}>
+                    <ShortName>{p.LevelPackName}</ShortName>
+                    <LongName>{p.LevelPackLongName}</LongName>
+                  </ListCell>
+                  <ListCell>
+                    <FavStar pack={p} {...{ loggedIn, addFav, removeFav }} />
+                  </ListCell>
 
-              {!st && (
-                <>
-                  <ListCell />
-                  <ListCell />
-                  <ListCell />
-                  <ListCell />
-                </>
-              )}
-
-              {st &&
-                (() => {
-                  const timesPct = [
-                    ['D', formatPct(st.TimeD, st.TimeAll)],
-                    ['E', formatPct(st.TimeE, st.TimeAll)],
-                    ['F', formatPct(st.TimeF, st.TimeAll)],
-                  ];
-
-                  const attemptsPct = [
-                    ['D', formatPct(st.AttemptsD, st.AttemptsAll)],
-                    ['E', formatPct(st.AttemptsE, st.AttemptsAll)],
-                    ['F', formatPct(st.AttemptsF, st.AttemptsAll)],
-                  ];
-
-                  return (
+                  {!st && (
                     <>
-                      <ListCell to={url}>
-                        <NewLineWrapper>
-                          <span title={st.AttemptsAll.toLocaleString()}>
-                            {formatAttempts(st.AttemptsAll)}
-                          </span>
-                        </NewLineWrapper>
-                        <NewLineWrapper>
-                          {formatTimeSpent(st.TimeAll)}
-                        </NewLineWrapper>
-                      </ListCell>
-                      <ListCell to={url}>
-                        <NewLineWrapper>
-                          {attemptsPct[0][1]}
-                          {` / `}
-                          {attemptsPct[1][1]}
-                          {` / `}
-                          {attemptsPct[2][1]}
-                        </NewLineWrapper>
-                        <NewLineWrapper>
-                          {timesPct[0][1]}
-                          {` / `}
-                          {timesPct[1][1]}
-                          {` / `}
-                          {timesPct[2][1]}
-                        </NewLineWrapper>
-                      </ListCell>
+                      <ListCell />
                       <ListCell>
                         <NewLineWrapper>
-                          {st.LevelCountF || 0}
-                          {`/`}
-                          {st.LevelCountAll || 0}
-                          {` `}({Number(st.AvgKuskiPerLevel).toFixed(2)})
-                        </NewLineWrapper>
-                        {st.TopRecordKuskis &&
-                          st.TopRecordKuskis.map(k => (
-                            <NewLineWrapper key={k.KuskiIndex}>
-                              <Kuski kuskiData={k} flag={true} />
-                              {` (${st.TopRecordCount}) (${topRecordPct}%)`}
-                            </NewLineWrapper>
-                          ))}
-                      </ListCell>
-                      <ListCell to={url}>
-                        {st.MinRecordTime && <Time time={st.MinRecordTime} />}
-                        {` - `}
-                        {st.MaxRecordTime && <Time time={st.MaxRecordTime} />}
-                        <NewLineWrapper>
-                          {st.AvgRecordTime && <Time time={st.AvgRecordTime} />}
+                          Level stats not available.
                         </NewLineWrapper>
                       </ListCell>
+                      <ListCell />
+                      <ListCell />
                     </>
-                  );
-                })()}
-            </ListRow>
-          );
-        })}
+                  )}
+
+                  {st &&
+                    (() => {
+                      const timesPct = [
+                        ['D', formatPct(st.TimeD, st.TimeAll)],
+                        ['E', formatPct(st.TimeE, st.TimeAll)],
+                        ['F', formatPct(st.TimeF, st.TimeAll)],
+                      ];
+
+                      const attemptsPct = [
+                        ['D', formatPct(st.AttemptsD, st.AttemptsAll)],
+                        ['E', formatPct(st.AttemptsE, st.AttemptsAll)],
+                        ['F', formatPct(st.AttemptsF, st.AttemptsAll)],
+                      ];
+
+                      return (
+                        <>
+                          <ListCell to={url}>
+                            <NewLineWrapper>
+                              <span title={st.AttemptsAll.toLocaleString()}>
+                                {formatAttempts(st.AttemptsAll)}
+                              </span>
+                            </NewLineWrapper>
+                            <NewLineWrapper>
+                              {formatTimeSpent(st.TimeAll)}
+                            </NewLineWrapper>
+                          </ListCell>
+                          <ListCell to={url}>
+                            <NewLineWrapper>
+                              {attemptsPct[0][1]}
+                              {` / `}
+                              {attemptsPct[1][1]}
+                              {` / `}
+                              {attemptsPct[2][1]}
+                            </NewLineWrapper>
+                            <NewLineWrapper>
+                              {timesPct[0][1]}
+                              {` / `}
+                              {timesPct[1][1]}
+                              {` / `}
+                              {timesPct[2][1]}
+                            </NewLineWrapper>
+                          </ListCell>
+                          <ListCell>
+                            <NewLineWrapper>
+                              {st.LevelCountF || 0}
+                              {`/`}
+                              {st.LevelCountAll || 0}
+                              {` `}({Number(st.AvgKuskiPerLevel).toFixed(2)})
+                            </NewLineWrapper>
+                            {st.TopRecordKuskis && (
+                              <NewLineWrapper>
+                                {st.TopRecordKuskis.map(k => (
+                                  <>
+                                    <Kuski
+                                      key={k.KuskiIndex}
+                                      kuskiData={k}
+                                      flag={true}
+                                    />{' '}
+                                  </>
+                                ))}
+                                {` (${st.TopRecordCount}) (${topRecordPct}%)`}
+                              </NewLineWrapper>
+                            )}
+                          </ListCell>
+                          <ListCell to={url}>
+                            {st.MinRecordTime && (
+                              <Time time={st.MinRecordTime} />
+                            )}
+                            {` - `}
+                            {st.MaxRecordTime && (
+                              <Time time={st.MaxRecordTime} />
+                            )}
+                            <NewLineWrapper>
+                              {st.AvgRecordTime && (
+                                <Time time={st.AvgRecordTime} />
+                              )}
+                            </NewLineWrapper>
+                          </ListCell>
+                        </>
+                      );
+                    })()}
+                </Row>
+              </div>
+            );
+          }}
+        </List>
       </Table>
     </Root>
   );
@@ -160,6 +187,17 @@ const Root = styled.div``;
 const Table = styled(ListContainer)`
   margin-top: 10px;
   background: ${p => p.theme.paperBackground};
+`;
+
+const Row = styled(ListRow)`
+  height: 63px;
+  overflow-y: hidden;
+  :hover {
+    height: auto;
+    overflow-y: visible;
+    z-index: 10;
+    position: relative;
+  }
 `;
 
 const NewLineWrapper = styled.div`
