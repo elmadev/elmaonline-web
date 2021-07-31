@@ -1,14 +1,11 @@
 import React from 'react';
 import Layout, { Content } from 'components/Layout';
-// import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Tabs, Tab } from '@material-ui/core';
 import { useNavigate } from '@reach/router';
-import { Paper } from 'components/Paper';
+import TimesReplays from './TimesReplays';
 
 const MyContent = ({ tab }) => {
   const navigate = useNavigate();
-  // const { data } = useStoreState(state => state.MyContent);
-  // const { getData } = useStoreActions(actions => actions.MyContent);
 
   return (
     <Layout edge t="My Content">
@@ -24,9 +21,7 @@ const MyContent = ({ tab }) => {
         <Tab label="Uploaded Replays" value="replays" />
         <Tab label="Uploaded Files" value="files" />
       </Tabs>
-      <Content>
-        <Paper padding>{tab}</Paper>
-      </Content>
+      <Content>{!tab && <TimesReplays />}</Content>
     </Layout>
   );
 };

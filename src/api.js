@@ -59,6 +59,7 @@ export const Replays = ({ page, pageSize, tags, sortBy, order }) => {
     order,
   });
 };
+export const ShareTimeFile = data => api.post('replay/share', data);
 
 // country
 export const Country = () => api.get('country');
@@ -130,6 +131,7 @@ export const LeaderHistory = data => {
 };
 export const AllFinishedLevel = LevelIndex =>
   api.get(`allfinished/${LevelIndex}`);
+export const MyLatest = limit => api.get(`allfinished/mylatest/${limit}`);
 
 // levelpack
 export const LevelPacks = () => api.get('levelpack');

@@ -140,6 +140,7 @@ export const ListCell = ({
       right={right}
       highlight={highlight}
       onClick={() => onClick && onClick()}
+      pointer={onClick}
       verticalAlign={verticalAlign}
       textAlign={textAlign}
     >
@@ -168,7 +169,7 @@ const Cell = styled.span`
   justify-content: ${p => (p.right ? 'flex-end' : 'flex-start')};
   vertical-align: ${p => p.verticalAlign};
   text-align: ${p => p.textAlign};
-  ${p => p.onClick && 'cursor: pointer;'}
+  ${p => p.pointer && 'cursor: pointer;'}
   button {
     max-height: 20px;
   }

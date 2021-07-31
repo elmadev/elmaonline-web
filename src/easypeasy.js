@@ -33,6 +33,7 @@ import Battle from 'pages/battle/store';
 import Levels from 'pages/levels/store';
 import News from 'features/News/store';
 import FileUpload from 'pages/upload/store';
+import MyContent from 'pages/mycontent/store';
 import ReplayList from 'features/ReplayList/store';
 import ReplaySettings from 'features/ReplaySettings/store';
 import Notifications from 'features/Notifications/store';
@@ -74,6 +75,7 @@ export default {
   Login,
   ReplayList,
   FileUpload,
+  MyContent,
   Replays,
   Notifications,
   Page: {
