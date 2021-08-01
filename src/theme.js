@@ -24,6 +24,7 @@ const elmaGreenLight = {
   selectedColor: '#f5f5f5',
   highlightColor: '#dddddd',
   borderColor: '#e2e3e4',
+  errorColor: '#a20e2f',
 
   // battles
   ongoing: '#bae1ff',
@@ -71,6 +72,7 @@ const powerPinkDark = {
   highlightColor: '#1d3d49',
   hoverColor: '#0C191E',
   borderColor: '#37474f',
+  errorColor: '#b0ffbf',
 
   //battles
   ongoing: 'rgba(186, 225, 255, .2)',
@@ -95,6 +97,7 @@ const oceanBlueDark = {
   secondaryLight: '#ffad42',
   secondaryDark: '#bb4d00',
   linkColor: '#63a4ff',
+  errorColor: '#e97dc3',
 };
 
 const oceanBlueLight = {
