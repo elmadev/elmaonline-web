@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { useMediaQuery, Grid } from '@material-ui/core';
+import { useMediaQuery, Grid, Switch } from '@material-ui/core';
 import LocalTime from 'components/LocalTime';
 import Link from 'components/Link';
 import SearchBar from 'components/SearchBar';
 import Kuski from 'components/Kuski';
 import queryString from 'query-string';
 import { useLocation } from '@reach/router';
-import { Switch } from '@material-ui/core';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import { mod } from 'utils/nick';
 import { forEach } from 'lodash';
@@ -82,7 +81,11 @@ const Search = () => {
     if (mod() === 1 && showLocked) {
       const u = {};
       forEach(levels, l => {
-        u[l.LevelIndex] = { Hidden: l.Hidden, Locked: l.Locked };
+        u[l.LevelIndex] = {
+          Hidden: l.Hidden,
+          Locked: l.Locked,
+          HardLocked: l.HardLocked,
+        };
       });
       setUpdated(u);
     }
@@ -105,6 +108,18 @@ const Search = () => {
     setUpdated({
       ...updated,
       [data.LevelIndex]: { ...updated[data.LevelIndex], Locked: newValue },
+    });
+  };
+
+  const updateHardLocked = (data, oldValue) => {
+    const newValue = 1 - oldValue;
+    changeLevel({
+      LevelIndex: data.LevelIndex,
+      update: { HardLocked: newValue },
+    });
+    setUpdated({
+      ...updated,
+      [data.LevelIndex]: { ...updated[data.LevelIndex], HardLocked: newValue },
     });
   };
 
@@ -158,6 +173,7 @@ const Search = () => {
                         {mod() === 1 && showLocked && (
                           <>
                             <ListCell width={50}>Locked</ListCell>
+                            <ListCell width={50}>Hard Locked</ListCell>
                             <ListCell width={50}>Hidden</ListCell>
                           </>
                         )}
@@ -209,6 +225,22 @@ const Search = () => {
                                     updateLocked(
                                       r,
                                       updated[r.LevelIndex].Locked,
+                                    )
+                                  }
+                                  color="primary"
+                                />
+                              </ListCell>
+                              <ListCell width={50}>
+                                <SwitchThin
+                                  checked={
+                                    updated[r.LevelIndex]
+                                      ? updated[r.LevelIndex].HardLocked === 1
+                                      : false
+                                  }
+                                  onChange={() =>
+                                    updateHardLocked(
+                                      r,
+                                      updated[r.LevelIndex].HardLocked,
                                     )
                                   }
                                   color="primary"

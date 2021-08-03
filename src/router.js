@@ -30,14 +30,14 @@ import Replay from 'pages/replay';
 import Replays from 'pages/replays';
 import Search from 'pages/search';
 import Settings from 'pages/settings';
+import MyContent from 'pages/mycontent';
 import Team from 'pages/team';
 import Teams from 'pages/teams';
 import Upload from 'pages/upload';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { useStoreState, useStoreRehydrated } from 'easy-peasy';
 import { themes, muiTheme } from './theme';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { ThemeProvider } from 'styled-components';
 
 const Router100 = styled(Router)`
   height: 100%;
@@ -89,6 +89,8 @@ const Routes = () => {
           <Search path="search" />
           <Settings path="settings" tab="" />
           <Settings path="settings/:tab" />
+          <MyContent path="mycontent" tab="" />
+          <MyContent path="mycontent/:tab" />
           <Team path="team/:TeamName" />
           <Teams path="teams" />
           <Upload path="up" />

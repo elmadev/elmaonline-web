@@ -59,6 +59,7 @@ export const Replays = ({ page, pageSize, tags, sortBy, order }) => {
     order,
   });
 };
+export const ShareTimeFile = data => api.post('replay/share', data);
 
 // country
 export const Country = () => api.get('country');
@@ -130,6 +131,7 @@ export const LeaderHistory = data => {
 };
 export const AllFinishedLevel = LevelIndex =>
   api.get(`allfinished/${LevelIndex}`);
+export const MyLatest = limit => api.get(`allfinished/mylatest/${limit}`);
 
 // levelpack
 export const LevelPacks = () => api.get('levelpack');
@@ -298,3 +300,6 @@ export const DeleteTag = TagIndex => api.delete(`tag/${TagIndex}`);
 export const GetNotifications = () => api.get(`notification`);
 export const GetNotificationsCount = () => api.get(`notification/count`);
 export const MarkNotificationsSeen = () => api.post(`notification/markSeen`);
+
+// status
+export const SystemStatus = () => api.get('news/status');

@@ -1,11 +1,8 @@
 import React from 'react';
 import Recplayer from 'components/Recplayer';
 import { Level } from 'components/Names';
-import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Header from 'components/Header';
-import Link from 'components/Link';
-import Tags from 'components/Tags';
 import LocalTime from 'components/LocalTime';
 import CloseIcon from '@material-ui/icons/HighlightOffOutlined';
 import { Grid, Box, Typography, Backdrop } from '@material-ui/core';
@@ -14,25 +11,27 @@ import styled from 'styled-components';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 
+const Finished = {
+  F: 'Finished',
+  D: 'Died',
+  E: 'Escaped',
+  X: 'Cheated',
+  S: 'Spied',
+  B: 'Apple Bugged',
+};
+
 export default function Preview({
   previewRec,
   setPreviewRec,
   nextReplay,
   previousReplay,
 }) {
-  const getRecUri = () => {
-    if (previewRec.UUID.substring(0, 5) === 'local') {
-      return `${config.url}temp/${previewRec.UUID}-${previewRec.RecFileName}`;
-    }
-    return `${config.s3Url}replays/${previewRec.UUID}/${previewRec.RecFileName}`;
-  };
-
   return (
     <Backdrop open={true} style={{ zIndex: 100 }}>
       <Container container>
         <Grid item sm={8}>
           <Recplayer
-            rec={getRecUri()}
+            rec={`${config.s3Url}time/${previewRec.TimeFileData.UUID}-${previewRec.TimeFileData.MD5}/${previewRec.TimeIndex}.rec`}
             lev={`${config.dlUrl}level/${previewRec.LevelIndex}?UUID=${previewRec.UUID}`}
             controls
             autoPlay="yes"
@@ -44,9 +43,11 @@ export default function Preview({
               <Box display="flex">
                 <Header h2>
                   <Previous onClick={previousReplay} />
-                  <Link to={`/r/${previewRec.UUID}`}>
-                    {previewRec.RecFileName}
-                  </Link>
+                  <a
+                    href={`${config.s3Url}time/${previewRec.TimeFileData.UUID}-${previewRec.TimeFileData.MD5}/${previewRec.TimeIndex}.rec`}
+                  >
+                    Download
+                  </a>
                   <Next onClick={nextReplay} />
                 </Header>
                 <Close
@@ -55,30 +56,46 @@ export default function Preview({
                 />
               </Box>
               <p>
-                <Time thousands time={previewRec.ReplayTime} /> by{' '}
-                {previewRec.DrivenByData ? (
-                  <Kuski kuskiData={previewRec.DrivenByData} />
-                ) : (
-                  previewRec.DrivenByText || 'Unknown'
-                )}{' '}
-                in{' '}
+                <Time time={previewRec.Time} /> in{' '}
                 <Level
                   LevelData={previewRec.LevelData}
                   LevelIndex={previewRec.LevelIndex}
                 />
               </p>
-              <Tags tags={previewRec.Tags.map(tag => tag.Name)} />
-              {previewRec.Comment && <Comment>{previewRec.Comment}</Comment>}
+              <Comment>
+                {Finished[previewRec.Finished]}
+                <br />
+                {previewRec.Apples} Apples
+                <br />
+                {previewRec.MaxSpeed / 100} Max speed
+                <br />
+                <Time time={previewRec.ThrottleTime} /> Throttle time
+                <br />
+                <Time time={previewRec.BrakeTime} /> Brake time
+                <br />
+                {previewRec.LeftVolt} Left volts
+                <br />
+                {previewRec.RightVolt} Right volts
+                <br />
+                {previewRec.SuperVolt} Super volts
+                <br />
+                {previewRec.Turn} Turns
+                <br />
+                {previewRec.OneWheel === 1 && (
+                  <>
+                    One Wheel
+                    <br />
+                  </>
+                )}
+                {previewRec.Drunk === 1 && <>Drunk</>}
+              </Comment>
             </Box>
 
             <Box p={2}>
               <Typography variant="caption" display="block">
-                Uploaded by{' '}
-                {previewRec.UploadedByData
-                  ? previewRec.UploadedByData.Kuski
-                  : 'Unknown'}{' '}
+                Driven{' '}
                 <LocalTime
-                  date={previewRec.Uploaded}
+                  date={previewRec.Driven}
                   format="YYYY-MM-DD HH:mm:ss"
                   parse="X"
                 />
@@ -100,7 +117,6 @@ const Container = styled(Grid)`
 `;
 
 const Comment = styled.blockquote`
-  border-left: 4px solid ${p => p.theme.pageBackgroundDark};
   background: ${p => p.theme.pageBackground};
   margin: 1em 5px;
   padding: 0.5em 5px;

@@ -92,6 +92,7 @@ const Register = () => {
                 fullWidth
                 onKeyPress={e => onEnter(e)}
                 variant="outlined"
+                inputProps={{ maxLength: 15 }}
               />
             </TextBox>
             <TextBox>
@@ -106,6 +107,7 @@ const Register = () => {
                 fullWidth
                 onKeyPress={e => onEnter(e)}
                 variant="outlined"
+                inputProps={{ maxLength: 26 }}
               />
             </TextBox>
             <TextBox>
@@ -120,6 +122,7 @@ const Register = () => {
                 fullWidth
                 onKeyPress={e => onEnter(e)}
                 variant="outlined"
+                inputProps={{ maxLength: 26 }}
               />
             </TextBox>
             <TextBox>
@@ -132,6 +135,7 @@ const Register = () => {
                 fullWidth
                 onKeyPress={e => onEnter(e)}
                 variant="outlined"
+                inputProps={{ maxLength: 9 }}
               />
             </TextBox>
             <TextBox>
@@ -144,6 +148,7 @@ const Register = () => {
                 fullWidth
                 onKeyPress={e => onEnter(e)}
                 variant="outlined"
+                inputProps={{ maxLength: 255 }}
               />
             </TextBox>
             <TextBox>
