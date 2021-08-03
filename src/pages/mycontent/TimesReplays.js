@@ -1,22 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { Button } from '@material-ui/core';
+import {
+  Button as MuiButton,
+  Backdrop,
+  FormControlLabel,
+  Checkbox,
+  TextField,
+  Typography,
+  Chip,
+} from '@material-ui/core';
 import { Paper } from 'components/Paper';
+import { Row } from 'components/Containers';
 import Time from 'components/Time';
 import LocalTime from 'components/LocalTime';
 import { Level } from 'components/Names';
-import { PlayArrow, Share } from '@material-ui/icons';
+import {
+  PlayArrow,
+  Share,
+  HighlightOffOutlined as CloseIcon,
+} from '@material-ui/icons';
+import styled from 'styled-components';
 import config from 'config';
 import { FixedSizeList as List } from 'react-window';
 import { ListContainer, ListCell, ListRow, ListHeader } from 'components/List';
 import useElementSize from 'utils/useWindowSize';
+import Link from 'components/Link';
+import { nick } from 'utils/nick';
+import Button from 'components/Buttons';
+import { xor } from 'lodash';
 import Preview from './Preview';
 
 const TimesReplays = () => {
   const [hover, setHover] = useState(0);
   const [replay, openReplay] = useState(null);
   const [replayIndex, setReplayIndex] = useState(0);
+  const [share, setShare] = useState(null);
   const { timesAndReplays } = useStoreState(state => state.MyContent);
+  const { getTagOptions } = useStoreActions(actions => actions.Upload);
+  const { tagOptions } = useStoreState(state => state.Upload);
   const { getTimesAndReplays, shareTimeFile } = useStoreActions(
     actions => actions.MyContent,
   );
@@ -24,6 +45,7 @@ const TimesReplays = () => {
   const listHeight = windowSize.height - 169;
   useEffect(() => {
     getTimesAndReplays(100);
+    getTagOptions();
   }, []);
 
   const close = () => {
@@ -59,12 +81,37 @@ const TimesReplays = () => {
     setReplayIndex(prev);
   };
 
-  const shareReplay = rec => {
-    shareTimeFile({
-      ...rec,
-      Unlisted: 0,
-      Comment: '',
+  const selectToShare = rec => {
+    setShare({
+      time: rec,
+      comment: '',
+      hide: false,
+      unlisted: false,
+      tags: [],
     });
+  };
+
+  const shareReplay = () => {
+    shareTimeFile({
+      ...share.time,
+      Unlisted: share.unlisted,
+      Hide: share.hide,
+      Comment: share.comment,
+      Tags: share.tags,
+    });
+    setShare(null);
+  };
+
+  const replayUrl = time => {
+    if (!time.TimeFileData) {
+      return '';
+    }
+    const timeAsString = `${time.Time}`;
+    const RecFileName = `${time.LevelData.LevelName}${nick().substring(
+      0,
+      Math.min(15 - (time.LevelData.LevelName.length + timeAsString.length), 4),
+    )}${timeAsString}`;
+    return `/r/${time.TimeFileData.UUID}/${RecFileName}`;
   };
 
   return (
@@ -122,7 +169,7 @@ const TimesReplays = () => {
                             >
                               Download
                             </a>
-                            <Button
+                            <MuiButton
                               title="View"
                               onClick={() => {
                                 openReplay(time);
@@ -130,15 +177,22 @@ const TimesReplays = () => {
                               }}
                             >
                               <PlayArrow />
-                            </Button>
-                            <Button
-                              title="Share"
-                              onClick={() => {
-                                shareReplay(time);
-                              }}
-                            >
-                              <Share />
-                            </Button>
+                            </MuiButton>
+                            {time.TimeFileData.Shared === 0 && (
+                              <MuiButton
+                                title="Share"
+                                onClick={() => {
+                                  selectToShare(time);
+                                }}
+                              >
+                                <Share />
+                              </MuiButton>
+                            )}
+                            {time.TimeFileData.Shared === 1 && (
+                              <Link to={replayUrl(time)}>
+                                <div>Go to replay page</div>
+                              </Link>
+                            )}
                           </>
                         )}
                       </ListCell>
@@ -158,8 +212,122 @@ const TimesReplays = () => {
           previousReplay={() => previousReplay()}
         />
       )}
+      {share && (
+        <Backdrop open={true} style={{ zIndex: 100 }}>
+          <Container>
+            <Row jc="space-between">
+              <div>
+                Share <Time time={share.time.Time} /> in{' '}
+                <Level
+                  LevelIndex={share.time.LevelIndex}
+                  LevelData={share.time.LevelData}
+                />{' '}
+                driven at{' '}
+                <LocalTime
+                  date={share.time.Driven}
+                  format="ddd D MMM YYYY HH:mm:ss"
+                  parse="X"
+                />
+              </div>
+              <Close onClick={() => setShare(null)} />
+            </Row>
+            <div>
+              <TextField
+                id="Comment"
+                multiline
+                label="Comment"
+                value={share ? share.comment : ''}
+                onChange={e => setShare({ ...share, comment: e.target.value })}
+                margin="normal"
+              />
+            </div>
+            <div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={share ? share.unlisted : false}
+                    onChange={e =>
+                      setShare({ ...share, unlisted: !share.unlisted })
+                    }
+                    value="unlisted"
+                    color="primary"
+                  />
+                }
+                label="Unlisted"
+              />
+            </div>
+            <div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={share ? share.hide : false}
+                    onChange={e => setShare({ ...share, hide: !share.hide })}
+                    value="hide"
+                    color="primary"
+                  />
+                }
+                label="Hide in latest replays"
+              />
+            </div>
+            <Typography color="textSecondary">Tags</Typography>
+            <div>
+              {tagOptions.map(option => {
+                if (share.tags.includes(option)) {
+                  return (
+                    <Chip
+                      label={option.Name}
+                      onDelete={() =>
+                        setShare({
+                          ...share,
+                          tags: xor(share.tags, [option]),
+                        })
+                      }
+                      color="primary"
+                      style={{ margin: 4 }}
+                    />
+                  );
+                } else {
+                  return (
+                    <Chip
+                      label={option.Name}
+                      onClick={() =>
+                        setShare({
+                          ...share,
+                          tags: xor(share.tags, [option]),
+                        })
+                      }
+                      style={{ margin: 4 }}
+                    />
+                  );
+                }
+              })}
+            </div>
+            <Button margin="6px" onClick={() => shareReplay()}>
+              Share
+            </Button>
+          </Container>
+        </Backdrop>
+      )}
     </>
   );
 };
+
+const Close = styled(CloseIcon)`
+  cursor: pointer;
+  color: ${p => p.theme.lightTextColor};
+
+  :hover {
+    color: red;
+  }
+`;
+
+const Container = styled.div`
+  background: ${p => p.theme.paperBackground};
+  width: 50%;
+  @media (max-width: 730px) {
+    width: 100%;
+  }
+  padding: ${p => p.theme.padMedium};
+`;
 
 export default TimesReplays;

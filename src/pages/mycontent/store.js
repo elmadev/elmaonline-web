@@ -16,7 +16,7 @@ export default {
   shareTimeFile: thunk(async (actions, payload) => {
     const post = await ShareTimeFile(payload);
     if (post.ok) {
-      // ?
+      actions.getTimesAndReplays(100);
     }
   }),
 };
