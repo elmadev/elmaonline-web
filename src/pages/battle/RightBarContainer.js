@@ -35,7 +35,7 @@ const crippleOptions = battle => {
 };
 
 const RightBarContainer = props => {
-  const { allBattleTimes, battle, aborted } = props;
+  const { allBattleTimes, battle, aborted, openReplay } = props;
   const navigate = useNavigate();
 
   return (
@@ -115,7 +115,11 @@ const RightBarContainer = props => {
           </AccordionSummary>
           <AccordionDetails>
             {allBattleTimes !== null && allBattleTimes !== [] ? (
-              <LeaderHistory allFinished={allBattleTimes} />
+              <LeaderHistory
+                allFinished={allBattleTimes}
+                openReplay={TimeIndex => openReplay(TimeIndex)}
+                started={battle.Started}
+              />
             ) : null}
           </AccordionDetails>
         </Accordion>

@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import styled from 'styled-components';
-import { Select, MenuItem } from '@material-ui/core';
+import { Select, MenuItem, Button } from '@material-ui/core';
+import { PlayArrow } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import { isEmpty } from 'lodash';
@@ -38,7 +39,8 @@ const SpecialResult = (time, type) => {
 
 const LevelStatsContainer = props => {
   const [rankingSelect, setRankingSelect] = useState('All');
-  const { battle, rankingHistory, runStats } = props;
+  const [hover, setHover] = useState(0);
+  const { battle, rankingHistory, runStats, openReplay } = props;
 
   if (!battle) return <Root>loading</Root>;
   if (runStats)
@@ -91,7 +93,15 @@ const LevelStatsContainer = props => {
 
                 return (
                   <Fragment key={r.KuskiIndex}>
-                    <ListRow>
+                    <ListRow
+                      onHover={hovering => {
+                        if (hovering) {
+                          setHover(r.BattleTimeIndex);
+                        } else {
+                          setHover(0);
+                        }
+                      }}
+                    >
                       <ListCell width={30}>{i + 1}.</ListCell>
                       <ListCell width={battle.Multi === 1 ? 300 : 200}>
                         <Kuski kuskiData={r.KuskiData} flag team />
@@ -108,6 +118,14 @@ const LevelStatsContainer = props => {
                           <Time time={r.Time} apples={r.Apples} />
                         ) : (
                           SpecialResult(r.Time, battle.BattleType)
+                        )}
+                        {hover === r.BattleTimeIndex && (
+                          <Button
+                            title="View"
+                            onClick={() => openReplay(r.TimeIndex)}
+                          >
+                            <PlayArrow />
+                          </Button>
                         )}
                       </ListCell>
                       <ListCell right>

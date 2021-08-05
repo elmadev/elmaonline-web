@@ -1,8 +1,10 @@
 import React from 'react';
 import Time from 'components/Time';
 import LocalTime from 'components/LocalTime';
+import { PlayArrow } from '@material-ui/icons';
 import styled from 'styled-components';
 import Loading from 'components/Loading';
+import { formatDistanceStrict } from 'date-fns';
 
 const TimelineLine = styled.span`
   position: absolute;
@@ -35,6 +37,18 @@ const TimeDevelopmentRow = styled.div`
 
   &:first-child:last-child ${TimelineLine} {
     display: none;
+  }
+
+  svg {
+    visibility: hidden;
+    font-size: 20px;
+    cursor: pointer;
+    display: block;
+  }
+  :hover {
+    svg {
+      visibility: visible;
+    }
   }
 `;
 
@@ -86,7 +100,12 @@ const Container = styled.div`
   padding: 20px;
 `;
 
-export default function LeaderHistory({ allFinished, loading }) {
+export default function LeaderHistory({
+  allFinished,
+  loading,
+  openReplay,
+  started,
+}) {
   if (loading) return <Loading />;
 
   return (
@@ -121,12 +140,26 @@ export default function LeaderHistory({ allFinished, loading }) {
               </TimeDevelopmentTime>
               <TimeDevelopmentKuski>{b.KuskiData.Kuski}</TimeDevelopmentKuski>
               <TimeDevelopmentLocalTime>
-                <LocalTime
-                  date={b.Driven}
-                  format="ddd D MMM YYYY HH:mm:ss"
-                  parse="X"
-                />
+                {started ? (
+                  <>
+                    {formatDistanceStrict(b.Driven * 1000, started * 1000, {
+                      addSuffix: true,
+                    })}
+                  </>
+                ) : (
+                  <LocalTime
+                    date={b.Driven}
+                    format="ddd D MMM YYYY HH:mm:ss"
+                    parse="X"
+                  />
+                )}
               </TimeDevelopmentLocalTime>
+              {openReplay && (
+                <PlayArrow
+                  title="View"
+                  onClick={() => openReplay(b.TimeIndex)}
+                />
+              )}
             </TimeDevelopmentRow>
           ))}
       </TimeDevelopment>

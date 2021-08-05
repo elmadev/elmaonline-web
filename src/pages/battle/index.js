@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import PropTypes from 'prop-types';
 import { groupBy, mapValues, sumBy, filter } from 'lodash';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
+import config from 'config';
 import Time from '../../components/Time';
 import Kuski from '../../components/Kuski.js';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -58,18 +59,21 @@ const getWinnerData = battle => {
 
 const Battle = ({ BattleId }) => {
   const BattleIndex = parseInt(BattleId, 10);
+  const [replayUrl, setReplayUrl] = useState('');
   let runStats = null;
   const {
     allBattleTimes,
     battle,
     rankingHistory,
     allBattleRuns,
+    replays,
   } = useStoreState(state => state.Battle);
   const {
     getAllBattleTimes,
     getBattle,
     getRankingHistoryByBattle,
     getAllBattleRuns,
+    getReplays,
   } = useStoreActions(state => state.Battle);
 
   useEffect(() => {
@@ -78,6 +82,7 @@ const Battle = ({ BattleId }) => {
     getAllBattleRuns(BattleIndex);
     getBattle(BattleIndex);
     getRankingHistoryByBattle(BattleIndex);
+    getReplays(BattleIndex);
   }, [BattleIndex]);
 
   if (allBattleRuns !== null) runStats = runData(allBattleRuns);
@@ -87,6 +92,13 @@ const Battle = ({ BattleId }) => {
   const winner = getWinnerData(battle);
 
   const showWinnerTitle = useMediaQuery('(max-width: 1000px)');
+
+  const openReplay = TimeIndex => {
+    const TimeFileData = replays.find(r => r.TimeIndex === TimeIndex);
+    setReplayUrl(
+      `${config.s3Url}time/${TimeFileData.UUID}-${TimeFileData.MD5}/${TimeIndex}.rec`,
+    );
+  };
 
   return (
     <Layout
@@ -112,6 +124,7 @@ const Battle = ({ BattleId }) => {
             BattleIndex={BattleIndex}
             levelIndex={battle.LevelIndex}
             battleStatus={battleStatus(battle)}
+            replayUrl={replayUrl}
           />
         ) : (
           <div />
@@ -121,12 +134,14 @@ const Battle = ({ BattleId }) => {
             battle={battle}
             allBattleTimes={allBattleTimes}
             aborted={battle.Aborted}
+            openReplay={TimeIndex => openReplay(TimeIndex)}
           />
         ) : (
           <div />
         )}
         {battle && rankingHistory ? (
           <LevelStatsContainer
+            openReplay={TimeIndex => openReplay(TimeIndex)}
             battle={battle}
             rankingHistory={rankingHistory}
             runStats={runStats}

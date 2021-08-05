@@ -222,6 +222,8 @@ export const AllBattleRuns = BattleIndex =>
   api.get(`battle/allRuns/${BattleIndex}`);
 export const BattleListPeriod = data =>
   api.get(`battle/byPeriod/${data.start}/${data.end}/${data.limit}`);
+export const BattleReplays = BattleIndex =>
+  api.get(`battle/replays/${BattleIndex}`);
 
 // players
 export const PlayersSearch = data =>

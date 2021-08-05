@@ -13,7 +13,7 @@ const RecView = props => {
 
   const isRehydrated = useStoreRehydrated();
 
-  const { isWindow, BattleIndex, levelIndex, battleStatus } = props;
+  const { isWindow, BattleIndex, levelIndex, battleStatus, replayUrl } = props;
 
   const { toggleRecAutoplay } = useStoreActions(actions => actions.Battle);
 
@@ -30,7 +30,9 @@ const RecView = props => {
               <>
                 {isWindow && battleStatus !== 'Queued' && (
                   <Recplayer
-                    rec={`${config.dlUrl}battlereplay/${BattleIndex}`}
+                    rec={
+                      replayUrl || `${config.dlUrl}battlereplay/${BattleIndex}`
+                    }
                     lev={`${config.dlUrl}level/${levelIndex}`}
                     autoPlay={autoPlayRecs ? 'if-visible' : 'no'}
                     controls
