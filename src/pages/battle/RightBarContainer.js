@@ -117,7 +117,9 @@ const RightBarContainer = props => {
             {allBattleTimes !== null && allBattleTimes !== [] ? (
               <LeaderHistory
                 allFinished={allBattleTimes}
-                openReplay={TimeIndex => openReplay(TimeIndex)}
+                openReplay={
+                  openReplay ? TimeIndex => openReplay(TimeIndex) : null
+                }
                 started={battle.Started}
               />
             ) : null}

@@ -26,6 +26,7 @@ const TimeDevelopmentRow = styled.div`
   display: table-row;
   vertical-align: middle;
   position: relative;
+  cursor: ${p => (p.pointer ? 'pointer' : 'auto')};
 
   &:first-child ${TimelineLine} {
     top: 50%;
@@ -118,7 +119,11 @@ export default function LeaderHistory({
             return acc;
           }, [])
           .map((b, i, a) => (
-            <TimeDevelopmentRow key={b.TimeIndex}>
+            <TimeDevelopmentRow
+              pointer={openReplay}
+              onClick={openReplay ? () => openReplay(b) : null}
+              key={b.TimeIndex}
+            >
               <TimeDiff>
                 {a.length > 1 && !a[i + 1] && 'Winner'}
                 {a[i - 1] && (
@@ -154,12 +159,7 @@ export default function LeaderHistory({
                   />
                 )}
               </TimeDevelopmentLocalTime>
-              {openReplay && (
-                <PlayArrow
-                  title="View"
-                  onClick={() => openReplay(b.TimeIndex)}
-                />
-              )}
+              {openReplay && <PlayArrow title="View" />}
             </TimeDevelopmentRow>
           ))}
       </TimeDevelopment>

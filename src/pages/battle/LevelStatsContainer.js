@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import styled from 'styled-components';
-import { Select, MenuItem, Button } from '@material-ui/core';
+import { Select, MenuItem } from '@material-ui/core';
 import { PlayArrow } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
@@ -39,7 +39,6 @@ const SpecialResult = (time, type) => {
 
 const LevelStatsContainer = props => {
   const [rankingSelect, setRankingSelect] = useState('All');
-  const [hover, setHover] = useState(0);
   const { battle, rankingHistory, runStats, openReplay } = props;
 
   if (!battle) return <Root>loading</Root>;
@@ -93,14 +92,9 @@ const LevelStatsContainer = props => {
 
                 return (
                   <Fragment key={r.KuskiIndex}>
-                    <ListRow
-                      onHover={hovering => {
-                        if (hovering) {
-                          setHover(r.BattleTimeIndex);
-                        } else {
-                          setHover(0);
-                        }
-                      }}
+                    <Row
+                      showArrow={openReplay}
+                      onClick={openReplay ? () => openReplay(r) : null}
                     >
                       <ListCell width={30}>{i + 1}.</ListCell>
                       <ListCell width={battle.Multi === 1 ? 300 : 200}>
@@ -119,14 +113,7 @@ const LevelStatsContainer = props => {
                         ) : (
                           SpecialResult(r.Time, battle.BattleType)
                         )}
-                        {hover === r.BattleTimeIndex && (
-                          <Button
-                            title="View"
-                            onClick={() => openReplay(r.TimeIndex)}
-                          >
-                            <PlayArrow />
-                          </Button>
-                        )}
+                        <PlayArrow />
                       </ListCell>
                       <ListCell right>
                         {runStatsForKuski ? (
@@ -155,7 +142,7 @@ const LevelStatsContainer = props => {
                           />
                         )}
                       </ListCell>
-                    </ListRow>
+                    </Row>
                   </Fragment>
                 );
               })}
@@ -175,6 +162,19 @@ const Root = styled.div`
   @media screen and (max-width: 1100px) {
     float: none;
     width: 100%;
+  }
+`;
+
+const Row = styled(ListRow)`
+  svg {
+    font-size: 20px;
+    display: ${p => (p.showArrow ? 'inline-block' : 'none')};
+    visibility: hidden;
+  }
+  :hover {
+    svg {
+      visibility: visible;
+    }
   }
 `;
 
