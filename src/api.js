@@ -133,6 +133,19 @@ export const AllFinishedLevel = LevelIndex =>
   api.get(`allfinished/${LevelIndex}`);
 export const MyLatest = limit => api.get(`allfinished/mylatest/${limit}`);
 
+// crippled
+export const CrippledTimes = (LevelIndex, cripple, limit, all, limitAll) =>
+  api.get(
+    `crippled/bestTimes/${LevelIndex}/${cripple}/${limit}?all=${
+      all ? 1 : 0
+    }&limitAll=${limitAll}`,
+  );
+export const CrippledPersonal = (LevelIndex, KuskiIndex = 0, cripple, limit) =>
+  api.get(`crippled/personal/${LevelIndex}/${KuskiIndex}/${cripple}/${limit}`);
+
+export const CrippledTimeStats = (LevelIndex, KuskiIndex = 0, cripple) =>
+  api.get(`crippled/timeStats/${LevelIndex}/${KuskiIndex}/${cripple}`);
+
 // levelpack
 export const LevelPacks = () => api.get('levelpack');
 export const LevelPack = LevelPackName => api.get(`levelpack/${LevelPackName}`);
