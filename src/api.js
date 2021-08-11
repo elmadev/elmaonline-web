@@ -131,7 +131,10 @@ export const LeaderHistory = data => {
 };
 export const AllFinishedLevel = LevelIndex =>
   api.get(`allfinished/${LevelIndex}`);
-export const MyLatest = limit => api.get(`allfinished/mylatest/${limit}`);
+export const MyLatest = data =>
+  api.get(
+    `allfinished/mylatest/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,
+  );
 
 // levelpack
 export const LevelPacks = () => api.get('levelpack');

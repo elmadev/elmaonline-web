@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { InputBase } from '@material-ui/core';
 import Link from 'components/Link';
 
 export const ListContainer = ({
@@ -172,5 +173,46 @@ const Cell = styled.span`
   ${p => p.pointer && 'cursor: pointer;'}
   button {
     max-height: 20px;
+  }
+`;
+
+export const ListInput = ({
+  label,
+  value,
+  onChange,
+  date,
+  maxLength,
+  onEnter,
+}) => {
+  return (
+    <ListCell>
+      <Input
+        type={date ? 'date' : 'text'}
+        placeholder={label}
+        value={value}
+        onChange={e => onChange && onChange(e.target.value)}
+        inputProps={{ maxLength }}
+        title={label}
+        onKeyUp={e => {
+          if (e.key === 'Enter') {
+            if (onEnter) {
+              onEnter(e.target.value);
+            }
+          }
+          if (e.key === 'Escape' && onChange) {
+            onChange('');
+            onEnter('');
+          }
+        }}
+      />
+    </ListCell>
+  );
+};
+
+const Input = styled(InputBase)`
+  && {
+    input {
+      padding: 0;
+    }
   }
 `;

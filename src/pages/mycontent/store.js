@@ -19,4 +19,12 @@ export default {
       actions.getTimesAndReplays(100);
     }
   }),
+  search: {
+    level: '',
+    from: '',
+    to: '',
+  },
+  setSearch: action((state, payload) => {
+    state.search[payload.field] = payload.value;
+  }),
 };

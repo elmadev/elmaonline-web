@@ -22,7 +22,13 @@ import {
 import styled from 'styled-components';
 import config from 'config';
 import { FixedSizeList as List } from 'react-window';
-import { ListContainer, ListCell, ListRow, ListHeader } from 'components/List';
+import {
+  ListContainer,
+  ListCell,
+  ListRow,
+  ListHeader,
+  ListInput,
+} from 'components/List';
 import useElementSize from 'utils/useWindowSize';
 import Link from 'components/Link';
 import { nick } from 'utils/nick';
@@ -35,16 +41,16 @@ const TimesReplays = () => {
   const [replay, openReplay] = useState(null);
   const [replayIndex, setReplayIndex] = useState(0);
   const [share, setShare] = useState(null);
-  const { timesAndReplays } = useStoreState(state => state.MyContent);
+  const { timesAndReplays, search } = useStoreState(state => state.MyContent);
   const { getTagOptions } = useStoreActions(actions => actions.Upload);
   const { tagOptions } = useStoreState(state => state.Upload);
-  const { getTimesAndReplays, shareTimeFile } = useStoreActions(
+  const { getTimesAndReplays, shareTimeFile, setSearch } = useStoreActions(
     actions => actions.MyContent,
   );
   const windowSize = useElementSize();
-  const listHeight = windowSize.height - 169;
+  const listHeight = windowSize.height - 209;
   useEffect(() => {
-    getTimesAndReplays(100);
+    getTimesAndReplays({ limit: 100, search });
     getTagOptions();
   }, []);
 
@@ -121,9 +127,47 @@ const TimesReplays = () => {
           <ListHeader>
             <ListCell width={120}>Level</ListCell>
             <ListCell width={120}>Time</ListCell>
-            <ListCell width={200}>Driven</ListCell>
+            <ListCell width={100}>Driven</ListCell>
+            <ListCell width={100}></ListCell>
             <ListCell>Replay</ListCell>
           </ListHeader>
+          <ListRow>
+            <ListInput
+              label="Search level"
+              value={search.level}
+              onChange={value => setSearch({ field: 'level', value })}
+              maxLength={11}
+              onEnter={level =>
+                getTimesAndReplays({ limit: 100, search: { ...search, level } })
+              }
+            />
+            <ListCell />
+            <ListInput
+              label="Driven on or after"
+              date
+              value={search.from}
+              onChange={value => {
+                setSearch({ field: 'from', value });
+                getTimesAndReplays({
+                  limit: 100,
+                  search: { ...search, from: value },
+                });
+              }}
+            />
+            <ListInput
+              label="Driven on or before"
+              date
+              value={search.to}
+              onChange={value => {
+                setSearch({ field: 'to', value });
+                getTimesAndReplays({
+                  limit: 100,
+                  search: { ...search, to: value },
+                });
+              }}
+            />
+            <ListCell />
+          </ListRow>
         </ListContainer>
         {timesAndReplays.length > 0 && (
           <ListContainer flex>
@@ -161,6 +205,7 @@ const TimesReplays = () => {
                           parse="X"
                         />
                       </ListCell>
+                      <ListCell width={50} />
                       <ListCell>
                         {hover === time.AllFinishedIndex && time.TimeFileData && (
                           <>
