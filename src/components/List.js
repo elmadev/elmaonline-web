@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { InputBase } from '@material-ui/core';
 import Link from 'components/Link';
+import Loading from 'components/Loading';
+import Feedback from 'components/Feedback';
 
 export const ListContainer = ({
   className,
@@ -10,6 +12,8 @@ export const ListContainer = ({
   horizontalMargin,
   width,
   flex,
+  loading = false,
+  error = '',
 }) => {
   return (
     <Container
@@ -19,7 +23,15 @@ export const ListContainer = ({
       width={width}
       flex={flex}
     >
-      {children}
+      {loading ? <Loading /> : <>{children}</>}
+      {error && (
+        <Feedback
+          open={error !== ''}
+          text={error}
+          type="error"
+          close={() => {}}
+        />
+      )}
     </Container>
   );
 };

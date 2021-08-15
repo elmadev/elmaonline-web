@@ -1,22 +1,16 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk } from 'easy-peasy';
 import { MyLatest, ShareTimeFile } from 'api';
+import { model } from 'utils/easy-peasy';
 
 export default {
-  timesAndReplays: '',
-  setTimesAndReplays: action((state, payload) => {
-    state.timesAndReplays = payload;
-  }),
-  getTimesAndReplays: thunk(async (actions, payload) => {
-    const get = await MyLatest(payload);
-    if (get.ok) {
-      actions.setTimesAndReplays(get.data);
-    }
-  }),
+  timesAndReplays: {
+    ...model(MyLatest),
+  },
   shareTimeFile: thunk(async (actions, payload) => {
     const post = await ShareTimeFile(payload);
     if (post.ok) {
-      actions.getTimesAndReplays(100);
+      actions.timesAndReplays.fetch({ search: payload.search, limit: 100 });
     }
   }),
   search: {

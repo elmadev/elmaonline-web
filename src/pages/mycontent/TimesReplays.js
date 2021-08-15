@@ -41,16 +41,21 @@ const TimesReplays = () => {
   const [replay, openReplay] = useState(null);
   const [replayIndex, setReplayIndex] = useState(0);
   const [share, setShare] = useState(null);
-  const { timesAndReplays, search } = useStoreState(state => state.MyContent);
+  const {
+    timesAndReplays: { data, loading, error },
+    search,
+  } = useStoreState(state => state.MyContent);
   const { getTagOptions } = useStoreActions(actions => actions.Upload);
   const { tagOptions } = useStoreState(state => state.Upload);
-  const { getTimesAndReplays, shareTimeFile, setSearch } = useStoreActions(
-    actions => actions.MyContent,
-  );
+  const {
+    timesAndReplays: { fetch },
+    shareTimeFile,
+    setSearch,
+  } = useStoreActions(actions => actions.MyContent);
   const windowSize = useElementSize();
   const listHeight = windowSize.height - 209;
   useEffect(() => {
-    getTimesAndReplays({ limit: 100, search });
+    fetch({ limit: 100, search });
     getTagOptions();
   }, []);
 
@@ -61,15 +66,15 @@ const TimesReplays = () => {
 
   const nextReplay = () => {
     const next = replayIndex + 1;
-    if (next >= timesAndReplays.length) {
+    if (next >= data.length) {
       close();
       return;
     }
-    if (!timesAndReplays[next].TimeFileData) {
+    if (!data[next].TimeFileData) {
       close();
       return;
     }
-    openReplay(timesAndReplays[next]);
+    openReplay(data[next]);
     setReplayIndex(next);
   };
 
@@ -79,11 +84,11 @@ const TimesReplays = () => {
       close();
       return;
     }
-    if (!timesAndReplays[prev].TimeFileData) {
+    if (!data[prev].TimeFileData) {
       close();
       return;
     }
-    openReplay(timesAndReplays[prev]);
+    openReplay(data[prev]);
     setReplayIndex(prev);
   };
 
@@ -104,6 +109,7 @@ const TimesReplays = () => {
       Hide: share.hide,
       Comment: share.comment,
       Tags: share.tags,
+      search,
     });
     setShare(null);
   };
@@ -113,9 +119,13 @@ const TimesReplays = () => {
       return '';
     }
     const timeAsString = `${time.Time}`;
-    const RecFileName = `${time.LevelData.LevelName}${nick().substring(
+    const levName =
+      time.LevelData.LevelName.substring(0, 6) === 'QWQUU0'
+        ? time.LevelData.LevelName.substring(6, 8)
+        : time.LevelData.LevelName;
+    const RecFileName = `${levName}${nick().substring(
       0,
-      Math.min(15 - (time.LevelData.LevelName.length + timeAsString.length), 4),
+      Math.min(15 - (levName.length + timeAsString.length), 4),
     )}${timeAsString}`;
     return `/r/${time.TimeFileData.UUID}/${RecFileName}`;
   };
@@ -123,7 +133,7 @@ const TimesReplays = () => {
   return (
     <>
       <Paper>
-        <ListContainer>
+        <ListContainer loading={loading} error={error}>
           <ListHeader>
             <ListCell width={120}>Level</ListCell>
             <ListCell width={120}>Time</ListCell>
@@ -138,7 +148,7 @@ const TimesReplays = () => {
               onChange={value => setSearch({ field: 'level', value })}
               maxLength={11}
               onEnter={level =>
-                getTimesAndReplays({ limit: 100, search: { ...search, level } })
+                fetch({ limit: 100, search: { ...search, level } })
               }
             />
             <ListCell />
@@ -148,7 +158,7 @@ const TimesReplays = () => {
               value={search.from}
               onChange={value => {
                 setSearch({ field: 'from', value });
-                getTimesAndReplays({
+                fetch({
                   limit: 100,
                   search: { ...search, from: value },
                 });
@@ -160,7 +170,7 @@ const TimesReplays = () => {
               value={search.to}
               onChange={value => {
                 setSearch({ field: 'to', value });
-                getTimesAndReplays({
+                fetch({
                   limit: 100,
                   search: { ...search, to: value },
                 });
@@ -169,15 +179,15 @@ const TimesReplays = () => {
             <ListCell />
           </ListRow>
         </ListContainer>
-        {timesAndReplays.length > 0 && (
+        {data.length > 0 && (
           <ListContainer flex>
             <List
               height={!isNaN(listHeight) ? listHeight : 0}
-              itemCount={timesAndReplays.length}
+              itemCount={data.length}
               itemSize={40}
             >
               {({ index, style }) => {
-                const time = timesAndReplays[index];
+                const time = data[index];
                 return (
                   <div style={style} key={time.AllFinishedIndex}>
                     <ListRow

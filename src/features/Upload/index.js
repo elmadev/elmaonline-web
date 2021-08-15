@@ -38,6 +38,7 @@ const Upload = ({ onUpload, filetype }) => {
   const [fileInfo, setFileInfo] = useState({});
   const [duplicate, setDuplicate] = useState(false);
   const [duplicateText, setDuplicateText] = useState('');
+  const [duplicateLink, setDuplicateLink] = useState('');
   const [duplicateOptions, setDuplicateOptions] = useState(['okay']);
   const [duplicateReplayIndex, setDuplicateReplayIndex] = useState(0);
   const [uploaded, setUploaded] = useState([]);
@@ -94,10 +95,7 @@ const Upload = ({ onUpload, filetype }) => {
           const newUploaded = uploaded.slice();
           const fullUrl = `${location.protocol}//${location.hostname}${
             location.port ? `:${location.port}` : ''
-          }/r/${inserted.UUID}/${inserted.RecFileName.substring(
-            0,
-            inserted.RecFileName.length - 4,
-          )}`;
+          }${url(inserted)}}`;
           newUploaded.push({
             RecFileName: inserted.RecFileName,
             UUID: inserted.UUID,
@@ -111,6 +109,13 @@ const Upload = ({ onUpload, filetype }) => {
       }
     }
   }, [inserted]);
+
+  const url = rec => {
+    return `/r/${rec.UUID}/${rec.RecFileName.substring(
+      0,
+      rec.RecFileName.length - 4,
+    )}`;
+  };
 
   const handleUnlisted = (name, event) => {
     const newFileInfo = fileInfo;
@@ -177,6 +182,7 @@ const Upload = ({ onUpload, filetype }) => {
     setFiles([]);
     setError('');
     setDuplicate(false);
+    setDuplicateLink('');
     setDuplicateReplayIndex(0);
     if (i === 1) {
       updateReplay(duplicateReplayIndex);
@@ -206,11 +212,13 @@ const Upload = ({ onUpload, filetype }) => {
                 setDuplicateText(
                   'Replay already in the database. Upload failed.',
                 );
+                setDuplicateLink(url(body.replayInfo[0]));
                 setDuplicateOptions(['okay']);
               } else if (oldUnlisted === 0 && newUnlisted === 1) {
                 setDuplicateText(
                   'Replay already public in database. Upload failed.',
                 );
+                setDuplicateLink(url(body.replayInfo[0]));
                 setDuplicateOptions(['okay']);
               } else if (oldUnlisted === 1 && newUnlisted === 0) {
                 setDuplicateText(
@@ -266,12 +274,7 @@ const Upload = ({ onUpload, filetype }) => {
             <UploadCard key={u.RecFileName}>
               <CardContent>
                 {u.RecFileName}
-                <Link
-                  to={`/r/${u.UUID}/${u.RecFileName.substring(
-                    0,
-                    u.RecFileName.length - 4,
-                  )}`}
-                >
+                <Link to={url(u)}>
                   <div>{u.url}</div>
                 </Link>
               </CardContent>
@@ -402,6 +405,7 @@ const Upload = ({ onUpload, filetype }) => {
         title="Duplicate replay file"
         open={duplicate}
         text={duplicateText}
+        link={duplicateLink}
         options={duplicateOptions}
         onClose={i => handleAlert(i)}
       />
