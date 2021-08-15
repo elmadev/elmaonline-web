@@ -1,12 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
 import _ from 'lodash';
-import { nickId } from 'utils/nick';
-import LeaderHistory from 'components/LeaderHistory';
 
 const finishedTypes = {
   B: 'Finished (Apple Bug)',
@@ -17,10 +14,8 @@ const finishedTypes = {
   X: 'Cheated',
 };
 
-const StatsTable = ({ data, loading, leaderHistory }) => {
+const StatsTable = ({ data, loading }) => {
   if (loading) return <Loading />;
-
-  if (!nickId()) return <Container>Log in to see personal stats.</Container>;
 
   const getTotalRunCount = () => {
     return _.sumBy(data, 'RunCount');
@@ -93,7 +88,6 @@ const StatsTable = ({ data, loading, leaderHistory }) => {
           );
         })}
       </ListContainer>
-      <LeaderHistory allFinished={leaderHistory} />
     </>
   );
 };
@@ -101,9 +95,5 @@ const StatsTable = ({ data, loading, leaderHistory }) => {
 StatsTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
-
-const Container = styled.div`
-  padding: 20px;
-`;
 
 export default StatsTable;
