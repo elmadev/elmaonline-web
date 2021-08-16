@@ -60,6 +60,7 @@ export const Replays = ({ page, pageSize, tags, sortBy, order }) => {
   });
 };
 export const ShareTimeFile = data => api.post('replay/share', data);
+export const EditReplay = data => api.post('replay/edit', data);
 
 // country
 export const Country = () => api.get('country');
