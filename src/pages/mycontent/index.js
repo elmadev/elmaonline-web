@@ -2,6 +2,7 @@ import React from 'react';
 import Layout, { Content } from 'components/Layout';
 import { Tabs, Tab } from '@material-ui/core';
 import { useNavigate } from '@reach/router';
+import ReplayList from 'features/ReplayList';
 import TimesReplays from './TimesReplays';
 
 const MyContent = ({ tab }) => {
@@ -21,7 +22,10 @@ const MyContent = ({ tab }) => {
         <Tab label="Uploaded Replays" value="replays" />
         <Tab label="Uploaded Files" value="files" />
       </Tabs>
-      <Content>{!tab && <TimesReplays />}</Content>
+      <Content>
+        {!tab && <TimesReplays />}
+        {tab === 'replays' && <ReplayList personal />}
+      </Content>
     </Layout>
   );
 };

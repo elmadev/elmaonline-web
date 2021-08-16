@@ -59,6 +59,15 @@ export const Replays = ({ page, pageSize, tags, sortBy, order }) => {
     order,
   });
 };
+export const AllMyReplays = ({ page, pageSize, tags, sortBy, order }) => {
+  return api.get(`replay/my`, {
+    page,
+    pageSize,
+    tags,
+    sortBy,
+    order,
+  });
+};
 export const ShareTimeFile = data => api.post('replay/share', data);
 export const EditReplay = data => api.post('replay/edit', data);
 

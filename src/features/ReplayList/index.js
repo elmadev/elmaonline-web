@@ -19,6 +19,7 @@ import Pagination from '@material-ui/lab/Pagination';
 export default function ReplayList({
   defaultPage = 0,
   defaultPageSize = 25,
+  personal = false,
   summary,
 }) {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -43,6 +44,7 @@ export default function ReplayList({
       tags: selectedTags.map(tag => tag.TagIndex),
       sortBy: !summary ? settings.sortBy : 'uploaded',
       order: 'desc',
+      personal,
     });
   }, [page, pageSize, selectedTags, settings.sortBy]);
 
@@ -51,6 +53,9 @@ export default function ReplayList({
   }, [selectedTags]);
 
   const columns = ['Uploaded', 'Replay', 'Level', 'Time', 'By'];
+  if (personal) {
+    columns.push('Unlisted');
+  }
   if (!summary) {
     columns.push('Rating');
     columns.push('Tags');
@@ -173,6 +178,7 @@ export default function ReplayList({
             <ListCell>Level</ListCell>
             <ListCell right>Time</ListCell>
             <ListCell>By</ListCell>
+            {personal && <ListCell>Unlisted</ListCell>}
             {!summary && (
               <>
                 <ListCell>Rating</ListCell>

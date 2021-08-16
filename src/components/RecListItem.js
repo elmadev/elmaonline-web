@@ -73,6 +73,9 @@ const RecListItem = ({ replay, selected, columns, mergable = false }) => {
           )}
         </ListCell>
       )}
+      {columns.indexOf('Unlisted') !== -1 && (
+        <ListCell to={url}>{replay.Unlisted === 1 ? 'Yes' : ''}</ListCell>
+      )}
       {columns.indexOf('Rating') !== -1 && (
         <ListCell to={url}>{replay.ratingAvg}</ListCell>
       )}
