@@ -4,6 +4,7 @@ import { Tabs, Tab } from '@material-ui/core';
 import { useNavigate } from '@reach/router';
 import ReplayList from 'features/ReplayList';
 import TimesReplays from './TimesReplays';
+import FileList from './FileList';
 
 const MyContent = ({ tab }) => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const MyContent = ({ tab }) => {
       <Content>
         {!tab && <TimesReplays />}
         {tab === 'replays' && <ReplayList personal />}
+        {tab === 'files' && <FileList />}
       </Content>
     </Layout>
   );

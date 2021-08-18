@@ -304,6 +304,12 @@ export const GetDonations = () => api.get(`donate/`);
 // upload
 export const UploadFile = data => apiUpload.post(`upload/file`, data);
 export const UpdateFile = data => api.post(`upload`, data);
+export const MyFiles = data =>
+  api.get(
+    `upload/${data.limit}?filename=${data.search.filename}&from=${data.search.from}&to=${data.search.to}`,
+  );
+export const DeleteFile = data =>
+  api.delete(`upload/${data.index}/${data.uuid}/${data.filename}`);
 
 // tags
 export const GetTags = () => api.get(`tag`);

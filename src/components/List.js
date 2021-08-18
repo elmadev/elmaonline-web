@@ -128,6 +128,7 @@ export const ListCell = ({
   onClick,
   verticalAlign = 'baseline',
   textAlign = 'left',
+  cutText,
 }) => {
   if (to) {
     return (
@@ -140,6 +141,8 @@ export const ListCell = ({
         to={to}
         verticalAlign={verticalAlign}
         textAlign={textAlign}
+        cutText={cutText}
+        title={typeof children === 'string' ? children : ''}
       >
         <CellLink to={to}>{children}</CellLink>
       </Cell>
@@ -156,6 +159,8 @@ export const ListCell = ({
       pointer={onClick}
       verticalAlign={verticalAlign}
       textAlign={textAlign}
+      cutText={cutText}
+      title={typeof children === 'string' ? children : ''}
     >
       {children}
     </Cell>
@@ -182,6 +187,7 @@ const Cell = styled.span`
   justify-content: ${p => (p.right ? 'flex-end' : 'flex-start')};
   vertical-align: ${p => p.verticalAlign};
   text-align: ${p => p.textAlign};
+  ${p => p.cutText && 'white-space: nowrap; overflow: hidden;'}
   ${p => p.pointer && 'cursor: pointer;'}
   button {
     max-height: 20px;
@@ -195,9 +201,10 @@ export const ListInput = ({
   date,
   maxLength,
   onEnter,
+  width,
 }) => {
   return (
-    <ListCell>
+    <ListCell width={width}>
       <Input
         type={date ? 'date' : 'text'}
         placeholder={label}
