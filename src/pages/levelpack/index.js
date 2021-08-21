@@ -29,6 +29,7 @@ import Personal from './Personal';
 import Kinglist from './Kinglist';
 import MultiRecords from './MultiRecords';
 import Admin from './Admin';
+import { useQueryAlt, LevelPackLevelStats } from '../../api';
 
 const LevelPack = ({ name, tab }) => {
   const isRehydrated = useStoreRehydrated();
@@ -41,7 +42,7 @@ const LevelPack = ({ name, tab }) => {
     records,
     recordsLoading,
     personalKuski,
-    settings: { highlightWeeks, showLegacyIcon, showLegacy },
+    settings: { highlightWeeks, showLegacyIcon, showLegacy, showMoreStats },
   } = useStoreState(state => state.LevelPack);
   const {
     getLevelPackInfo,
@@ -56,6 +57,14 @@ const LevelPack = ({ name, tab }) => {
   const lastShowLegacy = useRef(showLegacy);
   const [openSettings, setOpenSettings] = useState(false);
   const navigate = useNavigate();
+
+  const { data: levelStats } = useQueryAlt(
+    ['LevelPackLevelStats', 1, name],
+    async () => LevelPackLevelStats(1, name),
+    {
+      staleTime: 300000,
+    },
+  );
 
   useEffect(() => {
     if (levelPackInfo.LevelPackName !== name) {
@@ -212,11 +221,13 @@ const LevelPack = ({ name, tab }) => {
         </Settings>
         {!tab && (
           <Records
+            levelStats={levelStats}
             records={records}
             highlight={highlight}
             highlightWeeks={highlightWeeks}
             recordsLoading={recordsLoading}
             showLegacyIcon={showLegacyIcon}
+            showMoreStats={showMoreStats}
           />
         )}
         {tab === 'total-times' && (

@@ -8,6 +8,7 @@ import BattlesCard from './cards/BattlesCard';
 import ReplaysCard from './cards/ReplaysCard';
 import CurrentBattleCard from './cards/CurrentBattleCard';
 import FeedCard from './cards/FeedCard';
+import RecordsCard from './cards/RecordsCard';
 
 export default function Home() {
   const { loggedIn } = useStoreState(state => state.Login);
@@ -33,6 +34,9 @@ export default function Home() {
         <Grid container spacing={3} item sm alignContent="flex-start">
           <Grid item xs={12}>
             <CurrentBattleCard />
+          </Grid>
+          <Grid item xs={12}>
+            <RecordsCard />
           </Grid>
           <Grid item xs={12}>
             <FeedCard />

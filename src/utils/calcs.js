@@ -1,6 +1,49 @@
 import { forEach } from 'lodash';
 import { customAlphabet } from 'nanoid';
 
+// export const mapX = (x, points) => {
+//   let p1;
+//   let p2;
+//
+//   points.slice(0, points.length - 1).forEach((point, index) => {
+//     if (x >= points[index][0] && x < points[index + 1][0]) {
+//       p1 = points[index];
+//       p2 = points[index + 1];
+//     }
+//   });
+// };
+
+// https://flexbooks.ck12.org/cbook/ck-12-precalculus-concepts-2.0/section/3.7/primary/lesson/logistic-functions-pcalc
+// maps 0 to infinity to 0 to 1.
+// to find a suitable b, try: https://www.wolframalpha.com/input/?i=graphing
+// and plot: (2 / (1 + 0.99 ^ x ))  - 1
+// in this case, 0.99 makes a reasonable curve for values between 0 and 400.
+// if the max is some dynamic value, then i have no clue how to choose b really.
+// @see docs/shiftedLogisticFn.jpg
+export const shiftedLogisticFn = (b, x) => {
+  return 2 / (1 + Math.pow(b, x)) - 1;
+};
+
+// https://stackoverflow.com/questions/5259421/cumulative-distribution-function-in-javascript
+// normal cumulative distribution function
+// maps a value from 0 to infinity to 0 to 1
+export const normalCdf = (mean, sigma, val) => {
+  var z = (val - mean) / Math.sqrt(2 * sigma * sigma);
+  var t = 1 / (1 + 0.3275911 * Math.abs(z));
+  var a1 = 0.254829592;
+  var a2 = -0.284496736;
+  var a3 = 1.421413741;
+  var a4 = -1.453152027;
+  var a5 = 1.061405429;
+  var erf =
+    1 - ((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-z * z);
+  var sign = 1;
+  if (z < 0) {
+    sign = -1;
+  }
+  return (1 / 2) * (1 + sign * erf);
+};
+
 export const recordsTT = (levels, timeObj) => {
   let tt = 0;
   let levs = 0;

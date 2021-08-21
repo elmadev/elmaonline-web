@@ -3,28 +3,44 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Link from 'components/Link';
 
-const GridItem = ({ name, longname, to, children, promote }) => {
+const GridItem = ({
+  className,
+  name,
+  longname,
+  afterName,
+  afterLongname,
+  to,
+  children,
+  promote,
+}) => {
+  const inner = (
+    <>
+      <Name>
+        {name}
+        {afterName && <AfterName>{afterName}</AfterName>}
+      </Name>
+      <LongName>{longname}</LongName>
+      {afterLongname && afterLongname}
+    </>
+  );
+
   return (
-    <Container promote={promote}>
-      {to ? (
-        <Link to={to}>
-          <ShortName>{name}</ShortName>
-          <LongName>{longname}</LongName>
-        </Link>
-      ) : (
-        <>
-          <ShortName>{name}</ShortName>
-          <LongName>{longname}</LongName>
-        </>
-      )}
+    <Container className={className} promote={promote}>
+      {to ? <Link to={to}>{inner}</Link> : <>{inner}</>}
       {children}
     </Container>
   );
 };
 
-const ShortName = styled.div`
+const Name = styled.div`
   font-weight: 500;
   color: ${p => p.theme.linkColor};
+`;
+
+const AfterName = styled.span`
+  font-size: 13px;
+  font-weight: 400;
+  color: ${p => p.theme.headerColor};
 `;
 
 const LongName = styled.div`

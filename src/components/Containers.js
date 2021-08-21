@@ -1,9 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const Row = ({ children, center, ai, jc, t, b, l, r }) => {
+export const Row = ({ children, center, ai, jc, t, b, l, r, width }) => {
   return (
-    <FlexRow ai={ai} jc={jc} center={center} t={t} b={b} l={l} r={r}>
+    <FlexRow
+      ai={ai}
+      jc={jc}
+      center={center}
+      t={t}
+      b={b}
+      l={l}
+      r={r}
+      width={width}
+    >
       {children}
     </FlexRow>
   );
@@ -13,6 +22,7 @@ const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
   ${p => p.center && `justify-content: center; align-items: center;`}
+  ${p => p.width && `width: ${p.width};`}  
   ${p => p.ai && `align-items: ${p.ai};`}
   ${p => p.jc && `justify-content: ${p.jc};`}
   ${p => p.t && `margin-top ${p.theme[`pad${p.t}`]};`}
