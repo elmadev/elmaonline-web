@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { TablePagination } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { useNavigate } from '@reach/router';
 
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
@@ -12,7 +11,6 @@ import { sortResults } from 'utils/battle';
 import { ListCell, ListHeader, ListContainer, ListRow } from 'components/List';
 
 const PlayedBattles = ({ KuskiIndex }) => {
-  const navigate = useNavigate();
   const { getPlayedBattles } = useStoreActions(state => state.Kuski);
   const { playedBattles, ranking } = useStoreState(state => state.Kuski);
   let battleCount = 0;
@@ -55,11 +53,8 @@ const PlayedBattles = ({ KuskiIndex }) => {
             sortResults(b.BattleType),
           );
           return (
-            <ListRow
-              onClick={() => navigate(`/battles/${b.BattleIndex}`)}
-              key={b.BattleIndex}
-            >
-              <ListCell width={130}>
+            <ListRow key={b.BattleIndex}>
+              <ListCell to={`/battles/${b.BattleIndex}`} width={130}>
                 {b.Duration} min <BattleType type={b.BattleType} />
               </ListCell>
               <ListCell width={150}>
@@ -75,17 +70,17 @@ const PlayedBattles = ({ KuskiIndex }) => {
                   <Kuski kuskiData={sorted[0].KuskiData} flag team />
                 )}
               </ListCell>
-              <ListCell width={60}>
+              <ListCell to={`/battles/${b.BattleIndex}`} width={60}>
                 {playedBattles.Results[i].length > 0 ? (
                   <Time time={sorted[0].Time} apples={sorted[0].Apples} />
                 ) : null}
               </ListCell>
-              <ListCell width={60}>
+              <ListCell to={`/battles/${b.BattleIndex}`} width={60}>
                 {playedBattles.Results[i].findIndex(
                   r => r.KuskiIndex === KuskiIndex,
                 ) + 1}
               </ListCell>
-              <ListCell>
+              <ListCell to={`/battles/${b.BattleIndex}`}>
                 <LocalTime
                   date={b.Started}
                   format="DD.MM.YYYY HH:mm"

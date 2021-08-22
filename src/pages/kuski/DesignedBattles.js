@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { TablePagination } from '@material-ui/core';
-import { useNavigate } from '@reach/router';
 
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
@@ -11,7 +10,6 @@ import { sortResults } from 'utils/battle';
 import { ListCell, ListHeader, ListContainer, ListRow } from 'components/List';
 
 function DesignedBattles({ KuskiIndex }) {
-  const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(25);
   const { designedBattles } = useStoreState(state => state.Kuski);
@@ -43,11 +41,8 @@ function DesignedBattles({ KuskiIndex }) {
         {designedBattles.map(b => {
           const sorted = [...b.Results].sort(sortResults(b.BattleType));
           return (
-            <ListRow
-              onClick={() => navigate(`/battles/${b.BattleIndex}`)}
-              key={b.BattleIndex}
-            >
-              <ListCell width={130}>
+            <ListRow key={b.BattleIndex}>
+              <ListCell to={`/battles/${b.BattleIndex}`} width={130}>
                 {b.Duration} min <BattleType type={b.BattleType} />
               </ListCell>
               <ListCell width={130}>
@@ -60,12 +55,12 @@ function DesignedBattles({ KuskiIndex }) {
                   <Kuski kuskiData={sorted[0].KuskiData} flag team />
                 )}
               </ListCell>
-              <ListCell width={60}>
+              <ListCell to={`/battles/${b.BattleIndex}`} width={60}>
                 {b.Results.length > 0 ? (
                   <Time time={sorted[0].Time} apples={sorted[0].Apples} />
                 ) : null}
               </ListCell>
-              <ListCell>
+              <ListCell to={`/battles/${b.BattleIndex}`}>
                 <LocalTime
                   date={b.Started}
                   format="DD.MM.YYYY HH:mm"
