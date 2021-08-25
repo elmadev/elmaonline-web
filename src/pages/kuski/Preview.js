@@ -62,33 +62,35 @@ export default function Preview({
                   LevelIndex={previewRec.LevelIndex}
                 />
               </p>
-              <Comment>
-                {Finished[previewRec.Finished]}
-                <br />
-                {previewRec.Apples} Apples
-                <br />
-                {previewRec.MaxSpeed / 100} Max speed
-                <br />
-                <Time time={previewRec.ThrottleTime} /> Throttle time
-                <br />
-                <Time time={previewRec.BrakeTime} /> Brake time
-                <br />
-                {previewRec.LeftVolt} Left volts
-                <br />
-                {previewRec.RightVolt} Right volts
-                <br />
-                {previewRec.SuperVolt} Super volts
-                <br />
-                {previewRec.Turn} Turns
-                <br />
-                {previewRec.OneWheel === 1 && (
-                  <>
-                    One Wheel
-                    <br />
-                  </>
-                )}
-                {previewRec.Drunk === 1 && <>Drunk</>}
-              </Comment>
+              {previewRec.Apples && (
+                <Comment>
+                  {Finished[previewRec.Finished]}
+                  <br />
+                  {previewRec.Apples} Apples
+                  <br />
+                  {previewRec.MaxSpeed / 100} Max speed
+                  <br />
+                  <Time time={previewRec.ThrottleTime} /> Throttle time
+                  <br />
+                  <Time time={previewRec.BrakeTime} /> Brake time
+                  <br />
+                  {previewRec.LeftVolt} Left volts
+                  <br />
+                  {previewRec.RightVolt} Right volts
+                  <br />
+                  {previewRec.SuperVolt} Super volts
+                  <br />
+                  {previewRec.Turn} Turns
+                  <br />
+                  {previewRec.OneWheel === 1 && (
+                    <>
+                      One Wheel
+                      <br />
+                    </>
+                  )}
+                  {previewRec.Drunk === 1 && <>Drunk</>}
+                </Comment>
+              )}
             </Box>
 
             <Box p={2}>

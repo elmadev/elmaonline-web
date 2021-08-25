@@ -14,7 +14,7 @@ export const getUpdater = () => {
 };
 
 export const model = endpoint => ({
-  data: [],
+  data: null,
   loading: false,
   error: '',
   setData: action((state, response) => {

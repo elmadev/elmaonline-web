@@ -2,7 +2,6 @@
 import { action, persist } from 'easy-peasy';
 import ReplayComments from 'features/ReplayComments/store';
 import ReplayRating from 'features/ReplayRating/store';
-import ReplaysBy from 'features/ReplaysBy/store';
 import ChatView from 'features/ChatView/store';
 import RecList from 'features/RecList/store';
 import LevelMap from 'features/LevelMap/store';
@@ -33,7 +32,6 @@ import Battle from 'pages/battle/store';
 import Levels from 'pages/levels/store';
 import News from 'features/News/store';
 import FileUpload from 'pages/upload/store';
-import MyContent from 'pages/mycontent/store';
 import ReplayList from 'features/ReplayList/store';
 import ReplaySettings from 'features/ReplaySettings/store';
 import Notifications from 'features/Notifications/store';
@@ -43,7 +41,6 @@ export default {
   ReplayCommentArchive,
   ReplayComments,
   ReplayRating,
-  ReplaysBy,
   Register,
   BattleList,
   ChatView,
@@ -75,7 +72,6 @@ export default {
   Login,
   ReplayList,
   FileUpload,
-  MyContent,
   Replays,
   Notifications,
   Page: {

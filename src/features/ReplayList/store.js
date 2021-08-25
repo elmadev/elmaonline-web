@@ -1,6 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk, persist } from 'easy-peasy';
-import { Replays, AllMyReplays, BattleListPeriod, GetTags } from 'api';
+import {
+  Replays,
+  BattleListPeriod,
+  GetTags,
+  ReplayDrivenBy,
+  ReplayUploadedBy,
+} from 'api';
 
 export default {
   replays: null,
@@ -9,8 +15,10 @@ export default {
   }),
   getReplays: thunk(async (actions, payload) => {
     let get = null;
-    if (payload.personal) {
-      get = await AllMyReplays(payload);
+    if (payload.drivenBy) {
+      get = await ReplayDrivenBy(payload.drivenBy);
+    } else if (payload.uploadedBy) {
+      get = await ReplayUploadedBy(payload.uploadedBy);
     } else {
       get = await Replays(payload);
     }

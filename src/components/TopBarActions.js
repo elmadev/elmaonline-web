@@ -111,7 +111,6 @@ export default function TopBarActions() {
               Profile
             </Item>
             <Item onClick={() => handleClose('/settings')}>Settings</Item>
-            <Item onClick={() => handleClose('/mycontent')}>My Content</Item>
             <Item onClick={() => performLogout()}>Log out</Item>
           </Menu>
         </div>

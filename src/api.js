@@ -132,7 +132,9 @@ export const Highlight = () => api.get('allfinished/highlight');
 export const PersonalAllFinished = data =>
   api.get(`allfinished/${data.LevelIndex}/${data.KuskiIndex}/${data.limit}`);
 export const PersonalLatest = data =>
-  api.get(`allfinished/${data.KuskiIndex}/${data.limit}`);
+  api.get(
+    `allfinished/${data.KuskiIndex}/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,
+  );
 export const LeaderHistory = data => {
   const { from = '', to = '', KuskiIndex = '', BattleIndex = '' } = data;
   return api.get(
@@ -141,10 +143,6 @@ export const LeaderHistory = data => {
 };
 export const AllFinishedLevel = LevelIndex =>
   api.get(`allfinished/${LevelIndex}`);
-export const MyLatest = data =>
-  api.get(
-    `allfinished/mylatest/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,
-  );
 
 // levelpack
 export const LevelPacks = () => api.get('levelpack');
@@ -206,7 +204,9 @@ export const DeletePack = data =>
 export const Besttime = data =>
   api.get(`besttime/${data.levelId}/${data.limit}/${data.eolOnly}`);
 export const PersonalLatestPRs = data =>
-  api.get(`besttime/latest/${data.KuskiIndex}/${data.limit}`);
+  api.get(
+    `besttime/latest/${data.KuskiIndex}/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,
+  );
 export const MultiBesttime = data =>
   api.get(`besttime/multi/${data.levelId}/${data.limit}`);
 

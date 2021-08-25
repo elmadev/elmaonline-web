@@ -8,13 +8,14 @@ import config from 'config';
 import Layout from 'components/Layout';
 import Loading from 'components/Loading';
 import Flag from 'components/Flag';
-import ReplaysBy from 'features/ReplaysBy';
+import ReplayList from 'features/ReplayList';
 import Notifications from 'features/Notifications';
 import PlayedBattles from './PlayedBattles';
 import DesignedBattles from './DesignedBattles';
 import KuskiHeader from './KuskiHeader';
-import LatestTimes from './LatestTimes';
+import TimesReplays from './TimesReplays';
 import Info from './Info';
+import Files from './Files';
 
 const Kuski = ({ name, tab, ...props }) => {
   const { getKuskiByName } = useStoreActions(state => state.Kuski);
@@ -32,7 +33,7 @@ const Kuski = ({ name, tab, ...props }) => {
       {!kuski ? (
         <>{kuskiLoading ? <Loading /> : <div>not found</div>}</>
       ) : (
-        <Container>
+        <Container chin={tab !== 'times' && tab !== 'files'}>
           <Head>
             <Picture>
               {kuski.BmpCRC !== 0 && (
@@ -63,13 +64,14 @@ const Kuski = ({ name, tab, ...props }) => {
           >
             <Tab label="Played Battles" value="" />
             <Tab label="Designed Battles" value="designed-battles" />
-            <Tab label="Latest times" value="latest-times" />
+            <Tab label="Times" value="times" />
             <Tab label="Replays Uploaded" value="replays-uploaded" />
             <Tab label="Replays Driven" value="replays-driven" />
             <Tab label="Info" value="info" />
             {username === name && (
               <Tab label="Notifications" value="notifications" />
             )}
+            {username === name && <Tab label="Files" value="files" />}
           </Tabs>
           {!tab && (
             <Width100>
@@ -81,21 +83,20 @@ const Kuski = ({ name, tab, ...props }) => {
               <DesignedBattles KuskiIndex={kuski.KuskiIndex} />
             </Width100>
           )}
-          {tab === 'latest-times' && (
-            <LatestTimes KuskiIndex={kuski.KuskiIndex} />
-          )}
+          {tab === 'times' && <TimesReplays KuskiIndex={kuski.KuskiIndex} />}
           {tab === 'replays-uploaded' && (
             <Width100>
-              <ReplaysBy type="uploaded" KuskiIndex={kuski.KuskiIndex} />
+              <ReplayList nonsticky uploadedBy={kuski.KuskiIndex} />
             </Width100>
           )}
           {tab === 'replays-driven' && (
             <Width100>
-              <ReplaysBy type="driven" KuskiIndex={kuski.KuskiIndex} />
+              <ReplayList nonsticky drivenBy={kuski.KuskiIndex} />
             </Width100>
           )}
           {tab === 'info' && <Info kuskiInfo={kuski} />}
           {tab === 'notifications' && username === name && <Notifications />}
+          {tab === 'files' && username === name && <Files />}
         </Container>
       )}
     </Layout>
@@ -118,7 +119,7 @@ const Width100 = styled.div`
 const Container = styled.div`
   min-height: 100%;
   background: ${p => p.theme.paperBackground};
-  padding-bottom: 200px;
+  padding-bottom: ${p => (p.chin ? '200px' : '0')};
 `;
 
 const Picture = styled.div`
