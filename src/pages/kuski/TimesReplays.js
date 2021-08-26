@@ -7,9 +7,9 @@ import {
   Checkbox,
   TextField,
   Typography,
+  Switch,
   Chip,
 } from '@material-ui/core';
-import { Paper } from 'components/Paper';
 import { Row } from 'components/Containers';
 import Time from 'components/Time';
 import LocalTime from 'components/LocalTime';
@@ -22,7 +22,13 @@ import {
 import styled from 'styled-components';
 import config from 'config';
 import { FixedSizeList as List } from 'react-window';
-import { ListContainer, ListCell, ListRow, ListHeader } from 'components/List';
+import {
+  ListContainer,
+  ListCell,
+  ListRow,
+  ListHeader,
+  ListInput,
+} from 'components/List';
 import useElementSize from 'utils/useWindowSize';
 import Link from 'components/Link';
 import { nick } from 'utils/nick';
@@ -30,40 +36,70 @@ import Button from 'components/Buttons';
 import { xor } from 'lodash';
 import Preview from './Preview';
 
-const TimesReplays = () => {
+const TimesReplays = ({ KuskiIndex, collapse }) => {
+  const [PRs, setPRs] = useState(false);
   const [hover, setHover] = useState(0);
   const [replay, openReplay] = useState(null);
   const [replayIndex, setReplayIndex] = useState(0);
   const [share, setShare] = useState(null);
-  const { timesAndReplays } = useStoreState(state => state.MyContent);
+  const {
+    timesAndReplays: {
+      data: timesData,
+      loading: timesLoading,
+      error: timesError,
+    },
+    PRsAndReplays: { data: PRsData, loading: PRsLoading, error: PRsError },
+    search,
+  } = useStoreState(state => state.Kuski);
   const { getTagOptions } = useStoreActions(actions => actions.Upload);
   const { tagOptions } = useStoreState(state => state.Upload);
-  const { getTimesAndReplays, shareTimeFile } = useStoreActions(
-    actions => actions.MyContent,
-  );
+  const {
+    timesAndReplays: { fetch: timesFetch },
+    PRsAndReplays: { fetch: PRsFetch },
+    shareTimeFile,
+    setSearch,
+  } = useStoreActions(actions => actions.Kuski);
   const windowSize = useElementSize();
-  const listHeight = windowSize.height - 169;
+  const listHeight = windowSize.height - 379 + (collapse ? 100 : 0);
   useEffect(() => {
-    getTimesAndReplays(100);
+    fetch();
     getTagOptions();
   }, []);
+
+  useEffect(() => {
+    if (PRs && !PRsData) {
+      fetch();
+    }
+  }, [PRs]);
+
+  const fetch = newSearch => {
+    if (PRs) {
+      PRsFetch({ limit: 100, search: { ...search, ...newSearch }, KuskiIndex });
+      return;
+    }
+    timesFetch({ limit: 100, search: { ...search, ...newSearch }, KuskiIndex });
+  };
 
   const close = () => {
     openReplay(null);
     setReplayIndex(0);
   };
 
+  const data = PRs ? PRsData : timesData;
+  const loading = PRs ? PRsLoading : timesLoading;
+  const error = PRs ? PRsError : timesError;
+
   const nextReplay = () => {
     const next = replayIndex + 1;
-    if (next >= timesAndReplays.length) {
+    if (next >= data.length) {
       close();
       return;
     }
-    if (!timesAndReplays[next].TimeFileData) {
+    if (!data[next].TimeFileData) {
       close();
       return;
     }
-    openReplay(timesAndReplays[next]);
+    openReplay(data[next]);
     setReplayIndex(next);
   };
 
@@ -73,11 +109,11 @@ const TimesReplays = () => {
       close();
       return;
     }
-    if (!timesAndReplays[prev].TimeFileData) {
+    if (!data[prev].TimeFileData) {
       close();
       return;
     }
-    openReplay(timesAndReplays[prev]);
+    openReplay(data[prev]);
     setReplayIndex(prev);
   };
 
@@ -98,6 +134,7 @@ const TimesReplays = () => {
       Hide: share.hide,
       Comment: share.comment,
       Tags: share.tags,
+      search,
     });
     setShare(null);
   };
@@ -107,103 +144,150 @@ const TimesReplays = () => {
       return '';
     }
     const timeAsString = `${time.Time}`;
-    const RecFileName = `${time.LevelData.LevelName}${nick().substring(
+    const levName =
+      time.LevelData.LevelName.substring(0, 6) === 'QWQUU0'
+        ? time.LevelData.LevelName.substring(6, 8)
+        : time.LevelData.LevelName;
+    const RecFileName = `${levName}${nick().substring(
       0,
-      Math.min(15 - (time.LevelData.LevelName.length + timeAsString.length), 4),
+      Math.min(15 - (levName.length + timeAsString.length), 4),
     )}${timeAsString}`;
     return `/r/${time.TimeFileData.UUID}/${RecFileName}`;
   };
 
   return (
     <>
-      <Paper>
-        <ListContainer>
-          <ListHeader>
-            <ListCell width={120}>Level</ListCell>
-            <ListCell width={120}>Time</ListCell>
-            <ListCell width={200}>Driven</ListCell>
-            <ListCell>Replay</ListCell>
-          </ListHeader>
-        </ListContainer>
-        {timesAndReplays.length > 0 && (
-          <ListContainer flex>
-            <List
-              height={!isNaN(listHeight) ? listHeight : 0}
-              itemCount={timesAndReplays.length}
-              itemSize={40}
-            >
-              {({ index, style }) => {
-                const time = timesAndReplays[index];
-                return (
-                  <div style={style} key={time.AllFinishedIndex}>
-                    <ListRow
-                      onHover={hovering => {
-                        if (hovering) {
-                          setHover(time.AllFinishedIndex);
-                        } else {
-                          setHover(0);
-                        }
-                      }}
-                    >
-                      <ListCell width={120}>
-                        <Level
-                          LevelIndex={time.LevelIndex}
-                          LevelData={time.LevelData}
-                        />
-                      </ListCell>
-                      <ListCell width={120}>
-                        <Time time={time.Time} />
-                      </ListCell>
-                      <ListCell width={200}>
-                        <LocalTime
-                          date={time.Driven}
-                          format="ddd D MMM YYYY HH:mm:ss"
-                          parse="X"
-                        />
-                      </ListCell>
-                      <ListCell>
-                        {hover === time.AllFinishedIndex && time.TimeFileData && (
-                          <>
-                            <a
-                              href={`${config.s3Url}time/${time.TimeFileData.UUID}-${time.TimeFileData.MD5}/${time.TimeIndex}.rec`}
-                            >
-                              Download
-                            </a>
+      <ListContainer loading={loading} error={error}>
+        <ListHeader>
+          <ListCell width={120}>Level</ListCell>
+          <ListCell width={120}>Time</ListCell>
+          <ListCell width={100}>Driven</ListCell>
+          <ListCell width={100}></ListCell>
+          <ListCell width={300}>Replay</ListCell>
+          <ListCell>
+            <FormControlLabel
+              control={
+                <SwitchThin
+                  checked={PRs}
+                  onChange={() => setPRs(!PRs)}
+                  color="primary"
+                />
+              }
+              label="Show only PRs"
+            />
+          </ListCell>
+        </ListHeader>
+        <ListRow>
+          <ListInput
+            label="Search level"
+            value={search.level}
+            onChange={value => setSearch({ field: 'level', value })}
+            maxLength={11}
+            onEnter={level => fetch({ ...search, level })}
+          />
+          <ListCell />
+          <ListInput
+            label="Driven on or after"
+            date
+            value={search.from}
+            onChange={value => {
+              setSearch({ field: 'from', value });
+              fetch({ ...search, from: value });
+            }}
+          />
+          <ListInput
+            label="Driven on or before"
+            date
+            value={search.to}
+            onChange={value => {
+              setSearch({ field: 'to', value });
+              fetch({ ...search, to: value });
+            }}
+          />
+          <ListCell />
+          <ListCell />
+        </ListRow>
+      </ListContainer>
+      {data?.length > 0 && (
+        <ListContainer flex>
+          <List
+            height={!isNaN(listHeight) ? listHeight : 0}
+            itemCount={data.length}
+            itemSize={40}
+          >
+            {({ index, style }) => {
+              const time = data[index];
+              return (
+                <div style={style} key={time.AllFinishedIndex}>
+                  <ListRow
+                    onHover={hovering => {
+                      if (hovering) {
+                        setHover(time.AllFinishedIndex);
+                      } else {
+                        setHover(0);
+                      }
+                    }}
+                  >
+                    <ListCell width={120}>
+                      <Level
+                        LevelIndex={time.LevelIndex}
+                        LevelData={time.LevelData}
+                      />
+                    </ListCell>
+                    <ListCell width={120}>
+                      <Time time={time.Time} />
+                    </ListCell>
+                    <ListCell width={200}>
+                      <LocalTime
+                        date={time.Driven}
+                        format="ddd D MMM YYYY HH:mm:ss"
+                        parse="X"
+                      />
+                    </ListCell>
+                    <ListCell width={50} />
+                    <ListCell>
+                      {hover === time.AllFinishedIndex && time.TimeFileData && (
+                        <>
+                          <a
+                            href={`${config.s3Url}time/${time.TimeFileData.UUID}-${time.TimeFileData.MD5}/${time.TimeIndex}.rec`}
+                          >
+                            Download
+                          </a>
+                          <MuiButton
+                            title="View"
+                            onClick={() => {
+                              openReplay(time);
+                              setReplayIndex(index);
+                            }}
+                          >
+                            <PlayArrow />
+                          </MuiButton>
+                          {time.TimeFileData.Shared === 0 && (
                             <MuiButton
-                              title="View"
+                              title="Share"
                               onClick={() => {
-                                openReplay(time);
-                                setReplayIndex(index);
+                                selectToShare(time);
                               }}
                             >
-                              <PlayArrow />
+                              <Share />
                             </MuiButton>
-                            {time.TimeFileData.Shared === 0 && (
-                              <MuiButton
-                                title="Share"
-                                onClick={() => {
-                                  selectToShare(time);
-                                }}
-                              >
-                                <Share />
-                              </MuiButton>
-                            )}
-                            {time.TimeFileData.Shared === 1 && (
-                              <Link to={replayUrl(time)}>
-                                <div>Go to replay page</div>
-                              </Link>
-                            )}
-                          </>
-                        )}
-                      </ListCell>
-                    </ListRow>
-                  </div>
-                );
-              }}
-            </List>
-          </ListContainer>
-        )}
-      </Paper>
+                          )}
+                          {time.TimeFileData.Shared === 1 && (
+                            <Link to={replayUrl(time)}>
+                              <div>Go to replay page</div>
+                            </Link>
+                          )}
+                        </>
+                      )}
+                    </ListCell>
+                    <ListCell />
+                  </ListRow>
+                </div>
+              );
+            }}
+          </List>
+        </ListContainer>
+      )}
       {replay && (
         <Preview
           previewRec={replay}
@@ -328,6 +412,10 @@ const Container = styled.div`
     width: 100%;
   }
   padding: ${p => p.theme.padMedium};
+`;
+
+const SwitchThin = styled(Switch)`
+  margin: -10px;
 `;
 
 export default TimesReplays;

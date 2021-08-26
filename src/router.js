@@ -30,7 +30,6 @@ import Replay from 'pages/replay';
 import Replays from 'pages/replays';
 import Search from 'pages/search';
 import Settings from 'pages/settings';
-import MyContent from 'pages/mycontent';
 import Team from 'pages/team';
 import Teams from 'pages/teams';
 import Upload from 'pages/upload';
@@ -89,8 +88,6 @@ const Routes = () => {
           <Search path="search" />
           <Settings path="settings" tab="" />
           <Settings path="settings/:tab" />
-          <MyContent path="mycontent" tab="" />
-          <MyContent path="mycontent/:tab" />
           <Team path="team/:TeamName" />
           <Teams path="teams" />
           <Upload path="up" />

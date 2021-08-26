@@ -15,6 +15,7 @@ import ChatView from 'features/ChatView';
 import LocalTime from 'components/LocalTime';
 import LeaderHistory from 'components/LeaderHistory';
 import { battleStatus } from 'utils/battle';
+import { pluralize } from 'utils/misc';
 import { useNavigate } from '@reach/router';
 
 const crippleOptions = battle => {
@@ -83,6 +84,13 @@ const RightBarContainer = props => {
                 Download replay
               </Download>
             </div>
+            {battle.LevelData && (
+              <div>
+                {pluralize(battle.LevelData.Apples, 'apple')},{' '}
+                {pluralize(battle.LevelData.Killers, 'killer')} and{' '}
+                {pluralize(battle.LevelData.Flowers, 'flower')}.
+              </div>
+            )}
             <br />
             <Link to={`/levels/${battle.LevelIndex}`}>
               <StyledButton size="small" color="primary">

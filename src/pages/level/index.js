@@ -38,6 +38,7 @@ import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
 import { nickId } from 'utils/nick';
+import { pluralize } from 'utils/misc';
 import LeaderHistory from 'components/LeaderHistory';
 import { isEmpty } from 'lodash';
 
@@ -201,6 +202,11 @@ const Level = ({ LevelId }) => {
                   <LevelFullName>{level.LongName}</LevelFullName>
                   <br />
                   <div>{`Level ID: ${LevelIndex}`}</div>
+                  <div>
+                    {pluralize(level.Apples, 'apple')},{' '}
+                    {pluralize(level.Killers, 'killer')} and{' '}
+                    {pluralize(level.Flowers, 'flower')}.
+                  </div>
                   {levelpacks.length > 0 && (
                     <div>
                       {`Level Pack: `}

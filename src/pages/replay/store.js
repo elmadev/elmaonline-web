@@ -1,11 +1,32 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk } from 'easy-peasy';
-import { ReplayByUUID } from 'api';
+import { ReplayByUUID, EditReplay } from 'api';
 
 export default {
   replay: null,
+  edit: {
+    Comment: '',
+    DrivenBy: '',
+    Unlisted: 0,
+  },
   setReplayByUUID: action((state, payload) => {
     state.replay = payload;
+    state.edit = {
+      Comment: payload.Comment,
+      DrivenBy: payload.DrivenByData
+        ? payload.DrivenByData.Kuski
+        : payload.DrivenByText,
+      Unlisted: payload.Unlisted,
+    };
+  }),
+  setEdit: action((state, payload) => {
+    state.edit[payload.field] = payload.value;
+  }),
+  submitEdit: thunk(async (actions, payload) => {
+    const post = await EditReplay(payload);
+    if (post.ok) {
+      actions.getReplayByUUID(payload);
+    }
   }),
   loading: false,
   setLoading: action((state, payload) => {

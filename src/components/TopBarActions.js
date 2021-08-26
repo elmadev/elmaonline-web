@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import {
+  Notifications,
+  AccountCircle,
+  PlayCircleOutline,
+  Timer,
+  ExitToApp,
+  Settings,
+} from '@material-ui/icons';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
@@ -19,11 +25,49 @@ const StyledButton = styled(Button)`
 const Item = styled(MenuItem)`
   && {
     color: ${p => p.theme.linkColor};
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+`;
+
+const SmallItem = styled(Item)`
+  && {
+    font-size: 14px;
+    padding-left: 24px;
   }
 `;
 
 const Nick = styled.div`
-  padding: 6px 16px;
+  padding-left: 16px;
+  padding-top: 0;
+  padding-bottom: 10px;
+  padding-right: 16px;
+  text-align: center;
+`;
+
+const ReplayIcon = styled(PlayCircleOutline)`
+  margin-right: 4px;
+`;
+
+const TimesIcon = styled(Timer)`
+  margin-right: 4px;
+`;
+
+const ProfileIcon = styled(AccountCircle)`
+  margin-right: 4px;
+`;
+
+const SettingsIcon = styled(Settings)`
+  margin-right: 4px;
+`;
+
+const LogOutIcon = styled(ExitToApp)`
+  margin-right: 4px;
+`;
+
+const Line = styled.hr`
+  margin: 0;
 `;
 
 export default function TopBarActions() {
@@ -79,7 +123,7 @@ export default function TopBarActions() {
             color="inherit"
           >
             <Badge badgeContent={notificationsCount} color="error">
-              <NotificationsIcon />
+              <Notifications />
             </Badge>
           </IconButton>
           <IconButton
@@ -107,12 +151,29 @@ export default function TopBarActions() {
             onClose={() => handleClose('')}
           >
             <Nick>{username}</Nick>
+            <Line />
             <Item onClick={() => handleClose(`/kuskis/${username}`)}>
-              Profile
+              <ProfileIcon /> Profile
             </Item>
-            <Item onClick={() => handleClose('/settings')}>Settings</Item>
-            <Item onClick={() => handleClose('/mycontent')}>My Content</Item>
-            <Item onClick={() => performLogout()}>Log out</Item>
+            <SmallItem onClick={() => handleClose(`/kuskis/${username}/times`)}>
+              <TimesIcon /> Times
+            </SmallItem>
+            <SmallItem
+              onClick={() =>
+                handleClose(`/kuskis/${username}/replays-uploaded`)
+              }
+            >
+              <ReplayIcon /> Replays
+            </SmallItem>
+            <Line />
+            <Item onClick={() => handleClose('/settings')}>
+              <SettingsIcon />
+              Settings
+            </Item>
+            <Item onClick={() => performLogout()}>
+              <LogOutIcon />
+              Log out
+            </Item>
           </Menu>
         </div>
       )}
