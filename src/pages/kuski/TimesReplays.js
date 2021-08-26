@@ -36,7 +36,7 @@ import Button from 'components/Buttons';
 import { xor } from 'lodash';
 import Preview from './Preview';
 
-const TimesReplays = ({ KuskiIndex }) => {
+const TimesReplays = ({ KuskiIndex, collapse }) => {
   const [PRs, setPRs] = useState(false);
   const [hover, setHover] = useState(0);
   const [replay, openReplay] = useState(null);
@@ -60,7 +60,7 @@ const TimesReplays = ({ KuskiIndex }) => {
     setSearch,
   } = useStoreActions(actions => actions.Kuski);
   const windowSize = useElementSize();
-  const listHeight = windowSize.height - 379;
+  const listHeight = windowSize.height - 379 + (collapse ? 100 : 0);
   useEffect(() => {
     fetch();
     getTagOptions();

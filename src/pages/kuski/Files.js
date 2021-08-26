@@ -21,7 +21,7 @@ import useElementSize from 'utils/useWindowSize';
 
 const expireValues = ['365 days', '30 days', '7 days', '1 day', 'Never'];
 
-const FileList = () => {
+const FileList = ({ collapse }) => {
   const [hover, setHover] = useState(0);
   const [selectedFile, openFile] = useState(null);
   const [expire, setExpire] = useState('30 days');
@@ -39,7 +39,7 @@ const FileList = () => {
   } = useStoreActions(actions => actions.Kuski);
   const { updateFile } = useStoreActions(actions => actions.FileUpload);
   const windowSize = useElementSize();
-  const listHeight = windowSize.height - 375;
+  const listHeight = windowSize.height - 375 + (collapse ? 100 : 0);
   useEffect(() => {
     fetch({ limit: 100, search: fileSearch });
   }, []);

@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useNavigate } from '@reach/router';
 import PropTypes from 'prop-types';
 import { Tabs, Tab } from '@material-ui/core';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styled from 'styled-components';
 import config from 'config';
 import Layout from 'components/Layout';
@@ -18,6 +19,7 @@ import Info from './Info';
 import Files from './Files';
 
 const Kuski = ({ name, tab, ...props }) => {
+  const [collapse, setCollapse] = useState(false);
   const { getKuskiByName } = useStoreActions(state => state.Kuski);
   const { kuski, kuskiLoading } = useStoreState(state => state.Kuski);
   const { username } = useStoreState(state => state.Login);
@@ -35,7 +37,7 @@ const Kuski = ({ name, tab, ...props }) => {
       ) : (
         <Container chin={tab !== 'times' && tab !== 'files'}>
           <Head>
-            <Picture>
+            <Picture collapse={collapse}>
               {kuski.BmpCRC !== 0 && (
                 <img
                   src={`${config.dlUrl}shirt/${kuski.KuskiIndex}`}
@@ -53,6 +55,13 @@ const Kuski = ({ name, tab, ...props }) => {
               </TeamNat>
             </Profile>
             <KuskiHeader KuskiIndex={kuski.KuskiIndex} />
+            <Expand>
+              {collapse ? (
+                <ExpandMore onClick={() => setCollapse(false)} />
+              ) : (
+                <ExpandLess onClick={() => setCollapse(true)} />
+              )}
+            </Expand>
           </Head>
           <Tabs
             variant="scrollable"
@@ -83,7 +92,9 @@ const Kuski = ({ name, tab, ...props }) => {
               <DesignedBattles KuskiIndex={kuski.KuskiIndex} />
             </Width100>
           )}
-          {tab === 'times' && <TimesReplays KuskiIndex={kuski.KuskiIndex} />}
+          {tab === 'times' && (
+            <TimesReplays KuskiIndex={kuski.KuskiIndex} collapse={collapse} />
+          )}
           {tab === 'replays-uploaded' && (
             <Width100>
               <ReplayList nonsticky uploadedBy={kuski.KuskiIndex} />
@@ -96,7 +107,9 @@ const Kuski = ({ name, tab, ...props }) => {
           )}
           {tab === 'info' && <Info kuskiInfo={kuski} />}
           {tab === 'notifications' && username === name && <Notifications />}
-          {tab === 'files' && username === name && <Files />}
+          {tab === 'files' && username === name && (
+            <Files collapse={collapse} />
+          )}
         </Container>
       )}
     </Layout>
@@ -123,27 +136,33 @@ const Container = styled.div`
 `;
 
 const Picture = styled.div`
-  height: 150px;
-  width: 150px;
-  flex: 0 0 150px;
+  height: ${p => (p.collapse ? '50px' : '150px')};
+  width: ${p => (p.collapse ? '50px' : '150px')};
+  flex: 0 0 ${p => (p.collapse ? '50px' : '150px')};
   border-radius: 50%;
   margin: 20px;
   background-color: transparent;
   background-image: repeating-linear-gradient(
     45deg,
     transparent,
-    transparent 20px,
+    transparent ${p => (p.collapse ? '7px' : '20px')},
     #f1f1f1 0,
-    #f1f1f1 50px
+    #f1f1f1 ${p => (p.collapse ? '17px' : '50px')}
   );
   img {
     margin: auto;
     display: block;
     padding: 10px;
+    width: 104px;
+    ${p => p.collapse && 'padding: 0; width: 36px; padding-top: 2px;'}
+    transition-property: width, padding;
+    transition-duration: 1s;
   }
   @media (max-width: 940px) {
     margin: 20px auto;
   }
+  transition-duration: 1s;
+  transition-property: height, width, flex;
 `;
 
 const Profile = styled.div`
@@ -170,6 +189,7 @@ const TeamNat = styled.div`
 `;
 
 const Head = styled.div`
+  position: relative;
   border-bottom: 1px solid #eaeaea;
   display: flex;
   > * {
@@ -181,6 +201,18 @@ const Head = styled.div`
       margin-bottom: 20px;
     }
   }
+`;
+
+const Expand = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default Kuski;
