@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useNavigate } from '@reach/router';
 import PropTypes from 'prop-types';
@@ -19,9 +19,12 @@ import Info from './Info';
 import Files from './Files';
 
 const Kuski = ({ name, tab, ...props }) => {
-  const [collapse, setCollapse] = useState(false);
-  const { getKuskiByName } = useStoreActions(state => state.Kuski);
-  const { kuski, kuskiLoading } = useStoreState(state => state.Kuski);
+  const { getKuskiByName, setCollapse } = useStoreActions(state => state.Kuski);
+  const {
+    kuski,
+    kuskiLoading,
+    settings: { collapse },
+  } = useStoreState(state => state.Kuski);
   const { username } = useStoreState(state => state.Login);
 
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { action, thunk } from 'easy-peasy';
+import { action, thunk, persist } from 'easy-peasy';
 import { model } from 'utils/easy-peasy';
 import {
   PersonalLatest,
@@ -174,5 +174,14 @@ export default {
     if (post.ok) {
       actions.files.fetch({ limit: payload.limit, search: payload.search });
     }
+  }),
+  settings: persist(
+    {
+      collapse: false,
+    },
+    { storage: 'localStorage' },
+  ),
+  setCollapse: action((state, payload) => {
+    state.settings.collapse = payload;
   }),
 };
