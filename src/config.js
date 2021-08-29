@@ -13,5 +13,5 @@ module.exports = {
   maps: 'AIzaSyDE8Prt4OybzNNxo1MzIn1XYNGxm9rI8Zk',
   recaptcha: '6Le-n9QUAAAAAG-3bYyysXddxwD6I6iJeDBTHf2r',
   maxUploadSize: 10485760,
-  s3Url: `https://eol.ams3.digitaloceanspaces.com/${s3SubFolder}`,
+  s3Url: `https://space.elma.online/${s3SubFolder}`,
 };

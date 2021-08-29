@@ -19,8 +19,7 @@ class Time extends React.Component {
     apples: 0,
   };
 
-  formatTime = time => {
-    const { apples, thousands } = this.props;
+  static formatTime = (time, apples, thousands) => {
     // for cup results
     if (apples === -1) {
       if (time === 9999100) {
@@ -45,8 +44,8 @@ class Time extends React.Component {
   };
 
   render() {
-    const { time } = this.props;
-    if (!time) {
+    const { time, apples, thousands } = this.props;
+    if (!time && !Number.isInteger(apples)) {
       return <span />;
     }
     if (typeof time === 'object') {
@@ -57,9 +56,9 @@ class Time extends React.Component {
           </span>
         );
       }
-      return <span>{this.formatTime(time.tt)}</span>;
+      return <span>{Time.formatTime(time.tt, apples, thousands)}</span>;
     }
-    return <span>{this.formatTime(time)}</span>;
+    return <span>{Time.formatTime(time || 0, apples, thousands)}</span>;
   }
 }
 

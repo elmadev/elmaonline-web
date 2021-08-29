@@ -41,3 +41,6 @@ export const alphaNumeric = text => {
   }
   return '';
 };
+
+export const pluralize = (count = 0, noun = '', suffix = 's') =>
+  `${count} ${noun}${count !== 1 ? suffix : ''}`;

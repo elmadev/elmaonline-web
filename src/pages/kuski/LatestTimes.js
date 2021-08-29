@@ -17,7 +17,7 @@ const LatestTimes = ({ KuskiIndex }) => {
   const { latestTimes, latestPRs } = useStoreState(state => state.Kuski);
   const { getLatest } = useStoreActions(actions => actions.Kuski);
   useEffect(() => {
-    getLatest({ KuskiIndex, limit: 1000 });
+    getLatest({ KuskiIndex, limit: 100 });
   }, [KuskiIndex]);
 
   return (

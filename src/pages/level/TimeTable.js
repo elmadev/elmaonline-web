@@ -6,17 +6,17 @@ import Loading from 'components/Loading';
 import LegacyIcon from 'components/LegacyIcon';
 import { FixedSizeList as List } from 'react-window';
 
-const TimeTable = ({ data, latestBattle, loading }) => {
+const TimeTable = ({ data, latestBattle, loading, height }) => {
   if (loading) return <Loading />;
   return (
     <div>
       <ListContainer>
         <ListHeader>
-          <ListCell right width={30}>
+          <ListCell textAlign="right" width={30}>
             #
           </ListCell>
           <ListCell width={200}>Kuski</ListCell>
-          <ListCell right width={200}>
+          <ListCell textAlign="right" width={200}>
             Time
           </ListCell>
           <ListCell />
@@ -29,7 +29,7 @@ const TimeTable = ({ data, latestBattle, loading }) => {
           <ListContainer flex>
             <List
               className="List"
-              height={600}
+              height={height || 600}
               itemCount={data.length}
               itemSize={40}
             >

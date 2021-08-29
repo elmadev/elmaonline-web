@@ -33,11 +33,10 @@ import Settings from 'pages/settings';
 import Team from 'pages/team';
 import Teams from 'pages/teams';
 import Upload from 'pages/upload';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { useStoreState, useStoreRehydrated } from 'easy-peasy';
 import { themes, muiTheme } from './theme';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { ThemeProvider } from 'styled-components';
 
 const Router100 = styled(Router)`
   height: 100%;

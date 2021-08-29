@@ -1,42 +1,33 @@
 import React, { useState, Fragment } from 'react';
 import styled from 'styled-components';
 import { Select, MenuItem } from '@material-ui/core';
+import { PlayArrow } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
+import { isEmpty } from 'lodash';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
+import RankingValue from 'components/RankingValue';
 import { sortResults, getBattleType } from 'utils/battle';
 
-const getExtra = (KuskiIndex, extra, rankingHistory, battle) => {
-  let typeFilter = '';
-  let value = '';
-  if (Object.keys(rankingHistory).length === 0) return 'unavailable';
-  if (extra === '') {
-    return '';
+// pulls 2 entries from ranking history for all kuskis
+const getKuskiRankingHistory = (allRankingHistory, KuskiIndex, battle) => {
+  if (isEmpty(allRankingHistory)) {
+    return [null, null];
   }
-  if (extra === 'RankingAll') {
-    typeFilter = 'All';
-    value = 'Ranking';
-  }
-  if (extra === 'RankingType') {
-    typeFilter = getBattleType(battle);
-    value = 'Ranking';
-  }
-  if (extra === 'RankingIncreaseAll') {
-    typeFilter = 'All';
-    value = 'Increase';
-  }
-  if (extra === 'RankingIncreaseType') {
-    typeFilter = getBattleType(battle);
-    value = 'Increase';
-  }
-  const filtered = rankingHistory.filter(
-    r => r.KuskiIndex === KuskiIndex && r.BattleType === typeFilter,
+
+  const rowsAll = allRankingHistory.filter(
+    r => r.KuskiIndex === KuskiIndex && r.BattleType === 'All',
   );
-  if (filtered.length > 0) {
-    return parseFloat(filtered[0][value]).toFixed(2);
-  }
-  return '';
+
+  const rowsType = allRankingHistory.filter(
+    r => r.KuskiIndex === KuskiIndex && r.BattleType === getBattleType(battle),
+  );
+
+  return [
+    rowsAll.length > 0 ? rowsAll[0] : null,
+    rowsType.length > 0 ? rowsType[0] : null,
+  ];
 };
 
 const SpecialResult = (time, type) => {
@@ -47,8 +38,8 @@ const SpecialResult = (time, type) => {
 };
 
 const LevelStatsContainer = props => {
-  const [extra, setExtra] = useState('RankingAll');
-  const { battle, rankingHistory, runStats } = props;
+  const [rankingSelect, setRankingSelect] = useState('All');
+  const { battle, rankingHistory, runStats, openReplay } = props;
 
   if (!battle) return <Root>loading</Root>;
   if (runStats)
@@ -73,22 +64,13 @@ const LevelStatsContainer = props => {
               <ListCell right>Apples Taken</ListCell>
               <ListCell right>
                 <Select
-                  value={extra}
-                  onChange={e => setExtra(e.target.value)}
+                  value={rankingSelect}
+                  onChange={e => setRankingSelect(e.target.value)}
                   name="extra"
                   displayEmpty
                 >
-                  <MenuItem value="" disabled>
-                    Ranking
-                  </MenuItem>
-                  <MenuItem value="RankingAll">Ranking (all)</MenuItem>
-                  <MenuItem value="RankingType">Ranking (type)</MenuItem>
-                  <MenuItem value="RankingIncreaseAll">
-                    Ranking Increase (all)
-                  </MenuItem>
-                  <MenuItem value="RankingIncreaseType">
-                    Ranking Increase (type)
-                  </MenuItem>
+                  <MenuItem value="All">Ranking (all)</MenuItem>
+                  <MenuItem value="Type">Ranking (type)</MenuItem>
                 </Select>
               </ListCell>
             </ListHeader>
@@ -99,9 +81,21 @@ const LevelStatsContainer = props => {
                 // it appears this happens if kuski joins for countdown but not for battle.
                 const runStatsForKuski = runStats && runStats[r.KuskiIndex];
 
+                const [
+                  kuskiRankingAll,
+                  kuskiRankingType,
+                ] = getKuskiRankingHistory(
+                  rankingHistory,
+                  r.KuskiIndex,
+                  battle,
+                );
+
                 return (
                   <Fragment key={r.KuskiIndex}>
-                    <ListRow>
+                    <Row
+                      showArrow={openReplay}
+                      onClick={openReplay ? () => openReplay(r) : null}
+                    >
                       <ListCell width={30}>{i + 1}.</ListCell>
                       <ListCell width={battle.Multi === 1 ? 300 : 200}>
                         <Kuski kuskiData={r.KuskiData} flag team />
@@ -119,6 +113,7 @@ const LevelStatsContainer = props => {
                         ) : (
                           SpecialResult(r.Time, battle.BattleType)
                         )}
+                        <PlayArrow />
                       </ListCell>
                       <ListCell right>
                         {runStatsForKuski ? (
@@ -134,9 +129,20 @@ const LevelStatsContainer = props => {
                         {runStatsForKuski ? runStatsForKuski.Apples : '0'}
                       </ListCell>
                       <ListCell right width={205}>
-                        {getExtra(r.KuskiIndex, extra, rankingHistory, battle)}
+                        {rankingSelect === 'All' && (
+                          <RankingValue
+                            rankingHistory={kuskiRankingAll}
+                            fallback="unavailable"
+                          />
+                        )}
+                        {rankingSelect === 'Type' && (
+                          <RankingValue
+                            rankingHistory={kuskiRankingType}
+                            fallback="unavailable"
+                          />
+                        )}
                       </ListCell>
-                    </ListRow>
+                    </Row>
                   </Fragment>
                 );
               })}
@@ -156,6 +162,19 @@ const Root = styled.div`
   @media screen and (max-width: 1100px) {
     float: none;
     width: 100%;
+  }
+`;
+
+const Row = styled(ListRow)`
+  svg {
+    font-size: 20px;
+    display: ${p => (p.showArrow ? 'inline-block' : 'none')};
+    visibility: hidden;
+  }
+  :hover {
+    svg {
+      visibility: visible;
+    }
   }
 `;
 

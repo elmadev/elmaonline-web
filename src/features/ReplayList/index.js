@@ -19,7 +19,10 @@ import Pagination from '@material-ui/lab/Pagination';
 export default function ReplayList({
   defaultPage = 0,
   defaultPageSize = 25,
+  drivenBy = 0,
+  uploadedBy = 0,
   summary,
+  nonsticky = false,
 }) {
   const [selectedTags, setSelectedTags] = useState([]);
   const [previewRec, setPreviewRec] = useState(null);
@@ -31,6 +34,7 @@ export default function ReplayList({
   const { getReplays, getTagOptions, setSettings } = useStoreActions(
     actions => actions.ReplayList,
   );
+  const { loggedIn, userid } = useStoreState(state => state.Login);
 
   useEffect(() => {
     getTagOptions();
@@ -43,6 +47,8 @@ export default function ReplayList({
       tags: selectedTags.map(tag => tag.TagIndex),
       sortBy: !summary ? settings.sortBy : 'uploaded',
       order: 'desc',
+      drivenBy,
+      uploadedBy,
     });
   }, [page, pageSize, selectedTags, settings.sortBy]);
 
@@ -51,6 +57,14 @@ export default function ReplayList({
   }, [selectedTags]);
 
   const columns = ['Uploaded', 'Replay', 'Level', 'Time', 'By'];
+  const personal = Boolean(
+    loggedIn &&
+      ((drivenBy && userid === drivenBy) ||
+        (uploadedBy && userid === uploadedBy)),
+  );
+  if (personal) {
+    columns.push('Unlisted');
+  }
   if (!summary) {
     columns.push('Rating');
     columns.push('Tags');
@@ -105,7 +119,7 @@ export default function ReplayList({
     <Container small={summary} grid={showGrid()}>
       {!summary && (
         <>
-          <StickyContainer>
+          <StickyContainer nonsticky={nonsticky}>
             <Filter
               value={selectedTags}
               onChange={(_event, newValue) => {
@@ -173,6 +187,7 @@ export default function ReplayList({
             <ListCell>Level</ListCell>
             <ListCell right>Time</ListCell>
             <ListCell>By</ListCell>
+            {personal && <ListCell>Unlisted</ListCell>}
             {!summary && (
               <>
                 <ListCell>Rating</ListCell>
@@ -243,10 +258,10 @@ const CardGrid = styled.div`
 
 const StickyContainer = styled.div`
   background: ${p => p.theme.pageBackground};
-  position: sticky;
+  position: ${p => (p.nonsticky ? 'relative' : 'sticky')};
   display: flex;
   justify-content: space-between;
-  top: 52px;
+  top: ${p => (p.nonsticky ? '0' : '52px')};
   z-index: 10;
 `;
 

@@ -13,6 +13,10 @@ import {
   Tab,
   FormControlLabel,
   Checkbox,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
 } from '@material-ui/core';
 import styled, { ThemeContext } from 'styled-components';
 import Layout from 'components/Layout';
@@ -34,13 +38,16 @@ import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
 import { nickId } from 'utils/nick';
+import { pluralize } from 'utils/misc';
 import LeaderHistory from 'components/LeaderHistory';
+import { isEmpty } from 'lodash';
 
 const Level = ({ LevelId }) => {
   const theme = useContext(ThemeContext);
   const LevelIndex = parseInt(LevelId, 10);
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
+  const [cripple, setCripple] = useState('');
   const {
     besttimes,
     besttimesLoading,
@@ -52,9 +59,11 @@ const Level = ({ LevelId }) => {
     eoltimes,
     eolLoading,
     timeStats,
+    levelpacks,
     statsLoading,
     settings: { fancyMap },
     personalLeaderHistory,
+    personalLeaderHistoryLoading,
     leaderHistory,
     leaderHistoryLoading,
   } = useStoreState(state => state.Level);
@@ -73,6 +82,35 @@ const Level = ({ LevelId }) => {
     getBesttimes({ levelId: LevelIndex, limit: 10000, eolOnly: 0 });
     getLevel(LevelIndex);
   }, []);
+
+  const crippleData = useStoreState(store => store.Level.Crippled);
+  const {
+    fetchTimes: fetchCrippledTimes,
+    fetchPersonal: fetchCrippledPersonal,
+    fetchTimeStats: fetchCrippledTimeStats,
+  } = useStoreActions(store => store.Level.Crippled);
+
+  const {
+    allTimes: crippledAllTimes,
+    bestTimes: crippledBestTimes,
+    leaderHistory: crippledLeaderHistory,
+    kuskiTimes: crippledKuskiTimes,
+    kuskiLeaderHistory: crippledKuskiLeaderHistory,
+    timeStats: crippledTimeStats,
+  } = cripple && !isEmpty(crippleData[cripple]) ? crippleData[cripple] : {};
+
+  useEffect(() => {
+    if (cripple) {
+      if (tab !== 2) {
+        fetchCrippledTimes([LevelIndex, cripple]);
+      }
+
+      if (tab === 2) {
+        fetchCrippledPersonal([LevelIndex, cripple]);
+        fetchCrippledTimeStats([LevelIndex, cripple]);
+      }
+    }
+  }, [LevelIndex, cripple, tab]);
 
   const onTabClick = (e, value) => {
     setTab(value);
@@ -109,6 +147,8 @@ const Level = ({ LevelId }) => {
   };
 
   const isWindow = typeof window !== 'undefined';
+
+  const loggedIn = nickId() > 0;
 
   return (
     <Layout t={`Level - ${level.LevelName}.lev`}>
@@ -161,8 +201,23 @@ const Level = ({ LevelId }) => {
                   </Download>
                   <LevelFullName>{level.LongName}</LevelFullName>
                   <br />
-                  {'Level ID: '}
-                  {`${LevelIndex}`}
+                  <div>{`Level ID: ${LevelIndex}`}</div>
+                  <div>
+                    {pluralize(level.Apples, 'apple')},{' '}
+                    {pluralize(level.Killers, 'killer')} and{' '}
+                    {pluralize(level.Flowers, 'flower')}.
+                  </div>
+                  {levelpacks.length > 0 && (
+                    <div>
+                      {`Level Pack: `}
+                      {levelpacks.map((pack, index) => [
+                        index > 0 && ', ',
+                        <Link to={`/levels/packs/${pack.LevelPackName}`}>
+                          {pack.LevelPackName}
+                        </Link>,
+                      ])}
+                    </div>
+                  )}
                   {level.Legacy !== 0 && (
                     <div>
                       This level has legacy times imported from a third party
@@ -250,11 +305,38 @@ const Level = ({ LevelId }) => {
         </ChatContainer>
       </RightBarContainer>
       <ResultsContainer>
+        <CrippledSelectWrapper>
+          <FormControl>
+            <InputLabel id="cripple">Crippled Condition</InputLabel>
+            <Select
+              id="cripple"
+              value={cripple || 'none'}
+              onChange={e => {
+                setCripple(e.target.value === 'none' ? '' : e.target.value);
+
+                if (tab === 4 && e.target.value) {
+                  setTab(0);
+                }
+              }}
+            >
+              <MenuItem value="none">None</MenuItem>
+              <MenuItem value="noVolt">No Volt</MenuItem>
+              <MenuItem value="noTurn">No Turn</MenuItem>
+              <MenuItem value="oneTurn">One Turn</MenuItem>
+              <MenuItem value="noBrake">No Brake</MenuItem>
+              <MenuItem value="noThrottle">No Throttle</MenuItem>
+              <MenuItem value="alwaysThrottle">Always Throttle</MenuItem>
+              <MenuItem value="oneWheel">One Wheel</MenuItem>
+              <MenuItem value="drunk">Drunk</MenuItem>
+            </Select>
+          </FormControl>
+        </CrippledSelectWrapper>
+
         <Paper>
           {loading && <Loading />}
           {!loading && (
             <>
-              <Tabs
+              <StyledTabs
                 variant="scrollable"
                 scrollButtons="auto"
                 value={tab}
@@ -264,41 +346,102 @@ const Level = ({ LevelId }) => {
                 <Tab label="All times" />
                 <Tab label="Personal stats" />
                 <Tab label="Leaders" />
-                {level.Legacy && <Tab label="EOL times" />}
-              </Tabs>
-              {tab === 0 && (
-                <TimeTable
-                  loading={besttimesLoading}
-                  data={besttimes}
-                  latestBattle={battlesForLevel[0]}
-                />
+                {!cripple && level.Legacy && <Tab label="EOL times" />}
+              </StyledTabs>
+
+              {tab === 2 && !loggedIn && (
+                <Container>Log in to see personal stats.</Container>
               )}
-              {tab === 1 && (
-                <TimeTable
-                  loading={allLoading !== LevelIndex}
-                  data={allfinished}
-                  latestBattle={battlesForLevel[0]}
-                />
+
+              {!cripple && (
+                <>
+                  {tab === 0 && (
+                    <TimeTable
+                      loading={besttimesLoading}
+                      data={besttimes}
+                      latestBattle={battlesForLevel[0]}
+                    />
+                  )}
+
+                  {tab === 1 && (
+                    <TimeTable
+                      loading={allLoading !== LevelIndex}
+                      data={allfinished}
+                      latestBattle={battlesForLevel[0]}
+                    />
+                  )}
+
+                  {tab === 2 && loggedIn && (
+                    <>
+                      <StatsTable
+                        data={timeStats}
+                        loading={statsLoading !== LevelIndex}
+                      />
+                      <LeaderHistory
+                        allFinished={personalLeaderHistory}
+                        loading={personalLeaderHistoryLoading !== LevelIndex}
+                      />
+                    </>
+                  )}
+
+                  {tab === 3 && (
+                    <LeaderHistory
+                      allFinished={leaderHistory}
+                      loading={leaderHistoryLoading !== LevelIndex}
+                    />
+                  )}
+
+                  {tab === 4 && (
+                    <TimeTable
+                      loading={eolLoading !== LevelIndex}
+                      data={eoltimes}
+                      latestBattle={battlesForLevel[0]}
+                    />
+                  )}
+                </>
               )}
-              {tab === 2 && (
-                <StatsTable
-                  data={timeStats}
-                  leaderHistory={personalLeaderHistory}
-                  loading={statsLoading !== LevelIndex}
-                />
-              )}
-              {tab === 3 && (
-                <LeaderHistory
-                  allFinished={leaderHistory}
-                  loading={leaderHistoryLoading !== LevelIndex}
-                />
-              )}
-              {tab === 4 && (
-                <TimeTable
-                  loading={eolLoading !== LevelIndex}
-                  data={eoltimes}
-                  latestBattle={battlesForLevel[0]}
-                />
+
+              {cripple && (
+                <>
+                  {tab === 0 && (
+                    <TimeTable
+                      data={crippledBestTimes}
+                      loading={crippledBestTimes === false}
+                    />
+                  )}
+
+                  {tab === 1 && (
+                    <TimeTable
+                      data={crippledAllTimes}
+                      loading={crippledAllTimes === false}
+                    />
+                  )}
+
+                  {tab === 2 && loggedIn && (
+                    <>
+                      <StatsTable
+                        data={crippledTimeStats}
+                        loading={crippledTimeStats === false}
+                      />
+                      <LeaderHistory
+                        allFinished={crippledKuskiLeaderHistory}
+                        loading={crippledKuskiLeaderHistory === false}
+                      />
+                      <TimeTable
+                        data={crippledKuskiTimes}
+                        loading={crippledKuskiTimes === false}
+                        height={376}
+                      />
+                    </>
+                  )}
+
+                  {tab === 3 && (
+                    <LeaderHistory
+                      allFinished={crippledLeaderHistory}
+                      loading={crippledLeaderHistory === false}
+                    />
+                  )}
+                </>
               )}
             </>
           )}
@@ -392,6 +535,32 @@ const StyledFormControlLabel = styled(FormControlLabel)`
   span {
     font-size: 14px;
   }
+`;
+
+const StyledTabs = styled(Tabs)`
+  .MuiTab-root {
+    min-width: 125px;
+    @media screen and (max-width: 1440px) {
+      min-width: 100px;
+    }
+  }
+`;
+
+const CrippledSelectWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -38px;
+  margin-bottom: 15px;
+  .MuiFormControl-root {
+    min-width: 180px;
+  }
+  @media screen and (max-width: 1100px) {
+    margin-top: 0;
+  }
+`;
+
+const Container = styled.div`
+  padding: 20px;
 `;
 
 Level.propTypes = {

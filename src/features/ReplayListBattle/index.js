@@ -10,7 +10,6 @@ import Time from 'components/Time';
 import LocalTime from 'components/LocalTime';
 import Link from 'components/Link';
 import { sortResults } from 'utils/battle';
-import { useNavigate } from '@reach/router';
 import { Paper } from 'components/Paper';
 
 export default function ReplayListBattle({
@@ -18,7 +17,6 @@ export default function ReplayListBattle({
   defaultPageSize = 25,
   showPagination,
 }) {
-  const navigate = useNavigate();
   const [page, setPage] = useState(defaultPage);
   const [pageSize, setPageSize] = useState(defaultPageSize);
   const { battles } = useStoreState(state => state.ReplayList);
@@ -62,7 +60,7 @@ export default function ReplayListBattle({
           <ListCell>Type</ListCell>
           <ListCell>Designer</ListCell>
           <ListCell right>Result</ListCell>
-          <ListCell>Kuski</ListCell>
+          <ListCell>Winner</ListCell>
         </ListHeader>
         {!battles ? (
           <ListRow>
@@ -71,36 +69,30 @@ export default function ReplayListBattle({
         ) : (
           paginateBattles(battles, page, pageSize).map(i => {
             return (
-              <ListRow
-                onClick={() => {
-                  navigate(`/battles/${i.BattleIndex}`);
-                }}
-              >
-                <ListCell width={120}>
-                  <Link to={`/battles/${i.BattleIndex}`}>
-                    <LocalTime
-                      date={i.Started}
-                      format={`DD MMM HH:mm`}
-                      parse="X"
-                    />
-                  </Link>
+              <ListRow>
+                <ListCell to={`/battles/${i.BattleIndex}`} width={120}>
+                  <LocalTime
+                    date={i.Started}
+                    format={`DD MMM HH:mm`}
+                    parse="X"
+                  />
                 </ListCell>
                 <ListCell width={100}>
                   <Level LevelIndex={i.LevelIndex} LevelData={i.LevelData} />
                 </ListCell>
-                <ListCell width={100}>
+                <ListCell to={`/battles/${i.BattleIndex}`} width={100}>
                   <BattleType type={i.BattleType} />
                 </ListCell>
                 <ListCell width={120}>
                   <Kuski kuskiData={i.KuskiData} />
                 </ListCell>
-                <ListCell right>
+                <ListCell to={`/battles/${i.BattleIndex}`} right width={120}>
                   <Time
                     apples={getWinResult(i.Results, i.BattleType).Apples}
                     time={getWinResult(i.Results, i.BattleType).Time}
                   />
                 </ListCell>
-                <ListCell width={100}>
+                <ListCell>
                   <Link to={`/battles/${i.BattleIndex}`}>
                     <Kuski
                       kuskiData={

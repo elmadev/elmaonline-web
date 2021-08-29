@@ -13,20 +13,23 @@ import LegacyIcon from 'components/LegacyIcon';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import LevelPopup from './LevelPopup';
 import { combinedTT } from 'utils/calcs';
+import Link from '../../components/Link';
 
-const OtherKuskiLink = ({ otherKuski, getTimes }) => {
+const OtherKuskiLink = ({ otherKuski, getTimes, selectLevel }) => {
   return (
     <span>
       {' '}
       (with{' '}
-      <KuskiWith
+      <Link
         onClick={e => {
+          selectLevel(-1);
           getTimes(otherKuski);
           e.stopPropagation();
         }}
+        to=""
       >
         {otherKuski}
-      </KuskiWith>
+      </Link>
       )
     </span>
   );
@@ -141,6 +144,7 @@ const Personal = ({
                       <OtherKuskiLink
                         otherKuski={r.multi.OtherKuski.Kuski}
                         getTimes={getTimes}
+                        selectLevel={selectLevel}
                       />
                     ) : (
                       !r.multi.OtherKuski || ' (' + r.multi.OtherKuski + ')'
@@ -225,15 +229,6 @@ const ChoosePlayer = styled.div`
   align-items: center;
   div {
     padding-left: 6px;
-  }
-`;
-
-const KuskiWith = styled.span`
-  && {
-    color: ${p => p.theme.linkColor};
-  }
-  & :hover {
-    color: ${p => p.theme.linkHover};
   }
 `;
 

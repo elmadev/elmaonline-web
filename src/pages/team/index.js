@@ -4,11 +4,9 @@ import Header from 'components/Header';
 import Kuski from 'components/Kuski';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListCell, ListContainer, ListRow } from 'components/List';
-import { useNavigate } from '@reach/router';
 import Layout from 'components/Layout';
 
 const Team = ({ TeamName }) => {
-  const navigate = useNavigate();
   const { teamMembers } = useStoreState(state => state.Teams);
   const { getTeamMembers } = useStoreActions(actions => actions.Teams);
 
@@ -21,8 +19,8 @@ const Team = ({ TeamName }) => {
       <Paper>
         <ListContainer>
           {teamMembers.map(m => (
-            <ListRow onClick={() => navigate(`/kuskis/${m.Kuski}`)}>
-              <ListCell>
+            <ListRow>
+              <ListCell to={`/kuskis/${m.Kuski}`}>
                 <Kuski kuskiData={m} />
               </ListCell>
             </ListRow>
