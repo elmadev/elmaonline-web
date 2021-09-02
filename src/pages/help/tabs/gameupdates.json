@@ -1,0 +1,25 @@
+[
+  {
+    "type": "both",
+    "date": "upcoming",
+    "version": "1.0.10",
+    "highlights": [
+      "TBA"
+    ],
+    "changes": [],
+    "file": ""
+  },
+  {
+    "type": "client",
+    "date": "25 May 2020",
+    "version": "",
+    "highlights": [
+      "In celebration of the Steam release, we are releasing a quality-of-life update to your EOL client which fixes a couple of long standing bugs. The old version will continue to work, but everyone is recommended to update."
+    ],
+    "changes": [
+      "Shift F5 (best times lists) no longer wrapping back to 0 for long times.",
+      "It's now possible to upload long win recs (files over 1MB)."
+    ],
+    "file": "https://up.elma.online/u/mpve11oezf/bs.zip"
+  }
+]

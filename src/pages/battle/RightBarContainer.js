@@ -128,7 +128,7 @@ const RightBarContainer = props => {
                 openReplay={
                   openReplay ? TimeIndex => openReplay(TimeIndex) : null
                 }
-                started={battle.Started}
+                started={parseInt(battle.Started)}
               />
             ) : null}
           </AccordionDetails>
