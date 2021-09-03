@@ -20,6 +20,7 @@ import Links from './tabs/Links';
 import Crew from './tabs/Crew';
 import EolFolder from './tabs/EolFolder';
 import GameUpdates from './tabs/GameUpdates';
+import Programs from './tabs/Programs';
 
 const Help = () => {
   const navigate = useNavigate();
@@ -86,6 +87,7 @@ const Help = () => {
             {makeButtons('donate', '4.2. Donate')}
             {makeButtons('links', '4.3. Links')}
             {makeButtons('api', '4.4. Developer API')}
+            {makeButtons('programs', '4.5. Programs')}
           </ButtonContainer>
         </LeftContainer>
         <RightContainer>
@@ -103,6 +105,7 @@ const Help = () => {
             <Faq path="faq" />
             <Donate path="donate" />
             <DeveloperApi path="api" />
+            <Programs path="programs" />
             <Links path="links" />
             <Crew path="crew" />
             <EolFolder path="eolfiles" />
