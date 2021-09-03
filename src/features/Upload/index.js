@@ -345,9 +345,11 @@ const Upload = ({ onUpload, filetype }) => {
                                   onChange={e => handleUnlisted(rec.name, e)}
                                   value="unlisted"
                                   color="primary"
+                                  disabled={fileInfo[rec.name].hide}
                                 />
                               }
                               label="Unlisted"
+                              title="You only and people you share the link with can see it"
                             />
                           </div>
                           <div>
@@ -358,9 +360,11 @@ const Upload = ({ onUpload, filetype }) => {
                                   onChange={e => handleHide(rec.name, e)}
                                   value="hide"
                                   color="primary"
+                                  disabled={fileInfo[rec.name].unlisted}
                                 />
                               }
-                              label="Hide in latest replays"
+                              label="Silent upload"
+                              title="Not shown in latest replays, but still shown in search and level pages"
                             />
                           </div>
                         </Grid>
