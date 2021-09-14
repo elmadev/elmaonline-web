@@ -70,7 +70,7 @@ const Routes = () => {
           <Kuskis path="kuskis/search" tab="search" />
           <Level path="levels/:LevelId" />
           <LevelPack path="levels/packs/:name" tab="" />
-          <LevelPack path="levels/packs/:name/:tab" />
+          <LevelPack path="levels/packs/:name/:tab/*" />
           <Levels path="levels" tab="" />
           {/* can't use levels/:tab due to conflict with levels/:LevelId above*/}
           <Levels path="levels/collections" tab="collections" />

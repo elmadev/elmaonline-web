@@ -20,6 +20,7 @@
     "google-map-react": "^2.1.9",
     "level-editor-gui": "https://github.com/elmadev/level-editor-gui.git",
     "lodash": "^4.17.21",
+    "memoizee": "^0.4.15",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "nanoid": "^3.1.22",
