@@ -2,6 +2,7 @@ import React from 'react';
 import Recplayer from 'components/Recplayer';
 import { Level } from 'components/Names';
 import Time from 'components/Time';
+import { has } from 'lodash';
 import Header from 'components/Header';
 import LocalTime from 'components/LocalTime';
 import CloseIcon from '@material-ui/icons/HighlightOffOutlined';
@@ -62,7 +63,7 @@ export default function Preview({
                   LevelIndex={previewRec.LevelIndex}
                 />
               </p>
-              {previewRec.Apples && (
+              {has(previewRec, 'Apples') && (
                 <Comment>
                   {Finished[previewRec.Finished]}
                   <br />
