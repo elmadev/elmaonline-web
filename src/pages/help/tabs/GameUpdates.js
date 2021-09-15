@@ -20,12 +20,16 @@ const Headline = ({ type, date, version, file }) => {
   }
   if (file) {
     return (
-      <Header h2>
+      <Header h2 top>
         <a href={file}>{text}</a>
       </Header>
     );
   }
-  return <Header h2>{text}</Header>;
+  return (
+    <Header h2 top>
+      {text}
+    </Header>
+  );
 };
 
 const GameUpdates = () => {
@@ -68,7 +72,14 @@ const GameUpdates = () => {
             ))}
             <ul>
               {update.changes.map(c => (
-                <li>{c}</li>
+                <>
+                  <Header h3 top>
+                    {c.section}
+                  </Header>
+                  {c.changes.map(change => (
+                    <li>{change}</li>
+                  ))}
+                </>
               ))}
             </ul>
           </>

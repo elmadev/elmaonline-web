@@ -21,7 +21,7 @@ const Programs = () => {
         .
         {sections.default.map(section => (
           <>
-            <Header h2 top={10}>
+            <Header h2 top>
               {section.name}
             </Header>
             <ListContainer>
