@@ -19,6 +19,8 @@ import DeveloperApi from './tabs/DeveloperApi';
 import Links from './tabs/Links';
 import Crew from './tabs/Crew';
 import EolFolder from './tabs/EolFolder';
+import GameUpdates from './tabs/GameUpdates';
+import Programs from './tabs/Programs';
 
 const Help = () => {
   const navigate = useNavigate();
@@ -77,6 +79,7 @@ const Help = () => {
             {makeButtons('rules', '3.2. Rules')}
             {makeButtons('etiquette', '3.3. Etiquette')}
             {makeButtons('glossary', '3.4. Glossary')}
+            {makeButtons('updates', '3.5. Game updates')}
           </ButtonContainer>
           <Header h3>4. The community</Header>
           <ButtonContainer>
@@ -84,6 +87,7 @@ const Help = () => {
             {makeButtons('donate', '4.2. Donate')}
             {makeButtons('links', '4.3. Links')}
             {makeButtons('api', '4.4. Developer API')}
+            {makeButtons('programs', '4.5. Programs')}
           </ButtonContainer>
         </LeftContainer>
         <RightContainer>
@@ -96,10 +100,12 @@ const Help = () => {
             <Glossary path="glossary" />
             <ConfiguringEol path="eolconfiguration" />
             <PlayingBattles path="playingbattles" />
+            <GameUpdates path="updates" />
             <Etiquette path="etiquette" />
             <Faq path="faq" />
             <Donate path="donate" />
             <DeveloperApi path="api" />
+            <Programs path="programs" />
             <Links path="links" />
             <Crew path="crew" />
             <EolFolder path="eolfiles" />

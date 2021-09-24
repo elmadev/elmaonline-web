@@ -335,9 +335,11 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                     }
                     value="unlisted"
                     color="primary"
+                    disabled={share ? share.hide : false}
                   />
                 }
                 label="Unlisted"
+                title="You only and people you share the link with can see it"
               />
             </div>
             <div>
@@ -348,9 +350,11 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                     onChange={e => setShare({ ...share, hide: !share.hide })}
                     value="hide"
                     color="primary"
+                    disabled={share ? share.unlisted : false}
                   />
                 }
-                label="Hide in latest replays"
+                label="Silent upload"
+                title="Not shown in latest replays, but still shown in search and level pages"
               />
             </div>
             <Typography color="textSecondary">Tags</Typography>
