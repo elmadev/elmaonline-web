@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Snackbar, SnackbarContent, IconButton } from '@material-ui/core';
 import { Close as CloseIcon } from '@material-ui/icons';
 
-const Feedback = props => {
-  const { open, text, type, close } = props;
+const Feedback = ({ open, text, type, close }) => {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setShow(open);
+  }, [open]);
   const colors = {
     success: '#43a047',
     error: '#d32f2f',
@@ -16,11 +19,17 @@ const Feedback = props => {
         vertical: 'bottom',
         horizontal: 'left',
       }}
-      open={open}
-      autoHideDuration={3000}
+      open={show}
+      autoHideDuration={7000}
+      onClose={() => {
+        setShow(false);
+        if (close) {
+          close();
+        }
+      }}
     >
       <SnackbarContent
-        style={{ backgroundColor: colors[type] }}
+        style={{ backgroundColor: colors[type], color: 'white' }}
         aria-describedby="client-snackbar"
         message={<span id="client-snackbar">{text}</span>}
         action={[

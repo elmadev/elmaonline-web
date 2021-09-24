@@ -2,7 +2,6 @@
 import { action, persist } from 'easy-peasy';
 import ReplayComments from 'features/ReplayComments/store';
 import ReplayRating from 'features/ReplayRating/store';
-import ReplaysBy from 'features/ReplaysBy/store';
 import ChatView from 'features/ChatView/store';
 import RecList from 'features/RecList/store';
 import LevelMap from 'features/LevelMap/store';
@@ -42,7 +41,6 @@ export default {
   ReplayCommentArchive,
   ReplayComments,
   ReplayRating,
-  ReplaysBy,
   Register,
   BattleList,
   ChatView,

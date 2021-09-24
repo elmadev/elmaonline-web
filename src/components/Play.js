@@ -29,6 +29,9 @@ const Container = styled.div`
   width: 100%;
   cursor: pointer;
   flex-direction: column;
+  @media screen and (max-width: 500px) {
+    height: 400px;
+  }
 `;
 
 const Arrow = styled(PlayArrow)`

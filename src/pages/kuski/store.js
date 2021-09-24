@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { action, thunk } from 'easy-peasy';
+import { action, thunk, persist } from 'easy-peasy';
+import { model } from 'utils/easy-peasy';
 import {
   PersonalLatest,
   PersonalLatestPRs,
@@ -12,6 +13,9 @@ import {
   UserInfoByIdentifier,
   BattlesByPlayer,
   IntBestTimes,
+  ShareTimeFile,
+  MyFiles,
+  DeleteFile,
 } from 'api';
 
 export default {
@@ -131,5 +135,53 @@ export default {
       actions.setKuski(kuski.data);
     }
     actions.setKuskiLoading(false);
+  }),
+  // times tab
+  timesAndReplays: {
+    ...model(PersonalLatest),
+  },
+  PRsAndReplays: {
+    ...model(PersonalLatestPRs),
+  },
+  shareTimeFile: thunk(async (actions, payload) => {
+    const post = await ShareTimeFile(payload);
+    if (post.ok) {
+      actions.timesAndReplays.fetch({ search: payload.search, limit: 100 });
+    }
+  }),
+  search: {
+    level: '',
+    from: '',
+    to: '',
+  },
+  setSearch: action((state, payload) => {
+    state.search[payload.field] = payload.value;
+  }),
+  // files tab
+  files: {
+    ...model(MyFiles),
+  },
+  fileSearch: {
+    filename: '',
+    from: '',
+    to: '',
+  },
+  setFileSearch: action((state, payload) => {
+    state.fileSearch[payload.field] = payload.value;
+  }),
+  deleteFile: thunk(async (actions, payload) => {
+    const post = await DeleteFile(payload);
+    if (post.ok) {
+      actions.files.fetch({ limit: payload.limit, search: payload.search });
+    }
+  }),
+  settings: persist(
+    {
+      collapse: false,
+    },
+    { storage: 'localStorage' },
+  ),
+  setCollapse: action((state, payload) => {
+    state.settings.collapse = payload;
   }),
 };

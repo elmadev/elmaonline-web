@@ -10,7 +10,6 @@ import { Level } from 'components/Names';
 import Download from 'components/Download';
 import { Paper } from 'components/Paper';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
-import { useNavigate } from '@reach/router';
 import Loading from 'components/Loading';
 import config from 'config';
 /* import RecList from 'features/RecList';
@@ -19,7 +18,6 @@ import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment'; */
 
 const CupReplays = ({ ReplayIndex, Filename }) => {
-  const navigate = useNavigate();
   const { replay, replayLoaded, otherReplays } = useStoreState(
     state => state.Replay,
   );
@@ -29,10 +27,6 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
   const { sideBarVisible } = useStoreState(state => state.Page);
   const { hideSideBar, showSideBar } = useStoreActions(actions => actions.Page);
   const [lastSideBar] = useState(sideBarVisible);
-
-  const goToReplay = (index, filename) => {
-    navigate(`/r/cup/${index}/${filename}`);
-  };
 
   useEffect(() => {
     hideSideBar();
@@ -135,21 +129,29 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
                       <ListRow
                         key={t.CupTimeIndex}
                         selected={t.CupTimeIndex === replay.CupTimeIndex}
-                        onClick={() =>
-                          goToReplay(
-                            t.CupTimeIndex,
-                            `${recName}${t.KuskiData.Kuski.substring(0, 6)}`,
-                          )
-                        }
                       >
-                        <ListCell>
+                        <ListCell
+                          to={`/r/cup/${
+                            t.CupTimeIndex
+                          }/${`${recName}${t.KuskiData.Kuski.substring(
+                            0,
+                            6,
+                          )}`}`}
+                        >
                           {recName}
                           {t.KuskiData.Kuski.substring(0, 6)}
                         </ListCell>
                         <ListCell>
                           <Kuski kuskiData={t.KuskiData} />
                         </ListCell>
-                        <ListCell>
+                        <ListCell
+                          to={`/r/cup/${
+                            t.CupTimeIndex
+                          }/${`${recName}${t.KuskiData.Kuski.substring(
+                            0,
+                            6,
+                          )}`}`}
+                        >
                           <Time apples={-1} time={t.Time} />
                         </ListCell>
                       </ListRow>

@@ -42,7 +42,6 @@ const Admin = ({ records, LevelPack }) => {
     if (emptySort.length > 0) {
       sortPack({
         LevelPackIndex: LevelPack.LevelPackIndex,
-        levels: records,
         name: LevelPack.LevelPackName,
         showLegacy,
       });
@@ -56,7 +55,6 @@ const Admin = ({ records, LevelPack }) => {
     ) {
       sortLevel({
         LevelPackIndex: LevelPack.LevelPackIndex,
-        levels: records,
         source: result.source,
         destination: result.destination,
         name: LevelPack.LevelPackName,

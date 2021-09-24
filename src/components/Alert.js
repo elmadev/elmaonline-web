@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Link from 'components/Link';
 import {
   Button,
   Dialog,
@@ -19,7 +20,7 @@ class Alert extends React.Component {
   };
 
   render() {
-    const { open, text, options, title, onClose } = this.props;
+    const { open, text, options, title, onClose, link } = this.props;
     return (
       <Dialog
         open={open}
@@ -31,6 +32,11 @@ class Alert extends React.Component {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {text}
+            {link && (
+              <Link to={link}>
+                <div>{link}</div>
+              </Link>
+            )}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

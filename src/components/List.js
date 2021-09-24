@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { InputBase } from '@material-ui/core';
 import Link from 'components/Link';
+import Loading from 'components/Loading';
+import Feedback from 'components/Feedback';
 
 export const ListContainer = ({
   className,
@@ -10,6 +13,8 @@ export const ListContainer = ({
   width,
   flex,
   direction = 'row',
+  loading = false,
+  error = '',
 }) => {
   return (
     <Container
@@ -20,7 +25,15 @@ export const ListContainer = ({
       flex={flex}
       direction={direction}
     >
-      {children}
+      {loading ? <Loading /> : <>{children}</>}
+      {error && (
+        <Feedback
+          open={error !== ''}
+          text={error}
+          type="error"
+          close={() => {}}
+        />
+      )}
     </Container>
   );
 };
@@ -118,6 +131,7 @@ export const ListCell = ({
   title,
   verticalAlign = 'baseline',
   textAlign = 'left',
+  cutText,
 }) => {
   if (to) {
     return (
@@ -131,6 +145,8 @@ export const ListCell = ({
         verticalAlign={verticalAlign}
         textAlign={textAlign}
         title={title}
+        cutText={cutText}
+        title={title ? title : typeof children === 'string' ? children : ''}
       >
         <CellLink to={to}>{children}</CellLink>
       </Cell>
@@ -144,9 +160,12 @@ export const ListCell = ({
       right={right}
       highlight={highlight}
       onClick={() => onClick && onClick()}
+      pointer={onClick}
       verticalAlign={verticalAlign}
       textAlign={textAlign}
       title={title}
+      cutText={cutText}
+      title={title ? title : typeof children === 'string' ? children : ''}
     >
       {children}
     </Cell>
@@ -173,8 +192,51 @@ const Cell = styled.span`
   justify-content: ${p => (p.right ? 'flex-end' : 'flex-start')};
   vertical-align: ${p => p.verticalAlign};
   text-align: ${p => p.textAlign};
-  ${p => p.onClick && 'cursor: pointer;'}
+  ${p => p.cutText && 'white-space: nowrap; overflow: hidden;'}
+  ${p => p.pointer && 'cursor: pointer;'}
   button {
     max-height: 20px;
+  }
+`;
+
+export const ListInput = ({
+  label,
+  value,
+  onChange,
+  date,
+  maxLength,
+  onEnter,
+  width,
+}) => {
+  return (
+    <ListCell width={width}>
+      <Input
+        type={date ? 'date' : 'text'}
+        placeholder={label}
+        value={value}
+        onChange={e => onChange && onChange(e.target.value)}
+        inputProps={{ maxLength }}
+        title={label}
+        onKeyUp={e => {
+          if (e.key === 'Enter') {
+            if (onEnter) {
+              onEnter(e.target.value);
+            }
+          }
+          if (e.key === 'Escape' && onChange) {
+            onChange('');
+            onEnter('');
+          }
+        }}
+      />
+    </ListCell>
+  );
+};
+
+const Input = styled(InputBase)`
+  && {
+    input {
+      padding: 0;
+    }
   }
 `;

@@ -110,6 +110,17 @@ export const Replays = ({ page, pageSize, tags, sortBy, order }) => {
     order,
   });
 };
+export const AllMyReplays = ({ page, pageSize, tags, sortBy, order }) => {
+  return api.get(`replay/my`, {
+    page,
+    pageSize,
+    tags,
+    sortBy,
+    order,
+  });
+};
+export const ShareTimeFile = data => api.post('replay/share', data);
+export const EditReplay = data => api.post('replay/edit', data);
 
 // country
 export const Country = () => api.get('country');
@@ -172,7 +183,9 @@ export const Highlight = () => api.get('allfinished/highlight');
 export const PersonalAllFinished = data =>
   api.get(`allfinished/${data.LevelIndex}/${data.KuskiIndex}/${data.limit}`);
 export const PersonalLatest = data =>
-  api.get(`allfinished/${data.KuskiIndex}/${data.limit}`);
+  api.get(
+    `allfinished/${data.KuskiIndex}/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,
+  );
 export const LeaderHistory = data => {
   const { from = '', to = '', KuskiIndex = '', BattleIndex = '' } = data;
   return api.get(
@@ -181,6 +194,19 @@ export const LeaderHistory = data => {
 };
 export const AllFinishedLevel = LevelIndex =>
   api.get(`allfinished/${LevelIndex}`);
+
+// crippled
+export const CrippledTimes = (LevelIndex, cripple, limit, all, limitAll) =>
+  api.get(
+    `crippled/bestTimes/${LevelIndex}/${cripple}/${limit}?all=${
+      all ? 1 : 0
+    }&limitAll=${limitAll}`,
+  );
+export const CrippledPersonal = (LevelIndex, KuskiIndex = 0, cripple, limit) =>
+  api.get(`crippled/personal/${LevelIndex}/${KuskiIndex}/${cripple}/${limit}`);
+
+export const CrippledTimeStats = (LevelIndex, KuskiIndex = 0, cripple) =>
+  api.get(`crippled/timeStats/${LevelIndex}/${KuskiIndex}/${cripple}`);
 
 // levelpack
 export const LevelPacks = () => api.get('levelpack');
@@ -283,7 +309,9 @@ export const DeletePack = data =>
 export const Besttime = data =>
   api.get(`besttime/${data.levelId}/${data.limit}/${data.eolOnly}`);
 export const PersonalLatestPRs = data =>
-  api.get(`besttime/latest/${data.KuskiIndex}/${data.limit}`);
+  api.get(
+    `besttime/latest/${data.KuskiIndex}/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,
+  );
 export const MultiBesttime = data =>
   api.get(`besttime/multi/${data.levelId}/${data.limit}`);
 
@@ -323,6 +351,8 @@ export const AllBattleRuns = BattleIndex =>
   api.get(`battle/allRuns/${BattleIndex}`);
 export const BattleListPeriod = data =>
   api.get(`battle/byPeriod/${data.start}/${data.end}/${data.limit}`);
+export const BattleReplays = BattleIndex =>
+  api.get(`battle/replays/${BattleIndex}`);
 
 // players
 export const PlayersSearch = data =>
@@ -394,6 +424,12 @@ export const GetDonations = () => api.get(`donate/`);
 // upload
 export const UploadFile = data => apiUpload.post(`upload/file`, data);
 export const UpdateFile = data => api.post(`upload`, data);
+export const MyFiles = data =>
+  api.get(
+    `upload/${data.limit}?filename=${data.search.filename}&from=${data.search.from}&to=${data.search.to}`,
+  );
+export const DeleteFile = data =>
+  api.delete(`upload/${data.index}/${data.uuid}/${data.filename}`);
 
 // tags
 export const GetTags = () => api.get(`tag`);
@@ -405,3 +441,6 @@ export const DeleteTag = TagIndex => api.delete(`tag/${TagIndex}`);
 export const GetNotifications = () => api.get(`notification`);
 export const GetNotificationsCount = () => api.get(`notification/count`);
 export const MarkNotificationsSeen = () => api.post(`notification/markSeen`);
+
+// status
+export const SystemStatus = () => api.get('news/status');

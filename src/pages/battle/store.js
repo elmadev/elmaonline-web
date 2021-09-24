@@ -5,6 +5,7 @@ import {
   BattleResults,
   RankingHistoryByBattle,
   AllBattleRuns,
+  BattleReplays,
 } from 'api';
 
 export default {
@@ -55,6 +56,16 @@ export default {
     const history = await RankingHistoryByBattle(payload);
     if (history.ok) {
       actions.setRankingHistory(history.data);
+    }
+  }),
+  replays: [],
+  setReplays: action((state, payload) => {
+    state.replays = payload;
+  }),
+  getReplays: thunk(async (actions, payload) => {
+    const get = await BattleReplays(payload);
+    if (get.ok) {
+      actions.setReplays(get.data);
     }
   }),
 };

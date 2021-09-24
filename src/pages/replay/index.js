@@ -27,6 +27,9 @@ import Loading from 'components/Loading';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import config from 'config';
 import ReplaySettings from 'features/ReplaySettings';
+import { TextField } from 'components/Inputs';
+import FieldBoolean from 'components/FieldBoolean';
+import Button from 'components/Buttons';
 
 const Replay = ({ ReplayUuid, RecFileName }) => {
   const isWindow = typeof window !== 'undefined';
@@ -36,8 +39,11 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
   const location = useLocation();
   const { merge } = queryString.parse(location.search);
 
-  const { getReplayByUUID } = useStoreActions(state => state.ReplayByUUID);
-  const { replay, loading, replays } = useStoreState(
+  const { getReplayByUUID, setEdit, submitEdit } = useStoreActions(
+    state => state.ReplayByUUID,
+  );
+  const { userid } = useStoreState(state => state.Login);
+  const { replay, loading, replays, edit } = useStoreState(
     state => state.ReplayByUUID,
   );
   const {
@@ -168,6 +174,39 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
               />
             </AccordionDetails>
           </Accordion>
+          {userid === `${replay.UploadedBy}` && (
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Header h3>Edit replay</Header>
+              </AccordionSummary>
+              <AccordionDetails style={{ flexDirection: 'column' }}>
+                <TextField
+                  name="Comment"
+                  value={edit.Comment}
+                  onChange={value => setEdit({ field: 'Comment', value })}
+                />
+                <TextField
+                  name="Driven by"
+                  value={edit.DrivenBy}
+                  onChange={value => setEdit({ field: 'DrivenBy', value })}
+                />
+                <FieldBoolean
+                  label="Unlisted"
+                  value={edit.Unlisted}
+                  onChange={() =>
+                    setEdit({ field: 'Unlisted', value: 1 - edit.Unlisted })
+                  }
+                />
+                <Button
+                  onClick={() =>
+                    submitEdit({ edit, ReplayUuid, merge, RecFileName })
+                  }
+                >
+                  Edit
+                </Button>
+              </AccordionDetails>
+            </Accordion>
+          )}
         </ChatContainer>
       </RightBarContainer>
       <LevelStatsContainer>

@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import PropTypes from 'prop-types';
 import { groupBy, mapValues, sumBy, filter } from 'lodash';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
+import config from 'config';
 import Time from '../../components/Time';
 import Kuski from '../../components/Kuski.js';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -58,18 +59,22 @@ const getWinnerData = battle => {
 
 const Battle = ({ BattleId }) => {
   const BattleIndex = parseInt(BattleId, 10);
+  const [replayUrl, setReplayUrl] = useState('');
+  const [winner, setWinner] = useState(null);
   let runStats = null;
   const {
     allBattleTimes,
     battle,
     rankingHistory,
     allBattleRuns,
+    replays,
   } = useStoreState(state => state.Battle);
   const {
     getAllBattleTimes,
     getBattle,
     getRankingHistoryByBattle,
     getAllBattleRuns,
+    getReplays,
   } = useStoreActions(state => state.Battle);
 
   useEffect(() => {
@@ -78,15 +83,32 @@ const Battle = ({ BattleId }) => {
     getAllBattleRuns(BattleIndex);
     getBattle(BattleIndex);
     getRankingHistoryByBattle(BattleIndex);
+    getReplays(BattleIndex);
   }, [BattleIndex]);
+
+  useEffect(() => {
+    setWinner(getWinnerData(battle));
+  }, [battle]);
 
   if (allBattleRuns !== null) runStats = runData(allBattleRuns);
 
   const isWindow = typeof window !== 'undefined';
 
-  const winner = getWinnerData(battle);
+  const isMobile = useMediaQuery('(max-width: 1000px)');
 
-  const showWinnerTitle = useMediaQuery('(max-width: 1000px)');
+  const openReplay = time => {
+    const TimeFileData = replays.find(r => r.TimeIndex === time.TimeIndex);
+    if (TimeFileData) {
+      setReplayUrl(
+        `${config.s3Url}time/${TimeFileData.UUID}-${TimeFileData.MD5}/${TimeFileData.TimeIndex}.rec`,
+      );
+    }
+    setWinner({
+      Kuski: time.KuskiData || {},
+      Time: time.Time,
+      Apples: time.Apples,
+    });
+  };
 
   return (
     <Layout
@@ -99,7 +121,7 @@ const Battle = ({ BattleId }) => {
       }`}
     >
       <MainContainer>
-        {battle && winner && showWinnerTitle && (
+        {battle && winner && isMobile && (
           <WinnerTitle>
             <Kuski kuskiData={winner.Kuski} flag={true} team={true} />
             <span>&nbsp;</span>
@@ -112,6 +134,8 @@ const Battle = ({ BattleId }) => {
             BattleIndex={BattleIndex}
             levelIndex={battle.LevelIndex}
             battleStatus={battleStatus(battle)}
+            replayUrl={replayUrl}
+            player={winner}
           />
         ) : (
           <div />
@@ -121,12 +145,14 @@ const Battle = ({ BattleId }) => {
             battle={battle}
             allBattleTimes={allBattleTimes}
             aborted={battle.Aborted}
+            openReplay={replays.length === 0 ? null : time => openReplay(time)}
           />
         ) : (
           <div />
         )}
         {battle && rankingHistory ? (
           <LevelStatsContainer
+            openReplay={replays.length === 0 ? null : time => openReplay(time)}
             battle={battle}
             rankingHistory={rankingHistory}
             runStats={runStats}

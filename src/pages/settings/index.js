@@ -90,6 +90,7 @@ const Settings = ({ tab }) => {
                 <Grid item xs={12} sm={6}>
                   <Setting
                     label={['Nick']}
+                    maxLength={15}
                     update={() =>
                       updateUserInfo({ Value: [nick], Field: 'Kuski' })
                     }
@@ -98,6 +99,7 @@ const Settings = ({ tab }) => {
                   />
                   <Setting
                     label={['Team']}
+                    maxLength={9}
                     update={() =>
                       updateUserInfo({ Value: [team], Field: 'Team' })
                     }
@@ -106,6 +108,7 @@ const Settings = ({ tab }) => {
                   />
                   <Setting
                     label={['Email']}
+                    maxLength={255}
                     update={() =>
                       updateUserInfo({ Value: [email], Field: 'Email' })
                     }
@@ -119,6 +122,7 @@ const Settings = ({ tab }) => {
                       'New password',
                       'New password again',
                     ]}
+                    maxLength={26}
                     update={() =>
                       updateUserInfo({
                         Value: [oldPassword, newPassword, newPasswordAgain],
