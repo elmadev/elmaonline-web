@@ -10,7 +10,7 @@
  * @param breakpoints array
  * @returns {[]}
  */
-const parseTime = (time, breakpoints = [3600, 60, 1]) => {
+export const parseTime = (time, breakpoints = [3600, 60, 1]) => {
   let ret = [];
   let remaining = time;
   breakpoints.forEach((b, index) => {
