@@ -98,4 +98,4 @@ const TypeSpan = styled.span`
   font-size: ${p => (p.small ? '10px' : 'inherit')};
 `;
 
-export { Level, BattleType };
+export { Level, BattleType, formatLevel };

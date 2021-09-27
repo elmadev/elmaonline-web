@@ -66,6 +66,12 @@ const Routes = () => {
           <Help path="help/*" />
           <Kuski path="kuskis/:name" tab="" />
           <Kuski path="kuskis/:name/:tab" />
+          <Kuski
+            path="kuskis/:name/records"
+            tab="records"
+            recordSort="TimeAll"
+          />
+          <Kuski path="kuskis/:name/records/:recordSort" tab="records" />
           <Kuskis path="kuskis" tab="" />
           <Kuskis path="kuskis/search" tab="search" />
           <Level path="levels/:LevelId" />
