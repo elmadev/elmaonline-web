@@ -28,9 +28,16 @@ export const Dropdown = ({ name, options, selected, update }) => {
             id,
           }}
         >
-          {options.map(y => (
-            <MenuItem key={y} value={y}>{`${y}`}</MenuItem>
-          ))}
+          {options.map(y => {
+            if (typeof y === 'string') {
+              return <MenuItem key={y} value={y}>{`${y}`}</MenuItem>;
+            }
+            return (
+              <MenuItem key={y.id} value={y.id}>
+                {y.name}
+              </MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
     </Container>

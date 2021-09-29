@@ -6,7 +6,9 @@ import model from './easypeasy';
 import { queryClient } from './react-query';
 import { QueryClientProvider } from 'react-query';
 
-const easyPeasyStore = createStore(model);
+const easyPeasyStore = createStore(model, {
+  version: 2,
+});
 
 function App() {
   return (

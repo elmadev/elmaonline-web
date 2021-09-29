@@ -444,3 +444,7 @@ export const MarkNotificationsSeen = () => api.post(`notification/markSeen`);
 
 // status
 export const SystemStatus = () => api.get('news/status');
+
+// battle league
+export const BattleLeagues = () => api.get('battleleague');
+export const AddBattleLeague = data => api.post('battleleague/add', data);
