@@ -19,8 +19,9 @@ import Info from './Info';
 import Records from './Records';
 import { useQueryAlt, PlayerRecordCount } from 'api';
 import Files from './Files';
+import { isEmpty } from 'lodash';
 
-const Kuski = ({ name, tab, ...props }) => {
+const Kuski = ({ name, tab, recordSort, ...props }) => {
   const { getKuskiByName, setCollapse } = useStoreActions(state => state.Kuski);
   const {
     kuski,
@@ -39,7 +40,6 @@ const Kuski = ({ name, tab, ...props }) => {
     async () => PlayerRecordCount(kuski.KuskiIndex),
     {
       enabled: !!kuski.KuskiIndex,
-      staleTime: 60000,
     },
   );
 
@@ -67,7 +67,10 @@ const Kuski = ({ name, tab, ...props }) => {
                 {kuski.TeamData && `Team: ${kuski.TeamData.Team}`}
               </TeamNat>
             </Profile>
-            <KuskiHeader KuskiIndex={kuski.KuskiIndex} recordCount={recordCount} />
+            <KuskiHeader
+              KuskiIndex={kuski.KuskiIndex}
+              recordCount={recordCount}
+            />
             <Expand>
               {collapse ? (
                 <ExpandMore onClick={() => setCollapse(false)} />
@@ -109,8 +112,12 @@ const Kuski = ({ name, tab, ...props }) => {
           {tab === 'times' && (
             <TimesReplays KuskiIndex={kuski.KuskiIndex} collapse={collapse} />
           )}
-          {tab === 'records' && (
-            <Records KuskiIndex={kuski.KuskiIndex} recordCount={recordCount} />
+          {tab === 'records' && !isEmpty(kuski) && (
+            <Records
+              kuski={kuski}
+              sort={recordSort}
+              recordCount={recordCount}
+            />
           )}
           {tab === 'replays-uploaded' && (
             <Width100>

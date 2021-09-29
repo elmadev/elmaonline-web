@@ -17,10 +17,11 @@ const LevelpacksDetailed = ({
 }) => {
   const windowSize = useElementSize();
   const listHeight = windowSize.height - 264;
+
   return (
     <Root>
       <Table flex direction="column">
-        <ListHeader>
+        <StyledListHeader>
           <ListCell>
             <NewLineWrapper>Pack</NewLineWrapper>
             <NewLineWrapper>Long Name</NewLineWrapper>
@@ -38,8 +39,8 @@ const LevelpacksDetailed = ({
             <NewLineWrapper>(Dead/Esc/Finished)</NewLineWrapper>
           </ListCell>
           <ListCell>
-            <NewLineWrapper># Finished / # Levels</NewLineWrapper>
-            <NewLineWrapper title="The average number of kuski's that played each level. A good measure of overall popularity.">
+            <NewLineWrapper># Levels (% Finished)</NewLineWrapper>
+            <NewLineWrapper title="The average number of kuski's that played each level.">
               (Avg. Kuski Count)
             </NewLineWrapper>
             <NewLineWrapper>Top Record Holder(s)</NewLineWrapper>
@@ -52,7 +53,7 @@ const LevelpacksDetailed = ({
               Avg. Record Time
             </NewLineWrapper>
           </ListCell>
-        </ListHeader>
+        </StyledListHeader>
         <List
           height={listHeight}
           itemCount={levelpacksSorted.length}
@@ -64,12 +65,9 @@ const LevelpacksDetailed = ({
 
             const url = `/levels/packs/${p.LevelPackName}`;
 
-            const topRecordPct =
-              st && formatPct(st.TopRecordCount, st.LevelCountAll, 0);
-
             return (
               <div style={style} key={p.LevelPackIndex}>
-                <Row>
+                <Row style={style} key={p.LevelPackIndex}>
                   <ListCell to={url}>
                     <ShortName>{p.LevelPackName}</ShortName>
                     <LongName>{p.LevelPackLongName}</LongName>
@@ -135,24 +133,38 @@ const LevelpacksDetailed = ({
                           </ListCell>
                           <ListCell>
                             <NewLineWrapper>
-                              {st.LevelCountF || 0}
-                              {`/`}
                               {st.LevelCountAll || 0}
+                              {` `}(
+                              {formatPct(st.LevelCountF, st.LevelCountAll, 0)}%)
                               {` `}({Number(st.AvgKuskiPerLevel).toFixed(2)})
                             </NewLineWrapper>
-                            {st.TopRecordKuskis && (
-                              <NewLineWrapper>
-                                {st.TopRecordKuskis.map(k => (
-                                  <>
-                                    <Kuski
-                                      key={k.KuskiIndex}
-                                      kuskiData={k}
-                                      flag={true}
-                                    />{' '}
-                                  </>
-                                ))}
-                                {` (${st.TopRecordCount}) (${topRecordPct}%)`}
-                              </NewLineWrapper>
+                            {Array.isArray(st.TopRecordKuskis) && (
+                              <>
+                                {st.TopRecordKuskis.length > 2 && (
+                                  <NewLineWrapper>
+                                    3 or more Kuski's
+                                    {` (${st.TopRecordCount})`}
+                                  </NewLineWrapper>
+                                )}
+
+                                {st.TopRecordKuskis.length <= 2 && (
+                                  <NewLineWrapper>
+                                    {st.TopRecordKuskis.map((k, index, arr) => (
+                                      <>
+                                        <Kuski
+                                          key={k.KuskiIndex}
+                                          kuskiData={k}
+                                          flag={true}
+                                        />
+                                        {index < arr.length - 1 && (
+                                          <span>, </span>
+                                        )}
+                                      </>
+                                    ))}
+                                    {` (${st.TopRecordCount})`}
+                                  </NewLineWrapper>
+                                )}
+                              </>
                             )}
                           </ListCell>
                           <ListCell to={url}>
@@ -182,11 +194,19 @@ const LevelpacksDetailed = ({
   );
 };
 
-const Root = styled.div``;
+const Root = styled.div`
+  overflow: auto;
+`;
 
 const Table = styled(ListContainer)`
   margin-top: 10px;
+  min-width: 1000px;
   background: ${p => p.theme.paperBackground};
+`;
+
+// because of scroll bar in table body
+const StyledListHeader = styled(ListHeader)`
+  padding-right: 17px;
 `;
 
 const Row = styled(ListRow)`

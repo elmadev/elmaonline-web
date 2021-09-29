@@ -14,12 +14,33 @@ import LevelpacksDetailed from './LevelpacksDetailed';
 import Controls from './Controls';
 import FavStar from './FavStar';
 
+const getColumnCount = window_width => {
+  if (window_width > 1440) {
+    return 5;
+  }
+
+  if (window_width > 1150) {
+    return 4;
+  }
+
+  if (window_width > 600) {
+    return 3;
+  }
+
+  if (window_width > 400) {
+    return 2;
+  }
+
+  return 1;
+};
+
 const Levels = ({ tab, detailed }) => {
   const GridRef = useRef();
   const navigate = useNavigate();
   const windowSize = useElementSize();
   const listHeight = windowSize.height - 160;
-  const listWidth = windowSize.width - 250;
+  const listWidth =
+    windowSize.width > 1000 ? windowSize.width - 250 : windowSize.width || 0;
 
   const { levelpacksSorted, stats, collections } = useStoreState(
     state => state.Levels,
@@ -100,8 +121,10 @@ const Levels = ({ tab, detailed }) => {
                 {levelpacksSorted.length > 0 && (
                   <Grid
                     ref={GridRef}
-                    columnCount={5}
-                    columnWidth={i => (listWidth - 20) / 5}
+                    columnCount={getColumnCount(windowSize.width)}
+                    columnWidth={i =>
+                      (listWidth - 20) / getColumnCount(windowSize.width)
+                    }
                     height={listHeight}
                     rowCount={Math.floor(levelpacksSorted.length / 5) + 1}
                     rowHeight={i => 100}

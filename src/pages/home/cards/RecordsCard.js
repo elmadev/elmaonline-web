@@ -10,16 +10,11 @@ import { RecentBestRecords, useQueryAlt } from 'api';
 const RecordsCard = () => {
   const [expanded, setExpanded] = useState(false);
 
-  const { data: records } = useQueryAlt(
-    ['RecentBestRecords', 7],
-    async () => RecentBestRecords(7, 100),
-    {
-      // todo: add sensible defaults to query client then remove this
-      staleTime: 60000,
-    },
+  const { data: records } = useQueryAlt(['RecentBestRecords', 7], async () =>
+    RecentBestRecords(7, 100),
   );
 
-  const previewCount = 6;
+  const previewCount = 5;
 
   const show = records
     ? expanded
@@ -31,8 +26,9 @@ const RecordsCard = () => {
 
   return (
     <Card>
-      <CardContent>
-        <Header h2>Best 1st Place Finishes - Last 7 Days</Header>
+      <CardContent title="Records driven during battles are omitted.">
+        <Header h2>Records (Last 7 Days)</Header>
+        <div>Ordered by overall level playtime.</div>
         {records && <RecentRecords records={show} />}
       </CardContent>
       {countMore > 0 && (

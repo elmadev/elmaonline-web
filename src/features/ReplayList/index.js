@@ -239,7 +239,7 @@ const Container = styled.div`
   background: ${p =>
     p.grid ? p.theme.pageBackgroundDark : p.theme.paperBackground};
   min-width: 100%;
-  max-height: ${p => (p.small ? '283px' : 'auto')};
+  max-height: ${p => (p.small ? '243px' : 'auto')};
   overflow: ${p => (p.small ? 'auto' : 'visible')};
   a {
     color: ${p => p.theme.fontColor};
