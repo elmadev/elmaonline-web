@@ -11,8 +11,6 @@ import {
   Grid,
   Switch,
   ListSubheader,
-  Checkbox,
-  FormControlLabel,
   CircularProgress,
   useMediaQuery,
 } from '@material-ui/core';
@@ -153,7 +151,6 @@ const ChatLog = props => {
     query.end || new Date().toISOString().substr(0, 16),
   );
   const [order, setOrder] = useState(query.order !== 'ASC');
-  const [count, setCount] = useState(query.count === null);
   const [kuskiValue, setKuskiValue] = useState(
     playerList.filter(player => queryIds.includes(player.KuskiIndex)),
   );
@@ -331,24 +328,6 @@ const ChatLog = props => {
               </Grid>
             </Typography>
           </Grid>
-
-          <Grid item xs>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={count}
-                  onChange={(e, value) => {
-                    if (value) {
-                      urlSync({ count: null });
-                    } else urlSync({ count: false });
-                    setCount(value);
-                  }}
-                  name="cbCount"
-                />
-              }
-              label="Count (slow!)"
-            />
-          </Grid>
         </ChatFilter>
       </Paper>
 
@@ -360,7 +339,7 @@ const ChatLog = props => {
           end={Math.floor(new Date(debouncedEnd).getTime() / 1000)}
           limit={rowsPerPage}
           order={order ? 'DESC' : 'ASC'}
-          count={count}
+          count={false}
           timestamp="YYYY-MM-DD HH:mm:ss"
           fullHeight
         />

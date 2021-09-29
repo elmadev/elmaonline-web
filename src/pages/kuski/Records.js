@@ -14,8 +14,7 @@ import Loading from 'components/Loading';
 import Time from 'components/Time';
 import Link from 'components/Link';
 import LocalTime from 'components/LocalTime';
-import { formatPct, formatTimeSpent } from 'utils/format';
-import { formatAttempts } from 'utils/format';
+import { formatPct, formatTimeSpent, formatAttempts } from 'utils/format';
 import { useNavigate } from '@reach/router';
 
 // records tab content
@@ -49,7 +48,9 @@ const Records = ({ kuski, sort, recordCount }) => {
     <>
       <Controls>
         <TablePagination
-          count={recordCount}
+          count={
+            records.length < pageSize ? page * pageSize + records.length : -1
+          }
           rowsPerPageOptions={[25, 50, 100, 200, 500]}
           rowsPerPage={pageSize}
           page={page}
