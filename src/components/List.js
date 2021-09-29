@@ -144,7 +144,6 @@ export const ListCell = ({
         to={to}
         verticalAlign={verticalAlign}
         textAlign={textAlign}
-        title={title}
         cutText={cutText}
         title={title ? title : typeof children === 'string' ? children : ''}
       >
@@ -163,7 +162,6 @@ export const ListCell = ({
       pointer={onClick}
       verticalAlign={verticalAlign}
       textAlign={textAlign}
-      title={title}
       cutText={cutText}
       title={title ? title : typeof children === 'string' ? children : ''}
     >
