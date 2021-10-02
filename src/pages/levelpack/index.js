@@ -23,6 +23,7 @@ import FieldBoolean from 'components/FieldBoolean';
 import Download from 'components/Download';
 import Kuski from 'components/Kuski';
 import Loading from 'components/Loading';
+import ReplayList from 'features/ReplayList';
 import Records from './Records';
 import TotalTimes from './TotalTimes';
 import Personal from './Personal';
@@ -118,6 +119,7 @@ const LevelPack = ({ name, tab }) => {
           <Tab label="King list" value="king-list" />
           <Tab label="Personal" value="personal" />
           <Tab label="Multi records" value="multi" />
+          <Tab label="Replays" value="replays" />
           {adminAuth && <Tab label="Admin" value="admin" />}
         </Tabs>
         <LevelPackName>
@@ -262,6 +264,9 @@ const LevelPack = ({ name, tab }) => {
         )}
         {tab === 'admin' && adminAuth && (
           <Admin records={records} LevelPack={levelPackInfo} />
+        )}
+        {tab === 'replays' && (
+          <ReplayList nonsticky levelPack={levelPackInfo.LevelPackIndex} />
         )}
       </RootStyle>
     </Layout>
