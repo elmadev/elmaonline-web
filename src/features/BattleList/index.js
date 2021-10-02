@@ -10,7 +10,7 @@ import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import { toServerTime } from 'utils/time';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 
-const BattleList = ({ start, end, limit = 250, condensed }) => {
+const BattleList = ({ start, end, limit = 250, condensed, latest = false }) => {
   const theme = useContext(ThemeContext);
   const { battles } = useStoreState(state => state.BattleList);
   const { getBattles } = useStoreActions(actions => actions.BattleList);
@@ -19,6 +19,7 @@ const BattleList = ({ start, end, limit = 250, condensed }) => {
       start: toServerTime(start).format(),
       end: toServerTime(end).format(),
       limit,
+      latest,
     });
   }, [start, end]);
   return (
