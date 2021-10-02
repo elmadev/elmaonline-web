@@ -65,63 +65,59 @@ const BattleCard = props => {
     });
   }, 1000);
 
-  if (!battle) {
-    return (
+  if (!battle) return null;
+
+  return (
+    <Grid item xs={12}>
       <CardFlex>
         <Grid container spacing={0}>
-          <Grid item>
-            <CardContent>No battle currently</CardContent>
+          <Grid item xs={12} md={6}>
+            <CardContent>
+              <Header h2>Current Battle</Header>
+              <Header h3 nomargin>
+                <Level LevelData={battle.LevelData} noLink />
+              </Header>
+              <Header h3>
+                <Level long LevelData={battle.LevelData} noLink />
+              </Header>
+              <Text>
+                <span>Designer: </span>
+                <strong>
+                  <Kuski kuskiData={battle.KuskiData} />
+                </strong>
+              </Text>
+              <Text>
+                <span>Type: </span>
+                <strong>
+                  <BattleType type={battle.BattleType} />
+                </strong>
+              </Text>
+              <Text>
+                <span>Duration: </span>
+                <strong>{battle.Duration} mins</strong>
+              </Text>
+              <Text>
+                <span>Started: </span>
+                <strong>
+                  <LocalTime
+                    date={battle.Started}
+                    format="HH:mm:ss"
+                    parse="X"
+                  />
+                </strong>
+              </Text>
+              <LinearProgressWithLabel
+                value={remainingPercent}
+                remainingSeconds={remainingSeconds}
+              />
+            </CardContent>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <LevelMap LevelIndex={battle.LevelIndex} />
           </Grid>
         </Grid>
       </CardFlex>
-    );
-  }
-
-  return (
-    <CardFlex>
-      <Grid container spacing={0}>
-        <Grid item xs={12} md={6}>
-          <CardContent>
-            <Header h2>Current Battle</Header>
-            <Header h3 nomargin>
-              <Level LevelData={battle.LevelData} noLink />
-            </Header>
-            <Header h3>
-              <Level long LevelData={battle.LevelData} noLink />
-            </Header>
-            <Text>
-              <span>Designer: </span>
-              <strong>
-                <Kuski kuskiData={battle.KuskiData} />
-              </strong>
-            </Text>
-            <Text>
-              <span>Type: </span>
-              <strong>
-                <BattleType type={battle.BattleType} />
-              </strong>
-            </Text>
-            <Text>
-              <span>Duration: </span>
-              <strong>{battle.Duration} mins</strong>
-            </Text>
-            <Text>
-              <span>Started: </span>
-              <strong>
-                <LocalTime date={battle.Started} format="HH:mm:ss" parse="X" />
-              </strong>
-            </Text>
-            <LinearProgressWithLabel
-              value={remainingPercent}
-              remainingSeconds={remainingSeconds}
-            />
-          </CardContent>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <LevelMap LevelIndex={battle.LevelIndex} />
-        </Grid>
-      </Grid>
-    </CardFlex>
+    </Grid>
   );
 };
 
