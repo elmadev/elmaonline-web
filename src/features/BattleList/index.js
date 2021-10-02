@@ -10,18 +10,33 @@ import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import { toServerTime } from 'utils/time';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 
-const BattleList = ({ start, end, limit = 250, condensed, latest = false }) => {
+const BattleList = ({
+  start = null,
+  end = null,
+  limit = 250,
+  condensed = false,
+  latest = false,
+}) => {
   const theme = useContext(ThemeContext);
   const { battles } = useStoreState(state => state.BattleList);
   const { getBattles } = useStoreActions(actions => actions.BattleList);
   useEffect(() => {
-    getBattles({
-      start: toServerTime(start).format(),
-      end: toServerTime(end).format(),
-      limit,
-      latest,
-    });
+    if (start || end) {
+      getBattles({
+        start: toServerTime(start).format(),
+        end: toServerTime(end).format(),
+        limit,
+      });
+    }
   }, [start, end]);
+  useEffect(() => {
+    if (latest) {
+      getBattles({
+        limit,
+        latest,
+      });
+    }
+  }, [latest]);
   return (
     <Container>
       <ListContainer>

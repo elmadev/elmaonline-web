@@ -10,7 +10,7 @@ export default {
   getBattles: thunk(async (actions, payload) => {
     if (payload.latest) {
       const get = await LatestBattles(payload.limit + 10);
-      if (get.ok) {
+      if (get.ok && Array.isArray(get.data)) {
         const countInQueue = get.data.filter(d => d.InQueue === 1);
         actions.setBattles(
           get.data.slice(0, Math.max(5, countInQueue.length + 2)),
