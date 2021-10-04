@@ -19,7 +19,7 @@ export default function Field({ date, id, label, error, value, ...props }) {
         error={isError}
         helperText={error}
         value={value}
-        InputLabelProps={{ shrink: value }}
+        InputLabelProps={{ shrink: value === '' ? false : true }}
         type={date ? 'date' : 'text'}
       />
     </div>

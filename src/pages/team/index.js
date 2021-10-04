@@ -19,9 +19,9 @@ const Team = ({ TeamName }) => {
       <Paper>
         <ListContainer>
           {teamMembers.map(m => (
-            <ListRow>
+            <ListRow key={m.KuskiIndex}>
               <ListCell to={`/kuskis/${m.Kuski}`}>
-                <Kuski kuskiData={m} />
+                <Kuski noLink kuskiData={m} />
               </ListCell>
             </ListRow>
           ))}

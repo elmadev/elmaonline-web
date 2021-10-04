@@ -39,6 +39,7 @@ export const SortableList = ({
         {headers.length > 0 &&
           headers.map(h => (
             <ListCell
+              key={h.name}
               whiteSpace="nowrap"
               right={h.right || null}
               width={h.width || null}

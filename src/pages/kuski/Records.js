@@ -47,19 +47,27 @@ const Records = ({ kuski, sort, recordCount }) => {
   return (
     <>
       <Controls>
-        <TablePagination
-          count={
-            records.length < pageSize ? page * pageSize + records.length : -1
-          }
-          rowsPerPageOptions={[25, 50, 100, 200, 500]}
-          rowsPerPage={pageSize}
-          page={page}
-          onChangePage={(e, value) => setPage(value)}
-          onChangeRowsPerPage={e => {
-            setPage(0);
-            setPageSize(e.target.value);
-          }}
-        />
+        <table>
+          <tbody>
+            <tr>
+              <TablePagination
+                count={
+                  records.length < pageSize
+                    ? page * pageSize + records.length
+                    : -1
+                }
+                rowsPerPageOptions={[25, 50, 100, 200, 500]}
+                rowsPerPage={pageSize}
+                page={page}
+                onChangePage={(e, value) => setPage(value)}
+                onChangeRowsPerPage={e => {
+                  setPage(0);
+                  setPageSize(e.target.value);
+                }}
+              />
+            </tr>
+          </tbody>
+        </table>
         <StyledFormControl>
           <InputLabel id="records-sort">Sort By</InputLabel>
           <Select
@@ -101,7 +109,7 @@ const Records = ({ kuski, sort, recordCount }) => {
         </ListHeader>
 
         {records.map(record => (
-          <Record record={record} />
+          <Record key={record.TimeIndex} record={record} />
         ))}
       </ListContainer>
     </>
@@ -133,9 +141,9 @@ const Record = ({ record }) => {
       <ListCell>{stats.LeaderCount}</ListCell>
       <ListCell>
         <LocalTime
-          date={new Date(record.Driven * 1000)}
+          date={record.Driven}
           format="ddd D MMM YYYY HH:mm"
-          parse={undefined}
+          parse="X"
         />
       </ListCell>
     </ListRow>

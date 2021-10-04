@@ -157,8 +157,8 @@ const CondensedDuration = styled.div`
 `;
 
 BattleList.propTypes = {
-  start: PropTypes.shape({}).isRequired,
-  end: PropTypes.shape({}).isRequired,
+  start: PropTypes.shape({}),
+  end: PropTypes.shape({}),
 };
 
 export default BattleList;
