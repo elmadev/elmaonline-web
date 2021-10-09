@@ -42,6 +42,7 @@ const Upload = ({ onUpload, filetype }) => {
   const [duplicateOptions, setDuplicateOptions] = useState(['okay']);
   const [duplicateReplayIndex, setDuplicateReplayIndex] = useState(0);
   const [uploaded, setUploaded] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [update, setUpdate] = useState(0);
 
@@ -95,7 +96,7 @@ const Upload = ({ onUpload, filetype }) => {
           const newUploaded = uploaded.slice();
           const fullUrl = `${location.protocol}//${location.hostname}${
             location.port ? `:${location.port}` : ''
-          }${url(inserted)}}`;
+          }${url(inserted)}`;
           newUploaded.push({
             RecFileName: inserted.RecFileName,
             UUID: inserted.UUID,
@@ -190,6 +191,7 @@ const Upload = ({ onUpload, filetype }) => {
   };
 
   const upload = () => {
+    setIsUploading(true);
     files.forEach(file => {
       const data = new FormData();
       data.append('file', file);
@@ -200,66 +202,70 @@ const Upload = ({ onUpload, filetype }) => {
         headers: {
           Authorization: authToken(),
         },
-      }).then(response => {
-        response.json().then(body => {
-          if (body.error) {
-            if (body.error === 'Duplicate') {
-              setError(body.error);
-              setDuplicate(true);
-              const oldUnlisted = body.replayInfo[0].Unlisted;
-              const newUnlisted = +fileInfo[body.file].unlisted;
-              if (oldUnlisted === newUnlisted) {
-                setDuplicateText(
-                  'Replay already in the database. Upload failed.',
-                );
-                setDuplicateLink(url(body.replayInfo[0]));
-                setDuplicateOptions(['okay']);
-              } else if (oldUnlisted === 0 && newUnlisted === 1) {
-                setDuplicateText(
-                  'Replay already public in database. Upload failed.',
-                );
-                setDuplicateLink(url(body.replayInfo[0]));
-                setDuplicateOptions(['okay']);
-              } else if (oldUnlisted === 1 && newUnlisted === 0) {
-                setDuplicateText(
-                  'Replay already in database, but currently Unlisted. Would you like to make it public?',
-                );
-                setDuplicateOptions(['Cancel upload', 'Yes']);
-                setDuplicateReplayIndex(body.replayInfo[0].ReplayIndex);
-              }
-            } else if (body.error && body.error.code) {
-              if (body.error.code === 'ENOENT' && body.error.errno === -2) {
-                setError('Filename too long.');
+      })
+        .then(response => {
+          response.json().then(body => {
+            if (body.error) {
+              if (body.error === 'Duplicate') {
+                setError(body.error);
+                setDuplicate(true);
+                const oldUnlisted = body.replayInfo[0].Unlisted;
+                const newUnlisted = +fileInfo[body.file].unlisted;
+                if (oldUnlisted === newUnlisted) {
+                  setDuplicateText(
+                    'Replay already in the database. Upload failed.',
+                  );
+                  setDuplicateLink(url(body.replayInfo[0]));
+                  setDuplicateOptions(['okay']);
+                } else if (oldUnlisted === 0 && newUnlisted === 1) {
+                  setDuplicateText(
+                    'Replay already public in database. Upload failed.',
+                  );
+                  setDuplicateLink(url(body.replayInfo[0]));
+                  setDuplicateOptions(['okay']);
+                } else if (oldUnlisted === 1 && newUnlisted === 0) {
+                  setDuplicateText(
+                    'Replay already in database, but currently Unlisted. Would you like to make it public?',
+                  );
+                  setDuplicateOptions(['Cancel upload', 'Yes']);
+                  setDuplicateReplayIndex(body.replayInfo[0].ReplayIndex);
+                }
+              } else if (body.error && body.error.code) {
+                if (body.error.code === 'ENOENT' && body.error.errno === -2) {
+                  setError('Filename too long.');
+                }
+              } else {
+                setError(body.error.toString());
               }
             } else {
-              setError(body.error.toString());
+              insertReplay({
+                UploadedBy: 0,
+                UUID: body.uuid,
+                RecFileName: body.file,
+                Uploaded: Math.floor(Date.now() / 1000),
+                ReplayTime: body.time,
+                Finished: body.finished,
+                LevelIndex: body.LevelIndex,
+                Unlisted:
+                  body.uuid.substring(0, 5) === 'local'
+                    ? 1
+                    : +fileInfo[body.file].unlisted,
+                Hide: +fileInfo[body.file].hide,
+                DrivenBy: fileInfo[body.file].kuskiIndex,
+                TAS: +fileInfo[body.file].tas,
+                Bug: +fileInfo[body.file].bug,
+                Nitro: +fileInfo[body.file].nitro,
+                Comment: fileInfo[body.file].comment,
+                MD5: body.MD5,
+                DrivenByText: fileInfo[body.file].drivenBy,
+                Tags: fileInfo[body.file].tags,
+              });
             }
-          } else {
-            insertReplay({
-              UploadedBy: 0,
-              UUID: body.uuid,
-              RecFileName: body.file,
-              Uploaded: Math.floor(Date.now() / 1000),
-              ReplayTime: body.time,
-              Finished: body.finished,
-              LevelIndex: body.LevelIndex,
-              Unlisted:
-                body.uuid.substring(0, 5) === 'local'
-                  ? 1
-                  : +fileInfo[body.file].unlisted,
-              Hide: +fileInfo[body.file].hide,
-              DrivenBy: fileInfo[body.file].kuskiIndex,
-              TAS: +fileInfo[body.file].tas,
-              Bug: +fileInfo[body.file].bug,
-              Nitro: +fileInfo[body.file].nitro,
-              Comment: fileInfo[body.file].comment,
-              MD5: body.MD5,
-              DrivenByText: fileInfo[body.file].drivenBy,
-              Tags: fileInfo[body.file].tags,
-            });
-          }
+          });
+        })
+        .finally(() => {
+          setIsUploading(false);
         });
-      });
     });
   };
 
@@ -382,6 +388,7 @@ const Upload = ({ onUpload, filetype }) => {
                   onClick={() => {
                     upload();
                   }}
+                  disabled={isUploading}
                   style={{ float: 'right' }}
                   variant="contained"
                   color="primary"
