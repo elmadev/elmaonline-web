@@ -171,7 +171,9 @@ const Register = () => {
                 >
                   <option value=""> </option>
                   {countries.map(c => (
-                    <option value={c.Iso}>{c.Name}</option>
+                    <option value={c.Iso} key={c.Iso}>
+                      {c.Name}
+                    </option>
                   ))}
                 </Select>
               </FormControl>
