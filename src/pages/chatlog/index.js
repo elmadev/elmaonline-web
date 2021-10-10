@@ -141,15 +141,27 @@ const ChatLog = props => {
   const [KuskiIds, setKuskiIds] = useState(queryIds);
   const [text, setText] = useState(query.text || '');
   const [rowsPerPage, setRowsPerPage] = useState(Number(query.rpp) || 25);
+
+  const formatDate = date => {
+    const string = date.toLocaleString('fi-FI', {
+      timeZone: 'Europe/Helsinki',
+    });
+    const a = string.split(' ');
+    const d = a[0].split('.');
+    const t = a[2].split('.');
+
+    return `${d[2].padStart(2, 0)}-${d[1].padStart(2, 0)}-${d[0].padStart(
+      2,
+      0,
+    )}T${t[0].padStart(2, 0)}:${t[1].padStart(2, 0)}`;
+  };
+
   const [start, setStart] = useState(
     query.start ||
-      new Date(new Date().setDate(new Date().getDate() - 1))
-        .toISOString()
-        .substr(0, 16),
+      formatDate(new Date(new Date().setDate(new Date().getDate() - 1))),
   ); // default to 24h ago
-  const [end, setEnd] = useState(
-    query.end || new Date().toISOString().substr(0, 16),
-  );
+  const [end, setEnd] = useState(query.end || formatDate(new Date()));
+
   const [order, setOrder] = useState(query.order !== 'ASC');
   const [kuskiValue, setKuskiValue] = useState(
     playerList.filter(player => queryIds.includes(player.KuskiIndex)),
