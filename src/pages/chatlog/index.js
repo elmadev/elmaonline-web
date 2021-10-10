@@ -22,6 +22,7 @@ import ChatView from 'features/ChatView';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';
 import { Paper } from 'components/Paper';
+import { format, addDays } from 'date-fns';
 
 const LISTBOX_PADDING = 8; // px
 
@@ -142,25 +143,14 @@ const ChatLog = props => {
   const [text, setText] = useState(query.text || '');
   const [rowsPerPage, setRowsPerPage] = useState(Number(query.rpp) || 25);
 
-  const formatDate = date => {
-    const string = date.toLocaleString('fi-FI', {
-      timeZone: 'Europe/Helsinki',
-    });
-    const a = string.split(' ');
-    const d = a[0].split('.');
-    const t = a[2].split('.');
-
-    return `${d[2].padStart(2, 0)}-${d[1].padStart(2, 0)}-${d[0].padStart(
-      2,
-      0,
-    )}T${t[0].padStart(2, 0)}:${t[1].padStart(2, 0)}`;
-  };
+  const now = new Date();
 
   const [start, setStart] = useState(
-    query.start ||
-      formatDate(new Date(new Date().setDate(new Date().getDate() - 1))),
+    query.start || format(addDays(now, -1), `yyyy-MM-dd'T'HH:mm`),
   ); // default to 24h ago
-  const [end, setEnd] = useState(query.end || formatDate(new Date()));
+  const [end, setEnd] = useState(
+    query.end || format(now, `yyyy-MM-dd'T'HH:mm`),
+  );
 
   const [order, setOrder] = useState(query.order !== 'ASC');
   const [kuskiValue, setKuskiValue] = useState(
