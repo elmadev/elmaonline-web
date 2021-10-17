@@ -37,6 +37,7 @@ import config from 'config';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
+import LevelInfoLevelStats from './LevelInfoLevelStats';
 import { nickId } from 'utils/nick';
 import { pluralize } from 'utils/misc';
 import LeaderHistory from 'components/LeaderHistory';
@@ -67,6 +68,7 @@ const Level = ({ LevelId }) => {
     leaderHistory,
     leaderHistoryLoading,
   } = useStoreState(state => state.Level);
+
   const {
     getBesttimes,
     getLevel,
@@ -190,43 +192,53 @@ const Level = ({ LevelId }) => {
         <ChatContainer>
           {loading && <Loading />}
           {!loading && (
-            <Accordion defaultExpanded>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Header h3>Level info</Header>
-              </AccordionSummary>
-              <AccordionDetails>
-                <LevelDescription>
-                  <Download href={`level/${LevelIndex}`}>
-                    {level.LevelName}.lev
-                  </Download>
-                  <LevelFullName>{level.LongName}</LevelFullName>
-                  <br />
-                  <div>{`Level ID: ${LevelIndex}`}</div>
-                  <div>
-                    {pluralize(level.Apples, 'apple')},{' '}
-                    {pluralize(level.Killers, 'killer')} and{' '}
-                    {pluralize(level.Flowers, 'flower')}.
-                  </div>
-                  {levelpacks.length > 0 && (
+            <>
+              <Accordion defaultExpanded>
+                <AccordionSummary expandIcon={<ExpandMore />}>
+                  <Header h3>Level info</Header>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <LevelDescription>
+                    <Download href={`level/${LevelIndex}`}>
+                      {level.LevelName}.lev
+                    </Download>
+                    <LevelFullName>{level.LongName}</LevelFullName>
+                    <br />
+                    <div>{`Level ID: ${LevelIndex}`}</div>
                     <div>
-                      {`Level Pack: `}
-                      {levelpacks.map((pack, index) => [
-                        index > 0 && ', ',
-                        <Link to={`/levels/packs/${pack.LevelPackName}`}>
-                          {pack.LevelPackName}
-                        </Link>,
-                      ])}
+                      {pluralize(level.Apples, 'apple')},{' '}
+                      {pluralize(level.Killers, 'killer')} and{' '}
+                      {pluralize(level.Flowers, 'flower')}.
                     </div>
-                  )}
-                  {level.Legacy !== 0 && (
-                    <div>
-                      This level has legacy times imported from a third party
-                      site.
-                    </div>
-                  )}
-                </LevelDescription>
-              </AccordionDetails>
-            </Accordion>
+                    {levelpacks.length > 0 && (
+                      <div>
+                        {`Level Pack: `}
+                        {levelpacks.map((pack, index) => [
+                          index > 0 && ', ',
+                          <Link to={`/levels/packs/${pack.LevelPackName}`}>
+                            {pack.LevelPackName}
+                          </Link>,
+                        ])}
+                      </div>
+                    )}
+                    {level.Legacy !== 0 && (
+                      <div>
+                        This level has legacy times imported from a third party
+                        site.
+                      </div>
+                    )}
+                  </LevelDescription>
+                </AccordionDetails>
+              </Accordion>
+              <Accordion defaultExpanded>
+                <AccordionSummary expandIcon={<ExpandMore />}>
+                  <Header h3>Play stats</Header>
+                </AccordionSummary>
+                <LevelStatsAccordion>
+                  <LevelInfoLevelStats level={level} />
+                </LevelStatsAccordion>
+              </Accordion>
+            </>
           )}
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
@@ -461,6 +473,8 @@ const AccordionBattles = styled(AccordionDetails)`
   && {
     padding-left: 0;
     padding-right: 0;
+    overflow-y: auto;
+    max-height: 250px;
   }
 `;
 
@@ -561,6 +575,14 @@ const CrippledSelectWrapper = styled.div`
 
 const Container = styled.div`
   padding: 20px;
+`;
+
+const LevelStatsAccordion = styled(AccordionDetails)`
+  && {
+    margin-top: -7px;
+    padding-left: 0;
+    padding-right: 0;
+  }
 `;
 
 Level.propTypes = {
