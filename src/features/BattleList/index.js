@@ -7,7 +7,6 @@ import styled, { ThemeContext } from 'styled-components';
 import { Level, BattleType } from 'components/Names';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
-import { toServerTime } from 'utils/time';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 
 const BattleList = ({
@@ -23,8 +22,8 @@ const BattleList = ({
   useEffect(() => {
     if (start || end) {
       getBattles({
-        start: toServerTime(start).format(),
-        end: toServerTime(end).format(),
+        start: start.format(),
+        end: end.format(),
         limit,
       });
     }

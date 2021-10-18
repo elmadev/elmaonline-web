@@ -22,6 +22,7 @@ import ChatView from 'features/ChatView';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';
 import { Paper } from 'components/Paper';
+import { format, addDays } from 'date-fns';
 
 const LISTBOX_PADDING = 8; // px
 
@@ -141,15 +142,16 @@ const ChatLog = props => {
   const [KuskiIds, setKuskiIds] = useState(queryIds);
   const [text, setText] = useState(query.text || '');
   const [rowsPerPage, setRowsPerPage] = useState(Number(query.rpp) || 25);
+
+  const now = new Date();
+
   const [start, setStart] = useState(
-    query.start ||
-      new Date(new Date().setDate(new Date().getDate() - 1))
-        .toISOString()
-        .substr(0, 16),
+    query.start || format(addDays(now, -1), `yyyy-MM-dd'T'HH:mm`),
   ); // default to 24h ago
   const [end, setEnd] = useState(
-    query.end || new Date().toISOString().substr(0, 16),
+    query.end || format(now, `yyyy-MM-dd'T'HH:mm`),
   );
+
   const [order, setOrder] = useState(query.order !== 'ASC');
   const [kuskiValue, setKuskiValue] = useState(
     playerList.filter(player => queryIds.includes(player.KuskiIndex)),
