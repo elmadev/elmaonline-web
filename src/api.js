@@ -385,7 +385,8 @@ export const TeamMembers = Team => api.get(`teams/${Team}`);
 export const SearchChat = data => api.get('chatlog', { params: data });
 
 // level
-export const Level = LevelIndex => api.get(`level/${LevelIndex}`);
+export const Level = (LevelIndex, withLevelStats = false) =>
+  api.get(`level/${LevelIndex}`, { stats: withLevelStats ? '1' : '' });
 export const LevelData = LevelIndex => api.get(`level/leveldata/${LevelIndex}`);
 export const LevelTimeStats = LevelIndex =>
   api.get(`level/timestats/${LevelIndex}`);
