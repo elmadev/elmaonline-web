@@ -7,15 +7,16 @@ import moment from 'moment';
 import Button from 'components/Buttons';
 import { nick } from 'utils/nick';
 
-const AddComment = props => {
+const AddComment = ({ type, index, add }) => {
   const [text, setText] = useState('');
-  const { type, index, add } = props;
   const addComment = useStoreActions(
     actions => actions.ReplayComments.addComment,
   );
 
   const addText = () => {
-    add(text);
+    if (add) {
+      add(text);
+    }
     setText('');
     if (type === 'replay') {
       addComment({
@@ -73,7 +74,7 @@ const Buttons = styled.div`
 
 AddComment.propTypes = {
   type: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
+  index: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };
 
 export default AddComment;

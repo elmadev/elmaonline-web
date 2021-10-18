@@ -95,7 +95,7 @@ const RecList = ({
         ) : (
           sortBy(filter(replays, filterByTags), ['ReplayTime']).map(i => (
             <RecListItem
-              key={i.ReplayIndex}
+              key={`${i.ReplayIndex}${i.TimeIndex}`}
               replay={i}
               selected={isSelected(i.UUID)}
               columns={columns}
@@ -109,7 +109,7 @@ const RecList = ({
 };
 
 RecList.propTypes = {
-  currentUUID: PropTypes.string,
+  currentUUID: PropTypes.arrayOf(PropTypes.string),
   columns: PropTypes.arrayOf(PropTypes.string),
   horizontalMargin: PropTypes.number,
   LevelIndex: PropTypes.number.isRequired,

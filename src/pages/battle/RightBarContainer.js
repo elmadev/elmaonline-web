@@ -100,6 +100,13 @@ const RightBarContainer = props => {
               </div>
             )}
             <br />
+            <div>
+              <Link to={`/r/b-${battle.BattleIndex}`}>
+                <StyledButton size="small" color="primary">
+                  Go to replay page
+                </StyledButton>
+              </Link>
+            </div>
             <Link to={`/levels/${battle.LevelIndex}`}>
               <StyledButton size="small" color="primary">
                 Go to level page
