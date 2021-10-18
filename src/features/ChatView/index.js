@@ -73,7 +73,7 @@ const ChatView = props => {
     // add the battle end event to the chat log
     // currently only used when Battle.js calls ChatView
     if (!chatLines || chatLines.length === 0) return;
-    if (battleEnd) {
+    if (battleEnd && new Date().getTime() / 1000 > start + battleEnd) {
       const chatLineArray = [...chatLines];
       // add a "chatline" for the battle end event
       const battleEndEvent = {
