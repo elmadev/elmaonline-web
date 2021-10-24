@@ -29,11 +29,13 @@ import TotalTimes from './TotalTimes';
 import Personal from './Personal';
 import Kinglist from './Kinglist';
 import MultiRecords from './MultiRecords';
+import Crippled from './Crippled';
 import Admin from './Admin';
 import { useQueryAlt, LevelPackLevelStats } from '../../api';
 
-const LevelPack = ({ name, tab }) => {
+const LevelPack = ({ name, tab, ...props }) => {
   const isRehydrated = useStoreRehydrated();
+  const subTab = props['*'];
   const {
     levelPackInfo,
     highlight,
@@ -45,6 +47,7 @@ const LevelPack = ({ name, tab }) => {
     personalKuski,
     settings: { highlightWeeks, showLegacyIcon, showLegacy, showMoreStats },
   } = useStoreState(state => state.LevelPack);
+
   const {
     getLevelPackInfo,
     getHighlight,
@@ -110,9 +113,15 @@ const LevelPack = ({ name, tab }) => {
           variant="scrollable"
           scrollButtons="auto"
           value={tab}
-          onChange={(e, value) =>
-            navigate(['/levels/packs', name, value].filter(Boolean).join('/'))
-          }
+          onChange={(e, value) => {
+            if (value === 'crippled') {
+              navigate(['/levels/packs', name, 'crippled/noVolt'].join('/'));
+            } else {
+              navigate(
+                ['/levels/packs', name, value].filter(Boolean).join('/'),
+              );
+            }
+          }}
         >
           <Tab label="Records" value="" />
           <Tab label="Total Times" value="total-times" />
@@ -120,6 +129,7 @@ const LevelPack = ({ name, tab }) => {
           <Tab label="Personal" value="personal" />
           <Tab label="Multi records" value="multi" />
           <Tab label="Replays" value="replays" />
+          <Tab label="Crippled" value="crippled" />
           {adminAuth && <Tab label="Admin" value="admin" />}
         </Tabs>
         <LevelPackName>
@@ -262,11 +272,18 @@ const LevelPack = ({ name, tab }) => {
             highlightWeeks={highlightWeeks}
           />
         )}
-        {tab === 'admin' && adminAuth && (
-          <Admin records={records} LevelPack={levelPackInfo} />
+        {tab === 'crippled' && (
+          <Crippled
+            LevelPack={levelPackInfo}
+            crippleType={subTab}
+            highlightWeeks={highlightWeeks}
+          />
         )}
         {tab === 'replays' && (
           <ReplayList nonsticky levelPack={levelPackInfo.LevelPackIndex} />
+        )}
+        {tab === 'admin' && adminAuth && (
+          <Admin records={records} LevelPack={levelPackInfo} />
         )}
       </RootStyle>
     </Layout>

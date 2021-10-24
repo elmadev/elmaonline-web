@@ -20,7 +20,7 @@ const Kuski = ({ kuskiData, team, flag, noLink }) => (
             {kuskiData.Kuski && kuskiData.Kuski}
           </Link>
         )}
-        {team && kuskiData.TeamData && (
+        {team && kuskiData?.TeamData?.Team && (
           <>
             {' '}
             {noLink ? (

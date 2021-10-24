@@ -23,7 +23,7 @@ export default {
     state.levelPackInfo = payload;
   }),
   getLevelPackInfo: thunk(async (actions, payload) => {
-    const get = await LevelPack(payload);
+    const get = await LevelPack(payload, true);
     if (get.ok) {
       actions.setLevelPackInfo(get.data);
     }

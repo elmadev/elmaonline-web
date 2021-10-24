@@ -2,7 +2,7 @@ import { QueryClient } from 'react-query';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
-    // in ms
-    staleTime: 300000,
+    // I think necessary to not trigger re-fetch when using navigate:
+    refetchOnMount: false,
   },
 });
