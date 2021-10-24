@@ -12,6 +12,7 @@ export const ListContainer = ({
   horizontalMargin,
   width,
   flex,
+  direction = 'row',
   loading = false,
   error = '',
 }) => {
@@ -22,6 +23,7 @@ export const ListContainer = ({
       horizontalMargin={horizontalMargin}
       width={width}
       flex={flex}
+      direction={direction}
     >
       {loading ? <Loading /> : <>{children}</>}
       {error && (
@@ -57,6 +59,7 @@ const Container = styled.div`
     }
     ${Cell} {
       display: flex;
+      flex-direction: ${p.direction};
     }
   `};
 `;
@@ -113,7 +116,6 @@ const Header = styled.div`
   display: table-row;
   color: inherit;
   font-size: 14px;
-  padding: 10px;
   font-weight: 600;
 `;
 
@@ -126,6 +128,7 @@ export const ListCell = ({
   to,
   whiteSpace,
   onClick,
+  title,
   verticalAlign = 'baseline',
   textAlign = 'left',
   cutText,
@@ -142,7 +145,7 @@ export const ListCell = ({
         verticalAlign={verticalAlign}
         textAlign={textAlign}
         cutText={cutText}
-        title={typeof children === 'string' ? children : ''}
+        title={title ? title : typeof children === 'string' ? children : ''}
       >
         <CellLink to={to}>{children}</CellLink>
       </Cell>
@@ -160,7 +163,7 @@ export const ListCell = ({
       verticalAlign={verticalAlign}
       textAlign={textAlign}
       cutText={cutText}
-      title={typeof children === 'string' ? children : ''}
+      title={title ? title : typeof children === 'string' ? children : ''}
     >
       {children}
     </Cell>

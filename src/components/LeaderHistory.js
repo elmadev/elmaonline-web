@@ -147,9 +147,7 @@ export default function LeaderHistory({
               <TimeDevelopmentLocalTime>
                 {started ? (
                   <>
-                    {formatDistanceStrict(b.Driven * 1000, started * 1000, {
-                      addSuffix: true,
-                    })}
+                    at {formatDistanceStrict(b.Driven * 1000, started * 1000)}
                   </>
                 ) : (
                   <LocalTime

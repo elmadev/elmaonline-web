@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import {
   Accordion,
@@ -17,6 +17,7 @@ import LeaderHistory from 'components/LeaderHistory';
 import { battleStatus } from 'utils/battle';
 import { pluralize } from 'utils/misc';
 import { useNavigate } from '@reach/router';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 const crippleOptions = battle => {
   let crippleString = '';
@@ -38,6 +39,13 @@ const crippleOptions = battle => {
 const RightBarContainer = props => {
   const { allBattleTimes, battle, aborted, openReplay } = props;
   const navigate = useNavigate();
+
+  const { getNextBattleFound } = useStoreActions(actions => actions.Battle);
+  const { nextBattleFound } = useStoreState(state => state.Battle);
+
+  useEffect(() => {
+    getNextBattleFound(battle.BattleIndex + 1);
+  }, [battle]);
 
   return (
     <Root>
@@ -92,6 +100,13 @@ const RightBarContainer = props => {
               </div>
             )}
             <br />
+            <div>
+              <Link to={`/r/b-${battle.BattleIndex}`}>
+                <StyledButton size="small" color="primary">
+                  Go to replay page
+                </StyledButton>
+              </Link>
+            </div>
             <Link to={`/levels/${battle.LevelIndex}`}>
               <StyledButton size="small" color="primary">
                 Go to level page
@@ -109,6 +124,7 @@ const RightBarContainer = props => {
                 size="small"
                 color="primary"
                 onClick={() => navigate(`/battles/${battle.BattleIndex + 1}`)}
+                disabled={nextBattleFound ? false : true}
               >
                 Next Battle{' '}
               </StyledButton>
@@ -128,7 +144,7 @@ const RightBarContainer = props => {
                 openReplay={
                   openReplay ? TimeIndex => openReplay(TimeIndex) : null
                 }
-                started={battle.Started}
+                started={parseInt(battle.Started)}
               />
             ) : null}
           </AccordionDetails>

@@ -66,6 +66,12 @@ const Routes = () => {
           <Help path="help/*" />
           <Kuski path="kuskis/:name" tab="" />
           <Kuski path="kuskis/:name/:tab" />
+          <Kuski
+            path="kuskis/:name/records"
+            tab="records"
+            recordSort="TimeAll"
+          />
+          <Kuski path="kuskis/:name/records/:recordSort" tab="records" />
           <Kuskis path="kuskis" tab="" />
           <Kuskis path="kuskis/search" tab="search" />
           <Level path="levels/:LevelId" />
@@ -74,6 +80,7 @@ const Routes = () => {
           <Levels path="levels" tab="" />
           {/* can't use levels/:tab due to conflict with levels/:LevelId above*/}
           <Levels path="levels/collections" tab="collections" />
+          <Levels path="levels/detailed" tab="" detailed={1} />
           <LevelsAdd path="levels/add" />
           <LevelsAddCollection path="levels/collections/add" />
           <LevelpackCollection path="levels/collections/:name" />

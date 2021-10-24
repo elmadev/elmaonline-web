@@ -23,12 +23,14 @@ import FieldBoolean from 'components/FieldBoolean';
 import Download from 'components/Download';
 import Kuski from 'components/Kuski';
 import Loading from 'components/Loading';
+import ReplayList from 'features/ReplayList';
 import Records from './Records';
 import TotalTimes from './TotalTimes';
 import Personal from './Personal';
 import Kinglist from './Kinglist';
 import MultiRecords from './MultiRecords';
 import Admin from './Admin';
+import { useQueryAlt, LevelPackLevelStats } from '../../api';
 
 const LevelPack = ({ name, tab }) => {
   const isRehydrated = useStoreRehydrated();
@@ -41,7 +43,7 @@ const LevelPack = ({ name, tab }) => {
     records,
     recordsLoading,
     personalKuski,
-    settings: { highlightWeeks, showLegacyIcon, showLegacy },
+    settings: { highlightWeeks, showLegacyIcon, showLegacy, showMoreStats },
   } = useStoreState(state => state.LevelPack);
   const {
     getLevelPackInfo,
@@ -56,6 +58,11 @@ const LevelPack = ({ name, tab }) => {
   const lastShowLegacy = useRef(showLegacy);
   const [openSettings, setOpenSettings] = useState(false);
   const navigate = useNavigate();
+
+  const { data: levelStats } = useQueryAlt(
+    ['LevelPackLevelStats', 1, name],
+    async () => LevelPackLevelStats(1, name),
+  );
 
   useEffect(() => {
     if (levelPackInfo.LevelPackName !== name) {
@@ -112,6 +119,7 @@ const LevelPack = ({ name, tab }) => {
           <Tab label="King list" value="king-list" />
           <Tab label="Personal" value="personal" />
           <Tab label="Multi records" value="multi" />
+          <Tab label="Replays" value="replays" />
           {adminAuth && <Tab label="Admin" value="admin" />}
         </Tabs>
         <LevelPackName>
@@ -212,11 +220,13 @@ const LevelPack = ({ name, tab }) => {
         </Settings>
         {!tab && (
           <Records
+            levelStats={levelStats}
             records={records}
             highlight={highlight}
             highlightWeeks={highlightWeeks}
             recordsLoading={recordsLoading}
             showLegacyIcon={showLegacyIcon}
+            showMoreStats={showMoreStats}
           />
         )}
         {tab === 'total-times' && (
@@ -254,6 +264,9 @@ const LevelPack = ({ name, tab }) => {
         )}
         {tab === 'admin' && adminAuth && (
           <Admin records={records} LevelPack={levelPackInfo} />
+        )}
+        {tab === 'replays' && (
+          <ReplayList nonsticky levelPack={levelPackInfo.LevelPackIndex} />
         )}
       </RootStyle>
     </Layout>

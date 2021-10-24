@@ -23,6 +23,7 @@ export default function ReplayList({
   uploadedBy = 0,
   summary,
   nonsticky = false,
+  levelPack = 0,
 }) {
   const [selectedTags, setSelectedTags] = useState([]);
   const [previewRec, setPreviewRec] = useState(null);
@@ -49,6 +50,7 @@ export default function ReplayList({
       order: 'desc',
       drivenBy,
       uploadedBy,
+      levelPack,
     });
   }, [page, pageSize, selectedTags, settings.sortBy]);
 
@@ -239,7 +241,7 @@ const Container = styled.div`
   background: ${p =>
     p.grid ? p.theme.pageBackgroundDark : p.theme.paperBackground};
   min-width: 100%;
-  max-height: ${p => (p.small ? '300px' : 'auto')};
+  max-height: ${p => (p.small ? '243px' : 'auto')};
   overflow: ${p => (p.small ? 'auto' : 'visible')};
   a {
     color: ${p => p.theme.fontColor};

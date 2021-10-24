@@ -16,9 +16,11 @@ import DesignedBattles from './DesignedBattles';
 import KuskiHeader from './KuskiHeader';
 import TimesReplays from './TimesReplays';
 import Info from './Info';
+import Records from './Records';
 import Files from './Files';
+import { isEmpty } from 'lodash';
 
-const Kuski = ({ name, tab, ...props }) => {
+const Kuski = ({ name, tab, recordSort, ...props }) => {
   const { getKuskiByName, setCollapse } = useStoreActions(state => state.Kuski);
   const {
     kuski,
@@ -26,7 +28,6 @@ const Kuski = ({ name, tab, ...props }) => {
     settings: { collapse },
   } = useStoreState(state => state.Kuski);
   const { username } = useStoreState(state => state.Login);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,6 +77,7 @@ const Kuski = ({ name, tab, ...props }) => {
           >
             <Tab label="Played Battles" value="" />
             <Tab label="Designed Battles" value="designed-battles" />
+            <Tab label="Records" value="records" />
             <Tab label="Times" value="times" />
             <Tab label="Replays Uploaded" value="replays-uploaded" />
             <Tab label="Replays Driven" value="replays-driven" />
@@ -97,6 +99,9 @@ const Kuski = ({ name, tab, ...props }) => {
           )}
           {tab === 'times' && (
             <TimesReplays KuskiIndex={kuski.KuskiIndex} collapse={collapse} />
+          )}
+          {tab === 'records' && !isEmpty(kuski) && (
+            <Records kuski={kuski} sort={recordSort} />
           )}
           {tab === 'replays-uploaded' && (
             <Width100>

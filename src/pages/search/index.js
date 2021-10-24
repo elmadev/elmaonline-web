@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useMediaQuery, Grid, Switch } from '@material-ui/core';
@@ -209,8 +209,13 @@ const Search = () => {
                               parse="X"
                             />
                           </ListCell>
-                          <ListCell width={90}>
-                            {r.KuskiData && <Kuski kuskiData={r.KuskiData} />}
+                          <ListCell
+                            width={90}
+                            to={`/kuskis/${r.KuskiData.Kuski}`}
+                          >
+                            {r.KuskiData && (
+                              <Kuski noLink kuskiData={r.KuskiData} />
+                            )}
                           </ListCell>
                           {mod() === 1 && showLocked && (
                             <>
@@ -306,31 +311,33 @@ const Search = () => {
                 {levelPacks.length !== 0 && (
                   <>
                     {levelPacks.map(l => (
-                      <>
+                      <Fragment
+                        key={
+                          l.LevelPack
+                            ? l.LevelPack.LevelPackIndex
+                            : l.LevelPackIndex
+                        }
+                      >
                         {l.LevelPack ? (
                           <ResultLink
                             to={`/levels/packs/${l.LevelPack.LevelPackName}`}
-                            key={l.LevelPack.LevelPackIndex}
                           >
                             <div>{l.LevelPack.LevelPackLongName}</div>
                             <ResultSecondaryData>
                               {l.LevelPack.LevelPackName || `Unnamed`} /{' '}
-                              <Kuski kuskiData={l.LevelPack.KuskiData} />
+                              <Kuski noLink kuskiData={l.LevelPack.KuskiData} />
                             </ResultSecondaryData>
                           </ResultLink>
                         ) : (
-                          <ResultLink
-                            to={`/levels/packs/${l.LevelPackName}`}
-                            key={l.LevelPackIndex}
-                          >
+                          <ResultLink to={`/levels/packs/${l.LevelPackName}`}>
                             <>{l.LevelPackLongName}</>
                             <ResultSecondaryData>
                               {l.LevelPackName || `Unnamed`} /{' '}
-                              <Kuski kuskiData={l.KuskiData} />
+                              <Kuski noLink kuskiData={l.KuskiData} />
                             </ResultSecondaryData>
                           </ResultLink>
                         )}
-                      </>
+                      </Fragment>
                     ))}
                   </>
                 )}
@@ -356,7 +363,7 @@ const Search = () => {
                             'unknown'}{' '}
                           /{' '}
                           {r.DrivenByData ? (
-                            <Kuski kuskiData={r.DrivenByData} />
+                            <Kuski noLink kuskiData={r.DrivenByData} />
                           ) : (
                             r.DrivenByText || 'Unknown'
                           )}{' '}
@@ -366,7 +373,7 @@ const Search = () => {
                             format="DD.MM.YYYY HH:mm:ss"
                             parse="X"
                           />{' '}
-                          / <Kuski kuskiData={r.UploadedByData} />
+                          / <Kuski noLink kuskiData={r.UploadedByData} />
                         </ResultSecondaryData>
                       </ResultLink>
                     ))}
@@ -415,7 +422,7 @@ const Search = () => {
                             'unknown'}{' '}
                           /{' '}
                           {r.DrivenByData ? (
-                            <Kuski kuskiData={r.DrivenByData} />
+                            <Kuski noLink kuskiData={r.DrivenByData} />
                           ) : (
                             r.DrivenByText || 'Unknown'
                           )}{' '}
@@ -425,7 +432,7 @@ const Search = () => {
                             format="DD.MM.YYYY HH:mm:ss"
                             parse="X"
                           />{' '}
-                          / <Kuski kuskiData={r.UploadedByData} />
+                          / <Kuski noLink kuskiData={r.UploadedByData} />
                         </ResultSecondaryData>
                       </ResultLink>
                     ))}
@@ -474,7 +481,7 @@ const Search = () => {
                             'unknown'}{' '}
                           /{' '}
                           {r.DrivenByData ? (
-                            <Kuski kuskiData={r.DrivenByData} />
+                            <Kuski noLink kuskiData={r.DrivenByData} />
                           ) : (
                             r.DrivenByText || 'Unknown'
                           )}{' '}
@@ -484,7 +491,7 @@ const Search = () => {
                             format="DD.MM.YYYY HH:mm:ss"
                             parse="X"
                           />{' '}
-                          / <Kuski kuskiData={r.UploadedByData} />
+                          / <Kuski noLink kuskiData={r.UploadedByData} />
                         </ResultSecondaryData>
                       </ResultLink>
                     ))}
@@ -536,7 +543,8 @@ const Search = () => {
                       >
                         <div>{b.LevelData.LevelName}.lev</div>
                         <ResultSecondaryData>
-                          {b.BattleIndex} / <Kuski kuskiData={b.KuskiData} /> /{' '}
+                          {b.BattleIndex} /{' '}
+                          <Kuski noLink kuskiData={b.KuskiData} /> /{' '}
                           {b.LevelIndex} /{' '}
                           <LocalTime
                             date={b.Started}
@@ -598,7 +606,8 @@ const Search = () => {
                           </div>
                         )}
                         <ResultSecondaryData>
-                          {b.BattleIndex} / <Kuski kuskiData={b.KuskiData} /> /{' '}
+                          {b.BattleIndex} /{' '}
+                          <Kuski noLink kuskiData={b.KuskiData} /> /{' '}
                           {b.LevelIndex} /{' '}
                           <LocalTime
                             date={b.Started}
@@ -651,7 +660,7 @@ const Search = () => {
                   {players.map(p => (
                     <ResultLink to={`/kuskis/${p.Kuski}`} key={p.Kuski}>
                       <div>
-                        <Kuski team kuskiData={p} />
+                        <Kuski noLink team kuskiData={p} />
                       </div>
                       <ResultSecondaryData />
                     </ResultLink>

@@ -5,8 +5,7 @@ import { nick, nickId } from 'utils/nick';
 
 import Stars from 'components/Stars';
 
-const ReplayRating = props => {
-  const { ReplayIndex } = props;
+const ReplayRating = ({ ReplayIndex }) => {
   const { ratings, lastReplayIndex } = useStoreState(
     state => state.ReplayRating,
   );
@@ -52,7 +51,8 @@ const ReplayRating = props => {
 };
 
 ReplayRating.propTypes = {
-  ReplayIndex: PropTypes.number.isRequired,
+  ReplayIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    .isRequired,
 };
 
 export default ReplayRating;

@@ -11,8 +11,6 @@ import {
   Grid,
   Switch,
   ListSubheader,
-  Checkbox,
-  FormControlLabel,
   CircularProgress,
   useMediaQuery,
 } from '@material-ui/core';
@@ -24,6 +22,7 @@ import ChatView from 'features/ChatView';
 import Kuski from 'components/Kuski';
 import Header from 'components/Header';
 import { Paper } from 'components/Paper';
+import { format, addDays } from 'date-fns';
 
 const LISTBOX_PADDING = 8; // px
 
@@ -143,17 +142,17 @@ const ChatLog = props => {
   const [KuskiIds, setKuskiIds] = useState(queryIds);
   const [text, setText] = useState(query.text || '');
   const [rowsPerPage, setRowsPerPage] = useState(Number(query.rpp) || 25);
+
+  const now = new Date();
+
   const [start, setStart] = useState(
-    query.start ||
-      new Date(new Date().setDate(new Date().getDate() - 1))
-        .toISOString()
-        .substr(0, 16),
+    query.start || format(addDays(now, -1), `yyyy-MM-dd'T'HH:mm`),
   ); // default to 24h ago
   const [end, setEnd] = useState(
-    query.end || new Date().toISOString().substr(0, 16),
+    query.end || format(now, `yyyy-MM-dd'T'HH:mm`),
   );
+
   const [order, setOrder] = useState(query.order !== 'ASC');
-  const [count, setCount] = useState(query.count === null);
   const [kuskiValue, setKuskiValue] = useState(
     playerList.filter(player => queryIds.includes(player.KuskiIndex)),
   );
@@ -331,24 +330,6 @@ const ChatLog = props => {
               </Grid>
             </Typography>
           </Grid>
-
-          <Grid item xs>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={count}
-                  onChange={(e, value) => {
-                    if (value) {
-                      urlSync({ count: null });
-                    } else urlSync({ count: false });
-                    setCount(value);
-                  }}
-                  name="cbCount"
-                />
-              }
-              label="Count (slow!)"
-            />
-          </Grid>
         </ChatFilter>
       </Paper>
 
@@ -360,7 +341,7 @@ const ChatLog = props => {
           end={Math.floor(new Date(debouncedEnd).getTime() / 1000)}
           limit={rowsPerPage}
           order={order ? 'DESC' : 'ASC'}
-          count={count}
+          count={false}
           timestamp="YYYY-MM-DD HH:mm:ss"
           fullHeight
         />

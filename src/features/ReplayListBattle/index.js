@@ -8,7 +8,6 @@ import Kuski from 'components/Kuski';
 import { Level, BattleType } from 'components/Names';
 import Time from 'components/Time';
 import LocalTime from 'components/LocalTime';
-import Link from 'components/Link';
 import { sortResults } from 'utils/battle';
 import { Paper } from 'components/Paper';
 
@@ -68,8 +67,9 @@ export default function ReplayListBattle({
           </ListRow>
         ) : (
           paginateBattles(battles, page, pageSize).map(i => {
+            const winResult = getWinResult(i.Results, i.BattleType);
             return (
-              <ListRow>
+              <ListRow key={i.BattleIndex}>
                 <ListCell to={`/battles/${i.BattleIndex}`} width={120}>
                   <LocalTime
                     date={i.Started}
@@ -77,29 +77,24 @@ export default function ReplayListBattle({
                     parse="X"
                   />
                 </ListCell>
-                <ListCell width={100}>
-                  <Level LevelIndex={i.LevelIndex} LevelData={i.LevelData} />
+                <ListCell width={100} to={`/levels/${i.LevelIndex}`}>
+                  <Level
+                    noLink
+                    LevelIndex={i.LevelIndex}
+                    LevelData={i.LevelData}
+                  />
                 </ListCell>
                 <ListCell to={`/battles/${i.BattleIndex}`} width={100}>
                   <BattleType type={i.BattleType} />
                 </ListCell>
-                <ListCell width={120}>
-                  <Kuski kuskiData={i.KuskiData} />
+                <ListCell width={120} to={`/kuskis/${i.KuskiData.Kuski}`}>
+                  <Kuski kuskiData={i.KuskiData} noLink />
                 </ListCell>
                 <ListCell to={`/battles/${i.BattleIndex}`} right width={120}>
-                  <Time
-                    apples={getWinResult(i.Results, i.BattleType).Apples}
-                    time={getWinResult(i.Results, i.BattleType).Time}
-                  />
+                  <Time apples={winResult.Apples} time={winResult.Time} />
                 </ListCell>
-                <ListCell>
-                  <Link to={`/battles/${i.BattleIndex}`}>
-                    <Kuski
-                      kuskiData={
-                        getWinResult(i.Results, i.BattleType).KuskiData
-                      }
-                    />
-                  </Link>
+                <ListCell to={`/kuskis/${winResult.KuskiData.Kuski}`}>
+                  <Kuski noLink kuskiData={winResult.KuskiData} />
                 </ListCell>
               </ListRow>
             );

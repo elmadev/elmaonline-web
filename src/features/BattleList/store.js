@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk, computed } from 'easy-peasy';
-import { BattleListPeriod } from 'api';
+import { BattleListPeriod, LatestBattles } from 'api';
 
 export default {
   battles: {},
@@ -8,9 +8,19 @@ export default {
     state.battles = payload;
   }),
   getBattles: thunk(async (actions, payload) => {
-    const get = await BattleListPeriod(payload);
-    if (get.ok) {
-      actions.setBattles(get.data);
+    if (payload.latest) {
+      const get = await LatestBattles(payload.limit + 10);
+      if (get.ok && Array.isArray(get.data)) {
+        const countInQueue = get.data.filter(d => d.InQueue === 1);
+        actions.setBattles(
+          get.data.slice(0, Math.max(5, countInQueue.length + 2)),
+        );
+      }
+    } else {
+      const get = await BattleListPeriod(payload);
+      if (get.ok) {
+        actions.setBattles(get.data);
+      }
     }
   }),
   currentBattle: computed(state => {

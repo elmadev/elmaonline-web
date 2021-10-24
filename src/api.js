@@ -1,6 +1,9 @@
 import { create } from 'apisauce';
 import config from 'config';
 import { authToken } from 'utils/nick';
+import assert from 'assert';
+import { isObjectLike, isArray, mapValues, meanBy } from 'lodash';
+import { useQuery } from 'react-query';
 
 let baseURL = config.api;
 const api = create({
@@ -27,6 +30,54 @@ export const setApiAuth = authToken => {
   api.setHeader('Authorization', authToken);
 };
 
+// wraps useQuery to parse the result of api.get/post/etc.,
+// usage: useQueryAlt( 'key', async () => api.get('replay_comment/23') );
+// You can set 4th param to true and have queryFn return a promise
+// that resolves to: [ success, payload ]. This might be useful if you have
+// to hit more than one endpoint or do some data manipulation on the response.
+export const useQueryAlt = (
+  queryKey,
+  queryFn,
+  queryOpts = {},
+  arrayFormat = false,
+) => {
+  return useQuery(
+    queryKey,
+    async (...args) => {
+      const res = await queryFn(...args);
+
+      let ok, data;
+
+      if (arrayFormat) {
+        assert(
+          isArray(res) && res.length === 2,
+          'Expected an async queryFn resolved to an array of length 2.',
+        );
+
+        [ok, data] = res;
+      } else {
+        assert(
+          isObjectLike(res),
+          'Expected an async queryFn that resolved to an object.',
+        );
+
+        ok = res.ok;
+        data = res.data;
+      }
+
+      if (ok) {
+        return data;
+      }
+
+      // perhaps we can improve error handling here later
+      // eslint-disable-next-line no-console
+      console.error('Status not OK', queryKey, data);
+      throw new Error('Status not OK');
+    },
+    queryOpts,
+  );
+};
+
 // replays
 export const ReplayComment = replayIndex =>
   api.get(`replay_comment/${replayIndex}`);
@@ -50,13 +101,14 @@ export const ReplaysByLevelIndex = LevelIndex =>
   api.get(`replay/byLevelIndex/${LevelIndex}`);
 export const InsertReplay = data => api.post('replay', data);
 export const UpdateReplay = data => api.post('replay/update', data);
-export const Replays = ({ page, pageSize, tags, sortBy, order }) => {
+export const Replays = ({ page, pageSize, tags, sortBy, order, levelPack }) => {
   return api.get(`replay`, {
     page,
     pageSize,
     tags,
     sortBy,
     order,
+    levelPack,
   });
 };
 export const AllMyReplays = ({ page, pageSize, tags, sortBy, order }) => {
@@ -159,6 +211,47 @@ export const CrippledTimeStats = (LevelIndex, KuskiIndex = 0, cripple) =>
 
 // levelpack
 export const LevelPacks = () => api.get('levelpack');
+export const LevelPacksStats = () => api.get('levelpack/stats');
+
+// add some derived values.
+// perhaps we could just do this on server.
+const mapLevelPackLevelStats = levelStats => {
+  const arr = Object.values(levelStats);
+
+  const avgTimeAll = meanBy(arr, 'TimeAll');
+  const avgKuskiCountAll = meanBy(arr, 'KuskiCountAll');
+
+  return mapValues(levelStats, s => {
+    return {
+      ...s,
+      RelativeTimeAll: avgTimeAll > 0 ? s.TimeAll / avgTimeAll : 0,
+      RelativeKuskiCountAll:
+        avgKuskiCountAll > 0 ? s.KuskiCountAll / avgKuskiCountAll : 0,
+    };
+  });
+};
+
+export const LevelPackLevelStats = async (byName, NameOrIndex) => {
+  const ret = await api.get(
+    `levelpack/level-stats/${byName ? 1 : 0}/${NameOrIndex}`,
+  );
+
+  if (ret.ok) {
+    // endpoint returning data in unintentional format.
+    // Could fix api and remove this later.
+    ret.data = mapValues(ret.data, arrayOfObjects => {
+      if (isArray(arrayOfObjects)) {
+        return arrayOfObjects[0] || {};
+      }
+      return arrayOfObjects;
+    });
+
+    ret.data = mapLevelPackLevelStats(ret.data);
+  }
+
+  return ret;
+};
+
 export const LevelPack = LevelPackName => api.get(`levelpack/${LevelPackName}`);
 export const TotalTimes = data =>
   api.get(`levelpack/${data.levelPackIndex}/totaltimes/${data.eolOnly}`);
@@ -223,6 +316,17 @@ export const PersonalLatestPRs = data =>
 export const MultiBesttime = data =>
   api.get(`besttime/multi/${data.levelId}/${data.limit}`);
 
+export const RecentBestRecords = (
+  daysPast,
+  limit,
+  repeatLevels = 1,
+  opts = {},
+) =>
+  api.get(`besttime/best-records/0/0/${limit || 0}/${repeatLevels ? 1 : 0}`, {
+    ...opts,
+    daysPast,
+  });
+
 // battles
 export const BattlesSearchByFilename = data =>
   api.get(`battle/search/byFilename/${data.q}/${data.offset}`);
@@ -250,6 +354,7 @@ export const BattleListPeriod = data =>
   api.get(`battle/byPeriod/${data.start}/${data.end}/${data.limit}`);
 export const BattleReplays = BattleIndex =>
   api.get(`battle/replays/${BattleIndex}`);
+export const LatestBattles = limit => api.get(`battle/${limit}`);
 
 // players
 export const PlayersSearch = data =>
@@ -267,6 +372,10 @@ export const Players = () => api.get('player/');
 export const GetCrew = () => api.get('player/crew/');
 export const NotificationSettings = () => api.get('player/settings');
 export const ChangeSettings = data => api.post('player/settings', data);
+export const PlayerRecordCount = KuskiIndex =>
+  api.get(`player/record-count/${KuskiIndex}`);
+export const PlayerRecords = (KuskiIndex, opts) =>
+  api.get(`player/records/${KuskiIndex}`, opts);
 
 // teams
 export const Teams = () => api.get('teams');
@@ -276,7 +385,8 @@ export const TeamMembers = Team => api.get(`teams/${Team}`);
 export const SearchChat = data => api.get('chatlog', { params: data });
 
 // level
-export const Level = LevelIndex => api.get(`level/${LevelIndex}`);
+export const Level = (LevelIndex, withLevelStats = false) =>
+  api.get(`level/${LevelIndex}`, { stats: withLevelStats ? '1' : '' });
 export const LevelData = LevelIndex => api.get(`level/leveldata/${LevelIndex}`);
 export const LevelTimeStats = LevelIndex =>
   api.get(`level/timestats/${LevelIndex}`);

@@ -31,12 +31,8 @@ export default function Home() {
           </Grid>
         </Grid>
         <Grid container spacing={3} item sm alignContent="flex-start">
-          <Grid item xs={12}>
-            <CurrentBattleCard />
-          </Grid>
-          <Grid item xs={12}>
-            <FeedCard />
-          </Grid>
+          <CurrentBattleCard />
+          <FeedCard />
           <Grid item xs={12}>
             <News amount={5} />
           </Grid>

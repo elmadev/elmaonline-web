@@ -74,7 +74,11 @@ function DesignedBattles({ KuskiIndex }) {
       <TablePagination
         style={{ width: '600px' }}
         component="div"
-        count={-1}
+        count={
+          designedBattles.length < pageSize
+            ? page * pageSize + designedBattles.length
+            : -1
+        }
         rowsPerPage={pageSize}
         page={page}
         backIconButtonProps={{
