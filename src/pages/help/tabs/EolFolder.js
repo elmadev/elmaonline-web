@@ -23,7 +23,7 @@ const tabs = {
     `This is where the levels in the External File category in game are
       stored. If you download a level outside of eol, this is where it goes.`,
     `For you to be able to download battles, you need to have this folder.
-      Not having the folder will cause the game to crash.`,
+      It is created automatically at startup if it doesn't exist.`,
   ],
   rec: [
     <Header h3 key="header">
@@ -32,7 +32,7 @@ const tabs = {
     `This is where the replays in the Replay menu in game are stored. If you
       download a replay outside of eol, this is where it goes.`,
     `For you to be able to download battle replays, you need to have this
-      folder. Not having the folder will cause the game to crash.`,
+      folder. It is created automatically at startup if it doesn't exist.`,
   ],
   bmp: [
     <Header h3 key="header">
@@ -165,7 +165,7 @@ const tabs = {
         suboptimal.`,
     <p key="p2">
       Note that your in-game editor might not work with this ddraw.dll, in which
-      case you might want to try swapping for another one or using an excternal
+      case you might want to try swapping for another one or using an external
       level editor such as{' '}
       <a href="https://mopolauta.moposite.com/viewtopic.php?f=3&t=6101">SLE</a>.
     </p>,
