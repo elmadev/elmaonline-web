@@ -221,6 +221,9 @@ const Level = ({ LevelId }) => {
                         ])}
                       </div>
                     )}
+                    {level.AcceptBugs !== 0 && (
+                      <div>Apple bugs are allowed in this level.</div>
+                    )}
                     {level.Legacy !== 0 && (
                       <div>
                         This level has legacy times imported from a third party
