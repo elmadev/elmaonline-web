@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
 
-const KuskiHeader = ({ KuskiIndex, recordCount }) => {
+const KuskiHeader = ({ KuskiIndex }) => {
   const { ranking, intTotalTime: tt } = useStoreState(state => state.Kuski);
   const { getRanking, getIntTotalTime } = useStoreActions(
     actions => actions.Kuski,
@@ -53,10 +53,6 @@ const KuskiHeader = ({ KuskiIndex, recordCount }) => {
       <StatsContainer>
         {!ranking ? <Loading /> : <div>{winsAll}</div>}
         <StatsTitle>battles won</StatsTitle>
-      </StatsContainer>
-      <StatsContainer title="First place finishes">
-        {recordCount === undefined ? <Loading /> : <div>{recordCount}</div>}
-        <StatsTitle>Records Held</StatsTitle>
       </StatsContainer>
     </Container>
   );

@@ -9,14 +9,14 @@ const ConfiguringEol = () => {
       <Header h3>Players</Header>
       <div>
         <StyledList>
-          <li>1st nick: Your nickname</li>
+          <li>Nick: Your nickname</li>
           <li>Password: Your password</li>
         </StyledList>
       </div>
       <Header h3>Server setup</Header>
       <div>
         <StyledList>
-          <li>IP: The address to connect to. Current IP is 161.35.35.82</li>
+          <li>Hostname: The host to connect to. Currently eol.elma.online</li>
           <li>TCP port: Port for TCP. Currently valid TCP port is 4460</li>
           <li>UDP port: Port for UDP. Currently valid UDP port is 4461</li>
           <li>
@@ -52,10 +52,10 @@ const ConfiguringEol = () => {
             3rd options with function keys in game.
           </li>
           <li>
-            Replay keys: Set keys for controlling replay playing. The program
-            will ask the following keys: Fast motion (8x), Fast motion (4x),
-            Fast motion (2x), Slow motion (4x), Slow motion (2x), Backward and
-            Pause.
+            Replay keys: Set keys for controlling replay playing. You can
+            configure the following keys: Backward, Pause, Slow motion (4x),
+            Slow motion (2x), Fast motion (2x), and two custom slots for fast
+            motion between 4x and 1024x (4x and 8x by default).
           </li>
           <li>
             Function keys: Set keys for the 12 function keys. These are F1-F12
@@ -110,6 +110,7 @@ const ConfiguringEol = () => {
             dimensions from the list.
           </li>
           <li>Zoom: How much the minimap is zoomed in or out.</li>
+          <li>Alignment: Horizontal location of the minimap.</li>
         </StyledList>
       </div>
     </Text>

@@ -1,6 +1,47 @@
 [
   {
     "type": "both",
+    "date": "23 Oct 2021",
+    "version": "1.0.12",
+    "highlights": [
+      "This update fixes bugs in the previous release, most notably an internal error randomly happening when a run ends, visual bugs with displaying shirts, and bugs with apple hiding in apple battles. It also adds support for over 60 minute battles, and it makes team chat easier to use: ctrl-F9 will now just toggle team chat mode on, and then F9 will work as team chat until you toggle it back off with ctrl-F9. In-editor gameplay is also improved by enabling the last apple time, speedometer and one-wheel status displays and cripple commands."
+    ],
+    "changes": [
+      {
+        "section": "Client improvements",
+        "changes": [
+          "Made team chat easier to use: team chat mode is now persistent, toggle it on/off with ctrl-F9. Then F9 will work as team chat until you toggle ctrl-F9 again.",
+          "Made !fps commands case insensitive.",
+          "Show last apple time, speedometer and one-wheel status when playing in editor.",
+          "Cripple commands work when playing in editor.",
+          "Added support for starting over 60 minute battles. Only for special events that are announced well in advance, so ask moderators to enable this feature for you when you want to start a pre-announced battle that needs more than 60 minutes."
+        ]
+      },
+      {
+        "section": "Client bug fixes",
+        "changes": [
+          "Fixed internal error randomly happening when a run ends.",
+          "Fixed your own shirt sometimes showing on shirtless kuskis.",
+          "Fixed a just downloaded shirt sometimes not instantly showing on a kuski (worked only after you restarted EOL).",
+          "Don't unhide taken apples in apple battle when dis/reconnecting (F12).",
+          "Don't hide an apple at start, when taken during apple battle countdown (because it doesn't yet count in the results anyway).",
+          "Fixed crash if writing a downloaded lev/rec to disk fails.",
+          "Fixed a duplicate of yourself sometimes showing up (showing your current run with a slight delay) for a moment after reconnecting mid-run."
+        ]
+      },
+      {
+        "section": "Server improvements",
+        "changes": [
+          "Show completion time in apple battle results instead of max apple count.",
+          "Database traffic optimizations, which should decrease spying lag.",
+          "Fixed a just reconnected player being shown in a hidden battle for the rest of the run."
+        ]
+      }
+    ],
+    "file": "https://up.elma.online/u/lf6xwng7bk/EOL_update_2021-10-23.zip"
+  },
+  {
+    "type": "both",
     "date": "05 Sep 2021",
     "version": "1.0.11",
     "highlights": [

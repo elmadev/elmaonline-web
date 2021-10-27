@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import Header from 'components/Header';
 import * as updates from './gameupdates.json';
@@ -60,7 +60,7 @@ const GameUpdates = () => {
           </ul>
         </ul>
         {updates.default.map(update => (
-          <>
+          <Fragment key={update.date}>
             <Headline
               type={update.type}
               date={update.date}
@@ -68,21 +68,21 @@ const GameUpdates = () => {
               file={update.file}
             />
             {update.highlights.map(h => (
-              <Highlight>{h}</Highlight>
+              <Highlight key={h}>{h}</Highlight>
             ))}
             <ul>
               {update.changes.map(c => (
-                <>
+                <Fragment key={c.section}>
                   <Header h3 top>
                     {c.section}
                   </Header>
                   {c.changes.map(change => (
-                    <li>{change}</li>
+                    <li key={change}>{change}</li>
                   ))}
-                </>
+                </Fragment>
               ))}
             </ul>
-          </>
+          </Fragment>
         ))}
       </Text>
     </div>

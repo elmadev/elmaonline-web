@@ -23,16 +23,19 @@ import FieldBoolean from 'components/FieldBoolean';
 import Download from 'components/Download';
 import Kuski from 'components/Kuski';
 import Loading from 'components/Loading';
+import ReplayList from 'features/ReplayList';
 import Records from './Records';
 import TotalTimes from './TotalTimes';
 import Personal from './Personal';
 import Kinglist from './Kinglist';
 import MultiRecords from './MultiRecords';
+import Crippled from './Crippled';
 import Admin from './Admin';
 import { useQueryAlt, LevelPackLevelStats } from '../../api';
 
-const LevelPack = ({ name, tab }) => {
+const LevelPack = ({ name, tab, ...props }) => {
   const isRehydrated = useStoreRehydrated();
+  const subTab = props['*'];
   const {
     levelPackInfo,
     highlight,
@@ -44,6 +47,7 @@ const LevelPack = ({ name, tab }) => {
     personalKuski,
     settings: { highlightWeeks, showLegacyIcon, showLegacy, showMoreStats },
   } = useStoreState(state => state.LevelPack);
+
   const {
     getLevelPackInfo,
     getHighlight,
@@ -61,9 +65,6 @@ const LevelPack = ({ name, tab }) => {
   const { data: levelStats } = useQueryAlt(
     ['LevelPackLevelStats', 1, name],
     async () => LevelPackLevelStats(1, name),
-    {
-      staleTime: 300000,
-    },
   );
 
   useEffect(() => {
@@ -112,15 +113,23 @@ const LevelPack = ({ name, tab }) => {
           variant="scrollable"
           scrollButtons="auto"
           value={tab}
-          onChange={(e, value) =>
-            navigate(['/levels/packs', name, value].filter(Boolean).join('/'))
-          }
+          onChange={(e, value) => {
+            if (value === 'crippled') {
+              navigate(['/levels/packs', name, 'crippled/noVolt'].join('/'));
+            } else {
+              navigate(
+                ['/levels/packs', name, value].filter(Boolean).join('/'),
+              );
+            }
+          }}
         >
           <Tab label="Records" value="" />
           <Tab label="Total Times" value="total-times" />
           <Tab label="King list" value="king-list" />
           <Tab label="Personal" value="personal" />
           <Tab label="Multi records" value="multi" />
+          <Tab label="Replays" value="replays" />
+          <Tab label="Crippled" value="crippled" />
           {adminAuth && <Tab label="Admin" value="admin" />}
         </Tabs>
         <LevelPackName>
@@ -262,6 +271,16 @@ const LevelPack = ({ name, tab }) => {
             highlight={multiHighlight}
             highlightWeeks={highlightWeeks}
           />
+        )}
+        {tab === 'crippled' && (
+          <Crippled
+            LevelPack={levelPackInfo}
+            crippleType={subTab}
+            highlightWeeks={highlightWeeks}
+          />
+        )}
+        {tab === 'replays' && (
+          <ReplayList nonsticky levelPack={levelPackInfo.LevelPackIndex} />
         )}
         {tab === 'admin' && adminAuth && (
           <Admin records={records} LevelPack={levelPackInfo} />

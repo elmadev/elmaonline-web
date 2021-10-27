@@ -108,7 +108,7 @@ export default {
     if (get.ok) {
       const indexed = get.data.reduce((acc, val) => {
         val.NormalizedPopularity = shiftedLogisticFn(
-          0.968,
+          0.9935,
           val.AvgKuskiPerLevel,
         );
 

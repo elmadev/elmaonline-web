@@ -31,9 +31,28 @@ import { TextField } from 'components/Inputs';
 import FieldBoolean from 'components/FieldBoolean';
 import Button from 'components/Buttons';
 
+const getLink = replay => {
+  let link = '';
+  let type = 'replay';
+  if (replay.UUID.substring(0, 5) === 'local') {
+    link = `${config.url}temp/${replay.UUID}-${replay.RecFileName}`;
+  } else if (replay.UUID.substring(0, 2) === 'b-') {
+    link = `${config.dlUrl}battlereplay/${replay.UUID.split('-')[1]}`;
+    type = 'winner';
+  } else if (replay.UUID.includes('_')) {
+    const [UUID, MD5, TimeIndex] = replay.UUID.split('_');
+    link = `${config.s3Url}time/${UUID}-${MD5}/${TimeIndex}.rec`;
+    type = 'timefile';
+  } else {
+    link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
+  }
+  return { link, type };
+};
+
 const Replay = ({ ReplayUuid, RecFileName }) => {
   const isWindow = typeof window !== 'undefined';
   let link = '';
+  let type = 'replay';
   let linkArray = [];
   let uuidarray = [];
   const location = useLocation();
@@ -75,19 +94,17 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
     );
 
   if (isWindow) {
-    if (replay.UUID.substring(0, 5) === 'local') {
-      link = `${config.url}temp/${replay.UUID}-${replay.RecFileName}`;
-    } else {
-      link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
-      uuidarray.push(replay.UUID);
-      if (replays.length > 0) {
-        uuidarray = [];
-        replays.forEach(r => {
-          linkArray.push(`${config.s3Url}replays/${r.UUID}/${r.RecFileName}`);
-          uuidarray.push(r.UUID);
-        });
-        link = linkArray.join(';');
-      }
+    uuidarray.push(replay.UUID);
+    const linkType = getLink(replay);
+    link = linkType.link;
+    type = linkType.type;
+    if (replays.length > 0) {
+      uuidarray = [];
+      replays.forEach(r => {
+        linkArray.push(getLink(r).link);
+        uuidarray.push(r.UUID);
+      });
+      link = linkArray.join(';');
     }
   }
 
@@ -174,7 +191,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
               />
             </AccordionDetails>
           </Accordion>
-          {userid === `${replay.UploadedBy}` && (
+          {userid === `${replay.UploadedBy}` && type === 'replay' && (
             <Accordion>
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Header h3>Edit replay</Header>
@@ -223,13 +240,20 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
               />
             </BattleTimestamp>
           </div>
-          <ReplayRating ReplayIndex={replay.ReplayIndex} />
+          <ReplayRating
+            ReplayIndex={replay.ReplayIndex ? replay.ReplayIndex : ReplayUuid}
+          />
         </ReplayDescriptionPaper>
       </LevelStatsContainer>
       <LevelStatsContainer>
         <BattleDescriptionPaper>
-          <AddComment add={() => {}} type="replay" index={replay.ReplayIndex} />
-          <ReplayComments ReplayIndex={replay.ReplayIndex} />
+          <AddComment
+            type="replay"
+            index={replay.ReplayIndex ? replay.ReplayIndex : ReplayUuid}
+          />
+          <ReplayComments
+            ReplayIndex={replay.ReplayIndex ? replay.ReplayIndex : ReplayUuid}
+          />
         </BattleDescriptionPaper>
       </LevelStatsContainer>
     </Layout>

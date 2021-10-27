@@ -41,6 +41,12 @@ export const useQueryAlt = (
   queryOpts = {},
   arrayFormat = false,
 ) => {
+  // I thought this should be added to defaultOptions (src/react-query.js),
+  // but this didn't stop queries from re-fetching when using navigate.
+  if (queryOpts.staleTime === undefined) {
+    queryOpts.staleTime = 300000;
+  }
+
   return useQuery(
     queryKey,
     async (...args) => {
@@ -51,14 +57,14 @@ export const useQueryAlt = (
       if (arrayFormat) {
         assert(
           isArray(res) && res.length === 2,
-          'Expected an async queryFn resolved to an array of length 2.',
+          'Expected an async queryFn that resolves to an array of length 2.',
         );
 
         [ok, data] = res;
       } else {
         assert(
           isObjectLike(res),
-          'Expected an async queryFn that resolved to an object.',
+          'Expected an async queryFn that resolves to an object.',
         );
 
         ok = res.ok;
@@ -101,13 +107,14 @@ export const ReplaysByLevelIndex = LevelIndex =>
   api.get(`replay/byLevelIndex/${LevelIndex}`);
 export const InsertReplay = data => api.post('replay', data);
 export const UpdateReplay = data => api.post('replay/update', data);
-export const Replays = ({ page, pageSize, tags, sortBy, order }) => {
+export const Replays = ({ page, pageSize, tags, sortBy, order, levelPack }) => {
   return api.get(`replay`, {
     page,
     pageSize,
     tags,
     sortBy,
     order,
+    levelPack,
   });
 };
 export const AllMyReplays = ({ page, pageSize, tags, sortBy, order }) => {
@@ -208,6 +215,12 @@ export const CrippledPersonal = (LevelIndex, KuskiIndex = 0, cripple, limit) =>
 export const CrippledTimeStats = (LevelIndex, KuskiIndex = 0, cripple) =>
   api.get(`crippled/timeStats/${LevelIndex}/${KuskiIndex}/${cripple}`);
 
+export const CrippledLevelPackRecords = (LevelPackName, cripple) =>
+  api.get(`crippled/levelPackRecords/${LevelPackName}/${cripple}`);
+
+export const CrippledLevelPackPersonalRecords = (LevelPackName, KuskiIndex) =>
+  api.get(`crippled/levelPackPersonalRecords/${LevelPackName}/${KuskiIndex}`);
+
 // levelpack
 export const LevelPacks = () => api.get('levelpack');
 export const LevelPacksStats = () => api.get('levelpack/stats');
@@ -250,8 +263,11 @@ export const LevelPackLevelStats = async (byName, NameOrIndex) => {
 
   return ret;
 };
+export const LevelPack = (LevelPackName, levels = 0) =>
+  api.get(`levelpack/${LevelPackName}`, {
+    levels: levels ? '1' : undefined,
+  });
 
-export const LevelPack = LevelPackName => api.get(`levelpack/${LevelPackName}`);
 export const TotalTimes = data =>
   api.get(`levelpack/${data.levelPackIndex}/totaltimes/${data.eolOnly}`);
 export const PersonalTimes = data =>
@@ -353,6 +369,7 @@ export const BattleListPeriod = data =>
   api.get(`battle/byPeriod/${data.start}/${data.end}/${data.limit}`);
 export const BattleReplays = BattleIndex =>
   api.get(`battle/replays/${BattleIndex}`);
+export const LatestBattles = limit => api.get(`battle/${limit}`);
 
 // players
 export const PlayersSearch = data =>
@@ -383,7 +400,8 @@ export const TeamMembers = Team => api.get(`teams/${Team}`);
 export const SearchChat = data => api.get('chatlog', { params: data });
 
 // level
-export const Level = LevelIndex => api.get(`level/${LevelIndex}`);
+export const Level = (LevelIndex, withLevelStats = false) =>
+  api.get(`level/${LevelIndex}`, { stats: withLevelStats ? '1' : '' });
 export const LevelData = LevelIndex => api.get(`level/leveldata/${LevelIndex}`);
 export const LevelTimeStats = LevelIndex =>
   api.get(`level/timestats/${LevelIndex}`);

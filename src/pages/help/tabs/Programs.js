@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import Header from 'components/Header';
 import { ListCell, ListContainer, ListRow, ListHeader } from 'components/List';
@@ -20,7 +20,7 @@ const Programs = () => {
         </a>
         .
         {sections.default.map(section => (
-          <>
+          <Fragment key={section.name}>
             <Header h2 top>
               {section.name}
             </Header>
@@ -30,14 +30,14 @@ const Programs = () => {
                 <ListCell>Description</ListCell>
               </ListHeader>
               {section.items.map(item => (
-                <ListRow>
+                <ListRow key={item.n}>
                   {Array.isArray(item.l) ? (
                     <ListCell>
                       {item.n}{' '}
                       {item.l.map(l => (
-                        <>
+                        <Fragment key={l.t}>
                           <a href={l.l}>{l.t}</a>{' '}
-                        </>
+                        </Fragment>
                       ))}
                     </ListCell>
                   ) : (
@@ -49,7 +49,7 @@ const Programs = () => {
                 </ListRow>
               ))}
             </ListContainer>
-          </>
+          </Fragment>
         ))}
       </Text>
     </div>

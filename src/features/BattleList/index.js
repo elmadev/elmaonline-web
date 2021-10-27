@@ -7,20 +7,35 @@ import styled, { ThemeContext } from 'styled-components';
 import { Level, BattleType } from 'components/Names';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
-import { toServerTime } from 'utils/time';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 
-const BattleList = ({ start, end, limit = 250, condensed }) => {
+const BattleList = ({
+  start = null,
+  end = null,
+  limit = 250,
+  condensed = false,
+  latest = false,
+}) => {
   const theme = useContext(ThemeContext);
   const { battles } = useStoreState(state => state.BattleList);
   const { getBattles } = useStoreActions(actions => actions.BattleList);
   useEffect(() => {
-    getBattles({
-      start: toServerTime(start).format(),
-      end: toServerTime(end).format(),
-      limit,
-    });
+    if (start || end) {
+      getBattles({
+        start: start.format(),
+        end: end.format(),
+        limit,
+      });
+    }
   }, [start, end]);
+  useEffect(() => {
+    if (latest) {
+      getBattles({
+        limit,
+        latest,
+      });
+    }
+  }, [latest]);
   return (
     <Container>
       <ListContainer>
@@ -141,8 +156,8 @@ const CondensedDuration = styled.div`
 `;
 
 BattleList.propTypes = {
-  start: PropTypes.shape({}).isRequired,
-  end: PropTypes.shape({}).isRequired,
+  start: PropTypes.shape({}),
+  end: PropTypes.shape({}),
 };
 
 export default BattleList;

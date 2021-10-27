@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { sortBy, filter } from 'lodash';
+import { sortBy, filter, xor, intersectionBy } from 'lodash';
 import { Chip, Box } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Header from 'components/Header';
 import RecListItem from 'components/RecListItem';
-import { xor, intersectionBy } from 'lodash';
 
 const widths = { Replay: 200, Time: 100, Level: null, By: null };
 
@@ -57,6 +56,7 @@ const RecList = ({
           if (selectedTags.includes(option)) {
             return (
               <Chip
+                key={option.Name}
                 size="small"
                 label={option.Name}
                 onDelete={() => handleTagClick(option)}
@@ -67,6 +67,7 @@ const RecList = ({
           } else {
             return (
               <Chip
+                key={option.Name}
                 size="small"
                 label={option.Name}
                 onClick={() => handleTagClick(option)}
@@ -94,7 +95,7 @@ const RecList = ({
         ) : (
           sortBy(filter(replays, filterByTags), ['ReplayTime']).map(i => (
             <RecListItem
-              key={i.ReplayIndex}
+              key={`${i.ReplayIndex}${i.TimeIndex}`}
               replay={i}
               selected={isSelected(i.UUID)}
               columns={columns}
@@ -108,7 +109,7 @@ const RecList = ({
 };
 
 RecList.propTypes = {
-  currentUUID: PropTypes.string,
+  currentUUID: PropTypes.arrayOf(PropTypes.string),
   columns: PropTypes.arrayOf(PropTypes.string),
   horizontalMargin: PropTypes.number,
   LevelIndex: PropTypes.number.isRequired,

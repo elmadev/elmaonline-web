@@ -82,7 +82,9 @@ export default function TopBarActions() {
   );
 
   useEffect(() => {
-    getNotificationsCount();
+    if (loggedIn) {
+      getNotificationsCount();
+    }
   }, []);
 
   const handleMenu = event => {

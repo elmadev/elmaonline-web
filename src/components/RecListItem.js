@@ -38,7 +38,7 @@ const RecListItem = ({ replay, selected, columns, mergable = false }) => {
   };
   return (
     <ListRow
-      key={replay.ReplayIndex}
+      key={`${replay.ReplayIndex}${replay.TimeIndex}`}
       selected={selected}
       onHover={hover => mergable && setHover(hover)}
     >

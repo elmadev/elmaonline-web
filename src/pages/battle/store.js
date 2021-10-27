@@ -48,6 +48,20 @@ export default {
       actions.setBattle(times.data);
     }
   }),
+  nextBattleFound: false,
+  setNextBattleFound: action((state, payload) => {
+    state.nextBattleFound = payload;
+  }),
+  getNextBattleFound: thunk(async (actions, payload) => {
+    const battle = await BattleResults(payload);
+    if (battle.ok) {
+      if (battle.data === null) {
+        actions.setNextBattleFound(false);
+      } else {
+        actions.setNextBattleFound(true);
+      }
+    }
+  }),
   rankingHistory: {},
   setRankingHistory: action((state, payload) => {
     state.rankingHistory = payload;

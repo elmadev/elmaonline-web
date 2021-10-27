@@ -1,3 +1,4 @@
+import React from 'react';
 import { ListContainer, ListHeader, ListRow, ListCell } from 'components/List';
 import Link from 'components/Link';
 import Time from 'components/Time';
@@ -10,14 +11,14 @@ const RecentRecords = ({ records }) => {
     <>
       <ListContainer>
         <ListHeader>
-          <ListCell>Record</ListCell>
-          <ListCell>Level</ListCell>
-          <ListCell title="Total time played by all kuski's combined.">
-            Time Played
+          <ListCell>Kuski</ListCell>
+          <ListCell>Time</ListCell>
+          <ListCell title="Level and cumulative playtime on level by all Kuski's">
+            Level
           </ListCell>
           <ListCell>Driven</ListCell>
         </ListHeader>
-        {records &&
+        {Array.isArray(records) &&
           records.map(r => {
             const level = r.LevelData || {};
             const kuski = r.KuskiData || {};
@@ -25,22 +26,23 @@ const RecentRecords = ({ records }) => {
             const driven2 = formatDistance(
               new Date(r.Driven * 1000),
               new Date(),
-              { addSuffix: true },
+              { addSuffix: true, addPrefix: false },
             );
 
             return (
               <ListRow>
                 <ListCell>
-                  <Kuski kuskiData={kuski} flag={true} />
-                  <span>{` `}</span>
+                  <Kuski kuskiData={kuski} flag={true} team={true} />
+                </ListCell>
+                <ListCell>
                   <Time time={r.Time} />
                 </ListCell>
                 <ListCell>
                   <Link to={levUrl} title={level.LongName}>
                     {level.LevelName}
                   </Link>
+                  {` `}({formatTimeSpent(r.TimeAll)})
                 </ListCell>
-                <ListCell>{formatTimeSpent(r.TimeAll)}</ListCell>
                 <ListCell>{driven2}</ListCell>
               </ListRow>
             );

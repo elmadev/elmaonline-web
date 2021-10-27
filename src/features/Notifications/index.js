@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import LocalTime from 'components/LocalTime';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListRow, ListCell, ListContainer } from 'components/List';
@@ -92,12 +92,12 @@ const Notifications = () => {
           <div>
             [
             {meta.levPacks.map((pack, index) => (
-              <>
+              <Fragment key={pack.LevelPackName}>
                 <Link to={`/levels/packs/${pack.LevelPackName}`}>
                   {pack.LevelPackName}
                 </Link>
                 {meta.levPacks.length > index + 1 && ', '}
-              </>
+              </Fragment>
             ))}
             ] {meta.kuski} got record in level{' '}
             <Link to={`/levels/${meta.levelIndex}`}>{meta.level}</Link> with
