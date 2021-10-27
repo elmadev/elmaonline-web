@@ -19,7 +19,7 @@ const keyBindingRows = [
     'F1',
     'Show/hide other players',
     'Show/hide yourself from others',
-    '-',
+    'Show help (these key bindings and other commands)',
   ),
   createRow(
     'F2',
@@ -31,7 +31,7 @@ const keyBindingRows = [
   createRow(
     'F4',
     'Download battle level',
-    'Download cup level (currently disabled)',
+    '-',
     'Download any level (type level filename without the .lev extension)',
   ),
   createRow(
@@ -43,7 +43,7 @@ const keyBindingRows = [
   createRow(
     'F6',
     'Show battle standings/results',
-    'Show cup standings/results (currently disabled)',
+    '-',
     'Show 24htt standings/results',
   ),
   createRow(
@@ -56,24 +56,24 @@ const keyBindingRows = [
     'F8',
     'Send/Accept multiplayer invitation',
     'Cancel all multiplayer invitations',
-    'Change active cup (currently disabled)',
+    'Show/hide last apple time',
   ),
   createRow(
     'F9',
     'Type chat line (press up/down or pageup/pagedown to scroll)',
     'Show/hide chat',
-    'Show/hide last apple time',
+    'Toggle team chat mode on/off. When on, F9 works as team chat.',
   ),
   createRow(
     'F10',
-    'Show/hide battle/cup status line',
+    'Show/hide battle status line',
     'Show/hide leader and your position',
     'Show/hide speedometer',
   ),
   createRow(
     'F11',
     'Download winning replay of last battle',
-    'Download winning replay of last cup (currently disabled)',
+    '-',
     'Show/hide onewheel status',
   ),
   createRow(
@@ -93,8 +93,8 @@ const KeyBindings = () => {
           EOL uses two option keys to fit all keys to the F-keys by default. By
           default, the option keys are:
         </RowSpan>
-        <RowSpan>OPT1: Left Shift</RowSpan>
-        <RowSpan>OPT2: Left Ctrl</RowSpan>
+        <RowSpan>OPT2: Left Shift</RowSpan>
+        <RowSpan>OPT3: Left Ctrl</RowSpan>
         <RowSpan>
           To change any of the bindings or to reset them to default, you can do
           it in eolconf.exe in your eol folder.
@@ -106,8 +106,8 @@ const KeyBindings = () => {
             <TableRow key="table_header">
               <TableCell key="button_header">Button</TableCell>
               <TableCell key="action_header">Action</TableCell>
-              <TableCell key="action2_header">OPT1 + Button</TableCell>
-              <TableCell key="action3_header">OPT2 + Button</TableCell>
+              <TableCell key="action2_header">OPT2 + Button</TableCell>
+              <TableCell key="action3_header">OPT3 + Button</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

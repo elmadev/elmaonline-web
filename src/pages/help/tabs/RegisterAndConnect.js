@@ -35,8 +35,8 @@ const RegisterAndConnect = () => {
           last paragraph
         </li>
         <li>
-          Make sure IP is set to 161.35.35.82, TCP port to 4460, UDP port to
-          4461, and that 2nd nick box is unticked
+          Make sure Hostname is set to eol.elma.online, TCP port to 4460, and
+          UDP port to 4461
         </li>
         <li>
           Check your account on the website to make sure you have playing rights
