@@ -314,8 +314,8 @@ const Search = () => {
                       <Fragment
                         key={
                           l.LevelPack
-                            ? l.LevelPack.LevelPackIndex
-                            : l.LevelPackIndex
+                            ? l.LevelPack.LevelPackName
+                            : l.LevelPackName
                         }
                       >
                         {l.LevelPack ? (
