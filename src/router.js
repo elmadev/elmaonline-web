@@ -9,6 +9,7 @@ import Cup from 'pages/cup';
 import CupReplay from 'pages/cupreplay';
 import Cups from 'pages/cups';
 import BattleLeagues from 'pages/battleleagues';
+import BattleLeague from 'pages/battleleague';
 import Editor from 'pages/editor';
 import Error from 'pages/error';
 import ForgotPassword from 'pages/forgot-password';
@@ -61,6 +62,7 @@ const Routes = () => {
           <Cup path="cup/:ShortName/*" />
           <CupReplay path="r/cup/:ReplayIndex/:Filename" ReplayType="cup" />
           <Cups path="cups" />
+          <BattleLeague path="battleleagues/:ShortName" />
           <BattleLeagues path="battleleagues" />
           <Editor path="editor" />
           <Error path="error" />

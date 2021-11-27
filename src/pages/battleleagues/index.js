@@ -59,7 +59,7 @@ const BattleLeagues = () => {
               data.map(c => (
                 <LinkWithDesc
                   key={c.ShortName}
-                  link={`/battleleague/${c.ShortName}`}
+                  link={`/battleleagues/${c.ShortName}`}
                   name={c.LeagueName}
                   desc={c.LeagueDescription}
                 />

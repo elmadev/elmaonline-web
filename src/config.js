@@ -1,5 +1,5 @@
-// const url = 'http://localhost:3003/';
-const url = 'https://apitest.elma.online/';
+const url = 'http://localhost:3003/';
+// const url = 'https://apitest.elma.online/';
 
 const s3SubFolder = 'test/';
 

@@ -182,14 +182,13 @@ const Cell = styled.span`
   padding: ${p => (p.to ? 0 : '10px')};
   border-bottom: 1px solid #eaeaea;
   width: ${p => (p.width ? `${p.width}px` : 'auto')};
-  text-align: ${p => (p.right ? 'right' : 'left')};
+  text-align: ${p => (p.right ? 'right' : p.textAlign)};
   background: ${p => (p.highlight ? p.theme.highlightColor : 'transparent')};
   position: relative;
   white-space: ${p => (p.whiteSpace ? p.whiteSpace : 'normal')};
   flex: ${p => (p.width ? 'none' : '1')};
   justify-content: ${p => (p.right ? 'flex-end' : 'flex-start')};
   vertical-align: ${p => p.verticalAlign};
-  text-align: ${p => p.textAlign};
   ${p => p.cutText && 'white-space: nowrap; overflow: hidden;'}
   ${p => p.pointer && 'cursor: pointer;'}
   button {

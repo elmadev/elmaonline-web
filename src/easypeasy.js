@@ -10,6 +10,7 @@ import Login from 'pages/login/store';
 import RankingTable from 'features/RankingTable/store';
 import BattleList from 'features/BattleList/store';
 import BattleLeagues from 'pages/battleleagues/store';
+import BattleLeague from 'pages/battleleague/store';
 import Upload from 'features/Upload/store';
 import Cups from 'pages/cups/store';
 import Cup from 'pages/cup/store';
@@ -45,6 +46,7 @@ export default {
   Register,
   BattleList,
   BattleLeagues,
+  BattleLeague,
   ChatView,
   Cups,
   Cup,
