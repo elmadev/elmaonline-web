@@ -38,12 +38,11 @@ const LevelPack = ({ name, tab, ...props }) => {
   const subTab = props['*'];
   const {
     levelPackInfo,
+    records,
     highlight,
     multiHighlight,
     personalTimes,
     timesError,
-    records,
-    recordsLoading,
     personalKuski,
     settings: { highlightWeeks, showLegacyIcon, showLegacy, showMoreStats },
   } = useStoreState(state => state.LevelPack);
@@ -204,7 +203,7 @@ const LevelPack = ({ name, tab, ...props }) => {
                     </RadioButtonItem>
                   </RadioButtonContainer>
                 </FormControl>
-                {levelPackInfo.Legacy === 1 && (
+                {levelPackInfo?.Legacy === 1 && (
                   <>
                     <SettingItem>
                       <FieldBoolean
@@ -230,11 +229,13 @@ const LevelPack = ({ name, tab, ...props }) => {
         </Settings>
         {!tab && (
           <Records
+            levelPackInfo={
+              levelPackInfo?.LevelPackName === name ? levelPackInfo : null
+            }
             levelStats={levelStats}
-            records={records}
+            showLegacy={showLegacy}
             highlight={highlight}
             highlightWeeks={highlightWeeks}
-            recordsLoading={recordsLoading}
             showLegacyIcon={showLegacyIcon}
             showMoreStats={showMoreStats}
           />

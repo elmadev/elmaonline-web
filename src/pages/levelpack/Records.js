@@ -15,27 +15,33 @@ import { formatPct, formatTimeSpent } from '../../utils/format';
 import formatDistance from 'date-fns/formatDistance';
 import Switch from 'components/Switch';
 import { Row } from 'components/Containers';
+import { isEmpty, sumBy } from 'lodash';
+import { LevelPackRecords, useQueryAlt } from '../../api';
 
 const TableRow = ({
-  record: r,
+  record,
   levelStats,
   highlight,
   highlightWeeks,
   MaxRelativeTimeAll,
   level,
   selectLevel,
+  selectedLevel,
   setLongName,
   setLevelName,
   showMoreStats,
   showLegacyIcon,
 }) => {
   // levels not played will not have stats objects.
-  const stats = levelStats?.[r.LevelIndex] || {};
+  const stats = levelStats?.[level.LevelIndex] || {};
 
-  const isLegacy = r.LevelBesttime && r.LevelBesttime.Source !== undefined;
+  // level could be unfinished, or records haven't loaded yet.
+  const hasRecord = !isEmpty(record);
+
+  const isLegacy = hasRecord && record.Source !== undefined;
 
   const isHighlight =
-    r.LevelBesttime && r.LevelBesttime.TimeIndex >= highlight[highlightWeeks];
+    hasRecord && record.TimeIndex >= highlight[highlightWeeks];
 
   // ie. width of popularity bar
   const timePct = formatPct(stats.RelativeTimeAll || 0, MaxRelativeTimeAll);
@@ -50,35 +56,43 @@ const TableRow = ({
 
   return (
     <TimeRow
-      key={r.LevelIndex}
+      key={level.LevelIndex}
       onClick={e => {
         e.preventDefault();
-        selectLevel(level === r.LevelIndex ? -1 : r.LevelIndex);
-        setLongName(r.Level.LongName);
-        setLevelName(r.Level.LevelName);
+        selectLevel(level === level.LevelIndex ? -1 : level.LevelIndex);
+        setLongName(level.LongName);
+        setLevelName(level.LevelName);
       }}
-      selected={level === r.LevelIndex}
+      selected={selectedLevel === level.LevelIndex}
     >
       <ListCell>
-        <Level LevelIndex={r.LevelIndex} LevelData={r.Level} />
+        <Level LevelIndex={level.LevelIndex} LevelData={level} />
       </ListCell>
 
-      <ListCell>{r.Level.LongName}</ListCell>
+      <ListCell>{level.LongName}</ListCell>
 
-      <ListCell>
-        {r.LevelBesttime && (
-          <Kuski kuskiData={r.LevelBesttime.KuskiData} team flag />
-        )}
-      </ListCell>
+      {hasRecord && (
+        <>
+          <ListCell>
+            <Kuski kuskiData={record.KuskiData} team flag />
+          </ListCell>
+          <ListCell highlight={isHighlight}>
+            <Time time={record.Time} />
+            {isLegacy && (
+              <span style={{ marginLeft: 10 }}>
+                <LegacyIcon source={record.Source} show={showLegacyIcon} />
+              </span>
+            )}
+          </ListCell>
+        </>
+      )}
 
-      <ListCell highlight={isHighlight}>
-        {r.LevelBesttime && <Time time={r.LevelBesttime.Time} />}
-        {isLegacy && (
-          <span style={{ marginLeft: 10 }}>
-            <LegacyIcon source={r.LevelBesttime.Source} show={showLegacyIcon} />
-          </span>
-        )}
-      </ListCell>
+      {!hasRecord && (
+        <>
+          <ListCell />
+          <ListCell />
+        </>
+      )}
 
       {showMoreStats && <ListCell>{lastDriven}</ListCell>}
 
@@ -110,23 +124,51 @@ const TableRow = ({
 };
 
 const Records = ({
+  levelPackInfo,
+  levelStats,
+  showLegacy,
   highlight,
   highlightWeeks,
-  records,
-  recordsLoading,
   showLegacyIcon,
   showMoreStats,
-  levelStats,
 }) => {
-  const [level, selectLevel] = useState(-1);
+  const [selectedLevel, selectLevel] = useState(-1);
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
 
   const { setShowMoreStats } = useStoreActions(state => state.LevelPack);
 
-  if (recordsLoading) {
+  const { data: records, isLoading: recordsLoading } = useQueryAlt(
+    [
+      'LevelPackRecords',
+      levelPackInfo?.name,
+      levelPackInfo?.Legacy,
+      showLegacy,
+    ],
+    async () =>
+      LevelPackRecords(
+        levelPackInfo.LevelPackName,
+        levelPackInfo.Legacy && !showLegacy,
+      ),
+    { enabled: !isEmpty(levelPackInfo) },
+  );
+
+  if (isEmpty(levelPackInfo)) {
     return <Loading />;
   }
+
+  const levels = levelPackInfo.levels;
+
+  const totalTimeArgs = isEmpty(levels)
+    ? { tt: 0 }
+    : recordsTT(
+        levels.map(l => ({
+          record: isEmpty(records?.[l.LevelIndex])
+            ? null
+            : [records[l.LevelIndex]],
+        })),
+        'record',
+      );
 
   const MaxRelativeTimeAll = Math.max(
     ...Object.values(levelStats || {}).map(v => v.RelativeTimeAll),
@@ -142,6 +184,8 @@ const Records = ({
           Level Stats
         </Switch>
       </Row>
+
+      {recordsLoading && <Loading />}
 
       <ListContainer>
         <ListHeader>
@@ -180,31 +224,35 @@ const Records = ({
           {!showMoreStats && <ListCell />}
         </ListHeader>
 
-        {records.map(record => (
-          <TableRow
-            {...{
-              key: record.LevelIndex,
-              record,
-              levelStats,
-              highlight,
-              highlightWeeks,
-              MaxRelativeTimeAll,
-              level,
-              selectLevel,
-              setLongName,
-              setLevelName,
-              showMoreStats,
-              showLegacyIcon,
-            }}
-          />
-        ))}
+        {levels.map(level => {
+          const record = isEmpty(records) ? null : records[level.LevelIndex];
+          return (
+            <TableRow
+              {...{
+                key: level.LevelIndex,
+                level,
+                record,
+                levelStats,
+                highlight,
+                highlightWeeks,
+                MaxRelativeTimeAll,
+                selectedLevel,
+                selectLevel,
+                setLongName,
+                setLevelName,
+                showMoreStats,
+                showLegacyIcon,
+              }}
+            />
+          );
+        })}
 
         <TTRow>
           <ListCell />
           <ListCell />
           <ListCell>Total Time</ListCell>
           <ListCell>
-            <Time time={recordsTT(records, 'LevelBesttime')} />
+            <Time time={totalTimeArgs} />
           </ListCell>
           <ListCell />
           {showMoreStats && (
@@ -216,10 +264,10 @@ const Records = ({
           )}
         </TTRow>
       </ListContainer>
-      {level !== -1 && (
+      {selectedLevel !== -1 && (
         <LevelPopup
           highlight={highlight[highlightWeeks]}
-          levelId={level}
+          levelId={selectedLevel}
           longName={longName}
           levelName={levelName}
           close={() => {

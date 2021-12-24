@@ -280,6 +280,8 @@ export const PersonalWithMulti = data =>
   );
 export const LevelPackStats = data =>
   api.get(`levelpack/${data.name}/stats/${data.eolOnly}`);
+export const LevelPackRecords = (LevelPackName, eolOnly) =>
+  api.get(`levelpack/${LevelPackName}/records/${eolOnly ? 1 : 0}`);
 export const MultiRecords = LevelPackName =>
   api.get(`levelpack/${LevelPackName}/multirecords`);
 export const LevelPackSearch = q => api.get(`levelpack/search/${q}`);
