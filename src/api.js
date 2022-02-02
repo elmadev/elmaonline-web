@@ -279,7 +279,9 @@ export const PersonalWithMulti = data =>
     `levelpack/${data.name}/personalwithmulti/${data.PersonalKuskiIndex}/${data.eolOnly}`,
   );
 export const LevelPackStats = data =>
-  api.get(`levelpack/${data.name}/stats/${data.eolOnly}`);
+  api.get(`levelpack/${data.name}/stats/${data.eolOnly}`, null, {
+    timeout: 60000,
+  });
 export const LevelPackRecords = (LevelPackName, eolOnly) =>
   api.get(`levelpack/${LevelPackName}/records/${eolOnly ? 1 : 0}`);
 export const MultiRecords = LevelPackName =>

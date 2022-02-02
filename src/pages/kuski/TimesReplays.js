@@ -218,11 +218,11 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
             {({ index, style }) => {
               const time = data[index];
               return (
-                <div style={style} key={time.AllFinishedIndex}>
+                <div style={style} key={time.TimeIndex}>
                   <ListRow
                     onHover={hovering => {
                       if (hovering) {
-                        setHover(time.AllFinishedIndex);
+                        setHover(time.TimeIndex);
                       } else {
                         setHover(0);
                       }
@@ -246,7 +246,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                     </ListCell>
                     <ListCell width={50} />
                     <ListCell>
-                      {hover === time.AllFinishedIndex && time.TimeFileData && (
+                      {hover === time.TimeIndex && time.TimeFileData && (
                         <>
                           <a
                             href={`${config.s3Url}time/${time.TimeFileData.UUID}-${time.TimeFileData.MD5}/${time.TimeIndex}.rec`}
