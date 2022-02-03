@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk, persist } from 'easy-peasy';
-import { nickId } from 'utils/nick';
 import {
   Besttime,
   Level,
@@ -9,23 +8,7 @@ import {
   LevelTimeStats,
   LeaderHistory,
   LevelPacksByLevel,
-  CrippledTimes,
-  CrippledPersonal,
-  CrippledTimeStats,
 } from 'api';
-
-const crippleDefault = {
-  LevelIndexTimes: null,
-  LevelIndexPersonal: null,
-  LevelIndexTimeStats: null,
-  // false means loading
-  allTimes: false,
-  bestTimes: false,
-  leaderHistory: false,
-  kuskiTimes: false,
-  kuskiLeaderHistory: false,
-  timeStats: false,
-};
 
 export default {
   besttimes: [],
@@ -152,95 +135,4 @@ export default {
       });
     }
   }),
-  Crippled: {
-    noThrottle: { ...crippleDefault },
-    noBrake: { ...crippleDefault },
-    noVolt: { ...crippleDefault },
-    noTurn: { ...crippleDefault },
-    oneTurn: { ...crippleDefault },
-    alwaysThrottle: { ...crippleDefault },
-    oneWheel: { ...crippleDefault },
-    drunk: { ...crippleDefault },
-    updateState: action((state, f) => {
-      f(state);
-    }),
-    fetchTimes: thunk(async (actions, payload, helpers) => {
-      const state = helpers.getState();
-      const [LevelIndex, cripple] = payload;
-
-      if (state[cripple].LevelIndexTimes !== LevelIndex) {
-        actions.updateState(st => {
-          st[cripple].LevelIndexTimes = LevelIndex;
-          st[cripple].allTimes = false;
-          st[cripple].bestTimes = false;
-          st[cripple].leaderHistory = false;
-        });
-
-        const res = await CrippledTimes(LevelIndex, cripple, 1000, true, 10000);
-
-        if (res.ok) {
-          actions.updateState(st => {
-            st[cripple].allTimes = res.data.allTimes;
-            st[cripple].bestTimes = res.data.bestTimes;
-            st[cripple].leaderHistory = res.data.leaderHistory;
-          });
-        }
-      }
-    }),
-
-    fetchPersonal: thunk(async (actions, payload, helpers) => {
-      const state = helpers.getState();
-      const [LevelIndex, cripple] = payload;
-
-      if (state[cripple].LevelIndexPersonal !== LevelIndex) {
-        actions.updateState(st => {
-          st[cripple].LevelIndexPersonal = LevelIndex;
-          st[cripple].kuskiTimes = false;
-          st[cripple].kuskiLeaderHistory = false;
-        });
-
-        if (nickId()) {
-          const res = await CrippledPersonal(LevelIndex, 0, cripple, 1000);
-
-          if (res.ok) {
-            actions.updateState(st => {
-              st[cripple].kuskiTimes = res.data.kuskiTimes;
-              st[cripple].kuskiLeaderHistory = res.data.kuskiLeaderHistory;
-            });
-          }
-        } else {
-          actions.updateState(st => {
-            st[cripple].kuskiTimes = [];
-            st[cripple].kuskiLeaderHistory = [];
-          });
-        }
-      }
-    }),
-
-    fetchTimeStats: thunk(async (actions, payload, helpers) => {
-      const state = helpers.getState();
-      const [LevelIndex, cripple] = payload;
-
-      if (state[cripple].LevelIndexTimeStats !== LevelIndex) {
-        actions.updateState(st => {
-          st[cripple].LevelIndexTimeStats = LevelIndex;
-          st[cripple].timeStats = false;
-        });
-
-        if (nickId()) {
-          const res = await CrippledTimeStats(LevelIndex, 0, cripple);
-
-          if (res.ok) {
-            actions.updateState(st => {
-              st[cripple].timeStats = res.data;
-            });
-          }
-        } else {
-          actions.updateState(st => {
-            st[cripple].timeStats = [];
-          });
-        }
-      }
-    }),
-  },
 };
