@@ -32,7 +32,7 @@ const Recplayer = props => {
   }
 
   if (useMediaQuery('(max-width: 500px)')) {
-    defaultZoom = 0.7;
+    defaultZoom = 0.58;
   }
 
   const zoom = props.zoom || defaultZoom;
