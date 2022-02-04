@@ -12,6 +12,7 @@ import { formatDistanceStrict } from 'date-fns';
 import Link from 'components/Link';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import { useMediaQuery } from '@material-ui/core';
 
 const getShowing = (comments, page, pageSize) => {
   const start = (+page - 1) * pageSize;
@@ -22,6 +23,8 @@ const ReplayCommentArchive = props => {
   const [page, setPage] = useState(1);
 
   const pageSize = 20;
+
+  const narrowCols = useMediaQuery('(max-width: 980px)');
 
   const { comments } = useStoreState(store => store.ReplayCommentArchive);
   const { fetchComments } = useStoreActions(
@@ -39,12 +42,8 @@ const ReplayCommentArchive = props => {
     <Root>
       <ListContainer>
         <ListHeader>
-          <ListCell>Replay</ListCell>
-          <ListCell>By</ListCell>
-          <ListCell>
-            <TextCol>Comment</TextCol>
-          </ListCell>
-          <ListCell>By</ListCell>
+          <ListCell width={narrowCols ? 250 : 400}>Replay</ListCell>
+          <ListCell>Comment</ListCell>
         </ListHeader>
         {showing.map((c, index) => {
           const replay = c.Replay || {};
@@ -69,26 +68,20 @@ const ReplayCommentArchive = props => {
 
           return (
             <ListRow key={index}>
-              <ListCell>
+              <ListCell title={uploadedAt}>
+                <Kuski kuskiData={driver} flag={true} team={true} />
+                <Br />
                 <Link title={replay.UUID} to={`/r/${replay.UUID}`}>
                   {replay.RecFileName}
                 </Link>
-                <Br />
+                {` - `}
                 <Time thousands time={replay.ReplayTime} />
-                {` `}
-              </ListCell>
-              <ListCell>
-                <Kuski kuskiData={driver} flag={true} />
-                <Br />
-                {uploadedAt}
-              </ListCell>
-              <ListCell>
-                <TextCol>{c.Text}</TextCol>
               </ListCell>
               <ListCell>
                 <Kuski kuskiData={commenter} flag={true} />
+                {` - ${commentedAt}`}
                 <Br />
-                {commentedAt}
+                {c.Text}
               </ListCell>
             </ListRow>
           );
@@ -121,12 +114,6 @@ const Pag = styled.div`
   display: flex;
   justify-content: center;
   padding: 25px 0;
-`;
-
-const TextCol = styled.div`
-  padding: 0 8px;
-  max-width: 700px;
-  margin: 0 auto;
 `;
 
 export default ReplayCommentArchive;
