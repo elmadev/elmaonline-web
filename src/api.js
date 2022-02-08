@@ -30,11 +30,12 @@ export const setApiAuth = authToken => {
   api.setHeader('Authorization', authToken);
 };
 
-// wraps useQuery to parse the result of api.get/post/etc.,
-// usage: useQueryAlt( 'key', async () => api.get('replay_comment/23') );
-// You can set 4th param to true and have queryFn return a promise
-// that resolves to: [ success, payload ]. This might be useful if you have
-// to hit more than one endpoint or do some data manipulation on the response.
+// apisauce adapter
+// ie. useQueryAlt( 'key', async () => api.get('replay_comment/23') );
+// with useQuery, queryFn should resolve to its payload or throw an error.
+// with useQueryAlt, it can resolve to object like { ok: success, data: payload },
+// (ie. like apisauce functions) or an array like [ success, payload ]
+// (if 4th parameter is true).
 export const useQueryAlt = (
   queryKey,
   queryFn,
@@ -52,33 +53,33 @@ export const useQueryAlt = (
     async (...args) => {
       const res = await queryFn(...args);
 
-      let ok, data;
-
       if (arrayFormat) {
         assert(
           isArray(res) && res.length === 2,
           'Expected an async queryFn that resolves to an array of length 2.',
         );
 
-        [ok, data] = res;
+        if (res[0]) {
+          return res[1];
+        }
+
+        // eslint-disable-next-line no-console
+        console.error('Status not OK', queryKey, res[1]);
+        throw new Error('Status not OK');
       } else {
         assert(
           isObjectLike(res),
           'Expected an async queryFn that resolves to an object.',
         );
 
-        ok = res.ok;
-        data = res.data;
-      }
+        if (res.ok) {
+          return res.data;
+        }
 
-      if (ok) {
-        return data;
+        // eslint-disable-next-line no-console
+        console.error('Status not OK', queryKey, res.data);
+        throw new Error('Status not OK');
       }
-
-      // perhaps we can improve error handling here later
-      // eslint-disable-next-line no-console
-      console.error('Status not OK', queryKey, data);
-      throw new Error('Status not OK');
     },
     queryOpts,
   );
@@ -349,6 +350,7 @@ export const BattlesSearchByFilename = data =>
   api.get(`battle/search/byFilename/${data.q}/${data.offset}`);
 export const BattlesSearchByDesigner = data =>
   api.get(`battle/search/byDesigner/${data.q}/${data.offset}`);
+export const BattlesSearch = data => api.get(`battle/search/generic`, data);
 export const BattlesByLevel = LevelIndex =>
   api.get(`battle/byLevel/${LevelIndex}`);
 export const BattleResults = BattleIndex =>
