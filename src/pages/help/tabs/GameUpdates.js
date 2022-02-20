@@ -21,7 +21,7 @@ const Headline = ({ type, date, version, file }) => {
   if (file) {
     return (
       <Header h2 top>
-        <a href={file}>{text}</a>
+        <a href={file}>{text} - Download</a>
       </Header>
     );
   }
