@@ -30,7 +30,7 @@ export default function Preview({
   return (
     <Backdrop open={true} style={{ zIndex: 100 }}>
       <Container container>
-        <Grid item sm={8}>
+        <Grid item sm={8} xs={12}>
           <Recplayer
             rec={`${config.s3Url}time/${previewRec.TimeFileData.UUID}-${previewRec.TimeFileData.MD5}/${previewRec.TimeIndex}.rec`}
             lev={`${config.dlUrl}level/${previewRec.LevelIndex}?UUID=${previewRec.TimeFileData.UUID}`}
