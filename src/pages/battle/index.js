@@ -84,6 +84,7 @@ const Battle = ({ BattleId }) => {
     getBattle(BattleIndex);
     getRankingHistoryByBattle(BattleIndex);
     getReplays(BattleIndex);
+    setReplayUrl('');
   }, [BattleIndex]);
 
   useEffect(() => {
