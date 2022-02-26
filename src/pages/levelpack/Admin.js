@@ -13,6 +13,7 @@ import {
   Delete as DeleteIcon,
   PlaylistAdd,
   DragHandle,
+  ExpandMore,
 } from '@material-ui/icons';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
@@ -20,7 +21,6 @@ import Header from 'components/Header';
 import UpdateForm from './UpdateForm';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ListCell, ListContainer, ListHeader } from 'components/List';
-import { ExpandMore } from '@material-ui/icons';
 
 const Admin = ({ records, LevelPack }) => {
   const [search, setSearch] = useState('');
@@ -164,7 +164,10 @@ const Admin = ({ records, LevelPack }) => {
                     if (e.target.value === '') {
                       setSearch('');
                     } else if (search.length > 1) {
-                      searchLevel({ q: search, ShowLocked: 0 });
+                      searchLevel({
+                        q: encodeURIComponent(search),
+                        ShowLocked: 0,
+                      });
                     }
                   }
                   if (e.key === 'Escape') {

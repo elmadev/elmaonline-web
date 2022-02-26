@@ -59,22 +59,26 @@ const Search = () => {
   } = useStoreActions(actions => actions.Search);
   useEffect(() => {
     if (t === 'level') {
-      getLevels({ q: q.replace('?', '_'), offset: 0, showLocked: 0 });
+      getLevels({
+        q: encodeURIComponent(q.replace('?', '_')),
+        offset: 0,
+        showLocked: 0,
+      });
     }
     if (t === 'battle') {
       getBattles({
-        q: q.replace('?', '_'),
+        q: encodeURIComponent(q.replace('?', '_')),
         offset: 0,
       });
     }
     if (t === 'replay') {
-      getReplays({ q: q.replace('?', '_'), offset: 0 });
+      getReplays({ q: encodeURIComponent(q.replace('?', '_')), offset: 0 });
     }
     if (t === 'player') {
-      getPlayers({ q: q.replace('?', '_'), offset: 0 });
+      getPlayers({ q: encodeURIComponent(q.replace('?', '_')), offset: 0 });
     }
     if (t === 'team') {
-      getTeams({ q: q.replace('?', '_'), offset: 0 });
+      getTeams({ q: encodeURIComponent(q.replace('?', '_')), offset: 0 });
     }
   }, [q]);
   useEffect(() => {
