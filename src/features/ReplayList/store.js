@@ -16,9 +16,17 @@ export default {
   getReplays: thunk(async (actions, payload) => {
     let get = null;
     if (payload.drivenBy) {
-      get = await ReplayDrivenBy(payload.drivenBy);
+      get = await ReplayDrivenBy(payload.drivenBy, {
+        page: payload.page,
+        pageSize: payload.pageSize,
+        tags: payload.tags,
+      });
     } else if (payload.uploadedBy) {
-      get = await ReplayUploadedBy(payload.uploadedBy);
+      get = await ReplayUploadedBy(payload.uploadedBy, {
+        page: payload.page,
+        pageSize: payload.pageSize,
+        tags: payload.tags,
+      });
     } else {
       get = await Replays(payload);
     }
