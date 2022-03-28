@@ -54,7 +54,8 @@ const Routes = () => {
         <Router100>
           <Home path="/" />
           <Battle path="battles/:BattleId" />
-          <Battles path="battles" />
+          <Battles path="battles" tab="" />
+          <Battles path="battles/search" tab="search" />
           <ChatLog path="chatlog" />
           <Confirm path="confirm/:confirmCode" />
           <Cup path="cup/:ShortName/*" />
