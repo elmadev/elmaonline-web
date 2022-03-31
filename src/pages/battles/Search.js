@@ -326,7 +326,7 @@ const Search = () => {
           </FormWrapper>
         </Paper>
       </Container>
-      <Container>
+      <TableContainer>
         <Paper>
           <SortPagination>
             <table>
@@ -372,7 +372,7 @@ const Search = () => {
             wideStartedCol={true}
           />
         </Paper>
-      </Container>
+      </TableContainer>
       <br />
     </Root>
   );
@@ -385,6 +385,10 @@ const Root = styled.div`
 const Container = styled.div`
   padding: 0 20px;
   margin: 8px 0;
+`;
+
+const TableContainer = styled(Container)`
+  min-width: 800px;
 `;
 
 const FormWrapper = styled.div`
@@ -431,11 +435,15 @@ const SortPagination = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding-top: 3px;
+  min-width: 473px;
   > * {
-    margin-right: 10px;
+    padding-right: 10px;
   }
   td {
     padding: 0;
+  }
+  @media screen and (max-width: 900px) {
+    justify-content: flex-start;
   }
 `;
 
