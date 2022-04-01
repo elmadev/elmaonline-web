@@ -23,6 +23,7 @@ import { ExpandMore } from '@material-ui/icons';
 import Header from 'components/Header';
 import { Paper } from 'components/Paper';
 import { getOrderedValues } from 'utils/misc';
+import { isEqual } from 'lodash';
 
 const urlOrder = [
   'kuski',
@@ -72,6 +73,8 @@ const parseDateStrings = (start, end) => {
     formatDateArr(endDateArr, false, true, 'yyyy-MM-dd HH:mm:ss'),
   ];
 };
+
+const BattleListTableMemo = React.memo(BattleListTable, isEqual);
 
 // query is raw user input from URL.
 // builds function args for api/BattleSearch
@@ -341,8 +344,8 @@ const Search = () => {
                     rowsPerPageOptions={[25, 50, 100, 200]}
                     rowsPerPage={pageSize}
                     page={page}
-                    onPageChange={(e, value) => setUrl(value, pageSize, sort)}
-                    onRowsPerPageChange={e => setUrl(0, e.target.value, sort)}
+                    onChangePage={(e, value) => setUrl(value, pageSize, sort)}
+                    onChangeRowsPerPage={e => setUrl(0, e.target.value, sort)}
                   />
                   <td>
                     <Switch
@@ -365,7 +368,7 @@ const Search = () => {
               <br />
             </div>
           )}
-          <BattleListTable
+          <BattleListTableMemo
             battles={Array.isArray(battles) ? battles : []}
             condensed={false}
             startedFormat="MMM D, Y HH:mm"
