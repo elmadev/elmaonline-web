@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
-import _ from 'lodash';
+import { sumBy, round } from 'lodash';
+import { min, max } from 'utils/calcs';
+import LocalTime from 'components/LocalTime';
+import styled from 'styled-components';
 
 const finishedTypes = {
   B: 'Finished (Apple Bug)',
@@ -18,19 +21,27 @@ const StatsTable = ({ data, loading }) => {
   if (loading) return <Loading />;
 
   const getTotalRunCount = () => {
-    return _.sumBy(data, 'RunCount');
+    return sumBy(data, 'RunCount');
   };
 
   const getRunCountPercentage = RunCount => {
-    return _.round((RunCount / getTotalRunCount()) * 100, 2);
+    return round((RunCount / getTotalRunCount()) * 100, 2);
   };
 
   const getTotalTimeSum = () => {
-    return _.sumBy(data, row => parseInt(row.TimeSum, 10));
+    return sumBy(data, row => parseInt(row.TimeSum, 10));
   };
 
   const getTimeSumPercentage = TimeSum => {
-    return _.round((TimeSum / getTotalTimeSum()) * 100, 2);
+    return round((TimeSum / getTotalTimeSum()) * 100, 2);
+  };
+
+  const lastPlayed = () => {
+    return max(data, 'LastPlayed');
+  };
+
+  const firstPlayed = () => {
+    return min(data, 'FirstPlayed');
   };
 
   return (
@@ -88,6 +99,22 @@ const StatsTable = ({ data, loading }) => {
           );
         })}
       </ListContainer>
+      <FirstLast>
+        First played:{' '}
+        <LocalTime
+          date={firstPlayed()}
+          format="ddd D MMM YYYY HH:mm:ss"
+          parse="YYYY-MM-DDTHH:mm:ss.SSSZ"
+        />
+      </FirstLast>
+      <FirstLast>
+        Last played:{' '}
+        <LocalTime
+          date={lastPlayed()}
+          format="ddd D MMM YYYY HH:mm:ss"
+          parse="YYYY-MM-DDTHH:mm:ss.SSSZ"
+        />
+      </FirstLast>
     </>
   );
 };
@@ -95,5 +122,11 @@ const StatsTable = ({ data, loading }) => {
 StatsTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
+
+const FirstLast = styled.div`
+  font-size: 14px;
+  padding: 10px;
+  padding-bottom: 0;
+`;
 
 export default StatsTable;
