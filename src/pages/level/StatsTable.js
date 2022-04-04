@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
-import { sumBy, round } from 'lodash';
-import { min, max } from 'utils/calcs';
+import { sumBy, round, maxBy, minBy } from 'lodash';
 import LocalTime from 'components/LocalTime';
 import styled from 'styled-components';
 
@@ -37,11 +36,17 @@ const StatsTable = ({ data, loading }) => {
   };
 
   const lastPlayed = () => {
-    return max(data, 'LastPlayed');
+    return maxBy(
+      data.filter(f => f.Finished !== 'S'),
+      'LastPlayed',
+    ).LastPlayed;
   };
 
   const firstPlayed = () => {
-    return min(data, 'FirstPlayed');
+    return minBy(
+      data.filter(f => f.Finished !== 'S'),
+      'FirstPlayed',
+    ).FirstPlayed;
   };
 
   return (

@@ -140,19 +140,3 @@ export const forceInt = (val, def = 0, min = null, max = null) => {
 
   return ret;
 };
-
-export const max = (arr, field) => {
-  const maxObject = arr.reduce(
-    (prev, current) => (prev[field] > current[field] ? prev : current),
-    0,
-  );
-  return maxObject[field];
-};
-
-export const min = (arr, field) => {
-  const maxObject = arr.reduce(
-    (prev, current) => (prev[field] < current[field] ? prev : current),
-    0,
-  );
-  return maxObject[field];
-};
