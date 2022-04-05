@@ -20,6 +20,7 @@ import Link from 'components/Link';
 import config from 'config';
 import { authToken } from 'utils/nick';
 import { xor } from 'lodash';
+import { renameFile } from 'utils/misc';
 
 const Upload = ({ onUpload, filetype }) => {
   const {
@@ -48,7 +49,10 @@ const Upload = ({ onUpload, filetype }) => {
 
   const onDrop = newFiles => {
     const newFileInfo = {};
-    newFiles.forEach((file, index) => {
+    const fixedFiles = newFiles.map(f => {
+      return renameFile(f, f.name.replace('.REC', '.rec'));
+    });
+    fixedFiles.forEach((file, index) => {
       newFileInfo[file.name] = {
         name: file.name,
         unlisted: false,
@@ -70,7 +74,7 @@ const Upload = ({ onUpload, filetype }) => {
       }
     });
     setFileInfo(newFileInfo);
-    setFiles(newFiles);
+    setFiles(fixedFiles);
     setDuplicate(false);
     setDuplicateReplayIndex(0);
     setUploaded([]);
