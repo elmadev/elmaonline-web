@@ -23,6 +23,7 @@ import { ExpandMore } from '@material-ui/icons';
 import Header from 'components/Header';
 import { Paper } from 'components/Paper';
 import { getOrderedValues } from 'utils/misc';
+import { isEqual } from 'lodash';
 
 const urlOrder = [
   'kuski',
@@ -72,6 +73,8 @@ const parseDateStrings = (start, end) => {
     formatDateArr(endDateArr, false, true, 'yyyy-MM-dd HH:mm:ss'),
   ];
 };
+
+const BattleListTableMemo = React.memo(BattleListTable, isEqual);
 
 // query is raw user input from URL.
 // builds function args for api/BattleSearch
@@ -326,7 +329,7 @@ const Search = () => {
           </FormWrapper>
         </Paper>
       </Container>
-      <Container>
+      <TableContainer>
         <Paper>
           <SortPagination>
             <table>
@@ -341,8 +344,8 @@ const Search = () => {
                     rowsPerPageOptions={[25, 50, 100, 200]}
                     rowsPerPage={pageSize}
                     page={page}
-                    onPageChange={(e, value) => setUrl(value, pageSize, sort)}
-                    onRowsPerPageChange={e => setUrl(0, e.target.value, sort)}
+                    onChangePage={(e, value) => setUrl(value, pageSize, sort)}
+                    onChangeRowsPerPage={e => setUrl(0, e.target.value, sort)}
                   />
                   <td>
                     <Switch
@@ -365,14 +368,14 @@ const Search = () => {
               <br />
             </div>
           )}
-          <BattleListTable
+          <BattleListTableMemo
             battles={Array.isArray(battles) ? battles : []}
             condensed={false}
             startedFormat="MMM D, Y HH:mm"
             wideStartedCol={true}
           />
         </Paper>
-      </Container>
+      </TableContainer>
       <br />
     </Root>
   );
@@ -385,6 +388,10 @@ const Root = styled.div`
 const Container = styled.div`
   padding: 0 20px;
   margin: 8px 0;
+`;
+
+const TableContainer = styled(Container)`
+  min-width: 800px;
 `;
 
 const FormWrapper = styled.div`
@@ -431,11 +438,15 @@ const SortPagination = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding-top: 3px;
+  min-width: 473px;
   > * {
-    margin-right: 10px;
+    padding-right: 10px;
   }
   td {
     padding: 0;
+  }
+  @media screen and (max-width: 900px) {
+    justify-content: flex-start;
   }
 `;
 
