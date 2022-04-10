@@ -305,13 +305,12 @@ export const LevelPackFavAdd = data =>
 export const LevelPackFavRemove = data =>
   api.post('levelpack/favourite/remove', data);
 export const LevelPackFavs = () => api.get('levelpack/favourite');
-
 export const IntBestTimes = kuskiIndex => {
   return api.get(`levelpack/internals/besttimes/${kuskiIndex}`);
 };
-
 export const LevelPacksByLevel = LevelIndex =>
   api.get(`levelpack/byLevel/${+LevelIndex}`);
+export const LatestLevelPacks = limit => api.get(`levelpack/latest/${limit}`);
 
 // collections
 export const AddCollection = data =>
