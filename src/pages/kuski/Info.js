@@ -75,11 +75,15 @@ const Info = ({ kuskiInfo }) => {
               title="Start special battle"
             />
           )}
+          {kuskiInfo.RStartCup === 1 && (
+            <img
+              src={RStartCup}
+              alt="RSuperBattle"
+              title="Start super battle"
+            />
+          )}
           {kuskiInfo.RStart24htt === 1 && (
             <img src={RStart24htt} alt="RStart24htt" title="Start 24 hour TT" />
-          )}
-          {kuskiInfo.RStartCup === 1 && (
-            <img src={RStartCup} alt="RStartCup" title="Start cup" />
           )}
           {kuskiInfo.RStop === 1 && (
             <img src={RStop} alt="RStop" title="Abort/Stop battle" />
@@ -121,6 +125,20 @@ const Info = ({ kuskiInfo }) => {
                 src={RSpecialBattle}
                 alt="RSpecialBattle"
                 title="RSpecialBattle"
+              />
+            )}
+            {kuskiInfo.RStartCup === 0 && (
+              <GiveImg
+                onClick={() =>
+                  giveRights({
+                    Right: 'RStartCup',
+                    KuskiIndex: kuskiInfo.KuskiIndex,
+                    name: kuskiInfo.Kuski,
+                  })
+                }
+                src={RStartCup}
+                alt="RSuperBattle"
+                title="RSuperBattle"
               />
             )}
             {kuskiInfo.RStart24htt === 0 && (

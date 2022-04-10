@@ -50,3 +50,10 @@ export const pluralize = (count = 0, noun = '', suffix = 's') =>
 export const getOrderedValues = obj => {
   return orderBy(toPairs(obj), [p => p[1]], ['desc']).map(p => p[1]);
 };
+
+export const renameFile = (originalFile, newName) => {
+  return new File([originalFile], newName, {
+    type: originalFile.type,
+    lastModified: originalFile.lastModified,
+  });
+};
