@@ -30,7 +30,7 @@ const CupWidget = () => {
           {cups.map(cup => {
             const events = cup.SiteCupData;
             return (
-              <CupRoot>
+              <CupRoot key={cup.CupGroupIndex}>
                 <Header onClick={() => navigate(`/cup/${cup.ShortName}`)} h2>
                   {cup.CupName}
                 </Header>

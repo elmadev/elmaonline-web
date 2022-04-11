@@ -29,7 +29,7 @@ const CupResults = props => {
   return (
     <Container>
       {currentEvents.map(c => (
-        <Paper>
+        <Paper key={c.LevelIndex}>
           <EventHeader>
             <Link to={`/cup/${ShortName}/events/${getEventNumber(c)}/map`}>
               Event {getEventNumber(c)}
