@@ -21,6 +21,7 @@ import Kuski from 'pages/kuski/store';
 import LevelsAdd from 'pages/levels-add/store';
 import LevelsAddCollection from 'pages/levels-add-collection/store';
 import LevelpackCollection from 'pages/levelpack-collection/store';
+import LevelPackList from 'features/LevelPackList/store';
 import Settings from 'pages/settings/store';
 import Replay from 'pages/cupreplay/store';
 import ReplayByUUID from 'pages/replay/store';
@@ -61,6 +62,7 @@ export default {
   LevelsAddCollection,
   LevelpackCollection,
   Levels,
+  LevelPackList,
   Settings,
   Upload,
   Mod,

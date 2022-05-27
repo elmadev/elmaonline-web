@@ -22,6 +22,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 const crippleOptions = battle => {
   let crippleString = '';
   if (battle.AllowStarter) crippleString += 'Allow Starter, ';
+  if (battle.AlwaysThrottle) crippleString += 'Always Throttle, ';
   if (battle.AcceptBugs) crippleString += 'Bugs Allowed, ';
   if (battle.NoVolt) crippleString += 'No Volt, ';
   if (battle.OneTurn) crippleString += 'One Turn, ';

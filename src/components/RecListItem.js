@@ -11,6 +11,7 @@ import queryString from 'query-string';
 import { AddBox, IndeterminateCheckBox } from '@material-ui/icons';
 import { useLocation } from '@reach/router';
 import { formatDistanceStrict } from 'date-fns';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const RecListItem = ({ replay, selected, columns, mergable = false }) => {
   const [isHover, setHover] = useState(false);
@@ -32,6 +33,8 @@ const RecListItem = ({ replay, selected, columns, mergable = false }) => {
       ? `${location.pathname}${location.search};${replay.UUID}`
       : `${location.pathname}?merge=${replay.UUID}`;
   };
+
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const getTags = () => {
     return replay.Tags.map(tag => tag.Name);
@@ -85,7 +88,7 @@ const RecListItem = ({ replay, selected, columns, mergable = false }) => {
           <Tags tags={getTags()} />
         </ListCell>
       )}
-      {mergable && isHover && (
+      {mergable && (isMobile || isHover) && (
         <MergeContainer title={selected ? 'Unmerge replay' : 'Merge replay'}>
           {selected ? (
             <>

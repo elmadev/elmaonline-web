@@ -14,10 +14,17 @@ const Container = styled.div`
   margin-right: 10px;
 `;
 
-export const Dropdown = ({ name, options, selected, update }) => {
+export const Dropdown = ({
+  name,
+  options,
+  selected,
+  update,
+  className,
+  multiple,
+}) => {
   const id = name.replace(/\s/g, '');
   return (
-    <Container>
+    <Container className={className}>
       <FormControl fullWidth>
         <InputLabel htmlFor={id}>{name}</InputLabel>
         <Select
@@ -27,14 +34,21 @@ export const Dropdown = ({ name, options, selected, update }) => {
             name: id,
             id,
           }}
+          multiple={!!multiple}
         >
           {options.map(y => {
+            let val = y;
+            let text = y;
+            if (Array.isArray(y)) {
+              val = y[0];
+              text = y[1];
+            }
             if (typeof y === 'string') {
-              return <MenuItem key={y} value={y}>{`${y}`}</MenuItem>;
+              return <MenuItem key={val} value={val}>{`${text}`}</MenuItem>;
             }
             return (
-              <MenuItem key={y.id} value={y.id}>
-                {y.name}
+              <MenuItem key={val.id} value={val.id}>
+                {text.name}
               </MenuItem>
             );
           })}
@@ -51,14 +65,16 @@ export const TextField = ({
   value,
   onChange,
   multiline = false,
+  className,
 }) => {
   const id = name.replace(/\s/g, '');
   let isError = false;
   if (error) {
     isError = true;
   }
+
   return (
-    <Container>
+    <Container className={className}>
       <MuiTextField
         id={id}
         label={name}

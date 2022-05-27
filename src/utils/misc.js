@@ -1,5 +1,6 @@
 import config from 'config';
 import { authToken } from 'utils/nick';
+import { toPairs, orderBy } from 'lodash';
 
 export const downloadWithAuth = async (path, filename, mime) => {
   const res = await fetch(`${config.dlUrl}${path}`, {
@@ -44,3 +45,15 @@ export const alphaNumeric = text => {
 
 export const pluralize = (count = 0, noun = '', suffix = 's') =>
   `${count} ${noun}${count !== 1 ? suffix : ''}`;
+
+// returns the values of obj, sorted by the objects keys.
+export const getOrderedValues = obj => {
+  return orderBy(toPairs(obj), [p => p[1]], ['desc']).map(p => p[1]);
+};
+
+export const renameFile = (originalFile, newName) => {
+  return new File([originalFile], newName, {
+    type: originalFile.type,
+    lastModified: originalFile.lastModified,
+  });
+};

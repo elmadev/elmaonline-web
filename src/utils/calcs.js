@@ -117,3 +117,26 @@ export const formatBytes = (bytes, decimals = 2) => {
 
   return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 };
+
+export const forceInt = (val, def = 0, min = null, max = null) => {
+  // not sure what parseInt on these vals returns.
+  if (val === '' || val === null || val === undefined || val === false) {
+    return def;
+  }
+
+  const ret = parseInt(val, 10);
+
+  if (Number.isNaN(ret)) {
+    return def;
+  }
+
+  if (min !== null && ret < min) {
+    return min;
+  }
+
+  if (max !== null && ret > max) {
+    return max;
+  }
+
+  return ret;
+};

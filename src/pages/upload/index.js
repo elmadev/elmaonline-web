@@ -29,9 +29,7 @@ const Upload = () => {
   );
 
   const dropped = (accepted, rejected) => {
-    setUrl('');
-    setError('');
-    setUpdate(false);
+    reset();
     if (rejected.length > 0) {
       if (accepted.length === 1) {
         setError('Only one file allowed at a time');
@@ -82,6 +80,15 @@ const Upload = () => {
         setMaxDownloads(asInt);
       }
     }
+  };
+
+  const reset = () => {
+    setUrl('');
+    setError('');
+    setUpdate(false);
+    setExpire('30 days');
+    setMaxDownloads('');
+    setMaxDownloadError('');
   };
 
   return (

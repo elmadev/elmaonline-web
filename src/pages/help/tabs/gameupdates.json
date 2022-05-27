@@ -1,5 +1,30 @@
 [
   {
+    "type": "client",
+    "date": "20 Feb 2022",
+    "version": "1.0.13",
+    "highlights": [
+      "This update fixes a severe bug that was causing lag and sometimes crashes in first finish and one-life battles. Updating is highly recommended, as it will make the server more responsive for everyone. The update also adds more intelligent chat line splitting, and improves startballe by adding incremental search (=intuitive dropdown typing behaviour) and a way to reconnect after losing connection."
+    ],
+    "changes": [
+      {
+        "section": "Bug fixes",
+        "changes": [
+          "Fixed a bug in the real-time result updating of first finish and one-life battles. It was causing lagging for many people, and occasional crashes for some. Due to the accumulating effect of lag, their finishes often registered only after a significant delay."
+        ]
+      },
+      {
+        "section": "Improvements",
+        "changes": [
+          "Avoid splitting long chat lines in the middle of a word. A word is split only if a word boundary can't be found within the preceding 20 characters.",
+          "Startballe: Added incremental search to all dropdown lists. So for example when the Duration dropdown is selected, typing 15 will jump to '15 mins' as expected, instead of ending up at '50 mins'.",
+          "Startballe: Show a reconnect button after losing connection."
+        ]
+      }
+    ],
+    "file": "https://up.elma.online/u/fe18go75j4/EOL_update_2022-02-20.zip"
+  },
+  {
     "type": "both",
     "date": "23 Oct 2021",
     "version": "1.0.12",
@@ -47,7 +72,7 @@
     "highlights": [
       "This is a massive update that provides dozens of new features and fixes dozens of bugs. Everyone needs to update their EOL client as instructed in the 'How to update' section, you won't be able to play online with an old version anymore.",
       "Highlights of this release include new 64-bit versions of startballe and eolconf, real-time result updating for first finish and one-life battles, best times lists always showing your own position, legacy times imported from Moposite/Kopasite/skintatious, automatic shirt downloading, more customizable replay controls (up to 1024x fast motion), ingame FPS changing, taken apples staying hidden in apple battles, team chat, chat timestamps, longer chat lines, enabling cripple modes outside battle, the last run being automatically saved in a temporary rec file, being able to watch replays of all your PRs and other finished runs on the website (all your PRs/finishes driven after this release), large font layout option for the ingame texts, customizable table alignment, ingame help showing the default key bindings and chat commands, better support for high resolutions, and much more!",
-      "Linux users may need to update their Wine to the newest dev or stable version or use winetricks to install vc2019, if there's a complaint about a missing dll when launching the new startballe or eolconf."
+      "Linux users may need to update their Wine to the newest dev or stable version or use winetricks to install vcrun2019, if there's a complaint about a missing dll when launching the new startballe or eolconf."
     ],
     "changes": [
       {

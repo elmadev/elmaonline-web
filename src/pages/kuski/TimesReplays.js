@@ -35,6 +35,7 @@ import { nick } from 'utils/nick';
 import Button from 'components/Buttons';
 import { xor } from 'lodash';
 import Preview from './Preview';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const TimesReplays = ({ KuskiIndex, collapse }) => {
   const [PRs, setPRs] = useState(false);
@@ -71,6 +72,8 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
       fetch();
     }
   }, [PRs]);
+
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const fetch = newSearch => {
     if (PRs) {
@@ -217,12 +220,13 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
           >
             {({ index, style }) => {
               const time = data[index];
+
               return (
-                <div style={style} key={time.AllFinishedIndex}>
+                <div style={style} key={time.TimeIndex}>
                   <ListRow
                     onHover={hovering => {
                       if (hovering) {
-                        setHover(time.AllFinishedIndex);
+                        setHover(time.TimeIndex);
                       } else {
                         setHover(0);
                       }
@@ -246,39 +250,40 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                     </ListCell>
                     <ListCell width={50} />
                     <ListCell>
-                      {hover === time.AllFinishedIndex && time.TimeFileData && (
-                        <>
-                          <a
-                            href={`${config.s3Url}time/${time.TimeFileData.UUID}-${time.TimeFileData.MD5}/${time.TimeIndex}.rec`}
-                          >
-                            Download
-                          </a>
-                          <MuiButton
-                            title="View"
-                            onClick={() => {
-                              openReplay(time);
-                              setReplayIndex(index);
-                            }}
-                          >
-                            <PlayArrow />
-                          </MuiButton>
-                          {time.TimeFileData.Shared === 0 && (
+                      {(isMobile || hover === time.TimeIndex) &&
+                        time.TimeFileData && (
+                          <>
+                            <a
+                              href={`${config.s3Url}time/${time.TimeFileData.UUID}-${time.TimeFileData.MD5}/${time.TimeIndex}.rec`}
+                            >
+                              Download
+                            </a>
                             <MuiButton
-                              title="Share"
+                              title="View"
                               onClick={() => {
-                                selectToShare(time);
+                                openReplay(time);
+                                setReplayIndex(index);
                               }}
                             >
-                              <Share />
+                              <PlayArrow />
                             </MuiButton>
-                          )}
-                          {time.TimeFileData.Shared === 1 && (
-                            <Link to={replayUrl(time)}>
-                              <div>Go to replay page</div>
-                            </Link>
-                          )}
-                        </>
-                      )}
+                            {time.TimeFileData.Shared === 0 && (
+                              <MuiButton
+                                title="Share"
+                                onClick={() => {
+                                  selectToShare(time);
+                                }}
+                              >
+                                <Share />
+                              </MuiButton>
+                            )}
+                            {time.TimeFileData.Shared === 1 && (
+                              <Link to={replayUrl(time)}>
+                                <div>Go to replay page</div>
+                              </Link>
+                            )}
+                          </>
+                        )}
                     </ListCell>
                     <ListCell />
                   </ListRow>

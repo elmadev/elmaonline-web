@@ -24,12 +24,16 @@ export default {
   cup: {},
   lastCupShortName: '',
   events: [],
+  onGoingCups: ['default', []],
   setCupGroup: action((state, payload) => {
     state.cup = payload.cup;
     state.lastCupShortName = payload.last;
   }),
   setCupEvents: action((state, payload) => {
     state.events = payload;
+  }),
+  setOnGoingCups: action((state, payload) => {
+    state.onGoingCups = payload;
   }),
   getCup: thunk(async (actions, payload) => {
     const getCup = await Cup(payload);
@@ -41,19 +45,11 @@ export default {
       }
     }
   }),
-  getOngoing: thunk(async (actions, payload) => {
+  getOnGoingCups: thunk(async (actions, payload) => {
+    actions.setOnGoingCups(['loading', []]);
     const getCup = await CupsOngoing();
-    if (getCup.ok && getCup.data) {
-      if (getCup.data.length > 0) {
-        actions.setCupGroup({
-          cup: getCup.data[0],
-          last: getCup.data[0].CupName,
-        });
-        const getCupEvents = await CupEvents(getCup.data[0].CupGroupIndex);
-        if (getCupEvents.ok) {
-          actions.setCupEvents(getCupEvents.data);
-        }
-      }
+    if (getCup.ok) {
+      actions.setOnGoingCups(['finished', getCup.data]);
     }
   }),
   update: thunk(async (actions, payload) => {

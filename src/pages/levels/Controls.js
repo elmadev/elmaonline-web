@@ -15,17 +15,20 @@ const Controls = ({ detailed, sort }) => {
   const navigate = useNavigate();
 
   return (
-    <Grid2 container justify="flex-end" alignItems="center">
+    <Grid2 container justify="flex-end" alignItems="center" detailed={detailed}>
       {!detailed && (
-        <div style={{ paddingBottom: 4 }}>
-          <div style={{ fontSize: 13, marginBottom: 3, textAlign: 'center' }}>
+        <div
+          style={{ marginBottom: -19 }}
+          title="Average number of players per level"
+        >
+          <div style={{ fontSize: 14, marginBottom: 5, textAlign: 'center' }}>
             Avg. Kuski Count
           </div>
           <Popularity style={{ width: 150 }} widthPct={100} />
         </div>
       )}
-      {detailed && (
-        <FormControl style={{ minWidth: 200, marginRight: 25 }}>
+      {
+        <FormControl style={{ minWidth: 170, marginRight: 22 }}>
           <InputLabel id="levelpack-sort">Sort By</InputLabel>
           <Select
             id="levelpack-sort"
@@ -35,7 +38,9 @@ const Controls = ({ detailed, sort }) => {
                 [
                   '/levels',
                   detailed && 'detailed',
-                  e.target.value && `?sort=${e.target.value}`,
+                  e.target.value &&
+                    e.target.value !== 'default' &&
+                    `?sort=${e.target.value}`,
                 ]
                   .filter(Boolean)
                   .join('/'),
@@ -62,7 +67,7 @@ const Controls = ({ detailed, sort }) => {
             <MenuItem value="avgTime">Avg. Record Time</MenuItem>
           </Select>
         </FormControl>
-      )}
+      }
       <SwitchWrapper detailed={detailed}>
         <Switch
           checked={!!detailed}
@@ -71,7 +76,7 @@ const Controls = ({ detailed, sort }) => {
               [
                 '/levels',
                 checked && 'detailed',
-                checked && sort && `?sort=${sort}`,
+                sort && sort !== 'default' && `?sort=${sort}`,
               ]
                 .filter(Boolean)
                 .join('/'),
@@ -86,9 +91,9 @@ const Controls = ({ detailed, sort }) => {
 };
 
 const Grid2 = styled(Grid)`
-  padding-bottom: 10px;
+  padding-bottom: ${p => (p.detailed ? '10px' : '25px')};
   > * {
-    margin-right: 25px;
+    margin-right: 22px;
     &:last-child {
       margin-right: 10px;
     }
@@ -98,7 +103,7 @@ const Grid2 = styled(Grid)`
 const SwitchWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-bottom: ${p => (p.detailed ? '-22px' : '0')};
+  margin-bottom: -31px;
 `;
 
 export default Controls;

@@ -34,7 +34,11 @@ const SearchBar = props => {
                 if (e.target.value === '') {
                   setType('');
                 } else {
-                  navigate(`/search?q=${e.target.value}&t=${searchType}`);
+                  navigate(
+                    `/search?q=${encodeURIComponent(
+                      e.target.value,
+                    )}&t=${searchType}`,
+                  );
                 }
               }
               if (e.key === 'Escape') {
