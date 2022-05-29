@@ -4,7 +4,6 @@ import { forEach } from 'lodash';
 import { model } from 'utils/easy-peasy';
 import {
   BattleLeague,
-  BattleResults,
   AddBattleLeagueBattle,
   BattlesSearchByFilename,
   UpdateBattleLeagueBattle,
@@ -19,9 +18,6 @@ export default {
       UpdateBattleLeagueBattle,
       DeleteBattleLeagueBattle,
     ),
-  },
-  battle: {
-    ...model(BattleResults),
   },
   battleList: [],
   setBattleList: action((state, payload) => {

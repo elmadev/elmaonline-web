@@ -58,6 +58,17 @@ const EventItem = ({
   );
 };
 
+export const SeasonItem = ({ name, selected, onClick }) => {
+  return (
+    <EventContainer
+      highlight={selected === name}
+      onClick={() => onClick && onClick(name)}
+    >
+      <SeasonName>{name}</SeasonName>
+    </EventContainer>
+  );
+};
+
 const By = styled.div`
   font-weight: bold;
 `;
@@ -81,6 +92,14 @@ const EventNo = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+`;
+
+const SeasonName = styled.div`
+  font-size: 56px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-left: 24px;
 `;
 
 const RightSide = styled.div`

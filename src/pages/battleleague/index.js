@@ -7,7 +7,7 @@ import Time from 'components/Time';
 import LocalTime from 'components/LocalTime';
 import { ListContainer, ListHeader, ListRow, ListCell } from 'components/List';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import EventItem from 'components/EventItem';
+import EventItem, { SeasonItem } from 'components/EventItem';
 import Kuski from 'components/Kuski';
 import Loading from 'components/Loading';
 import { Paper } from 'components/Paper';
@@ -21,14 +21,13 @@ import Admin from './Admin';
 const BattleLeague = ({ ShortName }) => {
   const [selected, setSelected] = useState(-1);
   const [selectedId, setSelectedId] = useState(-1);
-  const [tab, setTab] = useState('standings');
+  const [selectedSeason, setSelectedSeason] = useState('Overall');
+  const [tab, setTab] = useState('events');
   const {
     league: { data, loading },
-    battle: { data: battleData, loading: battleLoading },
   } = useStoreState(state => state.BattleLeague);
   const {
     league: { fetch },
-    battle: { fetch: fetchBattle },
   } = useStoreActions(actions => actions.BattleLeague);
 
   let pointsEnum = points;
@@ -37,8 +36,14 @@ const BattleLeague = ({ ShortName }) => {
   }
 
   let standings = [];
+  const seasons = [];
+  const seasonStandings = {};
   if (data) {
     data.Battles.forEach(battle => {
+      if (battle.Season && seasons.indexOf(battle.Season) === -1) {
+        seasons.push(battle.Season);
+        seasonStandings[battle.Season] = [];
+      }
       if (!battle.BattleData) {
         return;
       }
@@ -57,15 +62,33 @@ const BattleLeague = ({ ShortName }) => {
           standings[id].Points =
             standings[id].Points + (pointsEnum[i] ? pointsEnum[i] : 0);
         }
+        if (battle.Season) {
+          const seasonId = seasonStandings[battle.Season].findIndex(
+            s => s.KuskiIndex === r.KuskiIndex,
+          );
+          if (seasonId === -1) {
+            seasonStandings[battle.Season].push({
+              KuskiIndex: r.KuskiIndex,
+              Points: pointsEnum[i] ? pointsEnum[i] : 0,
+              KuskiData: r.KuskiData,
+            });
+          } else {
+            seasonStandings[battle.Season][seasonId].Points =
+              seasonStandings[battle.Season][seasonId].Points +
+              (pointsEnum[i] ? pointsEnum[i] : 0);
+          }
+        }
       });
     });
   }
 
-  useEffect(() => {
-    if (selected > 0) {
-      fetchBattle(selected);
-    }
-  }, [selected]);
+  let battleData = [];
+  if (selected > 0) {
+    battleData = data.Battles.find(b => b.BattleIndex === selected).BattleData;
+  }
+  if (selectedSeason !== 'overall' && seasonStandings[selectedSeason]) {
+    standings = seasonStandings[selectedSeason];
+  }
 
   useEffect(() => {
     fetch(ShortName);
@@ -107,7 +130,7 @@ const BattleLeague = ({ ShortName }) => {
           </Grid>
         </Grid>
       </LeagueName>
-      {(tab === 'events' || tab === 'standings') && (
+      {tab === 'events' && (
         <Grid container spacing={0}>
           <Grid item xs={12} sm={6}>
             {data.Battles.map((b, i) => (
@@ -119,11 +142,9 @@ const BattleLeague = ({ ShortName }) => {
                   if (i === selectedId) {
                     setSelected(-1);
                     setSelectedId(-1);
-                    setTab('standings');
                   } else {
                     setSelected(b.BattleIndex);
                     setSelectedId(i);
-                    setTab('events');
                   }
                 }}
                 level={
@@ -145,90 +166,125 @@ const BattleLeague = ({ ShortName }) => {
                 }
                 eventTime={
                   <LocalTime
-                    date={b.battleData ? b.BattleData.Started : b.Started}
+                    date={
+                      b.BattleData
+                        ? parseInt(b.BattleData.Started)
+                        : parseInt(b.Started)
+                    }
                     format="ddd D MMM HH:mm"
                     parse="X"
                   />
                 }
-                start={b.BattleData ? b.BattleData.Started : b.Started}
+                start={
+                  b.BattleData ? parseInt(b.BattleData.Started) : b.Started
+                }
                 end={
                   b.BattleData
-                    ? b.BattleData.Started + b.BattleData.Duration * 60
+                    ? parseInt(b.BattleData.Started) +
+                      b.BattleData.Duration * 60
                     : 0
+                }
+                winner={
+                  b.BattleData.Results?.length > 0 ? (
+                    <>
+                      <Time
+                        time={b.BattleData.Results[0].Time}
+                        apples={b.BattleData.Results[0].Apples}
+                      />{' '}
+                      <Kuski kuskiData={b.BattleData.Results[0].KuskiData} />
+                    </>
+                  ) : (
+                    ''
+                  )
                 }
               />
             ))}
           </Grid>
-          {selected !== -1 ? (
+          {selected !== -1 && (
             <Grid item xs={12} sm={6}>
-              {battleLoading ? (
-                <Loading />
-              ) : (
-                <Paper width="auto">
-                  <ListContainer>
-                    <ListHeader>
-                      <ListCell right width={30}>
-                        #
-                      </ListCell>
-                      <ListCell width={200}>Kuski</ListCell>
-                      <ListCell width={150}>Result</ListCell>
-                      <ListCell>Points</ListCell>
-                    </ListHeader>
-                    {battleData?.Results?.length > 0 &&
-                      [...battleData.Results]
-                        .sort(sortResults(battleData.BattleType))
-                        .map((r, i) => (
-                          <ListRow key={r.BattleTimeIndex}>
-                            <ListCell right width={30}>
-                              {i + 1}.
-                            </ListCell>
-                            <ListCell width={200}>
-                              <Kuski kuskiData={r.KuskiData} flag team />
-                            </ListCell>
-                            <ListCell width={150}>
-                              <Time time={r.Time} apples={r.Apples} />
-                            </ListCell>
-                            {pointsEnum[i] ? (
-                              <ListCell>{pointsEnum[i]} pts.</ListCell>
-                            ) : (
-                              <ListCell />
-                            )}
-                          </ListRow>
-                        ))}
-                  </ListContainer>
-                </Paper>
-              )}
-            </Grid>
-          ) : (
-            <Grid item xs={12} sm={6}>
-              {standings?.length > 0 && (
-                <Paper width="auto">
-                  <ListContainer>
-                    <ListHeader>
-                      <ListCell right width={30}>
-                        #
-                      </ListCell>
-                      <ListCell width={200}>Kuski</ListCell>
-                      <ListCell>Points</ListCell>
-                    </ListHeader>
-                    {standings
-                      .sort((a, b) => b.Points - a.Points)
+              <Paper width="auto">
+                <ListContainer>
+                  <ListHeader>
+                    <ListCell right width={30}>
+                      #
+                    </ListCell>
+                    <ListCell width={200}>Kuski</ListCell>
+                    <ListCell width={150}>Result</ListCell>
+                    <ListCell>Points</ListCell>
+                  </ListHeader>
+                  {battleData?.Results?.length > 0 &&
+                    [...battleData.Results]
+                      .sort(sortResults(battleData.BattleType))
                       .map((r, i) => (
-                        <ListRow key={r.KuskiIndex}>
+                        <ListRow key={r.BattleTimeIndex}>
                           <ListCell right width={30}>
                             {i + 1}.
                           </ListCell>
                           <ListCell width={200}>
                             <Kuski kuskiData={r.KuskiData} flag team />
                           </ListCell>
-                          <ListCell>{r.Points} pts.</ListCell>
+                          <ListCell width={150}>
+                            <Time time={r.Time} apples={r.Apples} />
+                          </ListCell>
+                          {pointsEnum[i] ? (
+                            <ListCell>{pointsEnum[i]} pts.</ListCell>
+                          ) : (
+                            <ListCell />
+                          )}
                         </ListRow>
                       ))}
-                  </ListContainer>
-                </Paper>
-              )}
+                </ListContainer>
+              </Paper>
             </Grid>
           )}
+        </Grid>
+      )}
+      {tab === 'standings' && (
+        <Grid container spacing={0}>
+          {seasons.length > 0 && (
+            <Grid item xs={12} sm={6}>
+              <SeasonItem
+                name="Overall"
+                selected={selectedSeason}
+                onClick={n => setSelectedSeason(n)}
+              />
+              {seasons.map(s => (
+                <SeasonItem
+                  name={s}
+                  selected={selectedSeason}
+                  onClick={n => setSelectedSeason(n)}
+                />
+              ))}
+            </Grid>
+          )}
+          <Grid item xs={12} sm={6}>
+            {standings?.length > 0 && (
+              <Paper width="auto">
+                <ListContainer>
+                  <ListHeader>
+                    <ListCell right width={30}>
+                      #
+                    </ListCell>
+                    <ListCell width={200}>Kuski</ListCell>
+                    <ListCell>Points</ListCell>
+                  </ListHeader>
+                  {standings
+                    .sort((a, b) => b.Points - a.Points)
+                    .map((r, i) => (
+                      <ListRow key={r.KuskiIndex}>
+                        <ListCell right width={30}>
+                          {i + 1}.
+                        </ListCell>
+                        <ListCell width={200}>
+                          <Kuski kuskiData={r.KuskiData} flag team />
+                        </ListCell>
+                        <ListCell>{r.Points} pts.</ListCell>
+                      </ListRow>
+                    ))}
+                </ListContainer>
+              </Paper>
+            )}
+          </Grid>
         </Grid>
       )}
       {tab === 'admin' && <Admin BattleLeagueIndex={data.BattleLeagueIndex} />}
