@@ -99,7 +99,7 @@ const BattleLeagues = () => {
                           name: 'Cup points (100, 85, 75, 70, 65, ...)',
                         },
                       ]}
-                      value={ps}
+                      selected={ps}
                       update={v => setPs(v)}
                     />
                     <Button margin="12px 0" onClick={() => formal.submit()}>

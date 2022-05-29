@@ -39,7 +39,9 @@ export const model = (
   }),
   startLoading: action((state, payload) => {
     state.loading = true;
-    state.fetchPayload = payload;
+    if (payload) {
+      state.fetchPayload = payload;
+    }
   }),
   setError: action((state, problem) => {
     state.error = problem;
@@ -47,6 +49,7 @@ export const model = (
   }),
   setResponse: action((state, response) => {
     state.response = response;
+    state.loading = false;
   }),
   fetch: thunk(async (actions, payload) => {
     actions.startLoading(payload);
@@ -67,7 +70,32 @@ export const model = (
   }),
   create: thunk(async (actions, payload) => {
     if (create) {
+      actions.startLoading();
       const post = await create(payload);
+      if (post.ok) {
+        actions.setResponse(post.data);
+        if (!settings.doNotRefetch) {
+          actions.refetch();
+        }
+      }
+    }
+  }),
+  update: thunk(async (actions, payload) => {
+    if (update) {
+      actions.startLoading();
+      const post = await update(payload);
+      if (post.ok) {
+        actions.setResponse(post.data);
+        if (!settings.doNotRefetch) {
+          actions.refetch();
+        }
+      }
+    }
+  }),
+  remove: thunk(async (actions, payload) => {
+    if (remove) {
+      actions.startLoading();
+      const post = await remove(payload);
       if (post.ok) {
         actions.setResponse(post.data);
         if (!settings.doNotRefetch) {

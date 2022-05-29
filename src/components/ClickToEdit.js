@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import OutsideClickHandler from 'react-outside-click-handler';
 
 const ClickToEdit = props => {
-  const { children, value, update } = props;
+  const { children, value, update, allowEmpty } = props;
   const [editMode, setEditMode] = useState(false);
   const [inputValue, setInputValue] = useState(value);
 
   const sendValue = () => {
     setEditMode(false);
-    if (inputValue !== value && inputValue !== '') {
+    if (inputValue !== value && (inputValue !== '' || allowEmpty)) {
       update(inputValue);
     }
   };

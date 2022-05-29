@@ -27,30 +27,32 @@ const EventItem = ({
         <div>
           <Today /> {eventTime}
         </div>
-        <div>
-          {end > format(new Date(), 't') && start < format(new Date(), 't') && (
-            <>
-              <Timer /> Deadline{' '}
-              {formatDistance(new Date(end * 1000), new Date(), {
-                addSuffix: true,
-              })}
-            </>
-          )}
-          {end > format(new Date(), 't') && start > format(new Date(), 't') && (
-            <>
-              <Timer /> Starts{' '}
-              {formatDistance(new Date(start * 1000), new Date(), {
-                addSuffix: true,
-              })}
-            </>
-          )}
-          {end < format(new Date(), 't') && (
-            <>
-              <CheckBox />
-              {winner}
-            </>
-          )}
-        </div>
+        {end !== 0 && (
+          <div>
+            {end > format(new Date(), 't') && start < format(new Date(), 't') && (
+              <>
+                <Timer /> Deadline{' '}
+                {formatDistance(new Date(end * 1000), new Date(), {
+                  addSuffix: true,
+                })}
+              </>
+            )}
+            {end > format(new Date(), 't') && start > format(new Date(), 't') && (
+              <>
+                <Timer /> Starts{' '}
+                {formatDistance(new Date(start * 1000), new Date(), {
+                  addSuffix: true,
+                })}
+              </>
+            )}
+            {end < format(new Date(), 't') && (
+              <>
+                <CheckBox />
+                {winner}
+              </>
+            )}
+          </div>
+        )}
       </RightSide>
     </EventContainer>
   );
