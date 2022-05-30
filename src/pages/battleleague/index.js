@@ -185,7 +185,7 @@ const BattleLeague = ({ ShortName }) => {
                     : 0
                 }
                 winner={
-                  b.BattleData.Results?.length > 0 ? (
+                  b.BattleData?.Results?.length > 0 ? (
                     <>
                       <Time
                         time={b.BattleData.Results[0].Time}
