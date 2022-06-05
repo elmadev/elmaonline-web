@@ -41,7 +41,12 @@ import LevelInfoLevelStats from './LevelInfoLevelStats';
 import { nickId } from 'utils/nick';
 import { pluralize } from 'utils/misc';
 import LeaderHistory from 'components/LeaderHistory';
-import { isEmpty } from 'lodash';
+import {
+  CrippledTimes,
+  CrippledPersonal,
+  CrippledTimeStats,
+  useQueryAlt,
+} from 'api';
 
 const Level = ({ LevelId }) => {
   const theme = useContext(ThemeContext);
@@ -85,34 +90,48 @@ const Level = ({ LevelId }) => {
     getLevel(LevelIndex);
   }, []);
 
-  const crippleData = useStoreState(store => store.Level.Crippled);
+  const kuskiIndex = nickId();
+
+  // crippled best times, all times, leader history
   const {
-    fetchTimes: fetchCrippledTimes,
-    fetchPersonal: fetchCrippledPersonal,
-    fetchTimeStats: fetchCrippledTimeStats,
-  } = useStoreActions(store => store.Level.Crippled);
+    data: crippledTimesData,
+    isLoading: crippledTimesDataLoading,
+  } = useQueryAlt(
+    ['CrippledTimes', LevelId, cripple],
+    async () => CrippledTimes(LevelId, cripple, 1000, 1, 10000),
+    { enabled: cripple !== '' && tab !== 2 },
+  );
 
   const {
     allTimes: crippledAllTimes,
     bestTimes: crippledBestTimes,
     leaderHistory: crippledLeaderHistory,
+  } = crippledTimesData || {};
+
+  // crippled personal times and record history
+  const {
+    data: crippledPersonalData,
+    isLoading: crippledPersonalDataLoading,
+  } = useQueryAlt(
+    ['CrippledPersonal', LevelId, kuskiIndex, cripple],
+    async () => CrippledPersonal(LevelId, kuskiIndex, cripple, 1000),
+    { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2 },
+  );
+
+  const {
     kuskiTimes: crippledKuskiTimes,
     kuskiLeaderHistory: crippledKuskiLeaderHistory,
-    timeStats: crippledTimeStats,
-  } = cripple && !isEmpty(crippleData[cripple]) ? crippleData[cripple] : {};
+  } = crippledPersonalData || {};
 
-  useEffect(() => {
-    if (cripple) {
-      if (tab !== 2) {
-        fetchCrippledTimes([LevelIndex, cripple]);
-      }
-
-      if (tab === 2) {
-        fetchCrippledPersonal([LevelIndex, cripple]);
-        fetchCrippledTimeStats([LevelIndex, cripple]);
-      }
-    }
-  }, [LevelIndex, cripple, tab]);
+  // crippled personal stats table data
+  const {
+    data: crippledKuskiTimeStats,
+    isLoading: crippledKuskiTimeStatsLoading,
+  } = useQueryAlt(
+    ['CrippledTimeStats', LevelId, kuskiIndex, cripple],
+    async () => CrippledTimeStats(LevelId, kuskiIndex, cripple),
+    { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2 },
+  );
 
   const onTabClick = (e, value) => {
     setTab(value);
@@ -421,30 +440,30 @@ const Level = ({ LevelId }) => {
                   {tab === 0 && (
                     <TimeTable
                       data={crippledBestTimes}
-                      loading={crippledBestTimes === false}
+                      loading={crippledTimesDataLoading}
                     />
                   )}
 
                   {tab === 1 && (
                     <TimeTable
                       data={crippledAllTimes}
-                      loading={crippledAllTimes === false}
+                      loading={crippledTimesDataLoading}
                     />
                   )}
 
                   {tab === 2 && loggedIn && (
                     <>
                       <StatsTable
-                        data={crippledTimeStats}
-                        loading={crippledTimeStats === false}
+                        data={crippledKuskiTimeStats}
+                        loading={crippledKuskiTimeStatsLoading}
                       />
                       <LeaderHistory
                         allFinished={crippledKuskiLeaderHistory}
-                        loading={crippledKuskiLeaderHistory === false}
+                        loading={crippledPersonalDataLoading}
                       />
                       <TimeTable
                         data={crippledKuskiTimes}
-                        loading={crippledKuskiTimes === false}
+                        loading={crippledPersonalDataLoading}
                         height={376}
                       />
                     </>
@@ -453,7 +472,7 @@ const Level = ({ LevelId }) => {
                   {tab === 3 && (
                     <LeaderHistory
                       allFinished={crippledLeaderHistory}
-                      loading={crippledLeaderHistory === false}
+                      loading={crippledTimesDataLoading}
                     />
                   )}
                 </>
