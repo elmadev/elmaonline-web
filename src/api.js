@@ -466,3 +466,14 @@ export const MarkNotificationsSeen = () =>
 
 // status
 export const SystemStatus = () => api.get('news/status');
+
+// battle league
+export const BattleLeagues = () => api.get('battleleague');
+export const AddBattleLeague = data => api.post('battleleague/add', data);
+export const BattleLeague = shortName => api.get(`battleleague/${shortName}`);
+export const AddBattleLeagueBattle = data =>
+  api.post('battleleague/add/battle', data);
+export const UpdateBattleLeagueBattle = data =>
+  api.post('battleleague/update/battle', data);
+export const DeleteBattleLeagueBattle = id =>
+  api.delete(`battleleague/delete/battle/${id}`);

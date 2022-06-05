@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from '@reach/router';
-import { formatDistance, format } from 'date-fns';
+import { format } from 'date-fns';
 import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
 import CupResults from 'components/CupResults';
 import Kuski from 'components/Kuski';
-import { Today, CheckBox, Timer } from '@material-ui/icons';
 import { Tabs, Tab, Grid } from '@material-ui/core';
 import Recplayer from 'components/Recplayer';
 import Download from 'components/Download';
+import EventItem from 'components/EventItem';
 import config from 'config';
 import { Paper } from 'components/Paper';
 import Interviews from './Interviews';
@@ -48,9 +48,10 @@ const Cups = props => {
     <Grid container spacing={0}>
       <Grid item xs={12} sm={6}>
         {events.sort(eventSort).map((e, i) => (
-          <EventContainer
+          <EventItem
             key={e.CupIndex}
-            highlight={i === eventIndex}
+            i={i}
+            selected={eventIndex}
             onClick={() =>
               // persist selected eventTab when changing events.
               navigate(
@@ -59,17 +60,14 @@ const Cups = props => {
                   .join('/'),
               )
             }
-          >
-            <EventNo>{i + 1}.</EventNo>
-            <RightSide>
-              <By>
-                <Download href={`level/${e.LevelIndex}`}>
-                  {e.Level ? e.Level.LevelName : ''}
-                </Download>{' '}
-                by <Kuski kuskiData={e.KuskiData} />
-              </By>
-              <div>
-                <Today />{' '}
+            level={
+              <Download href={`level/${e.LevelIndex}`}>
+                {e.Level ? e.Level.LevelName : ''}
+              </Download>
+            }
+            by={<Kuski kuskiData={e.KuskiData} />}
+            eventTime={
+              <>
                 <LocalTime
                   date={e.StartTime}
                   format="ddd D MMM HH:mm"
@@ -81,39 +79,12 @@ const Cups = props => {
                   format="ddd D MMM YYYY HH:mm"
                   parse="X"
                 />
-              </div>
-              <div>
-                {e.EndTime > format(new Date(), 't') &&
-                  e.StartTime < format(new Date(), 't') && (
-                    <>
-                      <Timer /> Deadline{' '}
-                      {formatDistance(new Date(e.EndTime * 1000), new Date(), {
-                        addSuffix: true,
-                      })}
-                    </>
-                  )}
-                {e.EndTime > format(new Date(), 't') &&
-                  e.StartTime > format(new Date(), 't') && (
-                    <>
-                      <Timer /> Starts{' '}
-                      {formatDistance(
-                        new Date(e.StartTime * 1000),
-                        new Date(),
-                        {
-                          addSuffix: true,
-                        },
-                      )}
-                    </>
-                  )}
-                {e.EndTime < format(new Date(), 't') && (
-                  <>
-                    <CheckBox />
-                    {GetWinner(e.CupTimes)}
-                  </>
-                )}
-              </div>
-            </RightSide>
-          </EventContainer>
+              </>
+            }
+            start={e.StartTime}
+            end={e.EndTime}
+            winner={GetWinner(e.CupTimes)}
+          />
         ))}
       </Grid>
       {(() => {
@@ -174,37 +145,6 @@ const PlayerContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 400px;
-`;
-
-const By = styled.div`
-  font-weight: bold;
-`;
-
-const EventContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  height: 100px;
-  cursor: pointer;
-  background-color: ${props =>
-    props.highlight ? props.theme.primary : 'transparent'};
-  color: ${p => (p.highlight ? p.theme.buttonFontColor : p.theme.fontColor)};
-  a {
-    color: ${props => (props.highlight ? 'white' : props.theme.linkColor)};
-  }
-`;
-
-const EventNo = styled.div`
-  width: 100px;
-  font-size: 56px;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-`;
-
-const RightSide = styled.div`
-  flex-grow: 1;
-  flex-direction: column;
-  padding: 8px;
 `;
 
 export default Cups;

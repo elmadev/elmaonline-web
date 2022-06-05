@@ -1,12 +1,11 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Grid } from '@material-ui/core';
-import styled from 'styled-components';
-import Link from 'components/Link';
 import AddCup from 'components/AddCup';
 import Header from 'components/Header';
 import Layout from 'components/Layout';
 import Loading from 'components/Loading';
+import LinkWithDesc from 'components/LinkWithDesc';
 import { Paper } from 'components/Paper';
 
 const Cups = () => {
@@ -29,14 +28,12 @@ const Cups = () => {
               {cupList
                 .filter(c => c.Finished === 0)
                 .map(c => (
-                  <Fragment key={c.ShortName}>
-                    <Link to={`/cup/${c.ShortName}`}>
-                      <CupName>{c.CupName}</CupName>
-                    </Link>
-                    <Description
-                      dangerouslySetInnerHTML={{ __html: c.Description }}
-                    />
-                  </Fragment>
+                  <LinkWithDesc
+                    key={c.ShortName}
+                    link={`/cup/${c.ShortName}`}
+                    name={c.CupName}
+                    desc={c.Description}
+                  />
                 ))}
             </Paper>
             <Paper padding top>
@@ -44,14 +41,12 @@ const Cups = () => {
               {cupList
                 .filter(c => c.Finished === 1)
                 .map(c => (
-                  <Fragment key={c.ShortName}>
-                    <Link to={`/cup/${c.ShortName}`}>
-                      <CupName>{c.CupName}</CupName>
-                    </Link>
-                    <Description
-                      dangerouslySetInnerHTML={{ __html: c.Description }}
-                    />
-                  </Fragment>
+                  <LinkWithDesc
+                    key={c.ShortName}
+                    link={`/cup/${c.ShortName}`}
+                    name={c.CupName}
+                    desc={c.Description}
+                  />
                 ))}
             </Paper>
           </Grid>
@@ -70,15 +65,5 @@ const Cups = () => {
     </Layout>
   );
 };
-
-const CupName = styled.div`
-  font-weight: 500;
-  color: ${p => p.theme.linkColor};
-`;
-
-const Description = styled.div`
-  font-size: 13px;
-  padding-bottom: 12px;
-`;
 
 export default Cups;

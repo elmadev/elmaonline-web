@@ -39,13 +39,18 @@ export const Dropdown = ({
           {options.map(y => {
             let val = y;
             let text = y;
-
             if (Array.isArray(y)) {
               val = y[0];
               text = y[1];
             }
-
-            return <MenuItem key={val} value={val}>{`${text}`}</MenuItem>;
+            if (typeof y === 'string') {
+              return <MenuItem key={val} value={val}>{`${text}`}</MenuItem>;
+            }
+            return (
+              <MenuItem key={val.id} value={val.id}>
+                {text.name}
+              </MenuItem>
+            );
           })}
         </Select>
       </FormControl>

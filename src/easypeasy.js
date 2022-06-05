@@ -9,6 +9,8 @@ import Register from 'pages/register/store';
 import Login from 'pages/login/store';
 import RankingTable from 'features/RankingTable/store';
 import BattleList from 'features/BattleList/store';
+import BattleLeagues from 'pages/battleleagues/store';
+import BattleLeague from 'pages/battleleague/store';
 import Upload from 'features/Upload/store';
 import Cups from 'pages/cups/store';
 import Cup from 'pages/cup/store';
@@ -44,6 +46,8 @@ export default {
   ReplayRating,
   Register,
   BattleList,
+  BattleLeagues,
+  BattleLeague,
   ChatView,
   Cups,
   Cup,
@@ -113,7 +117,10 @@ export default {
           {
             header: 'Competitions',
             expanded: true,
-            items: [{ name: 'Cups', to: '/cups', hidden: false }],
+            items: [
+              { name: 'Cups', to: '/cups', hidden: false },
+              { name: 'Battle Leagues', to: '/battleleagues', hidden: false },
+            ],
           },
           {
             header: 'Tools',
