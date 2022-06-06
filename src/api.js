@@ -141,7 +141,7 @@ export const ResetPasswordConfirm = data =>
 export const ResetPassword = data => api.post('register/reset', data);
 export const DiscordAuthUrl = data => api.post('/register/discord', data);
 export const DiscordCode = data => api.post('/register/discord/code', data);
-export const DiscordRemove = () => api.post('/register/discord/remove');
+export const DiscordRemove = () => api.post('/register/discord/remove', {});
 
 // cups
 export const Cups = () => api.get('cups');
@@ -383,9 +383,10 @@ export const UserInfo = KuskiIndex => api.get(`player/${KuskiIndex}`);
 export const UserInfoByIdentifier = data =>
   api.get(`player/${data.IdentifierType}/${data.KuskiIdentifier}`);
 export const UpdateUserInfo = data => api.post(`register/update`, data);
-export const Ignore = Kuski => api.post(`player/ignore/${Kuski}`);
+export const Ignore = Kuski => api.post(`player/ignore/${Kuski}`, {});
 export const Ignored = () => api.get('player/ignored');
-export const Unignore = KuskiIndex => api.post(`player/unignore/${KuskiIndex}`);
+export const Unignore = KuskiIndex =>
+  api.post(`player/unignore/${KuskiIndex}`, {});
 export const Players = () => api.get('player/');
 export const GetCrew = () => api.get('player/crew/');
 export const NotificationSettings = () => api.get('player/settings');
@@ -422,9 +423,9 @@ export const RankingHistoryByBattle = BattleIndex =>
 // mod
 export const NickRequests = () => api.get(`mod/nickrequests`);
 export const NickAccept = data =>
-  api.post(`mod/nickrequests/accept/${data.SiteSettingIndex}`);
+  api.post(`mod/nickrequests/accept/${data.SiteSettingIndex}`, {});
 export const NickDecline = data =>
-  api.post(`mod/nickrequests/decline/${data.SiteSettingIndex}`);
+  api.post(`mod/nickrequests/decline/${data.SiteSettingIndex}`, {});
 export const Banlist = () => api.get('mod/banlist');
 export const BanlistKuski = KuskiIndex => api.get(`mod/banlist/${KuskiIndex}`);
 export const BanKuski = data => api.post('mod/bankuski', data);
