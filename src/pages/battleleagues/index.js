@@ -18,8 +18,8 @@ const schema = yup.object().shape({
   LeagueName: yup.string().required().max(255),
   LeagueDescription: yup.string().required().max(65535),
   ShortName: yup.string().required().min(2).max(10),
-  Skips: yup.number().required().min(0).max(9),
-  Events: yup.number().required().min(1).max(99),
+  Skips: yup.number().min(0).max(9),
+  Events: yup.number().min(1).max(99),
 });
 
 const BattleLeagues = () => {
@@ -74,15 +74,15 @@ const BattleLeagues = () => {
                 {nickId() > 0 ? (
                   <form {...formal.getFormProps()}>
                     <Field
-                      label="League Name"
+                      label="League Name *"
                       {...formal.getFieldProps('LeagueName')}
                     />
                     <Field
-                      label="Description"
+                      label="Description *"
                       {...formal.getFieldProps('LeagueDescription')}
                     />
                     <Field
-                      label="Short Name"
+                      label="Short Name *"
                       {...formal.getFieldProps('ShortName')}
                     />
                     <Field label="Skips" {...formal.getFieldProps('Skips')} />
@@ -109,6 +109,16 @@ const BattleLeagues = () => {
                 ) : (
                   <div>Log in to create a battle league.</div>
                 )}
+                <Header h2 top>
+                  Help
+                </Header>
+                <ul>
+                  <li>Short Name is used for the url.</li>
+                  <li>Skips are per season.</li>
+                  <li>
+                    Events are per season and only relevant if you use skips.
+                  </li>
+                </ul>
               </>
             ) : (
               <div>
