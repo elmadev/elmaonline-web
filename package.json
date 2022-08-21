@@ -21,7 +21,7 @@
     "google-map-react": "^2.1.9",
     "level-editor-gui": "https://github.com/elmadev/level-editor-gui.git",
     "lodash": "^4.17.21",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.33",
     "nanoid": "^3.1.31",
     "query-string": "6.14.1",
