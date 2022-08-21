@@ -40,8 +40,11 @@ export const Dropdown = ({
             let val = y;
             let text = y;
             if (Array.isArray(y)) {
-              val = y[0];
-              text = y[1];
+              return (
+                <MenuItem key={y[0]} value={y[0]}>
+                  {y[1]}
+                </MenuItem>
+              );
             }
             if (typeof y === 'string') {
               return <MenuItem key={val} value={val}>{`${text}`}</MenuItem>;
