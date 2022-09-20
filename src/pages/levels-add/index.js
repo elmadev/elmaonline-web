@@ -16,7 +16,10 @@ const schema = yup.object().shape({
     .required()
     .min(2)
     .max(16)
-    .matches(/^[A-Za-z0-9]+$/, 'Only letters and number allowed, no spaces'),
+    .matches(
+      /^[A-Za-z0-9-_]+$/,
+      'Only letters, numbers, dash and underscore allowed, no spaces',
+    ),
   LevelPackLongName: yup.string().required().min(2).max(30),
   LevelPackDesc: yup.string().required().max(255),
 });
