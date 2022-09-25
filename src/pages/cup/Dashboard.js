@@ -16,6 +16,7 @@ import { Paper, Content } from 'components/Paper';
 import { ListRow, ListCell } from 'components/List';
 import config from 'config';
 import { authToken } from 'utils/nick';
+import { Text } from 'components/Containers';
 
 const Dashboard = props => {
   const { events, cup } = props;
@@ -98,6 +99,12 @@ const Dashboard = props => {
         <Grid item xs={12} sm={6}>
           <Paper padding>
             <Header h2>Upload</Header>
+            <Text>
+              Cup replays are saved automatically, so you won't need to upload
+              your replay. In rare cases automatic saving of recs may fail and
+              you can upload the replay after the fact here. You can also use
+              this to share replays with team.
+            </Text>
             <DropContainer>
               <Dropzone
                 filetype=".rec"

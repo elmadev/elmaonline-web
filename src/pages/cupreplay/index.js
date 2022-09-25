@@ -68,7 +68,7 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
   let others = [];
   if (otherReplays.length > 0) {
     if (otherReplays[0].CupTimes.length > 0) {
-      others = otherReplays[0].CupTimes.filter(t => t.Replay);
+      others = otherReplays[0].CupTimes.filter(t => t.Replay || t.UUID);
     }
   }
   let recName = '';

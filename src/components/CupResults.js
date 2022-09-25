@@ -37,7 +37,7 @@ const CupResults = props => {
               <Kuski kuskiData={r.KuskiData} team flag />
             </ListCell>
             <ListCell>
-              {r.Replay ? (
+              {r.Replay || r.UUID ? (
                 <a
                   href={`${config.dlUrl}cupreplay/${
                     r.CupTimeIndex

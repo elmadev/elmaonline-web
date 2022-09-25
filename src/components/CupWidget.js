@@ -35,9 +35,6 @@ const CupWidget = () => {
                   {cup.CupName}
                 </Header>
                 <CupCurrent events={events} ShortName={cup.ShortName} />
-                <Text onClick={() => navigate(`/cup/${cup.ShortName}`)}>
-                  Open cup page to upload replays
-                </Text>
               </CupRoot>
             );
           })}
@@ -52,11 +49,6 @@ const CupRoot = styled.div`
   &:last-child {
     margin-bottom: 0;
   }
-`;
-
-const Text = styled.div`
-  cursor: pointer;
-  color: ${p => p.theme.linkColor};
 `;
 
 export default CupWidget;

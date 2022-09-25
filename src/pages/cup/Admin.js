@@ -221,7 +221,7 @@ const Admin = () => {
                 </ClickToReveal>
               </ListCell>
               <ListCell>
-                {e.Updated === 0 && e.StartTime < format(new Date(), 't') && (
+                {e.Updated === 0 && e.EndTime < format(new Date(), 't') && (
                   <Button
                     variant="contained"
                     onClick={() =>
