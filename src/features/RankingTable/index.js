@@ -8,6 +8,7 @@ import SortableList from 'components/SortableList';
 import Loading from 'components/Loading';
 import styled from 'styled-components';
 import { FixedSizeList as List } from 'react-window';
+import useElementSize from 'utils/useWindowSize';
 
 const RankingTable = ({
   battleType,
@@ -23,6 +24,8 @@ const RankingTable = ({
   }, [period, periodType]);
   const [sortOrder, setSortOrder] = useState('desc');
   const [sort, setSort] = useState(`Ranking${battleType}`);
+  const windowSize = useElementSize();
+  const listHeight = windowSize.height - 332;
   const Points = `Points${battleType}`;
   const Ranking = `Ranking${battleType}`;
   const Wins = `Wins${battleType}`;
@@ -66,7 +69,11 @@ const RankingTable = ({
             defaultSort="Ranking"
           />
           <ListContainer flex>
-            <List height={400} itemCount={FilteredRanking.length} itemSize={40}>
+            <List
+              height={listHeight}
+              itemCount={FilteredRanking.length}
+              itemSize={40}
+            >
               {({ index, style }) => {
                 const i = FilteredRanking[index];
                 return (
