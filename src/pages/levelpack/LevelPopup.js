@@ -28,6 +28,8 @@ const LevelPopup = ({
     levelBesttimes,
     levelMultiBesttimes,
     settings: { showLegacy },
+    team,
+    country,
   } = useStoreState(state => state.LevelPack);
   const {
     getPersonalAllFinished,
@@ -58,6 +60,8 @@ const LevelPopup = ({
           levelId,
           limit: timesLimit,
           eolOnly: showLegacy ? 0 : 1,
+          team,
+          country,
         });
       }
     }

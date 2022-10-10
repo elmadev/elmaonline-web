@@ -4,6 +4,8 @@ import {
   Highlight,
   PersonalAllFinished,
   Besttime,
+  BesttimeTeam,
+  BesttimeCountry,
   LevelPackStats,
   LevelPackStatsCountry,
   LevelPackStatsTeam,
@@ -132,7 +134,14 @@ export default {
     state.levelBesttimes = payload;
   }),
   getLevelBesttimes: thunk(async (actions, payload) => {
-    const times = await Besttime(payload);
+    let times;
+    if (payload.team) {
+      times = await BesttimeTeam(payload);
+    } else if (payload.country) {
+      times = await BesttimeCountry(payload);
+    } else {
+      times = await Besttime(payload);
+    }
     if (times.ok) {
       actions.setLevelBesttimes(times.data);
     }
@@ -250,5 +259,13 @@ export default {
     } else {
       actions.setAdminLoading(false);
     }
+  }),
+  team: '',
+  setTeam: action((state, payload) => {
+    state.team = payload;
+  }),
+  country: '',
+  setCountry: action((state, payload) => {
+    state.country = payload;
   }),
 };

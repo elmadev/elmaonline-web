@@ -344,6 +344,14 @@ export const DeletePack = data =>
 // besttime
 export const Besttime = data =>
   api.get(`besttime/${data.levelId}/${data.limit}/${data.eolOnly}`);
+export const BesttimeTeam = data =>
+  api.get(
+    `besttime/${data.levelId}/${data.limit}/${data.eolOnly}/team/${data.team}`,
+  );
+export const BesttimeCountry = data =>
+  api.get(
+    `besttime/${data.levelId}/${data.limit}/${data.eolOnly}/country/${data.country}`,
+  );
 export const PersonalLatestPRs = data =>
   api.get(
     `besttime/latest/${data.KuskiIndex}/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,

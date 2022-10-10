@@ -18,13 +18,13 @@ import { Row } from 'components/Containers';
 const Menus = ({ name }) => {
   const [openSettings, setOpenSettings] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
-  const [country, setCountry] = useState('');
-  const [team, setTeam] = useState('');
   const {
     levelPackInfo,
     settings: { highlightWeeks, showLegacyIcon, showLegacy },
     teams,
     countries,
+    team,
+    country,
   } = useStoreState(state => state.LevelPack);
 
   const {
@@ -32,6 +32,8 @@ const Menus = ({ name }) => {
     toggleShowLegacyIcon,
     toggleShowLegacy,
     getStats,
+    setTeam,
+    setCountry,
   } = useStoreActions(actions => actions.LevelPack);
   return (
     <Settings>
