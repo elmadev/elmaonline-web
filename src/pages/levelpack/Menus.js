@@ -61,7 +61,8 @@ const Menus = ({ name }) => {
                       getStats({
                         name,
                         eolOnly: showLegacy ? 0 : 1,
-                        Country: id,
+                        filterValue: id,
+                        filter: 'country',
                       });
                     }}
                   />
@@ -76,7 +77,8 @@ const Menus = ({ name }) => {
                       getStats({
                         name,
                         eolOnly: showLegacy ? 0 : 1,
-                        Team: id,
+                        filterValue: id,
+                        filter: 'team',
                       });
                     }}
                   />

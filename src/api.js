@@ -283,17 +283,9 @@ export const LevelPackStats = data =>
   api.get(`levelpack/${data.name}/stats/${data.eolOnly}`, null, {
     timeout: 60000,
   });
-export const LevelPackStatsCountry = data =>
+export const LevelPackStatsFilter = data =>
   api.get(
-    `levelpack/${data.name}/stats/${data.eolOnly}/country/${data.Country}`,
-    null,
-    {
-      timeout: 60000,
-    },
-  );
-export const LevelPackStatsTeam = data =>
-  api.get(
-    `levelpack/${data.name}/stats/${data.eolOnly}/team/${data.Team}`,
+    `levelpack/${data.name}/stats/${data.eolOnly}/${data.filter}/${data.filterValue}`,
     null,
     {
       timeout: 60000,
@@ -344,13 +336,9 @@ export const DeletePack = data =>
 // besttime
 export const Besttime = data =>
   api.get(`besttime/${data.levelId}/${data.limit}/${data.eolOnly}`);
-export const BesttimeTeam = data =>
+export const BesttimeFilter = data =>
   api.get(
-    `besttime/${data.levelId}/${data.limit}/${data.eolOnly}/team/${data.team}`,
-  );
-export const BesttimeCountry = data =>
-  api.get(
-    `besttime/${data.levelId}/${data.limit}/${data.eolOnly}/country/${data.country}`,
+    `besttime/${data.levelId}/${data.limit}/${data.eolOnly}/${data.filter}/${data.filterValue}`,
   );
 export const PersonalLatestPRs = data =>
   api.get(

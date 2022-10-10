@@ -60,8 +60,8 @@ const LevelPopup = ({
           levelId,
           limit: timesLimit,
           eolOnly: showLegacy ? 0 : 1,
-          team,
-          country,
+          filter: team ? 'team' : country ? 'country' : null,
+          filterValue: team ? team : country ? country : null,
         });
       }
     }

@@ -4,11 +4,9 @@ import {
   Highlight,
   PersonalAllFinished,
   Besttime,
-  BesttimeTeam,
-  BesttimeCountry,
+  BesttimeFilter,
   LevelPackStats,
-  LevelPackStatsCountry,
-  LevelPackStatsTeam,
+  LevelPackStatsFilter,
   MultiRecords,
   MultiBesttime,
   PersonalWithMulti,
@@ -135,10 +133,8 @@ export default {
   }),
   getLevelBesttimes: thunk(async (actions, payload) => {
     let times;
-    if (payload.team) {
-      times = await BesttimeTeam(payload);
-    } else if (payload.country) {
-      times = await BesttimeCountry(payload);
+    if (payload.filter) {
+      times = await BesttimeFilter(payload);
     } else {
       times = await Besttime(payload);
     }
@@ -167,10 +163,8 @@ export default {
   getStats: thunk(async (actions, payload) => {
     actions.setRecordsLoading(true);
     let times;
-    if (payload.Country) {
-      times = await LevelPackStatsCountry(payload);
-    } else if (payload.Team) {
-      times = await LevelPackStatsTeam(payload);
+    if (payload.filter) {
+      times = await LevelPackStatsFilter(payload);
     } else {
       times = await LevelPackStats(payload);
     }
