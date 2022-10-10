@@ -5,6 +5,8 @@ import {
   PersonalAllFinished,
   Besttime,
   LevelPackStats,
+  LevelPackStatsCountry,
+  LevelPackStatsTeam,
   MultiRecords,
   MultiBesttime,
   PersonalWithMulti,
@@ -84,6 +86,14 @@ export default {
   setKinglist: action((state, payload) => {
     state.kinglist = payload;
   }),
+  teams: [],
+  countries: [],
+  setTeams: action((state, payload) => {
+    state.teams = payload;
+  }),
+  setCountries: action((state, payload) => {
+    state.countries = payload;
+  }),
   personalTimes: [],
   setPersonalTimes: action((state, payload) => {
     state.personalTimes = payload;
@@ -147,11 +157,24 @@ export default {
   }),
   getStats: thunk(async (actions, payload) => {
     actions.setRecordsLoading(true);
-    const times = await LevelPackStats(payload);
+    let times;
+    if (payload.Country) {
+      times = await LevelPackStatsCountry(payload);
+    } else if (payload.Team) {
+      times = await LevelPackStatsTeam(payload);
+    } else {
+      times = await LevelPackStats(payload);
+    }
     if (times.ok) {
       actions.setRecords(times.data.records);
       actions.setTotalTimes(times.data.tts);
       actions.setKinglist(times.data.points);
+      if (times.data.teams) {
+        actions.setTeams(times.data.teams);
+      }
+      if (times.data.countries) {
+        actions.setCountries(times.data.countries);
+      }
     }
     actions.setRecordsLoading(false);
     actions.setAdminLoading(false);

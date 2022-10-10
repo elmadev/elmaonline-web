@@ -283,6 +283,24 @@ export const LevelPackStats = data =>
   api.get(`levelpack/${data.name}/stats/${data.eolOnly}`, null, {
     timeout: 60000,
   });
+export const LevelPackStatsCountry = data =>
+  api.get(
+    `levelpack/${data.name}/stats/${data.eolOnly}/country/${data.Country}`,
+    null,
+    {
+      timeout: 60000,
+    },
+  );
+export const LevelPackStatsTeam = data =>
+  api.get(
+    `levelpack/${data.name}/stats/${data.eolOnly}/team/${data.Team}`,
+    null,
+    {
+      timeout: 60000,
+    },
+  );
+export const LevelPackRecords = (LevelPackName, eolOnly) =>
+  api.get(`levelpack/${LevelPackName}/records/${eolOnly ? 1 : 0}`);
 export const MultiRecords = LevelPackName =>
   api.get(`levelpack/${LevelPackName}/multirecords`);
 export const LevelPackSearch = q => api.get(`levelpack/search/${q}`);

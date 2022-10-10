@@ -12,6 +12,7 @@ const Container = styled.div`
   min-width: 100px;
   margin-left: 10px;
   margin-right: 10px;
+  ${p => p.width && `width: ${p.width}px;`}
 `;
 
 export const Dropdown = ({
@@ -21,10 +22,11 @@ export const Dropdown = ({
   update,
   className,
   multiple,
+  width,
 }) => {
   const id = name.replace(/\s/g, '');
   return (
-    <Container className={className}>
+    <Container width={width} className={className}>
       <FormControl fullWidth>
         <InputLabel htmlFor={id}>{name}</InputLabel>
         <Select
