@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { Close as CloseIcon } from '@material-ui/icons';
+import { ExpandLess as CloseIcon } from '@material-ui/icons';
 import {
   ClickAwayListener,
   RadioGroup,
@@ -14,6 +14,7 @@ import Button from 'components/Buttons';
 import FieldBoolean from 'components/FieldBoolean';
 import { Dropdown } from 'components/Inputs';
 import { Row } from 'components/Containers';
+import KuskiAutoComplete from 'components/KuskiAutoComplete';
 
 const Menus = ({ name }) => {
   const [openSettings, setOpenSettings] = useState(false);
@@ -23,8 +24,10 @@ const Menus = ({ name }) => {
     settings: { highlightWeeks, showLegacyIcon, showLegacy },
     teams,
     countries,
+    kuskis,
     team,
     country,
+    kuskisFilter,
   } = useStoreState(state => state.LevelPack);
 
   const {
@@ -34,6 +37,7 @@ const Menus = ({ name }) => {
     getStats,
     setTeam,
     setCountry,
+    setKuskisFilter,
   } = useStoreActions(actions => actions.LevelPack);
   return (
     <Settings>
@@ -45,55 +49,86 @@ const Menus = ({ name }) => {
               onClickAway={() => setOpenFilter(false)}
             >
               <Paper>
-                <SettingsHeader>
-                  <ClickCloseIcon onClick={() => setOpenFilter(false)} />
+                <SettingsHeader onClick={() => setOpenFilter(false)}>
+                  <ClickCloseIcon />
                   <SettingsHeadline>Filter</SettingsHeadline>
                 </SettingsHeader>
-                <Row b="Small">
-                  <Dropdown
-                    name="Country"
-                    options={countries}
-                    selected={country}
-                    width={200}
-                    update={id => {
-                      setCountry(id);
-                      setTeam(null);
+                <Dropdown
+                  name="Country"
+                  options={countries}
+                  selected={country}
+                  width={200}
+                  update={id => {
+                    setTeam('');
+                    setKuskisFilter([]);
+                    setCountry(id);
+                    getStats({
+                      name,
+                      eolOnly: showLegacy ? 0 : 1,
+                      filterValue: id,
+                      filter: 'country',
+                    });
+                  }}
+                />
+                <Dropdown
+                  name="Team"
+                  options={teams}
+                  selected={team}
+                  width={200}
+                  update={id => {
+                    setCountry('');
+                    setKuskisFilter([]);
+                    setTeam(id);
+                    getStats({
+                      name,
+                      eolOnly: showLegacy ? 0 : 1,
+                      filterValue: id,
+                      filter: 'team',
+                    });
+                  }}
+                />
+                <Row b="Small" l="Small" t="Small">
+                  <AutoCompleteCon>
+                    <KuskiAutoComplete
+                      list={kuskis}
+                      selected={kuskisFilter}
+                      onChange={(ids, newValue) => {
+                        setKuskisFilter(newValue);
+                      }}
+                    />
+                  </AutoCompleteCon>
+                  <Button
+                    naked
+                    onClick={() => {
+                      setCountry('');
+                      setTeam('');
                       getStats({
                         name,
                         eolOnly: showLegacy ? 0 : 1,
-                        filterValue: id,
-                        filter: 'country',
+                        filterValue: kuskisFilter
+                          .map(k => k.KuskiIndex)
+                          .join(','),
+                        filter: 'kuski',
                       });
                     }}
-                  />
-                  <Dropdown
-                    name="Team"
-                    options={teams}
-                    selected={team}
-                    width={200}
-                    update={id => {
-                      setCountry(null);
-                      setTeam(id);
-                      getStats({
-                        name,
-                        eolOnly: showLegacy ? 0 : 1,
-                        filterValue: id,
-                        filter: 'team',
-                      });
-                    }}
-                  />
+                  >
+                    Filter by selected kuskis
+                  </Button>
+                </Row>
+                <Row b="Small" l="Small">
                   <Button
                     icon="close"
                     onClick={() => {
-                      if (country || team) {
+                      if (country || team || kuskisFilter.length > 0) {
                         getStats({ name, eolOnly: showLegacy ? 0 : 1 });
                       }
-                      setCountry(null);
-                      setTeam(null);
+                      setCountry('');
+                      setTeam('');
+                      setKuskisFilter([]);
                     }}
                     naked
                   >
-                    Clear
+                    Clear all
                   </Button>
                 </Row>
               </Paper>
@@ -102,8 +137,8 @@ const Menus = ({ name }) => {
           {openSettings && (
             <ClickAwayListener onClickAway={() => setOpenSettings(false)}>
               <Paper>
-                <SettingsHeader>
-                  <ClickCloseIcon onClick={() => setOpenSettings(false)} />
+                <SettingsHeader onClick={() => setOpenSettings(false)}>
+                  <ClickCloseIcon />
                   <SettingsHeadline>Settings</SettingsHeadline>
                 </SettingsHeader>
                 <FormControl component="fieldset" focused={false}>
@@ -201,6 +236,11 @@ const Menus = ({ name }) => {
   );
 };
 
+const AutoCompleteCon = styled.div`
+  width: 25%;
+  margin-right: ${p => p.theme.padSmall};
+`;
+
 const Settings = styled.div`
   padding: 0 10px;
   margin-bottom: 26px;
@@ -212,6 +252,7 @@ const SettingsHeader = styled.div`
   flex-direction: row;
   align-items: flex-end;
   margin: 5px;
+  cursor: pointer;
 `;
 
 const SettingsHeadline = styled.div`

@@ -88,11 +88,15 @@ export default {
   }),
   teams: [],
   countries: [],
+  kuskis: [],
   setTeams: action((state, payload) => {
     state.teams = payload;
   }),
   setCountries: action((state, payload) => {
     state.countries = payload;
+  }),
+  setKuskis: action((state, payload) => {
+    state.kuskis = payload;
   }),
   personalTimes: [],
   setPersonalTimes: action((state, payload) => {
@@ -178,6 +182,9 @@ export default {
       if (times.data.countries) {
         actions.setCountries(times.data.countries);
       }
+      if (times.data.kuskis) {
+        actions.setKuskis(times.data.kuskis);
+      }
     }
     actions.setRecordsLoading(false);
     actions.setAdminLoading(false);
@@ -261,5 +268,9 @@ export default {
   country: '',
   setCountry: action((state, payload) => {
     state.country = payload;
+  }),
+  kuskisFilter: [],
+  setKuskisFilter: action((state, payload) => {
+    state.kuskisFilter = payload;
   }),
 };
