@@ -52,6 +52,10 @@ const sortPacks = (packsRef, favs, stats, sort) => {
     return div > 0 ? num / div : 0;
   };
 
+  if (sort === 'created') {
+    sorted = orderBy(packs, 'LevelPackIndex', ['asc']);
+  }
+
   if (sort === 'attempts') {
     sorted = orderBy(packs, [p => st(p).AttemptsAll], ['desc']);
   }
