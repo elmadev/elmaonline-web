@@ -15,14 +15,14 @@ const Selector = ({ label, options, selected, onChange }) => {
   const update = s => {
     let newSelected = s;
     const currentIndex = options.findIndex(o => o.id === selected);
-    if (s === -1) {
+    if (s === 'prev') {
       if (currentIndex - 1 >= 0) {
         newSelected = options[currentIndex - 1].id;
       } else {
         newSelected = selected;
       }
     }
-    if (s === 1) {
+    if (s === 'next') {
       if (currentIndex + 1 < options.length) {
         newSelected = options[currentIndex + 1].id;
       } else {
@@ -35,7 +35,7 @@ const Selector = ({ label, options, selected, onChange }) => {
   return (
     <>
       <Icon
-        onClick={() => update(-1)}
+        onClick={() => update('prev')}
         style={{
           fontSize: 36,
           cursor: 'pointer',
@@ -63,7 +63,7 @@ const Selector = ({ label, options, selected, onChange }) => {
         </Select>
       </FormControl>
       <Icon
-        onClick={() => update(1)}
+        onClick={() => update('next')}
         style={{
           fontSize: 36,
           cursor: 'pointer',
