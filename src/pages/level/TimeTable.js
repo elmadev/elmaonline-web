@@ -4,6 +4,7 @@ import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
 import LegacyIcon from 'components/LegacyIcon';
+import LocalTime from 'components/LocalTime';
 import { FixedSizeList as List } from 'react-window';
 
 const TimeTable = ({ data, latestBattle, loading, height }) => {
@@ -16,8 +17,9 @@ const TimeTable = ({ data, latestBattle, loading, height }) => {
             #
           </ListCell>
           <ListCell width={200}>Kuski</ListCell>
+          <ListCell>Time</ListCell>
           <ListCell textAlign="right" width={200}>
-            Time
+            Driven
           </ListCell>
           <ListCell />
         </ListHeader>
@@ -46,8 +48,15 @@ const TimeTable = ({ data, latestBattle, loading, height }) => {
                         {t.KuskiData.TeamData &&
                           `[${t.KuskiData.TeamData.Team}]`}
                       </ListCell>
-                      <ListCell width={200} right>
+                      <ListCell>
                         <Time time={t.Time} />
+                      </ListCell>
+                      <ListCell width={200} right>
+                        <LocalTime
+                          date={t.Driven}
+                          format="D MMM YYYY"
+                          parse="X"
+                        />
                       </ListCell>
                       <ListCell right>
                         {t.Source !== undefined && (
