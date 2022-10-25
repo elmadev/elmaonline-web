@@ -291,8 +291,14 @@ export const LevelPackStatsFilter = data =>
       timeout: 60000,
     },
   );
-export const LevelPackRecords = (LevelPackName, eolOnly) =>
-  api.get(`levelpack/${LevelPackName}/records/${eolOnly ? 1 : 0}`);
+export const LevelPackRecords = data =>
+  api.get(`levelpack/${data.name}/records/${data.eolOnly ? 1 : 0}`);
+export const LevelPackRecordsFilter = data =>
+  api.get(
+    `levelpack/${data.name}/records/${data.eolOnly ? 1 : 0}/${data.filter}/${
+      data.filterValue
+    }`,
+  );
 export const MultiRecords = LevelPackName =>
   api.get(`levelpack/${LevelPackName}/multirecords`);
 export const LevelPackSearch = q => api.get(`levelpack/search/${q}`);

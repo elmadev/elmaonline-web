@@ -30,9 +30,8 @@ const LevelPack = ({ name, tab, ...props }) => {
     personalTimes,
     timesError,
     records,
-    recordsLoading,
     personalKuski,
-    settings: { highlightWeeks, showLegacyIcon, showLegacy, showMoreStats },
+    settings: { highlightWeeks, showLegacyIcon, showLegacy },
   } = useStoreState(state => state.LevelPack);
 
   const {
@@ -41,6 +40,7 @@ const LevelPack = ({ name, tab, ...props }) => {
     getPersonalTimes,
     setError,
     getStats,
+    getRecordsOnly,
   } = useStoreActions(actions => actions.LevelPack);
   const lastShowLegacy = useRef(showLegacy);
   const navigate = useNavigate();
@@ -53,6 +53,7 @@ const LevelPack = ({ name, tab, ...props }) => {
   useEffect(() => {
     if (levelPackInfo.LevelPackName !== name) {
       getLevelPackInfo(name);
+      getRecordsOnly({ name, eolOnly: showLegacy ? 0 : 1 });
       getStats({ name, eolOnly: showLegacy ? 0 : 1 });
       getHighlight();
       const PersonalKuskiIndex = nick();
@@ -69,6 +70,7 @@ const LevelPack = ({ name, tab, ...props }) => {
   useEffect(() => {
     if (lastShowLegacy.current !== showLegacy) {
       lastShowLegacy.current = showLegacy;
+      getRecordsOnly({ name, eolOnly: showLegacy ? 0 : 1 });
       getStats({ name, eolOnly: showLegacy ? 0 : 1 });
       if (personalKuski !== '') {
         getPersonalTimes({
@@ -128,17 +130,7 @@ const LevelPack = ({ name, tab, ...props }) => {
         </DescriptionStyle>
         <br />
         <Menus name={name} />
-        {!tab && (
-          <Records
-            levelStats={levelStats}
-            records={records}
-            highlight={highlight}
-            highlightWeeks={highlightWeeks}
-            recordsLoading={recordsLoading}
-            showLegacyIcon={showLegacyIcon}
-            showMoreStats={showMoreStats}
-          />
-        )}
+        {!tab && <Records levelStats={levelStats} />}
         {tab === 'total-times' && (
           <TotalTimes highlight={highlight} highlightWeeks={highlightWeeks} />
         )}
@@ -182,9 +174,7 @@ const LevelPack = ({ name, tab, ...props }) => {
         {tab === 'replays' && (
           <ReplayList nonsticky levelPack={levelPackInfo.LevelPackIndex} />
         )}
-        {tab === 'admin' && adminAuth && (
-          <Admin records={records} LevelPack={levelPackInfo} />
-        )}
+        {tab === 'admin' && adminAuth && <Admin />}
       </RootStyle>
     </Layout>
   );

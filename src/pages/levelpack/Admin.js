@@ -22,12 +22,13 @@ import UpdateForm from './UpdateForm';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ListCell, ListContainer, ListHeader } from 'components/List';
 
-const Admin = ({ records, LevelPack }) => {
+const Admin = () => {
   const [search, setSearch] = useState('');
   const {
     levelsFound,
     adminLoading,
     settings: { showLegacy },
+    levelPackInfo,
   } = useStoreState(state => state.LevelPack);
   const {
     deleteLevel,
@@ -38,15 +39,17 @@ const Admin = ({ records, LevelPack }) => {
   } = useStoreActions(actions => actions.LevelPack);
 
   useEffect(() => {
-    const emptySort = records.filter(r => r.Sort === '');
-    if (emptySort.length > 0) {
-      sortPack({
-        LevelPackIndex: LevelPack.LevelPackIndex,
-        name: LevelPack.LevelPackName,
-        showLegacy,
-      });
+    if (levelPackInfo?.levels) {
+      const emptySort = levelPackInfo.levels.filter(r => r.Sort === '');
+      if (emptySort.length > 0) {
+        sortPack({
+          LevelPackIndex: levelPackInfo.LevelPackIndex,
+          name: levelPackInfo.LevelPackName,
+          showLegacy,
+        });
+      }
     }
-  }, []);
+  }, [levelPackInfo]);
 
   const onDragEnd = result => {
     if (
@@ -54,18 +57,29 @@ const Admin = ({ records, LevelPack }) => {
       result.destination.index !== result.source.index
     ) {
       sortLevel({
-        LevelPackIndex: LevelPack.LevelPackIndex,
+        LevelPackIndex: levelPackInfo.LevelPackIndex,
         source: result.source,
         destination: result.destination,
-        name: LevelPack.LevelPackName,
+        name: levelPackInfo.LevelPackName,
         showLegacy,
       });
     }
   };
 
-  const isAlreadyAdded = levelId => {
-    const find = records.filter(l => l.LevelIndex === levelId);
-    return find.length;
+  const isAlreadyAdded = level => {
+    if (level.Locked) {
+      return 'Level is locked.';
+    }
+    if (level.Hidden) {
+      return 'Level is hidden.';
+    }
+    const find = levelPackInfo.levels.filter(
+      l => l.LevelIndex === level.LevelIndex,
+    );
+    if (find.length) {
+      return 'Level is already added to pack.';
+    }
+    return '';
   };
 
   return (
@@ -91,28 +105,28 @@ const Admin = ({ records, LevelPack }) => {
                 {...provided.droppableProps}
               >
                 <ListContainer chin>
-                  {records.map((l, index) => (
+                  {levelPackInfo?.levels?.map((l, index) => (
                     <Draggable
                       key={l.LevelIndex}
-                      draggableId={`${l.LevelIndex}${l.Level.LevelName}`}
+                      draggableId={`${l.LevelIndex}${l.LevelName}`}
                       index={index}
                     >
                       {Dragprovided => (
                         <Row
-                          key={`${l.LevelIndex}${l.Level.LevelName}`}
+                          key={`${l.LevelIndex}${l.LevelName}`}
                           ref={Dragprovided.innerRef}
                           {...Dragprovided.draggableProps}
                           {...Dragprovided.dragHandleProps}
                         >
-                          <ListCell width={70}>{l.Level.LevelName}</ListCell>
-                          <ListCell width={300}>{l.Level.LongName}</ListCell>
+                          <ListCell width={70}>{l.LevelName}</ListCell>
+                          <ListCell width={300}>{l.LongName}</ListCell>
                           <ListCell width={180}>
                             <Delete
                               onClick={() =>
                                 deleteLevel({
                                   LevelIndex: l.LevelIndex,
-                                  LevelPackIndex: LevelPack.LevelPackIndex,
-                                  name: LevelPack.LevelPackName,
+                                  LevelPackIndex: levelPackInfo.LevelPackIndex,
+                                  name: levelPackInfo.LevelPackName,
                                   showLegacy,
                                 })
                               }
@@ -182,30 +196,38 @@ const Admin = ({ records, LevelPack }) => {
                 <ListCell width={300}>Level name</ListCell>
                 <ListCell width={180}>Add</ListCell>
               </ListHeader>
-              {levelsFound.map(l => (
-                <Row color={isAlreadyAdded(l.LevelIndex)} key={l.LevelIndex}>
-                  <ListCell width={70}>
-                    <Link to={`/levels/${l.LevelIndex}`}>{l.LevelName}</Link>
-                  </ListCell>
-                  <ListCell width={300}>{l.LongName}</ListCell>
-                  <ListCell width={180}>
-                    {!isAlreadyAdded(l.LevelIndex) && (
-                      <Add
-                        onClick={() =>
-                          addLevel({
-                            LevelIndex: l.LevelIndex,
-                            LevelPackIndex: LevelPack.LevelPackIndex,
-                            name: LevelPack.LevelPackName,
-                            levels: records.length,
-                            last: records[records.length - 1],
-                            showLegacy,
-                          })
-                        }
-                      />
-                    )}
-                  </ListCell>
-                </Row>
-              ))}
+              {levelsFound.map(l => {
+                const title = isAlreadyAdded(l);
+                return (
+                  <Row key={l.LevelIndex}>
+                    <ListCell title={title} width={70}>
+                      <Link to={`/levels/${l.LevelIndex}`}>{l.LevelName}</Link>
+                    </ListCell>
+                    <ListCell title={title} width={300}>
+                      {l.LongName}
+                    </ListCell>
+                    <ListCell title={title} width={180}>
+                      {!isAlreadyAdded(l) && (
+                        <Add
+                          onClick={() =>
+                            addLevel({
+                              LevelIndex: l.LevelIndex,
+                              LevelPackIndex: levelPackInfo.LevelPackIndex,
+                              name: levelPackInfo.LevelPackName,
+                              levels: levelPackInfo.levels.length,
+                              last:
+                                levelPackInfo.levels[
+                                  levelPackInfo.levels.length - 1
+                                ],
+                              showLegacy,
+                            })
+                          }
+                        />
+                      )}
+                    </ListCell>
+                  </Row>
+                );
+              })}
             </ListContainer>
           </AccordionDetails>
         </Accordion>
@@ -243,7 +265,6 @@ const Add = styled(PlaylistAdd)`
 const Row = styled.div`
   display: table-row;
   background: transparent;
-  color: ${p => (p.color ? '#b3b3b3' : 'inherit')};
   :hover {
     background: ${p => p.theme.hoverColor};
   }

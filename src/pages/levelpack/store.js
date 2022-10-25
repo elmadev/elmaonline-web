@@ -17,6 +17,8 @@ import {
   LevelPackSort,
   LevelPack,
   UpdateLevelPack,
+  LevelPackRecords,
+  LevelPackRecordsFilter,
 } from 'api';
 
 export default {
@@ -156,11 +158,7 @@ export default {
       actions.setLevelMultiBesttimes(times.data);
     }
   }),
-  records: [],
   recordsLoading: false,
-  setRecords: action((state, payload) => {
-    state.records = payload;
-  }),
   setRecordsLoading: action((state, payload) => {
     state.recordsLoading = payload;
   }),
@@ -173,7 +171,6 @@ export default {
       times = await LevelPackStats(payload);
     }
     if (times.ok) {
-      actions.setRecords(times.data.records);
       actions.setTotalTimes(times.data.tts);
       actions.setKinglist(times.data.points);
       if (times.data.teams) {
@@ -188,6 +185,27 @@ export default {
     }
     actions.setRecordsLoading(false);
     actions.setAdminLoading(false);
+  }),
+  recordsOnly: [],
+  setRecordsOnly: action((state, payload) => {
+    state.recordsOnly = payload;
+  }),
+  recordsOnlyLoading: false,
+  setRecordsOnlyLoading: action((state, payload) => {
+    state.recordsOnlyLoading = payload;
+  }),
+  getRecordsOnly: thunk(async (actions, payload) => {
+    actions.setRecordsOnlyLoading(true);
+    let get;
+    if (payload.filter) {
+      get = await LevelPackRecordsFilter(payload);
+    } else {
+      get = await LevelPackRecords(payload);
+    }
+    if (get.ok) {
+      actions.setRecordsOnly(get.data);
+    }
+    actions.setRecordsOnlyLoading(false);
   }),
   multiRecords: [],
   multiRecordsLoading: false,
@@ -208,10 +226,7 @@ export default {
   deleteLevel: thunk(async (actions, payload) => {
     const del = await LevelPackDeleteLevel(payload);
     if (del.ok) {
-      actions.getStats({
-        name: payload.name,
-        eolOnly: payload.showLegacy ? 0 : 1,
-      });
+      actions.getLevelPackInfo(payload.name);
     }
   }),
   levelsFound: [],
@@ -231,10 +246,7 @@ export default {
   addLevel: thunk(async (actions, payload) => {
     const add = await LevelPackAddLevel(payload);
     if (add.ok) {
-      actions.getStats({
-        name: payload.name,
-        eolOnly: payload.showLegacy ? 0 : 1,
-      });
+      actions.getLevelPackInfo(payload.name);
     }
   }),
   sortLevel: thunk(async (actions, payload) => {

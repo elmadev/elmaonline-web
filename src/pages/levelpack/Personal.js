@@ -43,7 +43,6 @@ const Personal = ({
   highlightWeeks,
   timesError,
   setError,
-  records,
   showLegacyIcon,
   kuski,
 }) => {
@@ -51,7 +50,9 @@ const Personal = ({
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
   const isRehydrated = useStoreRehydrated();
-  const { recordsLoading } = useStoreState(state => state.LevelPack);
+  const { recordsLoading, levelPackInfo } = useStoreState(
+    state => state.LevelPack,
+  );
 
   if (recordsLoading || !isRehydrated) {
     return <Loading />;
@@ -59,14 +60,14 @@ const Personal = ({
 
   let levels = [];
   if (isRehydrated) {
-    if (times.packLevels) {
-      levels = records.map(r => {
+    if (times.packLevels && levelPackInfo?.levels) {
+      levels = levelPackInfo.levels.map(r => {
         const timeIndex = times.packLevels.indexOf(r.LevelIndex);
         return {
           single: times.timesData[timeIndex].LevelBesttime,
           multi: times.timesData[timeIndex].LevelMultiBesttime,
           both: times.timesData[timeIndex].LevelCombinedBesttime,
-          Level: r.Level,
+          Level: r,
           LevelIndex: r.LevelIndex,
         };
       });

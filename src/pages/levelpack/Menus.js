@@ -38,6 +38,7 @@ const Menus = ({ name }) => {
     setTeam,
     setCountry,
     setKuskisFilter,
+    getRecordsOnly,
   } = useStoreActions(actions => actions.LevelPack);
   return (
     <Settings>
@@ -68,6 +69,12 @@ const Menus = ({ name }) => {
                       filterValue: id,
                       filter: 'country',
                     });
+                    getRecordsOnly({
+                      name,
+                      eolOnly: showLegacy ? 0 : 1,
+                      filterValue: id,
+                      filter: 'country',
+                    });
                   }}
                 />
                 <Dropdown
@@ -80,6 +87,12 @@ const Menus = ({ name }) => {
                     setKuskisFilter([]);
                     setTeam(id);
                     getStats({
+                      name,
+                      eolOnly: showLegacy ? 0 : 1,
+                      filterValue: id,
+                      filter: 'team',
+                    });
+                    getRecordsOnly({
                       name,
                       eolOnly: showLegacy ? 0 : 1,
                       filterValue: id,
@@ -110,6 +123,14 @@ const Menus = ({ name }) => {
                           .join(','),
                         filter: 'kuski',
                       });
+                      getRecordsOnly({
+                        name,
+                        eolOnly: showLegacy ? 0 : 1,
+                        filterValue: kuskisFilter
+                          .map(k => k.KuskiIndex)
+                          .join(','),
+                        filter: 'kuski',
+                      });
                     }}
                   >
                     Filter by selected kuskis
@@ -121,6 +142,7 @@ const Menus = ({ name }) => {
                     onClick={() => {
                       if (country || team || kuskisFilter.length > 0) {
                         getStats({ name, eolOnly: showLegacy ? 0 : 1 });
+                        getRecordsOnly({ name, eolOnly: showLegacy ? 0 : 1 });
                       }
                       setCountry('');
                       setTeam('');
@@ -225,7 +247,10 @@ const Menus = ({ name }) => {
           </Button>
           <Button
             icon="refresh"
-            onClick={() => getStats({ name, eolOnly: showLegacy ? 0 : 1 })}
+            onClick={() => {
+              getStats({ name, eolOnly: showLegacy ? 0 : 1 });
+              getRecordsOnly({ name, eolOnly: showLegacy ? 0 : 1 });
+            }}
             naked
           >
             Refresh
