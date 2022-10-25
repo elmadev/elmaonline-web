@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { useStoreRehydrated } from 'easy-peasy';
+import { useStoreRehydrated, useStoreActions, useStoreState } from 'easy-peasy';
 import styled from 'styled-components';
 import { Edit } from '@material-ui/icons';
-import { useStoreState } from 'easy-peasy';
 import Time from 'components/Time';
 import { Level } from 'components/Names';
 import ClickToEdit from 'components/ClickToEdit';
@@ -13,6 +12,7 @@ import LegacyIcon from 'components/LegacyIcon';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import LevelPopup from './LevelPopup';
 import { combinedTT } from 'utils/calcs';
+import Compare from 'components/Compare';
 import Link from '../../components/Link';
 
 const OtherKuskiLink = ({ otherKuski, getTimes, selectLevel }) => {
@@ -35,23 +35,24 @@ const OtherKuskiLink = ({ otherKuski, getTimes, selectLevel }) => {
   );
 };
 
-const Personal = ({
-  times,
-  getTimes,
-  highlight,
-  multiHighlight,
-  highlightWeeks,
-  timesError,
-  setError,
-  showLegacyIcon,
-  kuski,
-}) => {
+const Personal = ({ name }) => {
   const [level, selectLevel] = useState(-1);
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
   const isRehydrated = useStoreRehydrated();
-  const { recordsLoading, levelPackInfo } = useStoreState(
-    state => state.LevelPack,
+  const {
+    recordsLoading,
+    levelPackInfo,
+    recordsOnly: records,
+    timesError,
+    highlight,
+    multiHighlight,
+    personalKuski: kuski,
+    settings: { showLegacy, highlightWeeks, showLegacyIcon },
+    personalTimes: times,
+  } = useStoreState(state => state.LevelPack);
+  const { setError, getPersonalTimes } = useStoreActions(
+    actions => actions.LevelPack,
   );
 
   if (recordsLoading || !isRehydrated) {
@@ -67,6 +68,7 @@ const Personal = ({
           single: times.timesData[timeIndex].LevelBesttime,
           multi: times.timesData[timeIndex].LevelMultiBesttime,
           both: times.timesData[timeIndex].LevelCombinedBesttime,
+          record: records[r.LevelIndex],
           Level: r,
           LevelIndex: r.LevelIndex,
         };
@@ -77,6 +79,8 @@ const Personal = ({
     combinedTT(levels, ['single']),
     combinedTT(levels, ['multi']),
     combinedTT(levels, ['single', 'multi']),
+    combinedTT(levels, ['record']),
+    combinedTT(levels, ['single', 'record']),
   ];
 
   return (
@@ -87,7 +91,16 @@ const Personal = ({
       <ChoosePlayer>
         <span>Select player: </span>
         <div>
-          <ClickToEdit value={kuski} update={newKuski => getTimes(newKuski)}>
+          <ClickToEdit
+            value={kuski}
+            update={newKuski =>
+              getPersonalTimes({
+                PersonalKuskiIndex: newKuski,
+                name,
+                eolOnly: showLegacy ? 0 : 1,
+              })
+            }
+          >
             <KuskiLink>{kuski}</KuskiLink> <EditIcon />
           </ClickToEdit>
         </div>
@@ -99,8 +112,10 @@ const Personal = ({
           <ListCell width={200}>Single time</ListCell>
           {tts[1].finished !== 0 && <ListCell width={200}>Multi time</ListCell>}
           {tts[0].finished !== 0 && tts[1].finished !== 0 && (
-            <ListCell width={200}>Difference</ListCell>
+            <ListCell width={200}>Multi diff</ListCell>
           )}
+          <ListCell width={200}>Record</ListCell>
+          <ListCell>Record diff</ListCell>
         </ListHeader>
         {levels.length !== 0 && (
           <>
@@ -144,7 +159,13 @@ const Personal = ({
                     {typeof r.multi.OtherKuski === 'object' ? (
                       <OtherKuskiLink
                         otherKuski={r.multi.OtherKuski.Kuski}
-                        getTimes={getTimes}
+                        getTimes={k =>
+                          getPersonalTimes({
+                            PersonalKuskiIndex: k,
+                            name,
+                            eolOnly: showLegacy ? 0 : 1,
+                          })
+                        }
                         selectLevel={selectLevel}
                       />
                     ) : (
@@ -160,15 +181,41 @@ const Personal = ({
                       r.single.TimeIndex >= highlight[highlightWeeks]
                     }
                   >
-                    <Compare bettertime={r.multi.Time > r.single.Time}>
-                      {r.multi.Time &&
-                        r.single.Time &&
-                        (r.multi.Time > r.single.Time ? '-' : '+')}
-                      {r.multi.Time && r.single.Time && (
-                        <Time time={Math.abs(r.multi.Time - r.single.Time)} />
-                      )}
-                    </Compare>
+                    <Compare time={r.single} compareTime={r.multi} />
                   </ListCell>
+                )}
+                {r.record ? (
+                  <>
+                    <ListCell
+                      width={200}
+                      highlight={
+                        r.record.TimeIndex >= highlight[highlightWeeks]
+                      }
+                    >
+                      {r.record.Time && <Time time={r.record.Time} />}
+                      {r.record.Source !== null && (
+                        <LegacyContainer>
+                          <LegacyIcon
+                            source={r.record.Source || 0}
+                            show={showLegacyIcon}
+                          />
+                        </LegacyContainer>
+                      )}
+                    </ListCell>
+                    <ListCell
+                      highlight={
+                        r.record.TimeIndex >= highlight[highlightWeeks] ||
+                        r.single.TimeIndex >= highlight[highlightWeeks]
+                      }
+                    >
+                      <Compare time={r.single} compareTime={r.record} />
+                    </ListCell>
+                  </>
+                ) : (
+                  <>
+                    <ListCell width={200} />
+                    <ListCell />
+                  </>
                 )}
               </TimeRow>
             ))}
@@ -189,7 +236,12 @@ const Personal = ({
                     <Time time={tts[2]} />
                   </ListCell>
                 )}
-                <ListCell />
+                <ListCell>
+                  <Time time={tts[3]} />
+                </ListCell>
+                <ListCell>
+                  <Time time={tts[4]} />
+                </ListCell>
               </TTRow>
             ) : (
               <TTRow>
@@ -272,12 +324,6 @@ const TTRow = styled(ListRow)`
   :hover {
     background: ${p => (p.selected ? p.theme.primary : p.theme.hoverColor)};
     color: ${p => (p.selected ? '#fff' : 'inherit')};
-  }
-`;
-
-const Compare = styled.span`
-  && {
-    color: ${p => (p.bettertime ? p.theme.linkColor : '#da0000')};
   }
 `;
 

@@ -27,18 +27,14 @@ const LevelPack = ({ name, tab, ...props }) => {
     levelPackInfo,
     highlight,
     multiHighlight,
-    personalTimes,
-    timesError,
-    records,
     personalKuski,
-    settings: { highlightWeeks, showLegacyIcon, showLegacy },
+    settings: { highlightWeeks, showLegacy },
   } = useStoreState(state => state.LevelPack);
 
   const {
     getLevelPackInfo,
     getHighlight,
     getPersonalTimes,
-    setError,
     getStats,
     getRecordsOnly,
   } = useStoreActions(actions => actions.LevelPack);
@@ -137,26 +133,7 @@ const LevelPack = ({ name, tab, ...props }) => {
         {tab === 'king-list' && (
           <Kinglist highlight={highlight} highlightWeeks={highlightWeeks} />
         )}
-        {tab === 'personal' && (
-          <Personal
-            timesError={timesError}
-            setError={e => setError(e)}
-            getTimes={newKuski =>
-              getPersonalTimes({
-                PersonalKuskiIndex: newKuski,
-                name,
-                eolOnly: showLegacy ? 0 : 1,
-              })
-            }
-            times={personalTimes}
-            highlight={highlight}
-            multiHighlight={multiHighlight}
-            highlightWeeks={highlightWeeks}
-            records={records}
-            showLegacyIcon={showLegacyIcon}
-            kuski={personalKuski}
-          />
-        )}
+        {tab === 'personal' && <Personal name={name} />}
         {tab === 'multi' && (
           <MultiRecords
             name={name}
