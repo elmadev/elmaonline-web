@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import FormResponse from 'components/FormResponse';
@@ -17,6 +17,15 @@ const UpdateForm = () => {
   const [LevelPackDesc, setDesc] = useState(levelPackInfo.LevelPackDesc);
 
   const [response, setResponse] = useState({});
+
+  useEffect(() => {
+    if (levelPackInfo?.LevelPackLongName && !LevelPackLongName) {
+      setLongName(levelPackInfo.LevelPackLongName);
+    }
+    if (levelPackInfo?.LevelPackDesc && !LevelPackDesc) {
+      setDesc(levelPackInfo.LevelPackDesc);
+    }
+  }, [levelPackInfo]);
 
   const { errors, done } = response;
 

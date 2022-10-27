@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { VariableSizeList } from 'react-window';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useDebounce } from 'use-debounce';
 import Layout from 'components/Layout';
@@ -10,116 +9,14 @@ import {
   Typography,
   Grid,
   Switch,
-  ListSubheader,
-  CircularProgress,
-  useMediaQuery,
 } from '@material-ui/core';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from '@reach/router';
 import ChatView from 'features/ChatView';
-import Kuski from 'components/Kuski';
 import Header from 'components/Header';
 import { Paper } from 'components/Paper';
 import { format, addDays } from 'date-fns';
-
-const LISTBOX_PADDING = 8; // px
-
-function renderRow(props) {
-  const { data, index, style } = props;
-  return React.cloneElement(data[index], {
-    style: {
-      ...style,
-      top: style.top + LISTBOX_PADDING,
-    },
-  });
-}
-
-const OuterElementContext = React.createContext({});
-
-const OuterElementType = React.forwardRef((props, ref) => {
-  const outerProps = React.useContext(OuterElementContext);
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return <div ref={ref} {...props} {...outerProps} />;
-});
-
-function useResetCache(data) {
-  const ref = React.useRef(null);
-  React.useEffect(() => {
-    if (ref.current != null) {
-      ref.current.resetAfterIndex(0, true);
-    }
-  }, [data]);
-  return ref;
-}
-
-const useStyles = makeStyles({
-  listbox: {
-    boxSizing: 'border-box',
-    '& ul': {
-      padding: 0,
-      margin: 0,
-    },
-  },
-});
-
-// Adapter for react-window
-const ListboxComponent = React.forwardRef(function ListboxComponent(
-  props,
-  ref,
-) {
-  const { children, ...other } = props;
-  const itemData = React.Children.toArray(children);
-  const theme = useTheme();
-  const smUp = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true });
-  const itemCount = itemData.length;
-  const itemSize = smUp ? 36 : 48;
-
-  const getChildSize = child => {
-    if (React.isValidElement(child) && child.type === ListSubheader) {
-      return 48;
-    }
-
-    return itemSize;
-  };
-
-  const getHeight = () => {
-    if (itemCount > 8) {
-      return 8 * itemSize;
-    }
-    return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
-  };
-
-  const gridRef = useResetCache(itemCount);
-
-  return (
-    <div ref={ref}>
-      <OuterElementContext.Provider value={other}>
-        <VariableSizeList
-          itemData={itemData}
-          height={getHeight() + 2 * LISTBOX_PADDING}
-          width="100%"
-          ref={gridRef}
-          outerElementType={OuterElementType}
-          innerElementType="ul"
-          itemSize={index => getChildSize(itemData[index])}
-          overscanCount={5}
-          itemCount={itemCount}
-        >
-          {renderRow}
-        </VariableSizeList>
-      </OuterElementContext.Provider>
-    </div>
-  );
-});
-
-const renderGroup = params => [
-  <ListSubheader key={params.key} component="div">
-    {params.group}
-  </ListSubheader>,
-  params.children,
-];
+import KuskiAutoComplete from 'components/KuskiAutoComplete';
 
 const ChatLog = props => {
   const location = useLocation();
@@ -218,50 +115,21 @@ const ChatLog = props => {
     });
   };
 
-  const acClasses = useStyles();
-
   return (
     <Layout t="Chat Log">
       <Paper padding>
         <Header h2>Chat Log Filter</Header>
         <ChatFilter container spacing={2} alignItems="center">
           <Grid item xs={12} sm={6} lg={3}>
-            {playerList.length > 0 ? (
-              <Autocomplete
-                id="filter-kuski"
-                options={playerList}
-                multiple
-                filterSelectedOptions
-                getOptionLabel={option => option.Kuski}
-                getOptionSelected={(option, value) =>
-                  option.KuskiIndex === value.KuskiIndex
-                }
-                onChange={(event, newValue) => {
-                  const ids = newValue.map(value => value.KuskiIndex);
-                  setKuskiIds(ids);
-                  setKuskiValue(newValue);
-                  urlSync({ KuskiIds: ids });
-                }}
-                renderInput={params => (
-                  <TextField
-                    // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...params}
-                    label="Kuski"
-                    placeholder="Name(s)"
-                    variant="outlined"
-                  />
-                )}
-                renderOption={option => (
-                  <Kuski kuskiData={option} flag team noLink />
-                )}
-                value={kuskiValue}
-                ListboxComponent={ListboxComponent}
-                renderGroup={renderGroup}
-                classes={acClasses}
-              />
-            ) : (
-              <CircularProgress />
-            )}
+            <KuskiAutoComplete
+              list={playerList}
+              selected={kuskiValue}
+              onChange={(ids, newValue) => {
+                setKuskiIds(ids);
+                setKuskiValue(newValue);
+                urlSync({ KuskiIds: ids });
+              }}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} lg={3}>

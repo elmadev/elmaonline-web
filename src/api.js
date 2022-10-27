@@ -283,6 +283,22 @@ export const LevelPackStats = data =>
   api.get(`levelpack/${data.name}/stats/${data.eolOnly}`, null, {
     timeout: 60000,
   });
+export const LevelPackStatsFilter = data =>
+  api.get(
+    `levelpack/${data.name}/stats/${data.eolOnly}/${data.filter}/${data.filterValue}`,
+    null,
+    {
+      timeout: 60000,
+    },
+  );
+export const LevelPackRecords = data =>
+  api.get(`levelpack/${data.name}/records/${data.eolOnly ? 1 : 0}`);
+export const LevelPackRecordsFilter = data =>
+  api.get(
+    `levelpack/${data.name}/records/${data.eolOnly ? 1 : 0}/${data.filter}/${
+      data.filterValue
+    }`,
+  );
 export const MultiRecords = LevelPackName =>
   api.get(`levelpack/${LevelPackName}/multirecords`);
 export const LevelPackSearch = q => api.get(`levelpack/search/${q}`);
@@ -326,6 +342,10 @@ export const DeletePack = data =>
 // besttime
 export const Besttime = data =>
   api.get(`besttime/${data.levelId}/${data.limit}/${data.eolOnly}`);
+export const BesttimeFilter = data =>
+  api.get(
+    `besttime/${data.levelId}/${data.limit}/${data.eolOnly}/${data.filter}/${data.filterValue}`,
+  );
 export const PersonalLatestPRs = data =>
   api.get(
     `besttime/latest/${data.KuskiIndex}/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,

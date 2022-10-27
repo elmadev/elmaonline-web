@@ -2,6 +2,14 @@ import React from 'react';
 import { Button as MuiButton } from '@material-ui/core';
 import styled from 'styled-components';
 import { Link as ReachLink } from '@reach/router';
+import {
+  Map,
+  PlayArrow,
+  Settings,
+  FilterList,
+  Close,
+  Refresh,
+} from '@material-ui/icons';
 
 const StyledButton = styled(MuiButton)`
   && {
@@ -19,8 +27,20 @@ const StyledButton = styled(MuiButton)`
           ? `${p.theme.padXXSmall} ${p.theme.padXXSmall}`
           : `${p.theme.padXSmall} ${p.theme.padMedium}`};
     }
+    svg {
+      margin-right: 8px;
+    }
   }
 `;
+
+const icons = {
+  level: Map,
+  replay: PlayArrow,
+  settings: Settings,
+  filter: FilterList,
+  close: Close,
+  refresh: Refresh,
+};
 
 const Button = ({
   children,
@@ -32,6 +52,7 @@ const Button = ({
   little,
   to, // use this to create a normal link
   right,
+  icon,
 }) => {
   let color = 'primary';
   let variant = 'contained';
@@ -41,6 +62,12 @@ const Button = ({
   if (naked) {
     color = 'default';
     variant = 'text';
+  }
+  let Icon = null;
+  if (icon) {
+    if (icons[icon]) {
+      Icon = icons[icon];
+    }
   }
   return (
     <StyledButton
@@ -53,7 +80,14 @@ const Button = ({
       onClick={() => onClick && onClick()}
       to={to}
     >
-      {to ? <ReachLink to={to}>{children}</ReachLink> : <>{children}</>}
+      {to ? (
+        <ReachLink to={to}>{children}</ReachLink>
+      ) : (
+        <>
+          {Icon && <Icon />}
+          {children}
+        </>
+      )}
     </StyledButton>
   );
 };
