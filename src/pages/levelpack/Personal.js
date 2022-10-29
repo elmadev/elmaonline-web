@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Edit } from '@material-ui/icons';
 import Time from 'components/Time';
 import { Level } from 'components/Names';
+import Kuski from 'components/Kuski';
 import ClickToEdit from 'components/ClickToEdit';
 import Feedback from 'components/Feedback';
 import Loading from 'components/Loading';
@@ -115,6 +116,7 @@ const Personal = ({ name }) => {
             <ListCell width={200}>Multi diff</ListCell>
           )}
           <ListCell width={200}>Record</ListCell>
+          <ListCell width={200}>Record holder</ListCell>
           <ListCell>Record diff</ListCell>
         </ListHeader>
         {levels.length !== 0 && (
@@ -181,7 +183,7 @@ const Personal = ({ name }) => {
                       r.single.TimeIndex >= highlight[highlightWeeks]
                     }
                   >
-                    <Compare time={r.single} compareTime={r.multi} />
+                    <Compare time={r.single.Time} compareTime={r.multi.Time} />
                   </ListCell>
                 )}
                 {r.record ? (
@@ -203,12 +205,25 @@ const Personal = ({ name }) => {
                       )}
                     </ListCell>
                     <ListCell
+                      width={200}
+                      highlight={
+                        r.record.TimeIndex >= highlight[highlightWeeks]
+                      }
+                    >
+                      {r.record.KuskiData && (
+                        <Kuski kuskiData={r.record.KuskiData} />
+                      )}
+                    </ListCell>
+                    <ListCell
                       highlight={
                         r.record.TimeIndex >= highlight[highlightWeeks] ||
                         r.single.TimeIndex >= highlight[highlightWeeks]
                       }
                     >
-                      <Compare time={r.single} compareTime={r.record} />
+                      <Compare
+                        time={r.single.Time}
+                        compareTime={r.record.Time}
+                      />
                     </ListCell>
                   </>
                 ) : (
@@ -234,14 +249,22 @@ const Personal = ({ name }) => {
                 {tts[0].finished !== 0 && tts[1].finished !== 0 && (
                   <ListCell>
                     <Time time={tts[2]} />
+                    {' (Combined TT)'}
                   </ListCell>
                 )}
                 <ListCell>
                   <Time time={tts[3]} />
                 </ListCell>
-                <ListCell>
-                  <Time time={tts[4]} />
-                </ListCell>
+                <ListCell />
+                {tts[0].unfinished ? (
+                  <ListCell>
+                    {tts[3].finished - tts[0].finished} / {tts[3].levs}
+                  </ListCell>
+                ) : (
+                  <ListCell>
+                    <Compare time={tts[0].tt} compareTime={tts[3].tt} />
+                  </ListCell>
+                )}
               </TTRow>
             ) : (
               <TTRow>
