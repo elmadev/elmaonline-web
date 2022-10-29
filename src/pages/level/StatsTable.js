@@ -10,7 +10,7 @@ import styled from 'styled-components';
 const finishedTypes = {
   B: 'Finished (Apple Bug)',
   D: 'Dead',
-  E: 'Esced',
+  E: 'Escaped',
   F: 'Finished',
   S: 'Spied',
   X: 'Cheated',

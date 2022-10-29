@@ -57,12 +57,12 @@ const Controls = ({ detailed, sort }) => {
             <MenuItem value="topKuskiCount">
               Highest Record Holder Count
             </MenuItem>
-            <MenuItem value="attemptsPctD">Attempts % (Dead)</MenuItem>
-            <MenuItem value="attemptsPctE">Attempts % (Esc)</MenuItem>
             <MenuItem value="attemptsPctF">Attempts % (Finished)</MenuItem>
-            <MenuItem value="timePctD">Time % (Dead)</MenuItem>
-            <MenuItem value="timePctE">Time % (Esc)</MenuItem>
+            <MenuItem value="attemptsPctD">Attempts % (Dead)</MenuItem>
+            <MenuItem value="attemptsPctE">Attempts % (Escaped)</MenuItem>
             <MenuItem value="timePctF">Time % (Finished)</MenuItem>
+            <MenuItem value="timePctD">Time % (Dead)</MenuItem>
+            <MenuItem value="timePctE">Time % (Escaped)</MenuItem>
             <MenuItem value="minTime">Min Record Time</MenuItem>
             <MenuItem value="maxTime">Max Record Time</MenuItem>
             <MenuItem value="avgTime">Avg. Record Time</MenuItem>

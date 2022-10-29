@@ -23,7 +23,7 @@ const LevelInfoLevelStats = ({ level }) => {
           <ListCell>Type</ListCell>
           <ListCell>Finished %</ListCell>
           <ListCell>Dead %</ListCell>
-          <ListCell>Escape %</ListCell>
+          <ListCell>Escaped %</ListCell>
           <ListCell>Total</ListCell>
         </ListHeader>
         <ListRow>
@@ -40,11 +40,11 @@ const LevelInfoLevelStats = ({ level }) => {
           <ListCell title={formatAttempts(stats.AttemptsF)}>
             {formatPct(stats.AttemptsF, stats.AttemptsAll, 1)}
           </ListCell>
-          <ListCell title={formatAttempts(stats.AttemptsE)}>
-            {formatPct(stats.AttemptsE, stats.AttemptsAll, 1)}
-          </ListCell>
           <ListCell title={formatAttempts(stats.AttemptsD)}>
             {formatPct(stats.AttemptsD, stats.AttemptsAll, 1)}
+          </ListCell>
+          <ListCell title={formatAttempts(stats.AttemptsE)}>
+            {formatPct(stats.AttemptsE, stats.AttemptsAll, 1)}
           </ListCell>
           <ListCell>{formatAttempts(stats.AttemptsAll)}</ListCell>
         </ListRow>
@@ -53,11 +53,11 @@ const LevelInfoLevelStats = ({ level }) => {
           <ListCell title={formatTimeSpent(stats.TimeF)}>
             {formatPct(stats.TimeF, stats.TimeAll, 1)}
           </ListCell>
-          <ListCell title={formatTimeSpent(stats.TimeE)}>
-            {formatPct(stats.TimeE, stats.TimeAll, 1)}
-          </ListCell>
           <ListCell title={formatTimeSpent(stats.TimeD)}>
             {formatPct(stats.TimeD, stats.TimeAll, 1)}
+          </ListCell>
+          <ListCell title={formatTimeSpent(stats.TimeE)}>
+            {formatPct(stats.TimeE, stats.TimeAll, 1)}
           </ListCell>
           <ListCell>{formatTimeSpent(stats.TimeAll)}</ListCell>
         </ListRow>
