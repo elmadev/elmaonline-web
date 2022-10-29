@@ -12,13 +12,13 @@ import styled from 'styled-components';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 
-const Finished = {
-  F: 'Finished',
-  D: 'Died',
+const finishedTypes = {
+  B: 'Finished (Apple Bug)',
+  D: 'Dead',
   E: 'Escaped',
-  X: 'Cheated',
+  F: 'Finished',
   S: 'Spied',
-  B: 'Apple Bugged',
+  X: 'Cheated',
 };
 
 export default function Preview({
@@ -65,7 +65,7 @@ export default function Preview({
               </p>
               {has(previewRec, 'Apples') && (
                 <Comment>
-                  {Finished[previewRec.Finished]}
+                  {finishedTypes[previewRec.Finished]}
                   <br />
                   {previewRec.Apples} Apples
                   <br />

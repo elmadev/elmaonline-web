@@ -36,7 +36,7 @@ const LevelpacksDetailed = ({
           <ListCell>
             <NewLineWrapper>Attempts %</NewLineWrapper>
             <NewLineWrapper>Time %</NewLineWrapper>
-            <NewLineWrapper>(Dead/Esc/Finished)</NewLineWrapper>
+            <NewLineWrapper>(Finished/Dead/Escaped)</NewLineWrapper>
           </ListCell>
           <ListCell>
             <NewLineWrapper># Levels (% Finished)</NewLineWrapper>
@@ -92,15 +92,15 @@ const LevelpacksDetailed = ({
                   {st &&
                     (() => {
                       const timesPct = [
+                        ['F', formatPct(st.TimeF, st.TimeAll)],
                         ['D', formatPct(st.TimeD, st.TimeAll)],
                         ['E', formatPct(st.TimeE, st.TimeAll)],
-                        ['F', formatPct(st.TimeF, st.TimeAll)],
                       ];
 
                       const attemptsPct = [
+                        ['F', formatPct(st.AttemptsF, st.AttemptsAll)],
                         ['D', formatPct(st.AttemptsD, st.AttemptsAll)],
                         ['E', formatPct(st.AttemptsE, st.AttemptsAll)],
-                        ['F', formatPct(st.AttemptsF, st.AttemptsAll)],
                       ];
 
                       return (
