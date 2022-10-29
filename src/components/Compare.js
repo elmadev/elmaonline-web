@@ -7,7 +7,7 @@ const Compare = ({ time, compareTime }) => {
   if (!time || !compareTime) {
     return null;
   }
-  if (compareTime.Time === time.Time) {
+  if (compareTime === time) {
     return (
       <span>
         <Image src={Crown} alt="Crown" title="You have the record!" />
@@ -15,13 +15,9 @@ const Compare = ({ time, compareTime }) => {
     );
   }
   return (
-    <Color bettertime={compareTime.Time > time.Time}>
-      {compareTime.Time &&
-        time.Time &&
-        (compareTime.Time > time.Time ? '-' : '+')}
-      {compareTime.Time && time.Time && (
-        <Time time={Math.abs(compareTime.Time - time.Time)} />
-      )}
+    <Color bettertime={compareTime > time}>
+      {compareTime > time ? '-' : '+'}
+      {<Time time={Math.abs(compareTime - time)} />}
     </Color>
   );
 };
