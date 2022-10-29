@@ -213,14 +213,16 @@ const Search = () => {
                               parse="X"
                             />
                           </ListCell>
-                          <ListCell
-                            width={90}
-                            to={`/kuskis/${r.KuskiData.Kuski}`}
-                          >
-                            {r.KuskiData && (
+                          {r.KuskiData ? (
+                            <ListCell
+                              width={90}
+                              to={`/kuskis/${r.KuskiData.Kuski}`}
+                            >
                               <Kuski noLink kuskiData={r.KuskiData} />
-                            )}
-                          </ListCell>
+                            </ListCell>
+                          ) : (
+                            <ListCell width={90}>{'Unknown'}</ListCell>
+                          )}
                           {mod() === 1 && showLocked && (
                             <>
                               <ListCell width={50}>
