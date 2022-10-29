@@ -17,6 +17,9 @@ const finishedTypes = {
 };
 
 const StatsTable = ({ data, loading }) => {
+  if (data.length === 0) {
+    return <Container>You have not played this level yet.</Container>;
+  }
   if (loading) return <Loading />;
 
   const getTotalRunCount = () => {
@@ -127,6 +130,10 @@ const StatsTable = ({ data, loading }) => {
 StatsTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
+
+const Container = styled.div`
+  padding: 20px;
+`;
 
 const FirstLast = styled.div`
   font-size: 14px;
