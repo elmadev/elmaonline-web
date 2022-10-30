@@ -36,6 +36,7 @@ import Button from 'components/Buttons';
 import { xor } from 'lodash';
 import Preview from './Preview';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { create } from 'apisauce';
 
 const TimesReplays = ({ KuskiIndex, collapse }) => {
   const [PRs, setPRs] = useState(false);
@@ -51,6 +52,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
     },
     PRsAndReplays: { data: PRsData, loading: PRsLoading, error: PRsError },
     search,
+    kuski,
   } = useStoreState(state => state.Kuski);
   const { getTagOptions } = useStoreActions(actions => actions.Upload);
   const { tagOptions } = useStoreState(state => state.Upload);
@@ -158,6 +160,36 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
     return `/r/${time.TimeFileData.UUID}/${RecFileName}`;
   };
 
+  const createRecName = (LevelName, nick, recTime) => {
+    const timeAsString = `${recTime}`;
+    const levName =
+      LevelName.substring(0, 6) === 'QWQUU0'
+        ? LevelName.substring(6, 8)
+        : LevelName;
+    return `${levName}${nick.substring(
+      0,
+      Math.min(15 - (levName.length + timeAsString.length), 4),
+    )}${timeAsString}.rec`;
+  };
+
+  const downloadRec = (url, levName, kuski, time) => {
+    const newName = createRecName(levName, kuski, time);
+
+    const api = create({
+      headers: {
+        'Content-Type': 'application/octet-stream',
+      },
+      responseType: 'blob',
+    });
+    api.get(url).then(response => {
+      const a = document.createElement('a');
+      const tempUrl = window.URL.createObjectURL(response.data);
+      a.href = tempUrl;
+      a.download = newName;
+      a.click();
+    });
+  };
+
   return (
     <>
       <ListContainer loading={loading} error={error}>
@@ -253,11 +285,18 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                       {(isMobile || hover === time.TimeIndex) &&
                         time.TimeFileData && (
                           <>
-                            <a
-                              href={`${config.s3Url}time/${time.TimeFileData.UUID}-${time.TimeFileData.MD5}/${time.TimeIndex}.rec`}
+                            <DownloadText
+                              onClick={() =>
+                                downloadRec(
+                                  `${config.s3Url}time/${time.TimeFileData.UUID}-${time.TimeFileData.MD5}/${time.TimeIndex}.rec`,
+                                  time?.LevelData?.LevelName,
+                                  kuski?.Kuski,
+                                  time?.Time,
+                                )
+                              }
                             >
                               Download
-                            </a>
+                            </DownloadText>
                             <MuiButton
                               title="View"
                               onClick={() => {
@@ -411,6 +450,14 @@ const Close = styled(CloseIcon)`
 
   :hover {
     color: red;
+  }
+`;
+
+const DownloadText = styled.span`
+  color: ${p => p.theme.linkColor};
+  cursor: pointer;
+  & :hover {
+    color: ${p => p.theme.linkHover};
   }
 `;
 
