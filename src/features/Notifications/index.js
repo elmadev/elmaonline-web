@@ -10,13 +10,25 @@ import LooksOneIcon from '@material-ui/icons/LooksOne';
 import Badge from '@material-ui/core/Badge';
 import styled from 'styled-components';
 import Link from 'components/Link';
+import { useState } from 'react';
+import { Paper, TablePagination } from '@material-ui/core';
 
-const Notifications = () => {
+const Notifications = ({
+  defaultPage = 0,
+  defaultPageSize = 25,
+  showPagination = true,
+}) => {
+  const [page, setPage] = useState(defaultPage);
+  const [pageSize, setPageSize] = useState(defaultPageSize);
   const { notifications, seenAt } = useStoreState(state => state.Notifications);
   const { getNotifications, markSeen } = useStoreActions(
     actions => actions.Notifications,
   );
   const { getNotificationsCount } = useStoreActions(actions => actions.Login);
+
+  const paginateNotifications = (notificationList, page, pageSize) => {
+    return notificationList.slice(page * pageSize, page * pageSize + pageSize);
+  };
 
   useEffect(() => {
     getNotifications();
@@ -29,6 +41,11 @@ const Notifications = () => {
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleChangeRowsPerPage = event => {
+    setPage(0);
+    setPageSize(event.target.value);
+  };
 
   const getIcon = type => {
     switch (type) {
@@ -117,29 +134,51 @@ const Notifications = () => {
   };
 
   return (
-    <ListContainer>
-      {notifications.map(n => {
-        return (
-          <ListRow key={n.NotificationIndex} verticalAlign="middle">
-            <ListCell width={60} verticalAlign="middle" textAlign="center">
-              <Badge color="secondary" badgeContent={!n.SeenAt ? 'new' : null}>
-                {getIcon(n.Type)}
-              </Badge>
-            </ListCell>
-            <ListCell>
-              <Written>
-                <LocalTime
-                  date={n.CreatedAt}
-                  format="ddd D MMM YYYY HH:mm"
-                  parse="X"
-                />
-              </Written>
-              {getText(n)}
-            </ListCell>
-          </ListRow>
-        );
-      })}
-    </ListContainer>
+    <Paper>
+      <ListContainer>
+        {paginateNotifications(notifications, page, pageSize).map(n => {
+          return (
+            <ListRow key={n.NotificationIndex} verticalAlign="middle">
+              <ListCell width={60} verticalAlign="middle" textAlign="center">
+                <Badge
+                  color="secondary"
+                  badgeContent={!n.SeenAt ? 'new' : null}
+                >
+                  {getIcon(n.Type)}
+                </Badge>
+              </ListCell>
+              <ListCell>
+                <Written>
+                  <LocalTime
+                    date={n.CreatedAt}
+                    format="ddd D MMM YYYY HH:mm"
+                    parse="X"
+                  />
+                </Written>
+                {getText(n)}
+              </ListCell>
+            </ListRow>
+          );
+        })}
+      </ListContainer>
+      {showPagination && (
+        <TablePagination
+          style={{ width: '600px' }}
+          component="div"
+          count={notifications.length}
+          rowsPerPage={pageSize}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onChangePage={(e, newPage) => setPage(newPage)}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      )}
+    </Paper>
   );
 };
 
