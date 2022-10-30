@@ -285,7 +285,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                       {(isMobile || hover === time.TimeIndex) &&
                         time.TimeFileData && (
                           <>
-                            <span
+                            <DownloadText
                               onClick={() =>
                                 downloadRec(
                                   `${config.s3Url}time/${time.TimeFileData.UUID}-${time.TimeFileData.MD5}/${time.TimeIndex}.rec`,
@@ -296,7 +296,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                               }
                             >
                               Download
-                            </span>
+                            </DownloadText>
                             <MuiButton
                               title="View"
                               onClick={() => {
@@ -450,6 +450,14 @@ const Close = styled(CloseIcon)`
 
   :hover {
     color: red;
+  }
+`;
+
+const DownloadText = styled.span`
+  color: ${p => p.theme.linkColor};
+  cursor: pointer;
+  & :hover {
+    color: ${p => p.theme.linkHover};
   }
 `;
 
