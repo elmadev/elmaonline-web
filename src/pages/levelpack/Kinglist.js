@@ -21,6 +21,7 @@ const Kinglist = ({ highlight, highlightWeeks }) => {
           <ListCell width={70}>#</ListCell>
           <ListCell width={320}>Player</ListCell>
           <ListCell width={200}>Points</ListCell>
+          <ListCell width={100}>Records</ListCell>
           <ListCell />
         </ListHeader>
         {kinglist.length > 0 && (
@@ -37,6 +38,7 @@ const Kinglist = ({ highlight, highlightWeeks }) => {
                   >
                     {r.points}
                   </ListCell>
+                  <ListCell width={100}>{r.records}</ListCell>
                   <ListCell />
                 </ListRow>
               ))}
