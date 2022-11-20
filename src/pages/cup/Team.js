@@ -33,8 +33,10 @@ const Team = () => {
   const [previewRecIndex, setPreviewRecIndex] = useState(null);
 
   useEffect(() => {
-    getTeamReplays(cup.CupGroupIndex);
-  }, []);
+    if (cup.CupGroupIndex) {
+      getTeamReplays(cup.CupGroupIndex);
+    }
+  }, [cup.CupGroupIndex]);
 
   const isPlayingPreview = CupTimeIndex => {
     return CupTimeIndex === previewRecIndex;
