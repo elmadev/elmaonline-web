@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useStoreState } from 'easy-peasy';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
-const RecPlayer =
-  typeof document !== 'undefined' && require('recplayer-react').default; // eslint-disable-line global-require
+import RecPlayerReact from 'recplayer-react';
 
 const Recplayer = props => {
   const {
@@ -53,8 +51,8 @@ const Recplayer = props => {
 
   return (
     <>
-      {RecPlayer && lev ? (
-        <RecPlayer
+      {RecPlayerReact && lev ? (
+        <RecPlayerReact
           recUrl={rec}
           levUrl={lev}
           width={width}
@@ -69,6 +67,8 @@ const Recplayer = props => {
             pictures,
             customBackgroundSky: customSkyGround,
           }}
+          showStartPos
+          fitLev={!rec}
         />
       ) : (
         <span>Loading..</span>
