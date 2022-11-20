@@ -28,38 +28,53 @@ const CupResults = props => {
 
   return (
     <Container>
-      {currentEvents.map(c => (
-        <Paper key={c.LevelIndex}>
-          <EventHeader>
-            <Link to={`/cup/${ShortName}/events/${getEventNumber(c)}/map`}>
-              Event {getEventNumber(c)}
-            </Link>
-            <span> by </span>
-            <Kuski kuskiData={c.KuskiData} />
-          </EventHeader>
-          <EventInfo>
-            {c.Level && (
-              <Download href={`level/${c.LevelIndex}`}>
-                {c.Level.LevelName}
-              </Download>
-            )}
-          </EventInfo>
-          <EventInfo>
-            Deadline:{' '}
-            <LocalTime
-              date={c.EndTime}
-              format="ddd D MMM YYYY HH:mm"
-              parse="X"
-            />
-          </EventInfo>
-          <EventInfo>
-            <Timer />{' '}
-            {formatDistance(new Date(c.EndTime * 1000), new Date(), {
-              addSuffix: true,
-            })}
-          </EventInfo>
-        </Paper>
-      ))}
+      {currentEvents.map(c => {
+        const timesShown =
+          c.Level && c.Level.Hidden !== undefined && !c.Level.Hidden;
+
+        return (
+          <Paper key={c.LevelIndex}>
+            <EventHeader>
+              <Link to={`/cup/${ShortName}/events/${getEventNumber(c)}/map`}>
+                Event {getEventNumber(c)}
+              </Link>
+              <span> by </span>
+              <Kuski kuskiData={c.KuskiData} />
+            </EventHeader>
+            <EventInfo>
+              {c.Level && (
+                <span title="Download level">
+                  <Download href={`level/${c.LevelIndex}`}>
+                    {c.Level.LevelName}.lev
+                  </Download>
+                </span>
+              )}
+              {c.Level && timesShown && (
+                <Link
+                  title="Go to level page; times for this event are shown."
+                  to={`/levels/${c.LevelIndex}`}
+                >
+                  {' - '}level page
+                </Link>
+              )}
+            </EventInfo>
+            <EventInfo>
+              Deadline:{' '}
+              <LocalTime
+                date={c.EndTime}
+                format="ddd D MMM YYYY HH:mm"
+                parse="X"
+              />
+            </EventInfo>
+            <EventInfo>
+              <Timer />{' '}
+              {formatDistance(new Date(c.EndTime * 1000), new Date(), {
+                addSuffix: true,
+              })}
+            </EventInfo>
+          </Paper>
+        );
+      })}
     </Container>
   );
 };
