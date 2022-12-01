@@ -13,6 +13,7 @@ import useElementSize from 'utils/useWindowSize';
 import LevelpacksDetailed from './LevelpacksDetailed';
 import Controls from './Controls';
 import FavStar from './FavStar';
+import RecordsCard from './RecordsCard';
 
 const getColumnCount = window_width => {
   if (window_width > 1300) {
@@ -105,6 +106,7 @@ const Levels = ({ tab, detailed }) => {
         >
           <Tab label="Packs" value="" />
           <Tab label="Collections" value="collections" />
+          <Tab label="Recent Records" value="recent-records" />
         </Tabs>
         {!tab && (
           <>
@@ -212,6 +214,11 @@ const Levels = ({ tab, detailed }) => {
             </FabCon>
           </>
         )}
+        {tab === 'recent-records' && (
+          <StyledRecentRecords>
+            <RecordsCard />
+          </StyledRecentRecords>
+        )}
       </Container>
     </Layout>
   );
@@ -254,6 +261,10 @@ const FabCon = styled.div`
 const Container = styled.div`
   padding-top: 10px;
   overflow: hidden;
+`;
+
+const StyledRecentRecords = styled.div`
+  padding: 10px 0 40px 0;
 `;
 
 export default Levels;

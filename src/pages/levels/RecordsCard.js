@@ -6,15 +6,22 @@ import RecentRecords from 'components/RecentRecords';
 import CardActions from '@material-ui/core/CardActions';
 import Button from 'components/Buttons';
 import { RecentBestRecords, useQueryAlt } from 'api';
+import Loading from 'components/Loading';
 
 const RecordsCard = () => {
   const [expanded, setExpanded] = useState(false);
 
-  const { data: records } = useQueryAlt(['RecentBestRecords', 7], async () =>
-    RecentBestRecords(7, 100),
+  // going too high on either (but I think especially days)
+  // can cause performance problems.
+  const days = 14;
+  const limit = 100;
+
+  const { data: records, isLoading } = useQueryAlt(
+    ['RecentBestRecords', days],
+    async () => RecentBestRecords(days, limit),
   );
 
-  const previewCount = 5;
+  const previewCount = limit;
 
   const show = records
     ? expanded
@@ -27,9 +34,22 @@ const RecordsCard = () => {
   return (
     <Card>
       <CardContent title="Records driven during battles are omitted.">
-        <Header h2>Records (Last 7 Days)</Header>
-        <div>Ordered by overall level playtime.</div>
+        <Header h2>
+          Top {limit} Non-Battle Records Driven in the Last {days} Days
+        </Header>
+        <div>
+          Ordered by the current overall playtime by all kuski's in the level.
+        </div>
+        <div>
+          Times shown were records when they were driven (and sometimes still
+          are).
+        </div>
+        <div>
+          Records driven on battle levels after the battle ends are shown.
+        </div>
+        <br />
         {records && <RecentRecords records={show} />}
+        {isLoading && <Loading />}
       </CardContent>
       {countMore > 0 && (
         <CardActions>
