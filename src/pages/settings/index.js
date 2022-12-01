@@ -13,6 +13,7 @@ import Setting from './Setting';
 import Themes from './Themes';
 import Notifications from './Notifications';
 import { useNavigate } from '@reach/router';
+import DeviceSettings from './DeviceSettings';
 
 const Settings = ({ tab }) => {
   const { userInfo, error, message, ignored } = useStoreState(
@@ -76,11 +77,12 @@ const Settings = ({ tab }) => {
           navigate(['/settings', value].filter(Boolean).join('/'));
         }}
       >
-        <Tab label="User info" value="" />
-        <Tab label="Team" value="team" />
-        <Tab label="Ignore" value="ignore" />
-        <Tab label="Site theme" value="themes" />
-        <Tab label="Notifications" value="notifications" />
+        {nickId() > 0 && <Tab label="User info" value="" />}
+        {nickId() > 0 && <Tab label="Team" value="team" />}
+        {nickId() > 0 && <Tab label="Ignore" value="ignore" />}
+        {nickId() > 0 && <Tab label="Site theme" value="themes" />}
+        {nickId() > 0 && <Tab label="Notifications" value="notifications" />}
+        <Tab label="Device Settings" value="device" />
       </Tabs>
       <Container>
         {nickId() > 0 ? (
@@ -200,8 +202,10 @@ const Settings = ({ tab }) => {
             {tab === 'notifications' && <Notifications />}
           </>
         ) : (
-          <div>Log in to change settings.</div>
+          <>{tab !== 'device' && <div>Log in to change settings.</div>}</>
         )}
+        {tab === 'device' && <DeviceSettings />}
+
         <Feedback
           open={error !== ''}
           text={error}

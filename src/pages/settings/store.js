@@ -112,4 +112,13 @@ export default {
       actions.getSettings();
     }
   }),
+  defaultZoom: persist(
+    {
+      scale: 100,
+    },
+    { storage: 'localStorage' },
+  ),
+  setDefaultZoom: action((state, scale) => {
+    state.defaultZoom.scale = parseInt(scale, 10);
+  }),
 };
