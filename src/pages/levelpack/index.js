@@ -19,6 +19,7 @@ import Crippled from './Crippled';
 import Admin from './Admin';
 import { useQueryAlt, LevelPackLevelStats } from '../../api';
 import Menus from './Menus';
+import RecordHistory from './RecordHistory';
 
 const LevelPack = ({ name, tab, ...props }) => {
   const isRehydrated = useStoreRehydrated();
@@ -107,6 +108,7 @@ const LevelPack = ({ name, tab, ...props }) => {
           <Tab label="Records" value="" />
           <Tab label="Total Times" value="total-times" />
           <Tab label="King list" value="king-list" />
+          <Tab label="Record History" value="record-history" />
           <Tab label="Personal" value="personal" />
           <Tab label="Multi records" value="multi" />
           <Tab label="Replays" value="replays" />
@@ -125,13 +127,16 @@ const LevelPack = ({ name, tab, ...props }) => {
           <Kuski kuskiData={levelPackInfo.KuskiData} />
         </DescriptionStyle>
         <br />
-        <Menus name={name} />
+        {['record-history'].indexOf(tab) === -1 && <Menus name={name} />}
         {!tab && <Records levelStats={levelStats} />}
         {tab === 'total-times' && (
           <TotalTimes highlight={highlight} highlightWeeks={highlightWeeks} />
         )}
         {tab === 'king-list' && (
           <Kinglist highlight={highlight} highlightWeeks={highlightWeeks} />
+        )}
+        {tab === 'record-history' && (
+          <RecordHistory levelPackInfo={levelPackInfo} />
         )}
         {tab === 'personal' && <Personal name={name} />}
         {tab === 'multi' && (
