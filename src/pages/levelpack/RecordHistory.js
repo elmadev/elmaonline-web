@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useStoreState } from 'easy-peasy';
 import Loading from 'components/Loading';
-import Header from 'components/Header';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import { LevelPackRecordHistory, useQueryAlt } from '../../api';
 import Kuski from 'components/Kuski';
@@ -11,10 +9,11 @@ import LocalTime from 'components/LocalTime';
 import { Level } from '../../components/Names';
 import { Dropdown } from '../../components/Inputs';
 import Switch from 'components/Switch';
-import { Typography } from '@material-ui/core';
+import { SportsMotorsports } from '@material-ui/icons';
+import Link from 'components/Link';
 
 const Date = ({ driven }) => {
-  return <LocalTime date={driven} format="D MMM YYYY" parse="X" />;
+  return <LocalTime date={driven} format="MMM D YYYY" parse="X" />;
 };
 
 const RecordHistory = ({ levelPackInfo }) => {
@@ -34,8 +33,6 @@ const RecordHistory = ({ levelPackInfo }) => {
   const { countAll, minDriven, maxDriven, records } =
     recordsData !== undefined ? recordsData : {};
 
-  console.log(countAll, minDriven, maxDriven);
-
   const limitOptions = [
     [50, 50],
     [100, 100],
@@ -44,13 +41,12 @@ const RecordHistory = ({ levelPackInfo }) => {
     [999999, 'All (Very Slow!)'],
   ];
 
-  console.log(levelPackInfo);
   return (
     <Root>
       <div>
         {countAll !== undefined && (
           <TextDiv>
-            {countAll} record(s) in total have been driven between
+            {countAll} record(s) in total were driven between
             {` `}
             <Strong>
               <Date driven={minDriven} />
@@ -59,12 +55,13 @@ const RecordHistory = ({ levelPackInfo }) => {
             <Strong>
               <Date driven={maxDriven} />
             </Strong>
+            .
           </TextDiv>
         )}
         {!!levelPackInfo?.Legacy && (
           <TextDiv>
-            This pack contains legacy times, but the data below only includes
-            records driven in EOL.
+            This pack contains legacy times, but only EOL times are included
+            here.
           </TextDiv>
         )}
       </div>
@@ -83,12 +80,13 @@ const RecordHistory = ({ levelPackInfo }) => {
         </Switch>
       </Controls>
       <br />
-      <StyledListContainer>
+      <ListContainer>
         <ListHeader>
-          <ListCell width={100}>Filename</ListCell>
-          <ListCell width={180}>Level Name</ListCell>
+          <ListCell width="100">Filename</ListCell>
+          <ListCell width="270">Level Name</ListCell>
           <ListCell>Kuski</ListCell>
-          <ListCell>Time</ListCell>
+          <ListCell>Time / Improvement</ListCell>
+          <ListCell>Record Diff</ListCell>
           <ListCell>Driven</ListCell>
         </ListHeader>
         {recordsLoading && <Loading />}
@@ -104,7 +102,36 @@ const RecordHistory = ({ levelPackInfo }) => {
                   <Kuski kuskiData={r.KuskiData} team flag />
                 </ListCell>
                 <ListCell>
+                  {!!r.BattleIndex && (
+                    <Link
+                      style={{ marginRight: '2px' }}
+                      to={`/battles/${r.BattleIndex}`}
+                      title={`Driven during battle (${r.BattleIndex})`}
+                    >
+                      <SportsMotorsports />
+                    </Link>
+                  )}
                   <Time time={r.Time} />
+                  <ColorGood title="Improvement">
+                    {r.TimeImprovement === null && ' (First Finish)'}
+                    {r.TimeImprovement !== null && (
+                      <>
+                        {` `}
+                        (-
+                        <Time time={r.TimeImprovement} />)
+                      </>
+                    )}
+                  </ColorGood>
+                </ListCell>
+                <ListCell>
+                  {r.TimeDiff === 0 && <ColorGood>Current Record</ColorGood>}
+                  <ColorBad>
+                    {r.TimeDiff > 0 && (
+                      <>
+                        +<Time time={r.TimeDiff} />
+                      </>
+                    )}
+                  </ColorBad>
                 </ListCell>
                 <ListCell>
                   <Date driven={r.Driven} />
@@ -112,12 +139,14 @@ const RecordHistory = ({ levelPackInfo }) => {
               </ListRow>
             );
           })}
-      </StyledListContainer>
+      </ListContainer>
     </Root>
   );
 };
 
-const Root = styled.div``;
+const Root = styled.div`
+  padding-bottom: 70px;
+`;
 
 const Controls = styled.div`
   display: flex;
@@ -139,10 +168,16 @@ const TextDiv = styled.div`
   }
 `;
 
-const StyledListContainer = styled(ListContainer)``;
-
 const Strong = styled.span`
   font-weight: 500;
+`;
+
+const ColorGood = styled.span`
+  color: ${p => p.theme.primary};
+`;
+
+const ColorBad = styled.span`
+  color: ${p => p.theme.errorColor};
 `;
 
 export default RecordHistory;
