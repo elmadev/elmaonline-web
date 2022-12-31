@@ -16,7 +16,7 @@ const Recplayer = props => {
     merge,
   } = props;
   const {
-    settings: { grass, pictures, customSkyGround },
+    settings: { grass, pictures, customSkyGround, zoomScale },
   } = useStoreState(state => state.ReplaySettings);
 
   let defaultZoom = 1;
@@ -31,6 +31,10 @@ const Recplayer = props => {
 
   if (useMediaQuery('(max-width: 500px)')) {
     defaultZoom = 0.58;
+  }
+
+  if (zoomScale && zoomScale > 0) {
+    defaultZoom = defaultZoom * (zoomScale / 100);
   }
 
   const zoom = props.zoom || defaultZoom;
