@@ -86,6 +86,7 @@ const Routes = () => {
           {/* can't use levels/:tab due to conflict with levels/:LevelId above*/}
           <Levels path="levels/collections" tab="collections" />
           <Levels path="levels/detailed" tab="" detailed={1} />
+          <Levels path="levels/recent-records" tab="recent-records" />
           <LevelsAdd path="levels/add" />
           <LevelsAddCollection path="levels/collections/add" />
           <LevelpackCollection path="levels/collections/:name" />
