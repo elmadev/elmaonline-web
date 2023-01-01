@@ -18,9 +18,7 @@ const TimeTable = ({ data, latestBattle, loading, height }) => {
           </ListCell>
           <ListCell width={200}>Kuski</ListCell>
           <ListCell>Time</ListCell>
-          <ListCell textAlign="right" width={200}>
-            Driven
-          </ListCell>
+          <ListCell width={200}>Driven</ListCell>
           <ListCell />
         </ListHeader>
       </ListContainer>

@@ -7,6 +7,7 @@ const formatDate = (date, format, parse) =>
 
 const LocalTime = props => {
   const { date, format, parse } = props;
+  if (date === 'Invalid date') return <></>;
   if (parseInt(date, 10) === 0) return <></>;
   return <>{formatDate(date, format, parse)}</>;
 };
