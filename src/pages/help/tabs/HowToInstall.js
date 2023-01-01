@@ -9,10 +9,20 @@ const HowToInstall = () => {
       <Header h3>Buying Elasto Mania</Header>
       <List>
         <li>
-          <a href="https://store.steampowered.com/about/" target="_blank" rel="noreferrer">Install steam</a>
+          <a
+            href="https://store.steampowered.com/about/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Install steam
+          </a>
         </li>
         <li>
-          <a href="https://store.steampowered.com/app/1290220/Elasto_Mania_Remastered/" target="_blank" rel="noreferrer">
+          <a
+            href="https://store.steampowered.com/app/1290220/Elasto_Mania_Remastered/"
+            target="_blank"
+            rel="noreferrer"
+          >
             Buy Elasto Mania on steam
           </a>
         </li>
@@ -21,7 +31,11 @@ const HowToInstall = () => {
       <Header h3>Upgrading to Elma Online</Header>
       <List>
         <li>
-          <a href="https://steamcommunity.com/workshop/filedetails/?id=2094059600" target="_blank" rel="noreferrer">
+          <a
+            href="https://steamcommunity.com/workshop/filedetails/?id=2094059600"
+            target="_blank"
+            rel="noreferrer"
+          >
             Install the Elma Online mod on steam workshop by clicking subscribe
           </a>
         </li>
@@ -29,8 +43,10 @@ const HowToInstall = () => {
       </List>
       <Header h3>Issues</Header>
       If you run into issues you can ask someone in{' '}
-      <a href="https://discord.gg/j5WMFC6" target="_blank" rel="noreferrer">discord</a> who&apos;ll usually have
-      a solution. Tag @eolmod for a faster response.
+      <a href="https://discord.gg/j5WMFC6" target="_blank" rel="noreferrer">
+        discord
+      </a>{' '}
+      who&apos;ll usually have a solution. Tag @eolmod for a faster response.
     </Text>
   );
 };
