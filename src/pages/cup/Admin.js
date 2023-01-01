@@ -7,6 +7,7 @@ import { Button, Checkbox, Grid } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Paper } from 'components/Paper';
 import Field from 'components/Field';
+import FieldBoolean from 'components/FieldBoolean';
 import FieldAutoComplete from 'components/FieldAutoComplete';
 import DerpTable from 'components/Table/DerpTable';
 import useFormal from '@kevinwolf/formal-web';
@@ -43,13 +44,18 @@ const Admin = () => {
   } = useStoreActions(actions => actions.Cup);
   const [error, setError] = useState('');
   const [selectedLevel, setSelectedLevel] = useState(0);
+  const [shown, setShown] = useState(false);
   const formal = useFormal(
     {},
     {
       schema,
       onSubmit: values =>
         addEvent({
-          event: { ...values, LevelIndex: selectedLevel },
+          event: {
+            ...values,
+            LevelIndex: selectedLevel,
+            ShownTimes: shown ? 1 : 0,
+          },
           last: lastCupShortName,
           CupGroupIndex: cup.CupGroupIndex,
         }),
@@ -98,6 +104,11 @@ const Admin = () => {
               />
               <Field label="End Hour" {...formal.getFieldProps('EndHour')} />
               <Field label="Designer" {...formal.getFieldProps('Designer')} />
+              <FieldBoolean
+                label="Shown times"
+                value={shown}
+                onChange={() => setShown(!shown)}
+              />
               <Button variant="contained" onClick={() => formal.submit()}>
                 Add
               </Button>
@@ -135,6 +146,7 @@ const Admin = () => {
                 hidden after you generate if you wish to publish results
                 somewhere else first, such as Discord.
               </li>
+              <li>Shown times means times are visible during the event.</li>
               <li>
                 When an event is over the first thing you do is click Generate
                 Results. Now the results are visible to only you, and you can
@@ -161,6 +173,7 @@ const Admin = () => {
             'Public',
             'LevelIndex',
             'Actions',
+            'Shown times',
           ]}
           length={points.length}
         >
@@ -247,6 +260,20 @@ const Admin = () => {
                 >
                   Delete
                 </Button>
+              </ListCell>
+              <ListCell>
+                <CheckboxNoPad
+                  checked={e.ShownTimes === 1}
+                  onChange={() =>
+                    editEvent({
+                      CupIndex: e.CupIndex,
+                      event: { ShownTimes: e.ShownTimes ? 0 : 1 },
+                      CupGroupIndex: cup.CupGroupIndex,
+                      last: lastCupShortName,
+                    })
+                  }
+                  value="ShownTimes"
+                />
               </ListCell>
             </ListRow>
           ))}
