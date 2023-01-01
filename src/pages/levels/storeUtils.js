@@ -53,7 +53,7 @@ const sortPacks = (packsRef, favs, stats, sort) => {
   };
 
   if (sort === 'created') {
-    sorted = orderBy(packs, 'LevelPackIndex', ['asc']);
+    sorted = orderBy(packs, 'LevelPackIndex', ['desc']);
   }
 
   if (sort === 'attempts') {
