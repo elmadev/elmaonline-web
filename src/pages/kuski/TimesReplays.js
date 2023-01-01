@@ -65,14 +65,11 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
   const windowSize = useElementSize();
   const listHeight = windowSize.height - 379 + (collapse ? 100 : 0);
   useEffect(() => {
-    fetch();
     getTagOptions();
   }, []);
 
   useEffect(() => {
-    if (PRs && !PRsData) {
-      fetch();
-    }
+    fetch();
   }, [PRs]);
 
   const isMobile = useMediaQuery('(max-width: 1024px)');
