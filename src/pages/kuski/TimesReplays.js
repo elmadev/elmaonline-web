@@ -36,7 +36,7 @@ import Button from 'components/Buttons';
 import { xor } from 'lodash';
 import Preview from './Preview';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { create } from 'apisauce';
+import { downloadRec } from 'utils/misc';
 
 const TimesReplays = ({ KuskiIndex, collapse }) => {
   const [PRs, setPRs] = useState(false);
@@ -155,36 +155,6 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
       Math.min(15 - (levName.length + timeAsString.length), 4),
     )}${timeAsString}`;
     return `/r/${time.TimeFileData.UUID}/${RecFileName}`;
-  };
-
-  const createRecName = (LevelName, nick, recTime) => {
-    const timeAsString = `${recTime}`;
-    const levName =
-      LevelName.substring(0, 6) === 'QWQUU0'
-        ? LevelName.substring(6, 8)
-        : LevelName;
-    return `${levName}${nick.substring(
-      0,
-      Math.min(15 - (levName.length + timeAsString.length), 4),
-    )}${timeAsString}.rec`;
-  };
-
-  const downloadRec = (url, levName, kuski, time) => {
-    const newName = createRecName(levName, kuski, time);
-
-    const api = create({
-      headers: {
-        'Content-Type': 'application/octet-stream',
-      },
-      responseType: 'blob',
-    });
-    api.get(url).then(response => {
-      const a = document.createElement('a');
-      const tempUrl = window.URL.createObjectURL(response.data);
-      a.href = tempUrl;
-      a.download = newName;
-      a.click();
-    });
   };
 
   return (

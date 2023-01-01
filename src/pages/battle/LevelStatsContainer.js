@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import styled from 'styled-components';
 import { Select, MenuItem } from '@material-ui/core';
-import { PlayArrow } from '@material-ui/icons';
+import { PlayArrow, GetApp } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import { isEmpty } from 'lodash';
@@ -39,7 +39,7 @@ const SpecialResult = (time, type) => {
 
 const LevelStatsContainer = props => {
   const [rankingSelect, setRankingSelect] = useState('All');
-  const { battle, rankingHistory, runStats, openReplay } = props;
+  const { battle, rankingHistory, runStats, openReplay, downloadRec } = props;
 
   if (!battle) return <Root>loading</Root>;
   if (runStats)
@@ -52,9 +52,7 @@ const LevelStatsContainer = props => {
         {battle.Results && (
           <ListContainer>
             <ListHeader>
-              <ListCell right width={30}>
-                #
-              </ListCell>
+              <ListCell width={30}>#</ListCell>
               <ListCell width={200}>Kuski</ListCell>
               <ListCell right width={150}>
                 Result
@@ -114,6 +112,12 @@ const LevelStatsContainer = props => {
                           SpecialResult(r.Time, battle.BattleType)
                         )}
                         <PlayArrow />
+                        <GetApp
+                          onClick={e => {
+                            e.stopPropagation();
+                            downloadRec(r);
+                          }}
+                        />
                       </ListCell>
                       <ListCell right>
                         {runStatsForKuski ? (

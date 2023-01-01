@@ -12,6 +12,7 @@ import { battleStatus } from 'utils/battle';
 import RecView from './RecView';
 import RightBarContainer from './RightBarContainer';
 import LevelStatsContainer from './LevelStatsContainer';
+import { downloadRec } from 'utils/misc';
 
 const runData = runs => {
   if (runs.count === 0) {
@@ -97,18 +98,32 @@ const Battle = ({ BattleId }) => {
 
   const isMobile = useMediaQuery('(max-width: 1000px)');
 
+  const recUrl = TimeFileData => {
+    return `${config.s3Url}time/${TimeFileData.UUID}-${TimeFileData.MD5}/${TimeFileData.TimeIndex}.rec`;
+  };
+
   const openReplay = time => {
     const TimeFileData = replays.find(r => r.TimeIndex === time.TimeIndex);
     if (TimeFileData) {
-      setReplayUrl(
-        `${config.s3Url}time/${TimeFileData.UUID}-${TimeFileData.MD5}/${TimeFileData.TimeIndex}.rec`,
-      );
+      setReplayUrl(recUrl(TimeFileData));
     }
     setWinner({
       Kuski: time.KuskiData || {},
       Time: time.Time,
       Apples: time.Apples,
     });
+  };
+
+  const dlRec = time => {
+    const TimeFileData = replays.find(r => r.TimeIndex === time.TimeIndex);
+    if (TimeFileData) {
+      downloadRec(
+        recUrl(TimeFileData),
+        battle.LevelData.LevelName,
+        time.KuskiData.Kuski,
+        time.Time,
+      );
+    }
   };
 
   return (
@@ -137,6 +152,7 @@ const Battle = ({ BattleId }) => {
             battleStatus={battleStatus(battle)}
             replayUrl={replayUrl}
             player={winner}
+            levelName={battle.LevelData.LevelName}
           />
         ) : (
           <div />
@@ -157,6 +173,7 @@ const Battle = ({ BattleId }) => {
             battle={battle}
             rankingHistory={rankingHistory}
             runStats={runStats}
+            downloadRec={time => dlRec(time)}
           />
         ) : (
           <div>
