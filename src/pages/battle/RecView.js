@@ -8,6 +8,7 @@ import config from 'config';
 import { Row } from 'components/Containers';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski.js';
+import { downloadRec } from 'utils/misc';
 
 const RecView = props => {
   const [play, setPlay] = useState(
@@ -23,6 +24,7 @@ const RecView = props => {
     battleStatus,
     replayUrl,
     player,
+    levelName,
   } = props;
 
   const { toggleRecAutoplay } = useStoreActions(actions => actions.Battle);
@@ -60,7 +62,18 @@ const RecView = props => {
               <PlayerTitle>
                 <Kuski kuskiData={player.Kuski} flag={true} team={true} />
                 <span>&nbsp;</span>
-                <Time time={player.Time} apples={player.Apples} />
+                <Download
+                  onClick={() =>
+                    downloadRec(
+                      replayUrl || `${config.dlUrl}battlereplay/${BattleIndex}`,
+                      levelName,
+                      player.Kuski.Kuski,
+                      player.Time,
+                    )
+                  }
+                >
+                  <Time time={player.Time} apples={player.Apples} />
+                </Download>
               </PlayerTitle>
             )}
             <StyledFormControlLabel
@@ -85,6 +98,14 @@ const PlayerTitle = styled.div`
   padding: 9px;
   padding-right: 18px;
   font-size: ${p => p.theme.smallFont};
+`;
+
+const Download = styled.span`
+  cursor: pointer;
+  color: ${p => p.theme.linkColor};
+  :hover {
+    color: ${p => p.theme.linkHover};
+  }
 `;
 
 const PlayerContainer = styled.div`

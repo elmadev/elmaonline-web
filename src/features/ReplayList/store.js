@@ -65,4 +65,8 @@ export default {
   setSettings: action((state, payload) => {
     state.settings = { ...state.settings, ...payload };
   }),
+  persistPage: {},
+  setPersistPage: action((state, payload) => {
+    state.persistPage[payload.key] = payload.pageNo;
+  }),
 };

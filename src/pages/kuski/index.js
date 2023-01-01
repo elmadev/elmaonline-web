@@ -105,12 +105,20 @@ const Kuski = ({ name, tab, recordSort, ...props }) => {
           )}
           {tab === 'replays-uploaded' && (
             <Width100>
-              <ReplayList nonsticky uploadedBy={kuski.KuskiIndex} />
+              <ReplayList
+                persist={`kuski-uploaded-${kuski.KuskiIndex}`}
+                nonsticky
+                uploadedBy={kuski.KuskiIndex}
+              />
             </Width100>
           )}
           {tab === 'replays-driven' && (
             <Width100>
-              <ReplayList nonsticky drivenBy={kuski.KuskiIndex} />
+              <ReplayList
+                persist={`kuski-driven-${kuski.KuskiIndex}`}
+                nonsticky
+                drivenBy={kuski.KuskiIndex}
+              />
             </Width100>
           )}
           {tab === 'info' && <Info kuskiInfo={kuski} />}

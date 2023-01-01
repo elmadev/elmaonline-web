@@ -154,7 +154,11 @@ const LevelPack = ({ name, tab, ...props }) => {
           />
         )}
         {tab === 'replays' && (
-          <ReplayList nonsticky levelPack={levelPackInfo.LevelPackIndex} />
+          <ReplayList
+            persist={`levelpack-${levelPackInfo.LevelPackIndex}`}
+            nonsticky
+            levelPack={levelPackInfo.LevelPackIndex}
+          />
         )}
         {tab === 'admin' && adminAuth && <Admin />}
       </RootStyle>

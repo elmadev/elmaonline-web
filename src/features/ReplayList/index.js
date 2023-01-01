@@ -24,26 +24,31 @@ export default function ReplayList({
   summary,
   nonsticky = false,
   levelPack = 0,
+  persist = '',
 }) {
   const [selectedTags, setSelectedTags] = useState([]);
   const [previewRec, setPreviewRec] = useState(null);
   const [page, setPage] = useState(defaultPage);
   const [pageSize] = useState(defaultPageSize);
-  const { replays, tagOptions, settings } = useStoreState(
+  const { replays, tagOptions, settings, persistPage } = useStoreState(
     state => state.ReplayList,
   );
-  const { getReplays, getTagOptions, setSettings } = useStoreActions(
-    actions => actions.ReplayList,
-  );
+  const {
+    getReplays,
+    getTagOptions,
+    setSettings,
+    setPersistPage,
+  } = useStoreActions(actions => actions.ReplayList);
   const { loggedIn, userid } = useStoreState(state => state.Login);
 
   useEffect(() => {
     getTagOptions();
+    setPage(getPage());
   }, []);
 
   useEffect(() => {
     getReplays({
-      page,
+      page: getPage(),
       pageSize,
       tags: selectedTags.map(tag => tag.TagIndex),
       sortBy: !summary ? settings.sortBy : 'uploaded',
@@ -54,9 +59,19 @@ export default function ReplayList({
     });
   }, [page, pageSize, selectedTags, settings.sortBy]);
 
-  useEffect(() => {
-    setPage(0);
-  }, [selectedTags]);
+  const updatePage = pageNo => {
+    setPage(pageNo);
+    if (persist) {
+      setPersistPage({ key: persist, pageNo });
+    }
+  };
+
+  const getPage = () => {
+    if (persist && persistPage?.[persist]) {
+      return persistPage[persist];
+    }
+    return page;
+  };
 
   const columns = ['Uploaded', 'Replay', 'Level', 'Time', 'By'];
   const personal = Boolean(
@@ -126,6 +141,7 @@ export default function ReplayList({
               value={selectedTags}
               onChange={(_event, newValue) => {
                 setSelectedTags(newValue);
+                updatePage(0);
               }}
               forcePopupIcon={false}
               multiple
@@ -225,8 +241,8 @@ export default function ReplayList({
         <Box p={2}>
           <Pagination
             count={Math.ceil(replays.count.length / pageSize)}
-            onChange={(event, value) => setPage(value - 1)}
-            page={page + 1}
+            onChange={(event, value) => updatePage(value - 1)}
+            page={getPage() + 1}
             showFirstButton
             showLastButton
           />

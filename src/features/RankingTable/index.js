@@ -19,9 +19,17 @@ const RankingTable = ({
 }) => {
   const { rankingData, loading } = useStoreState(state => state.RankingTable);
   const { getRankingData } = useStoreActions(actions => actions.RankingTable);
+
   useEffect(() => {
     getRankingData({ period, periodType });
   }, [period, periodType]);
+
+  useEffect(() => {
+    if (battleType) {
+      setSort(`Ranking${battleType}`);
+    }
+  }, [battleType]);
+
   const [sortOrder, setSortOrder] = useState('desc');
   const [sort, setSort] = useState(`Ranking${battleType}`);
   const windowSize = useElementSize();
@@ -32,21 +40,23 @@ const RankingTable = ({
   const Designed = `Designed${battleType}`;
   const Played = `Played${battleType}`;
   const Played5 = `Played5${battleType}`;
+
+  const sortFunc = (a, b) => {
+    if (sortOrder === 'asc') {
+      return a[sort] - b[sort];
+    }
+    return b[sort] - a[sort];
+  };
+
   const FilteredRanking =
     rankingData.length > 0
-      ? rankingData.filter(r => r[Played] > minPlayed)
+      ? rankingData.filter(r => r[Played] > minPlayed).sort(sortFunc)
       : null;
-  if (FilteredRanking) {
-    FilteredRanking.sort((a, b) => {
-      if (sortOrder === 'asc') {
-        return a[sort] - b[sort];
-      }
-      return b[sort] - a[sort];
-    });
-  }
+
   if (loading) {
     return <Loading />;
   }
+
   return (
     <>
       {FilteredRanking && (

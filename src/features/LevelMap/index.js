@@ -87,6 +87,10 @@ const MapContainer = styled.div`
       `}
     width: 100%;
     height: 100%;
+    ${p =>
+      p.fullscreen
+        ? ''
+        : 'max-height: 420px; @media screen and (max-width: 768px) { max-height: 220px; }'}
     box-sizing: border-box;
     background: #333;
     border: 10px solid #333;
@@ -114,6 +118,10 @@ const MapContainer = styled.div`
     object-fit: contain;
     width: 100%;
     height: 100%;
+    ${p =>
+      p.fullscreen
+        ? ''
+        : 'max-height: 400px; @media screen and (max-width: 768px) { max-height: 200px; }'}
   }
 `;
 

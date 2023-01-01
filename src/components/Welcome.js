@@ -14,12 +14,20 @@ const Welcome = () => {
           multiplay and watching others. To get started:
           <List>
             <li>
-              <a href="https://store.steampowered.com/app/1290220/Elasto_Mania_Remastered/" target="_blank" rel="noreferrer">
+              <a
+                href="https://store.steampowered.com/app/1290220/Elasto_Mania_Remastered/"
+                target="_blank"
+                rel="noreferrer"
+              >
                 Buy Elasto Mania on steam
               </a>
             </li>
             <li>
-              <a href="https://steamcommunity.com/workshop/filedetails/?id=2094059600" target="_blank" rel="noreferrer">
+              <a
+                href="https://steamcommunity.com/workshop/filedetails/?id=2094059600"
+                target="_blank"
+                rel="noreferrer"
+              >
                 Install the Elma Online mod on steam workshop
               </a>
             </li>

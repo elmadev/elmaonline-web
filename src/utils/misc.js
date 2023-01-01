@@ -1,6 +1,7 @@
 import config from 'config';
 import { authToken } from 'utils/nick';
 import { toPairs, orderBy } from 'lodash';
+import { create } from 'apisauce';
 
 export const downloadWithAuth = async (path, filename, mime) => {
   const res = await fetch(`${config.dlUrl}${path}`, {
@@ -55,5 +56,35 @@ export const renameFile = (originalFile, newName) => {
   return new File([originalFile], newName, {
     type: originalFile.type,
     lastModified: originalFile.lastModified,
+  });
+};
+
+export const createRecName = (LevelName, nick, recTime) => {
+  const timeAsString = `${recTime}`;
+  const levName =
+    LevelName.substring(0, 6) === 'QWQUU0'
+      ? LevelName.substring(6, 8)
+      : LevelName;
+  return `${levName}${nick.substring(
+    0,
+    Math.min(15 - (levName.length + timeAsString.length), 4),
+  )}${timeAsString}.rec`;
+};
+
+export const downloadRec = (url, levName, kuski, time) => {
+  const newName = createRecName(levName, kuski, time);
+
+  const api = create({
+    headers: {
+      'Content-Type': 'application/octet-stream',
+    },
+    responseType: 'blob',
+  });
+  api.get(url).then(response => {
+    const a = document.createElement('a');
+    const tempUrl = window.URL.createObjectURL(response.data);
+    a.href = tempUrl;
+    a.download = newName;
+    a.click();
   });
 };
