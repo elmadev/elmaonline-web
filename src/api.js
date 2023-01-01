@@ -328,6 +328,13 @@ export const LevelPacksByLevel = LevelIndex =>
   api.get(`levelpack/byLevel/${+LevelIndex}`);
 export const LatestLevelPacks = limit => api.get(`levelpack/latest/${limit}`);
 
+export const LevelPackRecordHistory = (name, opts) =>
+  api.get(`levelpack/record-history/${name}`, {
+    limit: opts.limit,
+    offset: opts.offset,
+    sort: opts.sort || 'desc',
+  });
+
 // collections
 export const AddCollection = data =>
   api.post('levelpack/collections/add', data);
