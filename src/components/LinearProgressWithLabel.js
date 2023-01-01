@@ -7,6 +7,9 @@ import { addSeconds, format } from 'date-fns';
 
 function formattedTime(seconds) {
   const helperDate = addSeconds(new Date(0), seconds);
+  if (seconds >= 3600) {
+    return `1:${format(helperDate, 'mm:ss')}`;
+  }
   return format(helperDate, 'mm:ss');
 }
 

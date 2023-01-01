@@ -29,10 +29,10 @@ const BattleCard = props => {
     return m().format('X');
   };
 
-  const getRemainingPercent = (started, duration) => {
+  const getRemainingPercent = (started, duration, countdown) => {
     const now = getNow();
-    const start = getStart(started);
-    const end = getEnd(started, duration);
+    const start = getStart(parseInt(started) + countdown);
+    const end = getEnd(parseInt(started) + countdown, duration);
 
     if (start > now) {
       return 100;
@@ -45,21 +45,29 @@ const BattleCard = props => {
     return Math.round(((end - now) / (end - start)) * 100, 2);
   };
 
-  const getRemainingSeconds = (started, duration) => {
-    const seconds = getEnd(started, duration) - getNow();
+  const getRemainingSeconds = (started, duration, countdown) => {
+    const seconds = getEnd(parseInt(started) + countdown, duration) - getNow();
     return seconds > 0 ? seconds : 0;
   };
 
   useInterval(() => {
     setRemainingPercent(() => {
       if (battle) {
-        return getRemainingPercent(battle.Started, battle.Duration);
+        return getRemainingPercent(
+          battle.Started,
+          battle.Duration,
+          battle.Countdown,
+        );
       }
       return 0;
     });
     setRemainingSeconds(() => {
       if (battle) {
-        return getRemainingSeconds(battle.Started, battle.Duration);
+        return getRemainingSeconds(
+          battle.Started,
+          battle.Duration,
+          battle.Countdown,
+        );
       }
       return 0;
     });
