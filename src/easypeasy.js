@@ -39,6 +39,7 @@ import ReplayList from 'features/ReplayList/store';
 import ReplaySettings from 'features/ReplaySettings/store';
 import Notifications from 'features/Notifications/store';
 import ReplayCommentArchive from 'features/ReplayCommentArchive/store';
+import Recap from 'pages/recap/store';
 
 export default {
   ReplayCommentArchive,
@@ -80,6 +81,7 @@ export default {
   FileUpload,
   Replays,
   Notifications,
+  Recap,
   Page: {
     sideBarVisible: true,
     showSideBar: action(state => {

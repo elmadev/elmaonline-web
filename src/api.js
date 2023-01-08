@@ -505,3 +505,8 @@ export const UpdateBattleLeagueBattle = data =>
   api.post('battleleague/update/battle', data);
 export const DeleteBattleLeagueBattle = id =>
   api.delete(`battleleague/delete/battle/${id}`);
+
+// recap
+export const RecapOverall = () => api.get('recap/2022');
+export const RecapPlayer = id => api.get(`recap/2022/${id}`);
+export const RecapBestof = () => api.get('recap/bestof/2022');

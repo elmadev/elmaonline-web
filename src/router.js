@@ -35,6 +35,7 @@ import Settings from 'pages/settings';
 import Team from 'pages/team';
 import Teams from 'pages/teams';
 import Upload from 'pages/upload';
+import Recap from 'pages/recap';
 import styled, { ThemeProvider } from 'styled-components';
 import { useStoreState, useStoreRehydrated } from 'easy-peasy';
 import { themes, muiTheme } from './theme';
@@ -94,6 +95,7 @@ const Routes = () => {
           <Map path="map" />
           <Mod path="mod" />
           <Ranking path="ranking" />
+          <Recap path="recap" />
           <Register path="register" />
           <Replay path="r/:ReplayUuid" />
           <Replay path="r/:ReplayUuid/:RecFileName" />

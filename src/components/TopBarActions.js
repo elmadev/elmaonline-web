@@ -7,6 +7,7 @@ import {
   Timer,
   ExitToApp,
   Settings,
+  FastRewind,
 } from '@material-ui/icons';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -63,6 +64,10 @@ const SettingsIcon = styled(Settings)`
 `;
 
 const LogOutIcon = styled(ExitToApp)`
+  margin-right: 4px;
+`;
+
+const RecapIcon = styled(FastRewind)`
   margin-right: 4px;
 `;
 
@@ -168,6 +173,10 @@ export default function TopBarActions() {
               <ReplayIcon /> Replays
             </SmallItem>
             <Line />
+            <Item onClick={() => handleClose('/recap')}>
+              <RecapIcon />
+              Recap
+            </Item>
             <Item onClick={() => handleClose('/settings')}>
               <SettingsIcon />
               Settings
