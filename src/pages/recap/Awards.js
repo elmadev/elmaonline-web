@@ -331,7 +331,7 @@ const Bronze = styled(Gold)`
 const Headline = styled.div`
   margin: ${p => p.theme.padSmall};
   margin-bottom: ${p => p.theme.padMedium};
-  color: ${p => p.theme.headerColor};
+  color: #4f8ec9;
   font-weight: 700;
   font-size: 82px;
   text-transform: uppercase;

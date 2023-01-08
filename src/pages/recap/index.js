@@ -544,7 +544,7 @@ export const StepCon = styled.div`
   right: 26px;
   z-index: 20;
   border: 1px dashed black;
-  background-color: white;
+  background-color: ${p => p.theme.paperBackground};
 `;
 
 const Sections = styled.div``;
@@ -606,7 +606,7 @@ export const Section = styled.div`
 const RecapHeadline = styled.div`
   margin: ${p => p.theme.padSmall};
   margin-bottom: ${p => p.theme.padMedium};
-  color: ${p => p.theme.headerColor};
+  color: #4f8ec9;
   font-weight: 700;
   font-size: 82px;
   text-transform: uppercase;
