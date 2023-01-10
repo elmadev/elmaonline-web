@@ -421,8 +421,9 @@ const Recap = () => {
                 light
               />
               <Text white>
-                <V>{number(ranking ? ranking.Wins : 0)}</V> battle wins
-                accomplished!
+                <V>{number(ranking ? ranking.Wins : 0)}</V> battle wins in the{' '}
+                <V>{number(ranking ? ranking.Played5 : 0)}</V> battles with at
+                least five participants
               </Text>
               {ranking ? (
                 <TextSmall white>
@@ -430,7 +431,7 @@ const Recap = () => {
                   <V>
                     {(
                       (ranking.Wins * 100) /
-                      ranking.Played
+                      ranking.Played5
                     ).toLocaleString(undefined, { maximumFractionDigits: 2 })}
                   </V>
                   % win rate

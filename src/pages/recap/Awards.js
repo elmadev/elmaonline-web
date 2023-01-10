@@ -95,7 +95,8 @@ const Awards = ({ overall }) => {
       unit: '',
       data: wins,
       type: 'kuski',
-      desc: 'Amount of battles won, all battle types.',
+      desc:
+        'Amount of battles won, all battle types with at least five participants',
     },
     {
       title: 'Battle win ratio',
@@ -104,7 +105,7 @@ const Awards = ({ overall }) => {
       data: ratio,
       type: 'kuski',
       desc:
-        'Amount of battles won percent of amount of battles played for all types.',
+        'Amount of battles won in relation to battles played for all types with at least five participants.',
     },
     {
       title: 'Battles played',
