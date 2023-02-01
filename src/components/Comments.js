@@ -51,7 +51,7 @@ const Comments = props => {
           <Kuski>
             &lt;
             <span style={{ color: getColor(c.KuskiIndex) }}>
-              {c.KuskiData.Kuski}
+              {c.KuskiData?.Kuski ? c.KuskiData.Kuski : 'Unknown'}
             </span>
             &gt;
           </Kuski>{' '}
