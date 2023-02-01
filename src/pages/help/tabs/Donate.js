@@ -27,7 +27,7 @@ const parseDonations = donations => {
   return { donators, accountBalance };
 };
 
-const runningCosts = 45.0;
+const runningCosts = 52.0;
 
 const paymentInfo = balance => {
   const date = new Date(Date.now());
@@ -111,9 +111,9 @@ const Donate = () => {
           <p>
             Donations are paid to a dedicated EOL paypal account, which is only
             used for paying the server bill, and competition prizes. Remember to
-            let it redirect you back here, otherwise we can&#39;t track your
-            payment, it will still be recieved however, only the payment status
-            won&#39;t update. No paypal account is needed.
+            add your nick in the comment field if you want your donation
+            attributed here. You can pay without a paypal account, just select
+            credit card payment.
           </p>
           <p>
             Server costs are ${runningCosts} a month, paid forward on the 1st of
