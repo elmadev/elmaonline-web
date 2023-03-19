@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import styled from 'styled-components';
 import Pagination from '@material-ui/lab/Pagination';
@@ -13,30 +13,26 @@ import Link from 'components/Link';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import { useMediaQuery } from '@material-ui/core';
+import { useLocation, useNavigate } from '@reach/router';
+import queryString from 'query-string';
 
-const getShowing = (comments, page, pageSize) => {
-  const start = (+page - 1) * pageSize;
-  return comments.slice(start, start + pageSize);
-};
-
-const ReplayCommentArchive = props => {
-  const [page, setPage] = useState(1);
-
+const ReplayCommentArchive = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const query = queryString.parse(location.search);
+  const page = +query.page > 1 ? +query.page : 1;
   const pageSize = 20;
-
   const narrowCols = useMediaQuery('(max-width: 980px)');
-
   const { comments } = useStoreState(store => store.ReplayCommentArchive);
   const { fetchComments } = useStoreActions(
     store => store.ReplayCommentArchive,
   );
-
-  const showing = getShowing(comments, page, pageSize);
-  const pages = Math.ceil(comments.length / pageSize);
+  const [rows, countAll] = comments;
+  const pages = Math.ceil(countAll / pageSize);
 
   useEffect(() => {
-    fetchComments();
-  }, []);
+    fetchComments([pageSize, (page - 1) * pageSize]);
+  }, [page]);
 
   return (
     <Root>
@@ -45,7 +41,7 @@ const ReplayCommentArchive = props => {
           <ListCell width={narrowCols ? 250 : 400}>Replay</ListCell>
           <ListCell>Comment</ListCell>
         </ListHeader>
-        {showing.map((c, index) => {
+        {rows.map((c, index) => {
           const replay = c.Replay || {};
           const driver = replay.DrivenByData || replay.UploadedByData || {};
           const commenter = c.KuskiData || {};
@@ -91,7 +87,9 @@ const ReplayCommentArchive = props => {
       <Pag>
         <Pagination
           count={pages}
-          onChange={(event, value) => setPage(value)}
+          onChange={(event, value) =>
+            navigate(`/replays/comments/?page=${value}`)
+          }
           page={page}
           showFirstButton
           showLastButton
