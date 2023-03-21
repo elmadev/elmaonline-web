@@ -16,7 +16,7 @@ const CupResults = props => {
   const { results, ShortName, eventNo, CupIndex } = props;
 
   const goToReplay = (index, filename) => {
-    navigate(`/r/cup/${index}/${filename}`);
+    navigate(`/r/c-${index}/${filename}`);
   };
 
   return (

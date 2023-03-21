@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
 } from '@material-ui/core';
-import { ExpandMore } from '@material-ui/icons';
+import { ExpandMore, IndeterminateCheckBox, AddBox } from '@material-ui/icons';
 import styled from 'styled-components';
 import { Paper } from 'components/Paper';
 import Layout from 'components/Layout';
@@ -30,12 +30,20 @@ import ReplaySettings from 'features/ReplaySettings';
 import { TextField } from 'components/Inputs';
 import FieldBoolean from 'components/FieldBoolean';
 import Button from 'components/Buttons';
+import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
+import { MergeContainer } from 'components/RecListItem';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const getLink = replay => {
   let link = '';
   let type = 'replay';
   if (replay.UUID.substring(0, 5) === 'local') {
     link = `${config.url}temp/${replay.UUID}-${replay.RecFileName}`;
+  } else if (replay.UUID.substring(0, 2) === 'c-') {
+    link = `${config.dlUrl}cupreplay/${replay.UUID.split('-')[1]}/${
+      replay.RecFileName
+    }`;
+    type = 'cup';
   } else if (replay.UUID.substring(0, 2) === 'b-') {
     link = `${config.dlUrl}battlereplay/${replay.UUID.split('-')[1]}`;
     type = 'winner';
@@ -50,6 +58,7 @@ const getLink = replay => {
 };
 
 const Replay = ({ ReplayUuid, RecFileName }) => {
+  const [isHover, setHover] = useState(-1);
   const isWindow = typeof window !== 'undefined';
   let link = '';
   let type = 'replay';
@@ -58,11 +67,15 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
   const location = useLocation();
   const { merge } = queryString.parse(location.search);
 
-  const { getReplayByUUID, setEdit, submitEdit } = useStoreActions(
-    state => state.ReplayByUUID,
-  );
+  const {
+    getReplayByUUID,
+    setEdit,
+    submitEdit,
+    getCupEvent,
+    setCupEvent,
+  } = useStoreActions(state => state.ReplayByUUID);
   const { userid } = useStoreState(state => state.Login);
-  const { replay, loading, replays, edit } = useStoreState(
+  const { replay, loading, replays, edit, cupEvent } = useStoreState(
     state => state.ReplayByUUID,
   );
   const {
@@ -73,6 +86,10 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
     if (ReplayUuid) {
       getReplayByUUID({ ReplayUuid, merge, RecFileName });
     }
+    setCupEvent(null);
+    if (ReplayUuid && ReplayUuid.includes('c-')) {
+      getCupEvent(ReplayUuid.split('-')[1]);
+    }
   }, [ReplayUuid, merge]);
 
   if (!RecFileName && replay && replay.UUID === ReplayUuid) {
@@ -82,6 +99,8 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
       `${location.href}/${replay.RecFileName.replace('.rec', '')}`,
     );
   }
+
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   if (
     !replay ||
@@ -110,6 +129,31 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
 
   const getTags = () => {
     return replay.Tags.map(tag => tag.Name);
+  };
+
+  let eventRecs = null;
+  if (cupEvent?.length > 0 && type === 'cup') {
+    if (cupEvent[0].CupTimes?.length > 0) {
+      eventRecs = cupEvent[0].CupTimes.filter(t => t.Replay || t.UUID);
+    }
+  }
+  let recName = '';
+  if (replay.DrivenByData && type === 'cup') {
+    recName = RecFileName.replace(
+      replay.DrivenByData.Kuski.substring(0, 6),
+      '',
+    );
+  }
+
+  const updateUrl = (unmerge = false, recUuid) => {
+    if (unmerge) {
+      return merge?.includes(';')
+        ? `${location.pathname}${location.search.replace(`;${recUuid}`, '')}`
+        : location.pathname;
+    }
+    return merge
+      ? `${location.pathname}${location.search};${recUuid}`
+      : `${location.pathname}?merge=${recUuid}`;
   };
 
   return (
@@ -162,21 +206,6 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
               <Tags tags={getTags()} />
             </AccordionDetails>
           </Accordion>
-          {/* <ExpansionPanel defaultExpanded>
-            <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-              <Header h3>
-                <React.Fragment>
-                  <Level LevelData={replay.LevelData} noLink/>.lev
-                </React.Fragment>
-              </Header>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails style={{ flexDirection: 'column' }}>
-              <div>1. Zweq 01:22,49</div>
-              <div>2. Zero 01:30,33</div>
-              <div>3. talli 01:32,95</div>
-              <div>etc.</div>
-            </ExpansionPanelDetails>
-          </ExpansionPanel> */}
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
               <Header h3>Other replays in level</Header>
@@ -245,6 +274,104 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
           />
         </ReplayDescriptionPaper>
       </LevelStatsContainer>
+      {eventRecs ? (
+        <LevelStatsContainer>
+          <Paper>
+            <ListContainer>
+              <ListHeader>
+                <ListCell width={30} right>
+                  #
+                </ListCell>
+                <ListCell>Filename</ListCell>
+                <ListCell>Player</ListCell>
+                <ListCell>Time</ListCell>
+                <ListCell>Points</ListCell>
+              </ListHeader>
+              {eventRecs.length > 0 && (
+                <>
+                  {eventRecs.map((t, index) => (
+                    <ListRow
+                      key={t.CupTimeIndex}
+                      selected={uuidarray.indexOf(`c-${t.CupTimeIndex}`) > -1}
+                      onHover={hover =>
+                        hover ? setHover(index) : setHover(-1)
+                      }
+                    >
+                      <ListCell width={30} right>
+                        {index + 1}.
+                      </ListCell>
+                      <ListCell
+                        to={`/r/c-${
+                          t.CupTimeIndex
+                        }/${`${recName}${t.KuskiData.Kuski.substring(0, 6)}`}`}
+                      >
+                        {recName}
+                        {t.KuskiData.Kuski.substring(0, 6)}
+                      </ListCell>
+                      <ListCell>
+                        <Kuski kuskiData={t.KuskiData} team flag />
+                      </ListCell>
+                      <ListCell
+                        to={`/r/c-${
+                          t.CupTimeIndex
+                        }/${`${recName}${t.KuskiData.Kuski.substring(0, 6)}`}`}
+                      >
+                        <Time apples={-1} time={t.Time} />
+                      </ListCell>
+                      <ListCell>
+                        {t.Points} point{t.Points > 1 ? 's' : ''}
+                      </ListCell>
+                      {(isMobile || isHover === index) && (
+                        <MergeContainer
+                          title={
+                            uuidarray.indexOf(`c-${t.CupTimeIndex}`) > -1
+                              ? 'Unmerge replay'
+                              : 'Merge replay'
+                          }
+                        >
+                          {uuidarray.indexOf(`c-${t.CupTimeIndex}`) > -1 ? (
+                            <>
+                              {merge?.includes(`c-${t.CupTimeIndex}`) && (
+                                <Link
+                                  to={updateUrl(
+                                    true,
+                                    `c-${
+                                      t.CupTimeIndex
+                                    }-${recName}${t.KuskiData.Kuski.substring(
+                                      0,
+                                      6,
+                                    )}`,
+                                  )}
+                                >
+                                  <IndeterminateCheckBox />
+                                </Link>
+                              )}
+                            </>
+                          ) : (
+                            <Link
+                              to={updateUrl(
+                                false,
+                                `c-${
+                                  t.CupTimeIndex
+                                }-${recName}${t.KuskiData.Kuski.substring(
+                                  0,
+                                  6,
+                                )}`,
+                              )}
+                            >
+                              <AddBox />
+                            </Link>
+                          )}
+                        </MergeContainer>
+                      )}
+                    </ListRow>
+                  ))}
+                </>
+              )}
+            </ListContainer>
+          </Paper>
+        </LevelStatsContainer>
+      ) : null}
       <LevelStatsContainer>
         <BattleDescriptionPaper>
           <AddComment

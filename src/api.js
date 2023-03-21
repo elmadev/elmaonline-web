@@ -152,6 +152,8 @@ export const CupEvents = cupGroupIndex =>
   api.get(`cups/events/${cupGroupIndex}`);
 export const CupEvent = data =>
   api.get(`cups/event/${data.cupGroupIndex}/${data.cupIndex}`);
+export const CupEventByTimeIndex = index =>
+  api.get(`cups/eventByTimeIndex/${index}`);
 export const UpdateCup = (cupGroupIndex, data) =>
   api.post(`cups/edit/${cupGroupIndex}`, data);
 export const UpdateCupBlog = data => api.post(`cups/blog/add`, data);

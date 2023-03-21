@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk } from 'easy-peasy';
-import { ReplayByUUID, EditReplay } from 'api';
+import { ReplayByUUID, EditReplay, CupEventByTimeIndex } from 'api';
 
 export default {
   replay: null,
@@ -40,6 +40,9 @@ export default {
     actions.setReplays([]);
     actions.setLoading(true);
     let uuids = payload.ReplayUuid;
+    if (uuids.substring(0, 2) === 'c-') {
+      uuids = `${uuids}-${payload.RecFileName}`;
+    }
     if (payload.merge) {
       uuids = `${uuids};${payload.merge}`;
     }
@@ -57,5 +60,15 @@ export default {
       }
     }
     actions.setLoading(false);
+  }),
+  cupEvent: null,
+  setCupEvent: action((state, payload) => {
+    state.cupEvent = payload;
+  }),
+  getCupEvent: thunk(async (actions, payload) => {
+    const recs = await CupEventByTimeIndex(payload);
+    if (recs.ok) {
+      actions.setCupEvent(recs.data);
+    }
   }),
 };
