@@ -5,9 +5,14 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from '@material-ui/core';
-import { ExpandMore, IndeterminateCheckBox, AddBox } from '@material-ui/icons';
+import {
+  ExpandMore,
+  IndeterminateCheckBox,
+  AddBox,
+  Visibility,
+} from '@material-ui/icons';
 import styled from 'styled-components';
-import { Paper } from 'components/Paper';
+import Avatar from 'components/Avatar';
 import Layout from 'components/Layout';
 import Recplayer from 'components/Recplayer';
 import { Level } from 'components/Names';
@@ -33,6 +38,7 @@ import Button from 'components/Buttons';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import { MergeContainer } from 'components/RecListItem';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { Row, Column } from 'components/Containers';
 
 const getLink = replay => {
   let link = '';
@@ -180,43 +186,71 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
             </AccordionSummary>
             <AccordionDetails style={{ flexDirection: 'column' }}>
               <ReplayDescription>
-                <div>
-                  {isWindow ? (
-                    <>
-                      <a href={link}>
-                        <Time thousands time={replay.ReplayTime} />
-                      </a>{' '}
-                    </>
-                  ) : (
-                    <Time thousands time={replay.ReplayTime} />
-                  )}
-                  by{' '}
-                  {replay.DrivenByData ? (
-                    <Kuski kuskiData={replay.DrivenByData} />
-                  ) : (
-                    replay.DrivenByText || 'Unknown'
-                  )}{' '}
-                  in <Level LevelData={replay.LevelData} noLink />
-                </div>
+                <Row jc="space-between">
+                  <Row>
+                    <Avatar kuski={replay.DrivenByData} collapse margin={0} />
+                    <Column jc="space-around" l="Small">
+                      <div>
+                        <Kuski kuskiData={replay.DrivenByData} flag team />
+                      </div>
+                      <div>
+                        {isWindow ? (
+                          <>
+                            <a href={link}>
+                              <Time thousands time={replay.ReplayTime} />
+                            </a>{' '}
+                          </>
+                        ) : (
+                          <Time thousands time={replay.ReplayTime} />
+                        )}{' '}
+                        in{' '}
+                        <Level
+                          LevelData={replay.LevelData}
+                          LevelIndex={replay.LevelIndex}
+                        />
+                      </div>
+                    </Column>
+                  </Row>
+                  <Row t="Small">
+                    <Views>{replay.Views}</Views> <Visibility />
+                  </Row>
+                </Row>
                 <br />
-                <Link to={`/levels/${replay.LevelIndex}`}>
-                  Go to level page
-                </Link>
+                <div>{replay.Comment}</div>
+                <BattleTimestamp>
+                  Uploaded by{' '}
+                  {replay.UploadedByData
+                    ? replay.UploadedByData.Kuski
+                    : 'Unknown'}{' '}
+                  <LocalTime
+                    date={replay.Uploaded}
+                    format="YYYY-MM-DD HH:mm:ss"
+                    parse="X"
+                  />
+                </BattleTimestamp>
+                <br />
+                <ReplayRating
+                  ReplayIndex={
+                    replay.ReplayIndex ? replay.ReplayIndex : ReplayUuid
+                  }
+                />
               </ReplayDescription>
               <Tags tags={getTags()} />
             </AccordionDetails>
           </Accordion>
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore />}>
-              <Header h3>Other replays in level</Header>
+              <Header h3>Comments</Header>
             </AccordionSummary>
             <AccordionDetails style={{ flexDirection: 'column' }}>
-              <RecList
-                LevelIndex={replay.LevelIndex}
-                currentUUID={uuidarray}
-                columns={['Replay', 'Time', 'By']}
-                horizontalMargin={-16}
-                mergable
+              <AddComment
+                type="replay"
+                index={replay.ReplayIndex ? replay.ReplayIndex : ReplayUuid}
+              />
+              <ReplayComments
+                ReplayIndex={
+                  replay.ReplayIndex ? replay.ReplayIndex : ReplayUuid
+                }
               />
             </AccordionDetails>
           </Accordion>
@@ -255,137 +289,138 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
           )}
         </ChatContainer>
       </RightBarContainer>
-      <LevelStatsContainer>
-        <ReplayDescriptionPaper>
-          <div>
-            <div>{replay.Comment}</div>
-            <BattleTimestamp>
-              Uploaded by{' '}
-              {replay.UploadedByData ? replay.UploadedByData.Kuski : 'Unknown'}{' '}
-              <LocalTime
-                date={replay.Uploaded}
-                format="YYYY-MM-DD HH:mm:ss"
-                parse="X"
-              />
-            </BattleTimestamp>
-          </div>
-          <ReplayRating
-            ReplayIndex={replay.ReplayIndex ? replay.ReplayIndex : ReplayUuid}
-          />
-        </ReplayDescriptionPaper>
-      </LevelStatsContainer>
       {eventRecs ? (
         <LevelStatsContainer>
-          <Paper>
-            <ListContainer>
-              <ListHeader>
-                <ListCell width={30} right>
-                  #
-                </ListCell>
-                <ListCell>Filename</ListCell>
-                <ListCell>Player</ListCell>
-                <ListCell>Time</ListCell>
-                <ListCell>Points</ListCell>
-              </ListHeader>
-              {eventRecs.length > 0 && (
-                <>
-                  {eventRecs.map((t, index) => (
-                    <ListRow
-                      key={t.CupTimeIndex}
-                      selected={uuidarray.indexOf(`c-${t.CupTimeIndex}`) > -1}
-                      onHover={hover =>
-                        hover ? setHover(index) : setHover(-1)
-                      }
-                    >
-                      <ListCell width={30} right>
-                        {index + 1}.
-                      </ListCell>
-                      <ListCell
-                        to={`/r/c-${
-                          t.CupTimeIndex
-                        }/${`${recName}${t.KuskiData.Kuski.substring(0, 6)}`}`}
+          <Accordion defaultExpanded>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Header h3>Cup event replays</Header>
+            </AccordionSummary>
+            <AccordionDetails style={{ flexDirection: 'column', padding: 0 }}>
+              <ListContainer>
+                <ListHeader>
+                  <ListCell width={30} right>
+                    #
+                  </ListCell>
+                  <ListCell>Filename</ListCell>
+                  <ListCell>Player</ListCell>
+                  <ListCell>Time</ListCell>
+                  <ListCell>Points</ListCell>
+                </ListHeader>
+                {eventRecs.length > 0 && (
+                  <>
+                    {eventRecs.map((t, index) => (
+                      <ListRow
+                        key={t.CupTimeIndex}
+                        selected={uuidarray.indexOf(`c-${t.CupTimeIndex}`) > -1}
+                        onHover={hover =>
+                          hover ? setHover(index) : setHover(-1)
+                        }
                       >
-                        {recName}
-                        {t.KuskiData.Kuski.substring(0, 6)}
-                      </ListCell>
-                      <ListCell>
-                        <Kuski kuskiData={t.KuskiData} team flag />
-                      </ListCell>
-                      <ListCell
-                        to={`/r/c-${
-                          t.CupTimeIndex
-                        }/${`${recName}${t.KuskiData.Kuski.substring(0, 6)}`}`}
-                      >
-                        <Time apples={-1} time={t.Time} />
-                      </ListCell>
-                      <ListCell>
-                        {t.Points} point{t.Points > 1 ? 's' : ''}
-                      </ListCell>
-                      {(isMobile || isHover === index) && (
-                        <MergeContainer
-                          title={
-                            uuidarray.indexOf(`c-${t.CupTimeIndex}`) > -1
-                              ? 'Unmerge replay'
-                              : 'Merge replay'
-                          }
+                        <ListCell width={30} right>
+                          {index + 1}.
+                        </ListCell>
+                        <ListCell
+                          to={`/r/c-${
+                            t.CupTimeIndex
+                          }/${`${recName}${t.KuskiData.Kuski.substring(
+                            0,
+                            6,
+                          )}`}`}
                         >
-                          {uuidarray.indexOf(`c-${t.CupTimeIndex}`) > -1 ? (
-                            <>
-                              {merge?.includes(`c-${t.CupTimeIndex}`) && (
-                                <Link
-                                  to={updateUrl(
-                                    true,
-                                    `c-${
-                                      t.CupTimeIndex
-                                    }-${recName}${t.KuskiData.Kuski.substring(
-                                      0,
-                                      6,
-                                    )}`,
-                                  )}
-                                >
-                                  <IndeterminateCheckBox />
-                                </Link>
-                              )}
-                            </>
-                          ) : (
-                            <Link
-                              to={updateUrl(
-                                false,
-                                `c-${
-                                  t.CupTimeIndex
-                                }-${recName}${t.KuskiData.Kuski.substring(
-                                  0,
-                                  6,
-                                )}`,
-                              )}
-                            >
-                              <AddBox />
-                            </Link>
-                          )}
-                        </MergeContainer>
-                      )}
-                    </ListRow>
-                  ))}
-                </>
-              )}
-            </ListContainer>
-          </Paper>
+                          {recName}
+                          {t.KuskiData.Kuski.substring(0, 6)}
+                        </ListCell>
+                        <ListCell>
+                          <Kuski kuskiData={t.KuskiData} team flag />
+                        </ListCell>
+                        <ListCell
+                          to={`/r/c-${
+                            t.CupTimeIndex
+                          }/${`${recName}${t.KuskiData.Kuski.substring(
+                            0,
+                            6,
+                          )}`}`}
+                        >
+                          <Time apples={-1} time={t.Time} />
+                        </ListCell>
+                        <ListCell>
+                          {t.Points} point{t.Points > 1 ? 's' : ''}
+                        </ListCell>
+                        {(isMobile || isHover === index) && (
+                          <MergeContainer
+                            title={
+                              uuidarray.indexOf(`c-${t.CupTimeIndex}`) > -1
+                                ? 'Unmerge replay'
+                                : 'Merge replay'
+                            }
+                          >
+                            {uuidarray.indexOf(`c-${t.CupTimeIndex}`) > -1 ? (
+                              <>
+                                {merge?.includes(`c-${t.CupTimeIndex}`) && (
+                                  <Link
+                                    to={updateUrl(
+                                      true,
+                                      `c-${
+                                        t.CupTimeIndex
+                                      }-${recName}${t.KuskiData.Kuski.substring(
+                                        0,
+                                        6,
+                                      )}`,
+                                    )}
+                                  >
+                                    <IndeterminateCheckBox />
+                                  </Link>
+                                )}
+                              </>
+                            ) : (
+                              <Link
+                                to={updateUrl(
+                                  false,
+                                  `c-${
+                                    t.CupTimeIndex
+                                  }-${recName}${t.KuskiData.Kuski.substring(
+                                    0,
+                                    6,
+                                  )}`,
+                                )}
+                              >
+                                <AddBox />
+                              </Link>
+                            )}
+                          </MergeContainer>
+                        )}
+                      </ListRow>
+                    ))}
+                  </>
+                )}
+              </ListContainer>
+            </AccordionDetails>
+          </Accordion>
         </LevelStatsContainer>
       ) : null}
       <LevelStatsContainer>
-        <BattleDescriptionPaper>
-          <AddComment
-            type="replay"
-            index={replay.ReplayIndex ? replay.ReplayIndex : ReplayUuid}
-          />
-          <ReplayComments
-            ReplayIndex={replay.ReplayIndex ? replay.ReplayIndex : ReplayUuid}
-          />
-        </BattleDescriptionPaper>
+        <Accordion defaultExpanded>
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Header h3>Other replays in level</Header>
+          </AccordionSummary>
+          <AccordionDetails style={{ flexDirection: 'column' }}>
+            <RecList
+              LevelIndex={replay.LevelIndex}
+              currentUUID={uuidarray}
+              columns={['Uploaded', 'Replay', 'Time', 'By']}
+              horizontalMargin={-16}
+              mergable
+            />
+          </AccordionDetails>
+        </Accordion>
       </LevelStatsContainer>
     </Layout>
   );
 };
+
+const Views = styled.span`
+  margin-right: ${p => p.theme.padXSmall};
+`;
 
 const PlayerContainer = styled.div`
   width: ${p => (p.theater ? '100%' : '70%')};
@@ -430,21 +465,6 @@ const LevelStatsContainer = styled.div`
     float: none;
     width: 100%;
   }
-`;
-
-const BattleDescriptionPaper = styled(Paper)`
-  font-size: 14px;
-  padding: 7px;
-  width: auto;
-`;
-
-const ReplayDescriptionPaper = styled(Paper)`
-  font-size: 14px;
-  padding: 7px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: auto;
 `;
 
 const ReplayDescription = styled.div`

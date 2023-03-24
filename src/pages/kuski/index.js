@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import { Tabs, Tab } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styled from 'styled-components';
-import config from 'config';
 import Layout from 'components/Layout';
 import Loading from 'components/Loading';
 import Flag from 'components/Flag';
+import Avatar from 'components/Avatar';
 import ReplayList from 'features/ReplayList';
 import Notifications from 'features/Notifications';
 import PlayedBattles from './PlayedBattles';
@@ -41,14 +41,7 @@ const Kuski = ({ name, tab, recordSort, ...props }) => {
       ) : (
         <Container chin={tab !== 'times' && tab !== 'files'}>
           <Head>
-            <Picture collapse={collapse}>
-              {kuski.BmpCRC !== 0 && (
-                <img
-                  src={`${config.dlUrl}shirt/${kuski.KuskiIndex}`}
-                  alt="shirt"
-                />
-              )}
-            </Picture>
+            <Avatar kuski={kuski} collapse={collapse} />
             <Profile>
               <Name>
                 <Flag nationality={kuski.Country} />
@@ -149,36 +142,6 @@ const Container = styled.div`
   min-height: 100%;
   background: ${p => p.theme.paperBackground};
   padding-bottom: ${p => (p.chin ? '200px' : '0')};
-`;
-
-const Picture = styled.div`
-  height: ${p => (p.collapse ? '50px' : '150px')};
-  width: ${p => (p.collapse ? '50px' : '150px')};
-  flex: 0 0 ${p => (p.collapse ? '50px' : '150px')};
-  border-radius: 50%;
-  margin: 20px;
-  background-color: transparent;
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent ${p => (p.collapse ? '7px' : '20px')},
-    #f1f1f1 0,
-    #f1f1f1 ${p => (p.collapse ? '17px' : '50px')}
-  );
-  img {
-    margin: auto;
-    display: block;
-    padding: 10px;
-    width: 104px;
-    ${p => p.collapse && 'padding: 0; width: 36px; padding-top: 2px;'}
-    transition-property: width, padding;
-    transition-duration: 1s;
-  }
-  @media (max-width: 940px) {
-    margin: 20px auto;
-  }
-  transition-duration: 1s;
-  transition-property: height, width, flex;
 `;
 
 const Profile = styled.div`

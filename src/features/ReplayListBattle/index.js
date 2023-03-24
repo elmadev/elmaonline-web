@@ -70,7 +70,10 @@ export default function ReplayListBattle({
             const winResult = getWinResult(i.Results, i.BattleType);
             return (
               <ListRow key={i.BattleIndex}>
-                <ListCell to={`/battles/${i.BattleIndex}`} width={120}>
+                <ListCell
+                  to={`/r/b-${i.BattleIndex}/${i.RecFileName}`}
+                  width={120}
+                >
                   <LocalTime
                     date={i.Started}
                     format={`DD MMM HH:mm`}
@@ -84,13 +87,20 @@ export default function ReplayListBattle({
                     LevelData={i.LevelData}
                   />
                 </ListCell>
-                <ListCell to={`/battles/${i.BattleIndex}`} width={100}>
+                <ListCell
+                  to={`/r/c-${i.BattleIndex}/${i.RecFileName}`}
+                  width={100}
+                >
                   <BattleType type={i.BattleType} />
                 </ListCell>
                 <ListCell width={120} to={`/kuskis/${i.KuskiData.Kuski}`}>
                   <Kuski kuskiData={i.KuskiData} noLink />
                 </ListCell>
-                <ListCell to={`/battles/${i.BattleIndex}`} right width={120}>
+                <ListCell
+                  to={`/r/b-${i.BattleIndex}/${i.RecFileName}`}
+                  right
+                  width={120}
+                >
                   <Time apples={winResult.Apples} time={winResult.Time} />
                 </ListCell>
                 <ListCell to={`/kuskis/${winResult.KuskiData.Kuski}`}>
