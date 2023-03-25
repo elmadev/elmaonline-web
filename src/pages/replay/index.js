@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
   Accordion,
@@ -11,6 +11,7 @@ import {
   AddBox,
   Visibility,
 } from '@material-ui/icons';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import styled from 'styled-components';
 import Avatar from 'components/Avatar';
 import Layout from 'components/Layout';
@@ -65,6 +66,7 @@ const getLink = replay => {
 
 const Replay = ({ ReplayUuid, RecFileName }) => {
   const [isHover, setHover] = useState(-1);
+  const fingerprint = useRef('');
   const isWindow = typeof window !== 'undefined';
   let link = '';
   let type = 'replay';
@@ -88,9 +90,23 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
     settings: { theater },
   } = useStoreState(state => state.ReplaySettings);
 
+  const getReplay = async payload => {
+    if (!fingerprint.current) {
+      const fp = await FingerprintJS.load();
+      const { visitorId } = await fp.get();
+      fingerprint.current = visitorId;
+    }
+    getReplayByUUID({
+      ReplayUuid,
+      merge,
+      RecFileName,
+      Fingerprint: fingerprint.current,
+    });
+  };
+
   useEffect(() => {
     if (ReplayUuid) {
-      getReplayByUUID({ ReplayUuid, merge, RecFileName });
+      getReplay({ ReplayUuid, merge, RecFileName });
     }
     setCupEvent(null);
     if (ReplayUuid && ReplayUuid.includes('c-')) {
@@ -144,7 +160,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
     }
   }
   let recName = '';
-  if (replay.DrivenByData && type === 'cup') {
+  if (replay.DrivenByData && type === 'cup' && RecFileName) {
     recName = RecFileName.replace(
       replay.DrivenByData.Kuski.substring(0, 6),
       '',
@@ -188,7 +204,9 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
               <ReplayDescription>
                 <Row jc="space-between">
                   <Row>
-                    <Avatar kuski={replay.DrivenByData} collapse margin={0} />
+                    {replay.DrivenByData.BmpCRC ? (
+                      <Avatar kuski={replay.DrivenByData} collapse margin={0} />
+                    ) : null}
                     <Column jc="space-around" l="Small">
                       <div>
                         <Kuski kuskiData={replay.DrivenByData} flag team />

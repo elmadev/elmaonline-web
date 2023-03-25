@@ -46,7 +46,7 @@ export default {
     if (payload.merge) {
       uuids = `${uuids};${payload.merge}`;
     }
-    const replays = await ReplayByUUID(uuids);
+    const replays = await ReplayByUUID(uuids, payload.Fingerprint);
     if (replays.ok) {
       if (Array.isArray(replays.data)) {
         actions.setReplays(replays.data);
