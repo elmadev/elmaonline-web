@@ -12,6 +12,8 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ListIcon from '@material-ui/icons/List';
 import AppsIcon from '@material-ui/icons/Apps';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import Pagination from '@material-ui/lab/Pagination';
@@ -84,6 +86,7 @@ export default function ReplayList({
   }
   if (!summary) {
     columns.push('Rating');
+    columns.push('Views');
     columns.push('Tags');
   }
 
@@ -172,6 +175,23 @@ export default function ReplayList({
                 <StarBorderIcon fontSize="small" />
               )}
             </ToggleButton>
+            <ToggleButton
+              value="check"
+              size="small"
+              selected={settings.sortBy === 'views'}
+              style={{ alignSelf: 'center', marginRight: '8px' }}
+              onChange={() => {
+                setSettings({
+                  sortBy: settings.sortBy === 'views' ? 'uploaded' : 'views',
+                });
+              }}
+            >
+              {settings.sortBy === 'views' ? (
+                <VisibilityIcon fontSize="small" />
+              ) : (
+                <VisibilityOffOutlinedIcon fontSize="small" />
+              )}
+            </ToggleButton>
             <ToggleButtonGroup
               value={settings.grid}
               size="small"
@@ -209,6 +229,7 @@ export default function ReplayList({
             {!summary && (
               <>
                 <ListCell>Rating</ListCell>
+                <ListCell>Views</ListCell>
                 <ListCell>Tags</ListCell>
               </>
             )}
