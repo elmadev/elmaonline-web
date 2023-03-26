@@ -98,7 +98,8 @@ export const ReplayDrivenBy = (kuskiIndex, query = {}) =>
   api.get(`replay/driven_by/${kuskiIndex}`, query);
 export const ReplayUploadedBy = (kuskiIndex, query = {}) =>
   api.get(`replay/uploaded_by/${kuskiIndex}`, query);
-export const ReplayByUUID = UUID => api.get(`replay/byUUID/${UUID}`);
+export const ReplayByUUID = (UUID, Fingerprint) =>
+  api.get(`replay/byUUID/${UUID}?f=${Fingerprint}`);
 export const ReplaysSearchByDriven = data =>
   api.get(`replay/search/byDriven/${data.q}/${data.offset}`);
 export const ReplaysSearchByLevel = data =>
@@ -152,6 +153,8 @@ export const CupEvents = cupGroupIndex =>
   api.get(`cups/events/${cupGroupIndex}`);
 export const CupEvent = data =>
   api.get(`cups/event/${data.cupGroupIndex}/${data.cupIndex}`);
+export const CupEventByTimeIndex = index =>
+  api.get(`cups/eventByTimeIndex/${index}`);
 export const UpdateCup = (cupGroupIndex, data) =>
   api.post(`cups/edit/${cupGroupIndex}`, data);
 export const UpdateCupBlog = data => api.post(`cups/blog/add`, data);

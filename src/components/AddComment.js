@@ -45,7 +45,7 @@ const AddComment = ({ type, index, add }) => {
         />
       </TextBox>
       <Buttons>
-        <Button secondary onClick={() => setText('')}>
+        <Button secondary onClick={() => setText('')} right>
           Reset
         </Button>
         <Button onClick={() => addText()}>Add</Button>

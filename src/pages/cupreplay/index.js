@@ -12,10 +12,6 @@ import { Paper } from 'components/Paper';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import Loading from 'components/Loading';
 import config from 'config';
-/* import RecList from 'features/RecList';
-import ReplayComments from 'features/ReplayComments';
-import ReplayRating from 'features/ReplayRating';
-import AddComment from 'components/AddComment'; */
 
 const CupReplays = ({ ReplayIndex, Filename }) => {
   const { replay, replayLoaded, otherReplays } = useStoreState(
@@ -110,7 +106,6 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
                   </Download>
                 </Header>
               </Half>
-              {/* <ReplayRating ReplayIndex={getReplayByUuid.ReplayIndex} /> */}
             </Info>
           </Paper>
         </PaperCon>
@@ -163,14 +158,6 @@ const CupReplays = ({ ReplayIndex, Filename }) => {
           </Left>
           <Right />
         </PaperCon>
-        <Paper>
-          {/* <AddComment
-            add={() => {}}
-            type="replay"
-            index={getReplayByUuid.ReplayIndex}
-          />
-          <ReplayComments ReplayIndex={getReplayByUuid.ReplayIndex} /> */}
-        </Paper>
       </Container>
     </Layout>
   );

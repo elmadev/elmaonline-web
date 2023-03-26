@@ -109,7 +109,7 @@ const RecListItem = ({ replay, selected, columns, mergable = false }) => {
   );
 };
 
-const MergeContainer = styled.div`
+export const MergeContainer = styled.div`
   position: absolute;
   right: 0;
   margin: 7px;

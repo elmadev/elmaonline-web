@@ -95,6 +95,7 @@ export const ListRow = ({
 
 const Row = styled.div`
   display: table-row;
+  position: relative;
   vertical-align: ${p => p.verticalAlign};
   background: ${p =>
     p.selected

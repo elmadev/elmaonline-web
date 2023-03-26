@@ -42,9 +42,9 @@ const Comments = props => {
   const { comments, loading } = props;
   if (loading) return null;
   return (
-    <Chat>
+    <Column>
       {comments.map(c => (
-        <Chatline key={c.ReplayCommentIndex}>
+        <Row key={c.ReplayCommentIndex}>
           <Timestamp>
             <LocalTime date={c.Entered} format="D MMM YYYY" parse="X" />
           </Timestamp>{' '}
@@ -55,32 +55,25 @@ const Comments = props => {
             </span>
             &gt;
           </Kuski>{' '}
-          <span>{c.Text}</span>
-        </Chatline>
+          <ChatText>{c.Text}</ChatText>
+        </Row>
       ))}
-    </Chat>
+    </Column>
   );
 };
 
-const Chat = styled(Column)`
-  margin: 0;
-  max-height: 400px;
-  width: 100%;
-  overflow: auto;
-`;
-
-const Chatline = styled(Row)`
-  font-size: 14px;
-  margin-bottom: 4px;
-  position: relative;
+const ChatText = styled.span`
+  font-size: ${p => p.theme.smallFont};
 `;
 
 const Kuski = styled.span`
   font-weight: 400;
   margin-right: ${p => p.theme.padSmall};
+  font-size: ${p => p.theme.smallFont};
 `;
 
 const Timestamp = styled.div`
+  font-size: ${p => p.theme.smallFont};
   color: #7d7d7d;
   width: 78px;
   float: left;

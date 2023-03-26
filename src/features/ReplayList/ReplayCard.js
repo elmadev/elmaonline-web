@@ -69,15 +69,11 @@ export default function ReplayCard({ replay, onPreviewClick }) {
           rating={replay.ratingAvg}
         />
       </ReplayCardMedia>
-      <CardContent>
+      <CardContent title={replay.Comment}>
         <Typography variant="body2" color="textSecondary" component="p">
           <Box display="flex" justifyContent="space-between">
             <Level LevelData={replay.LevelData} noLink />
-            <div>
-              {replay.Tags.map(tag => (
-                <Tag>{tag.Name}</Tag>
-              ))}
-            </div>
+            <div>{replay.RecFileName}</div>
           </Box>
         </Typography>
       </CardContent>
@@ -94,15 +90,5 @@ const RecCard = styled(Card)`
 const ReplayCardMedia = styled(CardMedia)`
   &.MuiCardMedia-root {
     height: 160px;
-  }
-`;
-
-const Tag = styled.small`
-  color: #2e2eff;
-  :before {
-    content: '#';
-  }
-  :after {
-    content: ' ';
   }
 `;
