@@ -2,7 +2,7 @@
 import { action, thunk, persist } from 'easy-peasy';
 import {
   Replays,
-  BattleListPeriod,
+  LatestBattleReplays,
   GetTags,
   ReplayDrivenBy,
   ReplayUploadedBy,
@@ -39,7 +39,7 @@ export default {
     state.battles = payload;
   }),
   getBattles: thunk(async (actions, payload) => {
-    const get = await BattleListPeriod(payload);
+    const get = await LatestBattleReplays(payload);
     if (get.ok) {
       actions.setBattles(get.data);
     }

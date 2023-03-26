@@ -404,6 +404,8 @@ export const BattleListPeriod = data =>
 export const BattleReplays = BattleIndex =>
   api.get(`battle/replays/${BattleIndex}`);
 export const LatestBattles = limit => api.get(`battle/${limit}`);
+export const LatestBattleReplays = limit =>
+  api.get(`battle/replays?limit=${limit}`);
 
 // players
 export const PlayersSearch = data =>

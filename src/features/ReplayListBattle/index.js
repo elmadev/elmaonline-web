@@ -1,49 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { TablePagination } from '@material-ui/core';
-import subYears from 'date-fns/subYears';
-import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
-import { toServerTime } from 'utils/time';
-import Kuski from 'components/Kuski';
-import { Level, BattleType } from 'components/Names';
-import Time from 'components/Time';
-import LocalTime from 'components/LocalTime';
-import { sortResults } from 'utils/battle';
-import { Paper } from 'components/Paper';
+import ReplayCard from 'components/ReplayCard';
+import Preview from 'components/Preview';
+import styled from 'styled-components';
+import Pagination from '@material-ui/lab/Pagination';
+import { Box } from '@material-ui/core';
+import { findIndex } from 'lodash';
 
 export default function ReplayListBattle({
   defaultPage = 0,
   defaultPageSize = 25,
-  showPagination,
 }) {
+  const [previewRec, setPreviewRec] = useState(null);
   const [page, setPage] = useState(defaultPage);
-  const [pageSize, setPageSize] = useState(defaultPageSize);
+  const [pageSize] = useState(defaultPageSize);
   const { battles } = useStoreState(state => state.ReplayList);
   const { getBattles } = useStoreActions(actions => actions.ReplayList);
 
-  const paginateBattles = (battleList, page, pageSize) => {
-    return battleList
-      .filter(r => r.RecFileName !== null)
-      .slice(page * pageSize, page * pageSize + pageSize);
+  useEffect(() => {
+    if (!battles) {
+      getBattles(200);
+    }
+  }, []);
+
+  const handleReplayClick = replay => {
+    setPreviewRec(replay);
   };
 
-  const getWinResult = (results, battleType) =>
-    results.sort(sortResults(battleType))[0];
+  const nextReplay = () => {
+    if (!previewRec) {
+      return null;
+    }
+    const currentIndex = findIndex(battles, {
+      BattleIndex: previewRec.BattleIndex,
+    });
 
-  useEffect(() => {
-    const start = subYears(new Date(), 1);
-    const end = new Date();
-    if (!battles)
-      getBattles({
-        start: toServerTime(start).format(),
-        end: toServerTime(end).format(),
-        limit: 200,
-      });
-  }, [page, pageSize]);
+    const nextIndex =
+      currentIndex + 1 >= battles.length ? currentIndex : currentIndex + 1;
 
-  const handleChangeRowsPerPage = event => {
-    setPage(0);
-    setPageSize(event.target.value);
+    const nextReplay = battles[nextIndex];
+    setPreviewRec(nextReplay);
+  };
+
+  const previousReplay = () => {
+    if (!previewRec) {
+      return null;
+    }
+    const currentIndex = findIndex(battles, {
+      BattleIndex: previewRec.BattleIndex,
+    });
+
+    const previousIndex =
+      currentIndex - 1 < 0 ? currentIndex : currentIndex - 1;
+
+    const previousReplay = battles[previousIndex];
+    setPreviewRec(previousReplay);
   };
 
   if (!battles) {
@@ -51,83 +62,59 @@ export default function ReplayListBattle({
   }
 
   return (
-    <Paper>
-      <ListContainer>
-        <ListHeader>
-          <ListCell>Started</ListCell>
-          <ListCell>Level</ListCell>
-          <ListCell>Type</ListCell>
-          <ListCell>Designer</ListCell>
-          <ListCell right>Result</ListCell>
-          <ListCell>Winner</ListCell>
-        </ListHeader>
-        {!battles ? (
-          <ListRow>
-            <ListCell />
-          </ListRow>
-        ) : (
-          paginateBattles(battles, page, pageSize).map(i => {
-            const winResult = getWinResult(i.Results, i.BattleType);
+    <Container grid>
+      <CardGrid>
+        {battles
+          .slice(page * pageSize, page * pageSize + pageSize)
+          .map(replay => {
             return (
-              <ListRow key={i.BattleIndex}>
-                <ListCell
-                  to={`/r/b-${i.BattleIndex}/${i.RecFileName}`}
-                  width={120}
-                >
-                  <LocalTime
-                    date={i.Started}
-                    format={`DD MMM HH:mm`}
-                    parse="X"
-                  />
-                </ListCell>
-                <ListCell width={100} to={`/levels/${i.LevelIndex}`}>
-                  <Level
-                    noLink
-                    LevelIndex={i.LevelIndex}
-                    LevelData={i.LevelData}
-                  />
-                </ListCell>
-                <ListCell
-                  to={`/r/c-${i.BattleIndex}/${i.RecFileName}`}
-                  width={100}
-                >
-                  <BattleType type={i.BattleType} />
-                </ListCell>
-                <ListCell width={120} to={`/kuskis/${i.KuskiData.Kuski}`}>
-                  <Kuski kuskiData={i.KuskiData} noLink />
-                </ListCell>
-                <ListCell
-                  to={`/r/b-${i.BattleIndex}/${i.RecFileName}`}
-                  right
-                  width={120}
-                >
-                  <Time apples={winResult.Apples} time={winResult.Time} />
-                </ListCell>
-                <ListCell to={`/kuskis/${winResult.KuskiData.Kuski}`}>
-                  <Kuski noLink kuskiData={winResult.KuskiData} />
-                </ListCell>
-              </ListRow>
+              <ReplayCard
+                key={replay.ReplayIndex}
+                replay={replay}
+                onPreviewClick={() => handleReplayClick(replay)}
+              />
             );
-          })
-        )}
-      </ListContainer>
-      {showPagination && (
-        <TablePagination
-          style={{ width: '600px' }}
-          component="div"
-          count={battles.filter(r => r.RecFileName !== null).length}
-          rowsPerPage={pageSize}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={(e, newPage) => setPage(newPage)}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          })}
+      </CardGrid>
+      <Box p={2}>
+        <Pagination
+          count={Math.ceil(battles.length / pageSize)}
+          onChange={(event, value) => setPage(value - 1)}
+          page={page + 1}
+          showFirstButton
+          showLastButton
+        />
+      </Box>
+      {previewRec && (
+        <Preview
+          previewRec={previewRec}
+          setPreviewRec={setPreviewRec}
+          nextReplay={nextReplay}
+          previousReplay={previousReplay}
         />
       )}
-    </Paper>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  display: block;
+  background: ${p =>
+    p.grid ? p.theme.pageBackgroundDark : p.theme.paperBackground};
+  min-width: 100%;
+  max-height: ${p => (p.small ? '243px' : 'auto')};
+  overflow: ${p => (p.small ? 'auto' : 'visible')};
+  a {
+    color: ${p => p.theme.fontColor};
+    :hover {
+      color: ${p => p.theme.linkColor};
+    }
+  }
+`;
+
+const CardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+  padding: 12px;
+`;
