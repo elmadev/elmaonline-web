@@ -204,7 +204,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
               <ReplayDescription>
                 <Row jc="space-between">
                   <Row>
-                    {replay.DrivenByData.BmpCRC ? (
+                    {replay.DrivenByData?.BmpCRC ? (
                       <Avatar kuski={replay.DrivenByData} collapse margin={0} />
                     ) : null}
                     <Column jc="space-around" l="Small">
