@@ -157,7 +157,7 @@ const Levels = ({ tab, detailed }) => {
                             afterName={` (${count} levels)`}
                             afterLongname={
                               <Popularity2
-                                title={`Avg. number of kuski's played per level: ${avg}`}
+                                title={`Avg. number of kuskis played per level: ${avg}`}
                                 widthPct={widthPct}
                                 after={<span>{avg}</span>}
                               />

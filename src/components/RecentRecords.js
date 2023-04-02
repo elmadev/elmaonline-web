@@ -19,9 +19,9 @@ const RecentRecords = ({ records }) => {
             Standing
           </ListCell>
           <ListCell>Driven</ListCell>
-          <ListCell>Kuski's Played</ListCell>
-          <ListCell>Playtime (All Kuski's)</ListCell>
-          <ListCell>Attempts (All Kuski's)</ListCell>
+          <ListCell>Kuskis Played</ListCell>
+          <ListCell>Playtime (All Kuskis)</ListCell>
+          <ListCell>Attempts (All Kuskis)</ListCell>
         </ListHeader>
         {Array.isArray(records) &&
           records.map(r => {

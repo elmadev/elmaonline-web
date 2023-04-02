@@ -40,7 +40,7 @@ const LevelpacksDetailed = ({
           </ListCell>
           <ListCell>
             <NewLineWrapper># Levels (% Finished)</NewLineWrapper>
-            <NewLineWrapper title="The average number of kuski's that played each level.">
+            <NewLineWrapper title="The average number of kuskis that played each level.">
               (Avg. Kuski Count)
             </NewLineWrapper>
             <NewLineWrapper>Top Record Holder(s)</NewLineWrapper>
@@ -142,7 +142,7 @@ const LevelpacksDetailed = ({
                               <>
                                 {st.TopRecordKuskis.length > 2 && (
                                   <NewLineWrapper>
-                                    3 or more Kuski's
+                                    3 or more kuskis
                                     {` (${st.TopRecordCount})`}
                                   </NewLineWrapper>
                                 )}

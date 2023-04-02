@@ -38,7 +38,7 @@ const RecordsCard = () => {
           Top {limit} Non-Battle Records Driven in the Last {days} Days
         </Header>
         <div>
-          Ordered by the current overall playtime by all kuski's in the level.
+          Ordered by the current overall playtime by all kuskis in the level.
         </div>
         <div>
           Times shown were records when they were driven (and sometimes still

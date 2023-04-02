@@ -27,7 +27,7 @@ const LevelInfoLevelStats = ({ level }) => {
           <ListCell>Total</ListCell>
         </ListHeader>
         <ListRow>
-          <ListCell>Kuski's Played</ListCell>
+          <ListCell>Kuskis Played</ListCell>
           <ListCell title={formatAttempts(stats.KuskiCountF)}>
             {formatPct(stats.KuskiCountF, stats.KuskiCountAll, 1)}
           </ListCell>

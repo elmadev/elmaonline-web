@@ -220,7 +220,7 @@ const Search = () => {
             <AccordionDetails>
               <div>
                 <div>
-                  Enter one or more Kuski's separated by a comma (case
+                  Enter one or more kuskis separated by a comma (case
                   insensitive).
                 </div>
                 <div>

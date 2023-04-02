@@ -77,9 +77,9 @@ const Records = ({ kuski, sort, recordCount }) => {
               navigate(`/kuskis/${kuski.Kuski}/records/${e.target.value}`);
             }}
           >
-            <MenuItem value="TimeAll">Playtime (All Kuski's)</MenuItem>
-            <MenuItem value="AttemptsAll">Attempts (All Kuski's)</MenuItem>
-            <MenuItem value="KuskiCountAll"># Kuski's Played</MenuItem>
+            <MenuItem value="TimeAll">Playtime (All kuskis)</MenuItem>
+            <MenuItem value="AttemptsAll">Attempts (All kuskis)</MenuItem>
+            <MenuItem value="KuskiCountAll"># Kuskis Played</MenuItem>
             <MenuItem value="LeaderCount">Leader Count</MenuItem>
             <MenuItem value="Driven">Driven</MenuItem>
             <MenuItem value="TimeDesc">Time (High)</MenuItem>
@@ -94,14 +94,14 @@ const Records = ({ kuski, sort, recordCount }) => {
           <ListCell>Time</ListCell>
           <ListCell>
             Playtime <br />
-            (All Kuski's)
+            (All kuskis)
           </ListCell>
           <ListCell>
             Attempts <br />
-            (All Kuski's)
+            (All kuskis)
           </ListCell>
-          <ListCell title="Number of kuski's that attempted the level">
-            # Kuski's Played <br />
+          <ListCell title="Number of kuskis that attempted the level">
+            # Kuskis Played <br />
             (% Finished)
           </ListCell>
           <ListCell title="Size of the leader history">Leader Count</ListCell>

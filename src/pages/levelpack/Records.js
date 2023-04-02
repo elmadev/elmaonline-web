@@ -178,8 +178,8 @@ const Records = ({ levelStats }) => {
 
           {showMoreStats && (
             <ListCell width={140}>
-              Kuski's Played <br />
-              <span title="Percentage of kuski's that finished the level at least once.">
+              Kuskis Played <br />
+              <span title="Percentage of kuskis that finished the level at least once.">
                 (% Finished)
               </span>
             </ListCell>
@@ -188,7 +188,7 @@ const Records = ({ levelStats }) => {
           {showMoreStats && (
             <ListCell
               width={50}
-              title="Total time played by all kuski's combined."
+              title="Total time played by all kuskis combined."
             >
               Time Played
             </ListCell>
@@ -196,7 +196,7 @@ const Records = ({ levelStats }) => {
 
           <ListCell
             width={150}
-            title="Time played on level (by all kuski's), relative to other levels in this pack."
+            title="Time played on level (by all kuskis), relative to other levels in this pack."
           >
             Popularity
           </ListCell>
