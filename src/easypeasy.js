@@ -23,7 +23,6 @@ import LevelsAddCollection from 'pages/levels-add-collection/store';
 import LevelpackCollection from 'pages/levelpack-collection/store';
 import LevelPackList from 'features/LevelPackList/store';
 import Settings from 'pages/settings/store';
-import Replay from 'pages/cupreplay/store';
 import ReplayByUUID from 'pages/replay/store';
 import Teams from 'pages/teams/store';
 import Kuskis from 'pages/kuskis/store';
@@ -69,7 +68,6 @@ export default {
   Mod,
   News,
   Teams,
-  Replay,
   ReplayByUUID,
   RecList,
   RankingTable,

@@ -49,7 +49,7 @@ const getLink = replay => {
   } else if (replay.UUID.substring(0, 2) === 'c-') {
     link = `${config.dlUrl}cupreplay/${replay.UUID.split('-')[1]}/${
       replay.RecFileName
-    }`;
+    }`.replace('.rec', '');
     type = 'cup';
   } else if (replay.UUID.substring(0, 2) === 'b-') {
     link = `${config.dlUrl}battlereplay/${replay.UUID.split('-')[1]}`;
@@ -178,6 +178,11 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
       : `${location.pathname}?merge=${recUuid}`;
   };
 
+  let dlLink = link;
+  if (linkArray?.length > 0) {
+    dlLink = linkArray[linkArray.length - 1];
+  }
+
   return (
     <Layout t={`rec - ${replay.RecFileName}`}>
       <PlayerContainer theater={theater}>
@@ -214,7 +219,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
                       <div>
                         {isWindow ? (
                           <>
-                            <a href={link}>
+                            <a href={dlLink}>
                               <Time thousands time={replay.ReplayTime} />
                             </a>{' '}
                           </>

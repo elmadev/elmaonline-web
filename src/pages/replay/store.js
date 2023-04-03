@@ -52,7 +52,7 @@ export default {
         actions.setReplays(replays.data);
         actions.setReplayByUUID(
           replays.data.filter(
-            d => d.RecFileName === `${payload.RecFileName}.rec`,
+            d => d.RecFileName.replace('.rec', '') === payload.RecFileName,
           )[0],
         );
       } else {
