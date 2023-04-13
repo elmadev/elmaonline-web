@@ -110,7 +110,15 @@ export const ReplaysByLevelIndex = LevelIndex =>
   api.get(`replay/byLevelIndex/${LevelIndex}`);
 export const InsertReplay = data => api.post('replay', data);
 export const UpdateReplay = data => api.post('replay/update', data);
-export const Replays = ({ page, pageSize, tags, sortBy, order, levelPack }) => {
+export const Replays = ({
+  page,
+  pageSize,
+  tags,
+  sortBy,
+  order,
+  levelPack,
+  excludedTags,
+}) => {
   return api.get(`replay`, {
     page,
     pageSize,
@@ -118,6 +126,7 @@ export const Replays = ({ page, pageSize, tags, sortBy, order, levelPack }) => {
     sortBy,
     order,
     levelPack,
+    excludedTags,
   });
 };
 export const AllMyReplays = ({ page, pageSize, tags, sortBy, order }) => {
