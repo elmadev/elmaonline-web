@@ -23,6 +23,8 @@ export default function Preview({
   const getRecUri = () => {
     if (previewRec.UUID.substring(0, 5) === 'local') {
       return `${config.url}temp/${previewRec.UUID}-${previewRec.RecFileName}`;
+    } else if (previewRec.UUID.substring(0, 2) === 'b-') {
+      return `${config.dlUrl}battlereplay/${previewRec.UUID.split('-')[1]}`;
     }
     return `${config.s3Url}replays/${previewRec.UUID}/${previewRec.RecFileName}`;
   };

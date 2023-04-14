@@ -6,8 +6,8 @@ import { ListContainer, ListHeader, ListCell } from 'components/List';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { findIndex } from 'lodash';
 import styled from 'styled-components';
-import Preview from './Preview';
-import ReplayCard from './ReplayCard';
+import Preview from 'components/Preview';
+import ReplayCard from 'components/ReplayCard';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ListIcon from '@material-ui/icons/List';
@@ -27,6 +27,7 @@ export default function ReplayList({
   persist = '',
 }) {
   const [selectedTags, setSelectedTags] = useState([]);
+  const [excludedTags, setExcludedTags] = useState([]);
   const [previewRec, setPreviewRec] = useState(null);
   const [page, setPage] = useState(defaultPage);
   const [pageSize] = useState(defaultPageSize);
@@ -51,13 +52,14 @@ export default function ReplayList({
       page: getPage(),
       pageSize,
       tags: selectedTags.map(tag => tag.TagIndex),
+      excludedTags: excludedTags.map(tag => tag.TagIndex),
       sortBy: !summary ? settings.sortBy : 'uploaded',
       order: 'desc',
       drivenBy,
       uploadedBy,
       levelPack,
     });
-  }, [page, pageSize, selectedTags, settings.sortBy]);
+  }, [page, pageSize, selectedTags, excludedTags, settings.sortBy]);
 
   const updatePage = pageNo => {
     setPage(pageNo);
@@ -147,12 +149,30 @@ export default function ReplayList({
               multiple
               id="Tags"
               size="small"
-              options={tagOptions}
+              options={tagOptions.filter(tag => !excludedTags.includes(tag))}
               getOptionLabel={option => option.Name}
               getOptionSelected={(option, value) => option.Name === value.Name}
               filterSelectedOptions
               renderInput={params => (
-                <TextField {...params} placeholder="Filter" />
+                <TextField {...params} placeholder="Included tags" />
+              )}
+            />
+            <Filter
+              value={excludedTags}
+              onChange={(_event, newValue) => {
+                setExcludedTags(newValue);
+                updatePage(0);
+              }}
+              forcePopupIcon={false}
+              multiple
+              id="Excluded tags"
+              size="small"
+              options={tagOptions.filter(tag => !selectedTags.includes(tag))}
+              getOptionLabel={option => option.Name}
+              getOptionSelected={(option, value) => option.Name === value.Name}
+              filterSelectedOptions
+              renderInput={params => (
+                <TextField {...params} placeholder="Excluded tags" />
               )}
             />
             <ToggleButton
