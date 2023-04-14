@@ -83,6 +83,8 @@ const RecListItem = ({ replay, selected, columns, mergable = false }) => {
         <ListCell to={url}>{replay.ratingAvg}</ListCell>
       )}
 
+      {columns.indexOf('Views') !== -1 && <ListCell>{replay.Views}</ListCell>}
+
       {columns.indexOf('Tags') !== -1 && (
         <ListCell width={300} to={url}>
           <Tags tags={getTags()} />
