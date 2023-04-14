@@ -10,6 +10,7 @@ import {
   MultiRecords,
   MultiBesttime,
   PersonalWithMulti,
+  PersonalTimes,
   LevelPackDeleteLevel,
   LevelsSearchAll,
   LevelPackAddLevel,
@@ -99,6 +100,16 @@ export default {
   }),
   setKuskis: action((state, payload) => {
     state.kuskis = payload;
+  }),
+  compareKuski: {},
+  setCompare: action((state, payload) => {
+    state.compareKuski[payload.PersonalKuskiIndex] = payload.Times;
+  }),
+  getCompareKuski: thunk(async (actions, payload) => {
+    const get = await PersonalTimes(payload);
+    if (get.ok) {
+      actions.setCompare({ ...payload, Times: get.data });
+    }
   }),
   personalTimes: [],
   setPersonalTimes: action((state, payload) => {

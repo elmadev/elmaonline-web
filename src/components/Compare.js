@@ -3,8 +3,16 @@ import styled from 'styled-components';
 import Time from 'components/Time';
 import Crown from 'images/crown.svg';
 
-const Compare = ({ time, compareTime }) => {
+const Compare = ({
+  time,
+  compareTime,
+  hideCrown = false,
+  relative = false,
+}) => {
   if (!time || !compareTime) {
+    return null;
+  }
+  if (compareTime === time && hideCrown) {
     return null;
   }
   if (compareTime === time) {
@@ -17,7 +25,13 @@ const Compare = ({ time, compareTime }) => {
   return (
     <Color bettertime={compareTime > time}>
       {compareTime > time ? '-' : '+'}
-      {<Time time={Math.abs(compareTime - time)} />}
+      {relative ? (
+        <span>
+          {Math.abs(((compareTime - time) * 100) / compareTime).toFixed(2)}%
+        </span>
+      ) : (
+        <Time time={Math.abs(compareTime - time)} />
+      )}
     </Color>
   );
 };

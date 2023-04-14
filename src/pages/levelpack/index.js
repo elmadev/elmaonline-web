@@ -6,6 +6,7 @@ import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { Tabs, Tab } from '@material-ui/core';
 import Layout from 'components/Layout';
 import { nick, nickId, mod } from 'utils/nick';
+import { Row } from 'components/Containers';
 import Download from 'components/Download';
 import Kuski from 'components/Kuski';
 import Loading from 'components/Loading';
@@ -115,19 +116,24 @@ const LevelPack = ({ name, tab, ...props }) => {
           <Tab label="Crippled" value="crippled" />
           {adminAuth && <Tab label="Admin" value="admin" />}
         </Tabs>
-        <LevelPackName>
-          <ShortNameStyled>{levelPackInfo.LevelPackName}</ShortNameStyled>{' '}
-          <LongNameStyled>{levelPackInfo.LevelPackLongName}</LongNameStyled>
-          <Download href={`pack/${levelPackInfo.LevelPackName}`}>
-            <DownloadText>Download</DownloadText>
-          </Download>
-        </LevelPackName>
-        <DescriptionStyle>
-          {levelPackInfo.LevelPackDesc} - Maintainer:{' '}
-          <Kuski kuskiData={levelPackInfo.KuskiData} />
-        </DescriptionStyle>
-        <br />
-        {['record-history'].indexOf(tab) === -1 && <Menus name={name} />}
+        <Row b="Large">
+          <div>
+            <LevelPackName>
+              <ShortNameStyled>{levelPackInfo.LevelPackName}</ShortNameStyled>{' '}
+              <LongNameStyled>{levelPackInfo.LevelPackLongName}</LongNameStyled>
+              <Download href={`pack/${levelPackInfo.LevelPackName}`}>
+                <DownloadText>Download</DownloadText>
+              </Download>
+            </LevelPackName>
+            <DescriptionStyle>
+              {levelPackInfo.LevelPackDesc} - Maintainer:{' '}
+              <Kuski kuskiData={levelPackInfo.KuskiData} />
+            </DescriptionStyle>
+          </div>
+          {['record-history', 'replays', 'admin'].indexOf(tab) === -1 && (
+            <Menus name={name} hideFilter={tab === 'personal'} />
+          )}
+        </Row>
         {!tab && <Records levelStats={levelStats} />}
         {tab === 'total-times' && (
           <TotalTimes highlight={highlight} highlightWeeks={highlightWeeks} />

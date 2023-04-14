@@ -16,7 +16,7 @@ import ChatView from 'features/ChatView';
 import Header from 'components/Header';
 import { Paper } from 'components/Paper';
 import { format, addDays } from 'date-fns';
-import KuskiAutoComplete from 'components/KuskiAutoComplete';
+import { KuskiAutoComplete } from 'components/AutoComplete';
 
 const ChatLog = props => {
   const location = useLocation();

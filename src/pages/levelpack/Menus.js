@@ -14,9 +14,9 @@ import Button from 'components/Buttons';
 import FieldBoolean from 'components/FieldBoolean';
 import { Dropdown } from 'components/Inputs';
 import { Row } from 'components/Containers';
-import KuskiAutoComplete from 'components/KuskiAutoComplete';
+import { KuskiAutoComplete } from 'components/AutoComplete';
 
-const Menus = ({ name }) => {
+const Menus = ({ name, hideFilter }) => {
   const [openSettings, setOpenSettings] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const {
@@ -242,9 +242,11 @@ const Menus = ({ name }) => {
           <Button icon="settings" onClick={() => setOpenSettings(true)} naked>
             Settings
           </Button>
-          <Button icon="filter" onClick={() => setOpenFilter(true)} naked>
-            Filter
-          </Button>
+          {hideFilter ? null : (
+            <Button icon="filter" onClick={() => setOpenFilter(true)} naked>
+              Filter
+            </Button>
+          )}
           <Button
             icon="refresh"
             onClick={() => {
@@ -268,8 +270,9 @@ const AutoCompleteCon = styled.div`
 
 const Settings = styled.div`
   padding: 0 10px;
-  margin-bottom: 26px;
   font-size: 14px;
+  width: 50%;
+  margin-top: ${p => p.theme.padSmall};
 `;
 
 const SettingsHeader = styled.div`
