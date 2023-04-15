@@ -66,6 +66,8 @@ export default {
       showLegacyIcon: true,
       showLegacy: true,
       showMoreStats: false,
+      relative: false,
+      highlightTargets: false,
     },
     { storage: 'localStorage' },
   ),
@@ -80,6 +82,12 @@ export default {
   }),
   setShowMoreStats: action((state, payload) => {
     state.settings.showMoreStats = payload;
+  }),
+  setRelative: action((state, payload) => {
+    state.settings.relative = payload;
+  }),
+  setHighlightTargets: action((state, payload) => {
+    state.settings.highlightTargets = payload;
   }),
   totaltimes: [],
   kinglist: [],

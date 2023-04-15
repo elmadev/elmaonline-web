@@ -15,6 +15,7 @@ import Compare from 'components/Compare';
 import Link from 'components/Link';
 import AutoComplete, { KuskiAutoComplete } from 'components/AutoComplete';
 import FieldBoolean from 'components/FieldBoolean';
+import { highlightTime } from 'utils/misc';
 
 const OtherKuskiLink = ({ otherKuski, getTimes, selectLevel }) => {
   return (
@@ -54,7 +55,6 @@ const Personal = ({ name }) => {
   const [level, selectLevel] = useState(-1);
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
-  const [relative, setRelative] = useState(false);
   const [compares, setCompares] = useState(
     compareOptions.filter(c => c.default),
   );
@@ -68,13 +68,23 @@ const Personal = ({ name }) => {
     highlight,
     multiHighlight,
     personalKuski: kuski,
-    settings: { showLegacy, highlightWeeks, showLegacyIcon },
+    settings: {
+      showLegacy,
+      highlightWeeks,
+      showLegacyIcon,
+      relative,
+      highlightTargets,
+    },
     personalTimes: times,
     kuskis,
   } = useStoreState(state => state.LevelPack);
-  const { setError, getPersonalTimes, getCompareKuski } = useStoreActions(
-    actions => actions.LevelPack,
-  );
+  const {
+    setError,
+    getPersonalTimes,
+    getCompareKuski,
+    setRelative,
+    setHighlightTargets,
+  } = useStoreActions(actions => actions.LevelPack);
 
   const levels = useMemo(() => {
     let arr = [];
@@ -231,6 +241,13 @@ const Personal = ({ name }) => {
             label="Relative"
           />
         </div>
+        <div>
+          <FieldBoolean
+            onChange={() => setHighlightTargets(!highlightTargets)}
+            value={highlightTargets}
+            label="Highlight targets"
+          />
+        </div>
       </ChoosePlayer>
       <ListContainer>
         <ListHeader>
@@ -265,7 +282,16 @@ const Personal = ({ name }) => {
                 <ListCell
                   highlight={r.single.TimeIndex >= highlight[highlightWeeks]}
                 >
-                  {r.single.Time && <Time time={r.single.Time} />}
+                  {r.single.Time && (
+                    <Time
+                      time={r.single.Time}
+                      color={
+                        highlightTargets
+                          ? highlightTime(r.single.Time, r.Level)
+                          : ''
+                      }
+                    />
+                  )}
                   {r.single.Source !== null && (
                     <LegacyContainer>
                       <LegacyIcon
@@ -388,7 +414,14 @@ const Personal = ({ name }) => {
                         }
                       >
                         {r[compare.key].Time && (
-                          <Time time={r[compare.key].Time} />
+                          <Time
+                            time={r[compare.key].Time}
+                            color={
+                              highlightTargets
+                                ? highlightTime(r[compare.key].Time, r.Level)
+                                : ''
+                            }
+                          />
                         )}{' '}
                         <Compare
                           time={r.single.Time}
@@ -402,7 +435,14 @@ const Personal = ({ name }) => {
                     return (
                       <ListCell key={compare.key}>
                         {r[compare.key].Time && (
-                          <Time time={r[compare.key].Time} />
+                          <Time
+                            time={r[compare.key].Time}
+                            color={
+                              highlightTargets
+                                ? highlightTime(r[compare.key].Time, r.Level)
+                                : ''
+                            }
+                          />
                         )}{' '}
                         <Compare
                           time={r.single.Time}
