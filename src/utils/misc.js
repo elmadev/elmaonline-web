@@ -91,13 +91,13 @@ export const downloadRec = (url, levName, kuski, time) => {
 
 export const highlightTime = (time, level) => {
   const colors = [
-    '#AA43DD',
-    '#FF66CC',
-    '#FF9C00',
-    '#FFF200',
-    '#00FF00',
-    '#0090FF',
-    '#F3F5CA',
+    '#aa43dd',
+    '#ff66cc',
+    '#ff9c00',
+    '#b3aa00',
+    '#00b300',
+    '#0090ff',
+    '#e2e77e',
     '',
   ];
   if (level.Targets) {
