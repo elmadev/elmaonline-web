@@ -119,6 +119,26 @@ export default {
       actions.setCompare({ ...payload, Times: get.data });
     }
   }),
+  compareCountry: {},
+  setCompareCountry: action((state, payload) => {
+    state.compareCountry[payload.filterValue] = payload.Times;
+  }),
+  getCompareCountry: thunk(async (actions, payload) => {
+    const get = await LevelPackRecordsFilter(payload);
+    if (get.ok) {
+      actions.setCompareCountry({ ...payload, Times: get.data });
+    }
+  }),
+  compareTeam: {},
+  setCompareTeam: action((state, payload) => {
+    state.compareTeam[payload.filterValue] = payload.Times;
+  }),
+  getCompareTeam: thunk(async (actions, payload) => {
+    const get = await LevelPackRecordsFilter(payload);
+    if (get.ok) {
+      actions.setCompareTeam({ ...payload, Times: get.data });
+    }
+  }),
   personalTimes: [],
   setPersonalTimes: action((state, payload) => {
     state.personalTimes = payload;

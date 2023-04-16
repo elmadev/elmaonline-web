@@ -63,8 +63,12 @@ const Personal = ({ name }) => {
     recordsLoading,
     levelPackInfo,
     compareKuski,
+    compareCountry,
+    compareTeam,
     recordsOnly: records,
     timesError,
+    countries,
+    teams,
     highlight,
     multiHighlight,
     personalKuski: kuski,
@@ -82,6 +86,8 @@ const Personal = ({ name }) => {
     setError,
     getPersonalTimes,
     getCompareKuski,
+    getCompareCountry,
+    getCompareTeam,
     setRelative,
     setHighlightTargets,
   } = useStoreActions(actions => actions.LevelPack);
@@ -121,6 +127,20 @@ const Personal = ({ name }) => {
                 obj[compare.key] = {};
               }
             }
+            if (compare.type === 'Countries' && compareCountry[compare.id]) {
+              if (compareCountry[compare.id][r.LevelIndex]) {
+                obj[compare.key] = compareCountry[compare.id][r.LevelIndex];
+              } else {
+                obj[compare.key] = {};
+              }
+            }
+            if (compare.type === 'Teams' && compareTeam[compare.id]) {
+              if (compareTeam[compare.id][r.LevelIndex]) {
+                obj[compare.key] = compareTeam[compare.id][r.LevelIndex];
+              } else {
+                obj[compare.key] = {};
+              }
+            }
             if (compare.type === 'Targets') {
               obj[compare.key] = {};
               if (r.Targets) {
@@ -150,7 +170,16 @@ const Personal = ({ name }) => {
       }
     }
     return arr;
-  }, [compares, times, levelPackInfo, records, isRehydrated, compareKuski]);
+  }, [
+    compares,
+    times,
+    levelPackInfo,
+    records,
+    isRehydrated,
+    compareKuski,
+    compareCountry,
+    compareTeam,
+  ]);
 
   const tts = useMemo(() => {
     const obj = { single: combinedTT(levels, ['single']) };
@@ -158,7 +187,16 @@ const Personal = ({ name }) => {
       obj[compare.key] = combinedTT(levels, [compare.key]);
     });
     return obj;
-  }, [compares, times, levelPackInfo, records, isRehydrated, compareKuski]);
+  }, [
+    compares,
+    times,
+    levelPackInfo,
+    records,
+    isRehydrated,
+    compareKuski,
+    compareCountry,
+    compareTeam,
+  ]);
 
   const updateCompare = values => {
     const newValues = values.filter(v => !compares.find(c => c.key === v.key));
@@ -168,6 +206,22 @@ const Personal = ({ name }) => {
           name: levelPackInfo.LevelPackName,
           PersonalKuskiIndex: newValue.id,
           eolOnly: showLegacy ? 0 : 1,
+        });
+      }
+      if (newValue.key.includes('country-')) {
+        getCompareCountry({
+          name: levelPackInfo.LevelPackName,
+          eolOnly: showLegacy ? 0 : 1,
+          filterValue: newValue.id,
+          filter: 'country',
+        });
+      }
+      if (newValue.key.includes('team-')) {
+        getCompareTeam({
+          name: levelPackInfo.LevelPackName,
+          eolOnly: showLegacy ? 0 : 1,
+          filterValue: newValue.id,
+          filter: 'team',
         });
       }
     });
@@ -189,8 +243,20 @@ const Personal = ({ name }) => {
           key: `kuski-${k.KuskiIndex}`,
           ...k,
         })),
+      ...countries.map(c => ({
+        type: 'Countries',
+        title: c.name,
+        id: c.id,
+        key: `country-${c.id}`,
+      })),
+      ...teams.map(t => ({
+        type: 'Teams',
+        title: t.name,
+        id: t.id,
+        key: `team-${t.id}`,
+      })),
     ];
-  }, [kuskis]);
+  }, [kuskis, teams, countries]);
 
   if (recordsLoading || !isRehydrated) {
     return <Loading />;
@@ -405,7 +471,11 @@ const Personal = ({ name }) => {
                       );
                     }
                   }
-                  if (compare.type === 'Players' && r[compare.key]) {
+                  if (
+                    ['Players', 'Countries', 'Teams'].indexOf(compare.type) >
+                      -1 &&
+                    r[compare.key]
+                  ) {
                     return (
                       <ListCell
                         key={compare.key}
@@ -503,7 +573,9 @@ const Personal = ({ name }) => {
                   }
                 }
                 if (
-                  ['Players', 'Targets'].indexOf(compare.type) > -1 &&
+                  ['Players', 'Targets', 'Countries', 'Teams'].indexOf(
+                    compare.type,
+                  ) > -1 &&
                   tts[compare.key]
                 ) {
                   return (
