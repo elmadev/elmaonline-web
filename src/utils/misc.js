@@ -88,3 +88,29 @@ export const downloadRec = (url, levName, kuski, time) => {
     a.click();
   });
 };
+
+export const highlightTime = (time, level) => {
+  const colors = [
+    '#aa43dd',
+    '#ff66cc',
+    '#ff9c00',
+    '#b3aa00',
+    '#00b300',
+    '#0090ff',
+    '#e2e77e',
+    '',
+  ];
+  if (level.Targets) {
+    const targets = level.Targets.split(',');
+    let color = '';
+    targets.every((target, index) => {
+      if (time <= target) {
+        color = colors[index];
+        return false;
+      }
+      return true;
+    });
+    return color;
+  }
+  return '';
+};

@@ -1,23 +1,43 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useContext } from 'react';
+import styled, { ThemeContext } from 'styled-components';
 import Time from 'components/Time';
 import Crown from 'images/crown.svg';
+import CrownWhite from 'images/crown-white.svg';
 
-const Compare = ({ time, compareTime }) => {
+const Compare = ({
+  time,
+  compareTime,
+  hideCrown = false,
+  relative = false,
+}) => {
+  const theme = useContext(ThemeContext);
   if (!time || !compareTime) {
+    return null;
+  }
+  if (compareTime === time && hideCrown) {
     return null;
   }
   if (compareTime === time) {
     return (
       <span>
-        <Image src={Crown} alt="Crown" title="You have the record!" />
+        <Image
+          src={theme.type === 'light' ? Crown : CrownWhite}
+          alt="Crown"
+          title="You have the record!"
+        />
       </span>
     );
   }
   return (
     <Color bettertime={compareTime > time}>
       {compareTime > time ? '-' : '+'}
-      {<Time time={Math.abs(compareTime - time)} />}
+      {relative ? (
+        <span>
+          {Math.abs(((compareTime - time) * 100) / compareTime).toFixed(2)}%
+        </span>
+      ) : (
+        <Time time={Math.abs(compareTime - time)} />
+      )}
     </Color>
   );
 };

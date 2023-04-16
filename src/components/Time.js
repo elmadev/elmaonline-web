@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {
   parseTimeHundreds,
@@ -12,11 +13,13 @@ class Time extends React.Component {
       .isRequired,
     apples: PropTypes.number,
     thousands: PropTypes.bool,
+    color: PropTypes.string,
   };
 
   static defaultProps = {
     thousands: false,
     apples: 0,
+    color: '',
   };
 
   static formatTime = (time, apples, thousands) => {
@@ -44,7 +47,7 @@ class Time extends React.Component {
   };
 
   render() {
-    const { time, apples, thousands } = this.props;
+    const { time, apples, thousands, color } = this.props;
     if (!time && !Number.isInteger(apples)) {
       return <span />;
     }
@@ -56,10 +59,20 @@ class Time extends React.Component {
           </span>
         );
       }
-      return <span>{Time.formatTime(time.tt, apples, thousands)}</span>;
+      return (
+        <Span color={color}>{Time.formatTime(time.tt, apples, thousands)}</Span>
+      );
     }
-    return <span>{Time.formatTime(time || 0, apples, thousands)}</span>;
+    return (
+      <Span color={color}>{Time.formatTime(time || 0, apples, thousands)}</Span>
+    );
   }
 }
+
+const Span = styled.span`
+  && {
+    ${p => p.color && `color: ${p.color};`}
+  }
+`;
 
 export default Time;

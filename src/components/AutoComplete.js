@@ -6,27 +6,69 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import AutocompleteMui from '@material-ui/lab/Autocomplete';
 import Kuski from 'components/Kuski';
 import { VariableSizeList } from 'react-window';
 
-const KuskiAutoComplete = ({ list, onChange, selected }) => {
+const AutoComplete = ({
+  options,
+  onChange,
+  value,
+  label,
+  multiple = false,
+  getOptionLabel,
+  groupBy,
+  getOptionSelected,
+  renderOption,
+}) => {
+  const acClasses = useStyles();
+  return (
+    <AutocompleteMui
+      multiple={multiple}
+      options={options}
+      getOptionLabel={getOptionLabel}
+      filterSelectedOptions
+      groupBy={groupBy}
+      renderInput={params => (
+        <TextField {...params} label={label} variant="outlined" />
+      )}
+      onChange={(e, value) => onChange(value)}
+      value={value}
+      getOptionSelected={getOptionSelected}
+      renderGroup={renderGroup}
+      ListboxComponent={ListboxComponent}
+      classes={acClasses}
+      renderOption={renderOption}
+    />
+  );
+};
+
+export const KuskiAutoComplete = ({
+  list,
+  onChange,
+  selected,
+  multiple = true,
+}) => {
   const acClasses = useStyles();
   return (
     <>
       {list.length > 0 ? (
-        <Autocomplete
+        <AutocompleteMui
           id="filter-kuski"
           options={list}
-          multiple
+          multiple={multiple}
           filterSelectedOptions
           getOptionLabel={option => option.Kuski}
           getOptionSelected={(option, value) =>
-            option.KuskiIndex === value.KuskiIndex
+            option.KuskiIndex === value?.KuskiIndex
           }
           onChange={(event, newValue) => {
-            const ids = newValue.map(value => value.KuskiIndex);
-            onChange(ids, newValue);
+            if (!multiple) {
+              onChange(newValue);
+            } else {
+              const ids = newValue.map(value => value.KuskiIndex);
+              onChange(ids, newValue);
+            }
           }}
           renderInput={params => (
             <TextField
@@ -140,11 +182,16 @@ const ListboxComponent = React.forwardRef(function ListboxComponent(
   );
 });
 
-const renderGroup = params => [
-  <ListSubheader key={params.key} component="div">
-    {params.group}
-  </ListSubheader>,
-  params.children,
-];
+const renderGroup = params => {
+  if (!params.group) {
+    return [null, params.children];
+  }
+  return [
+    <ListSubheader key={params.key} component="div">
+      {params.group}
+    </ListSubheader>,
+    params.children,
+  ];
+};
 
-export default KuskiAutoComplete;
+export default AutoComplete;

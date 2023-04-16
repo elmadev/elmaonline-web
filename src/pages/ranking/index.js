@@ -61,6 +61,7 @@ for (let y = 1; y <= 31; y += 1) {
 }
 
 const mins = [
+  { id: 0, name: 0 },
   { id: 1, name: 1 },
   { id: 2, name: 2 },
   { id: 5, name: 5 },

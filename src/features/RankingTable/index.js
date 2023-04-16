@@ -33,7 +33,7 @@ const RankingTable = ({
   const [sortOrder, setSortOrder] = useState('desc');
   const [sort, setSort] = useState(`Ranking${battleType}`);
   const windowSize = useElementSize();
-  const listHeight = windowSize.height - 332;
+  const listHeight = windowSize.height ? windowSize.height - 332 : 0;
   const Points = `Points${battleType}`;
   const Ranking = `Ranking${battleType}`;
   const Wins = `Wins${battleType}`;
@@ -50,7 +50,7 @@ const RankingTable = ({
 
   const FilteredRanking =
     rankingData.length > 0
-      ? rankingData.filter(r => r[Played] > minPlayed).sort(sortFunc)
+      ? rankingData.filter(r => r[Played] >= minPlayed).sort(sortFunc)
       : null;
 
   if (loading) {
@@ -103,7 +103,9 @@ const RankingTable = ({
                         {i[Wins]}
                       </ListCell>
                       <ListCell right width={76}>
-                        {parseFloat((i[Wins] * 100) / i[Played5]).toFixed(2)}
+                        {i[Played5] === 0
+                          ? 'N/A'
+                          : parseFloat((i[Wins] * 100) / i[Played5]).toFixed(2)}
                       </ListCell>
                       <ListCell right width={76}>
                         {i[Designed]}

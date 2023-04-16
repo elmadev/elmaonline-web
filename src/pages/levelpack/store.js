@@ -10,6 +10,7 @@ import {
   MultiRecords,
   MultiBesttime,
   PersonalWithMulti,
+  PersonalTimes,
   LevelPackDeleteLevel,
   LevelsSearchAll,
   LevelPackAddLevel,
@@ -65,6 +66,8 @@ export default {
       showLegacyIcon: true,
       showLegacy: true,
       showMoreStats: false,
+      relative: false,
+      highlightTargets: false,
     },
     { storage: 'localStorage' },
   ),
@@ -79,6 +82,12 @@ export default {
   }),
   setShowMoreStats: action((state, payload) => {
     state.settings.showMoreStats = payload;
+  }),
+  setRelative: action((state, payload) => {
+    state.settings.relative = payload;
+  }),
+  setHighlightTargets: action((state, payload) => {
+    state.settings.highlightTargets = payload;
   }),
   totaltimes: [],
   kinglist: [],
@@ -99,6 +108,36 @@ export default {
   }),
   setKuskis: action((state, payload) => {
     state.kuskis = payload;
+  }),
+  compareKuski: {},
+  setCompare: action((state, payload) => {
+    state.compareKuski[payload.PersonalKuskiIndex] = payload.Times;
+  }),
+  getCompareKuski: thunk(async (actions, payload) => {
+    const get = await PersonalTimes(payload);
+    if (get.ok) {
+      actions.setCompare({ ...payload, Times: get.data });
+    }
+  }),
+  compareCountry: {},
+  setCompareCountry: action((state, payload) => {
+    state.compareCountry[payload.filterValue] = payload.Times;
+  }),
+  getCompareCountry: thunk(async (actions, payload) => {
+    const get = await LevelPackRecordsFilter(payload);
+    if (get.ok) {
+      actions.setCompareCountry({ ...payload, Times: get.data });
+    }
+  }),
+  compareTeam: {},
+  setCompareTeam: action((state, payload) => {
+    state.compareTeam[payload.filterValue] = payload.Times;
+  }),
+  getCompareTeam: thunk(async (actions, payload) => {
+    const get = await LevelPackRecordsFilter(payload);
+    if (get.ok) {
+      actions.setCompareTeam({ ...payload, Times: get.data });
+    }
   }),
   personalTimes: [],
   setPersonalTimes: action((state, payload) => {
