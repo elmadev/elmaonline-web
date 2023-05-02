@@ -5,6 +5,8 @@ import { ListRow, ListCell } from 'components/List';
 import { Grid, IconButton } from '@material-ui/core';
 import Header from 'components/Header';
 import Kuski from 'components/Kuski';
+import FieldBoolean from 'components/FieldBoolean';
+import { Row } from 'components/Containers';
 import { calculateStandings } from 'utils/cups';
 import Flag from 'components/Flag';
 import { Paper, Content } from 'components/Paper';
@@ -13,6 +15,7 @@ import StandingsDetailedPopup from './StandingsDetailedPopup';
 
 const Standings = props => {
   const { events, cup } = props;
+  const [forceSkips, setForceSkips] = useState(false);
   const [standings, setStandings] = useState({});
   const [standingsDetailedData, setStandingsDetailedData] = useState(null);
 
@@ -34,7 +37,19 @@ const Standings = props => {
         <Container>
           <Paper>
             <Content>
-              <Header h2>Players</Header>
+              <Row jc="space-between">
+                <Header h2>Players</Header>
+                <FieldBoolean
+                  label="Force skips"
+                  value={forceSkips}
+                  onChange={() => {
+                    setForceSkips(!forceSkips);
+                    setStandings(
+                      calculateStandings(events, cup, false, !forceSkips),
+                    );
+                  }}
+                />
+              </Row>
             </Content>
             {standings.player && (
               <DerpTable

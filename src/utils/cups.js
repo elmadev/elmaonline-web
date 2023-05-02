@@ -99,13 +99,19 @@ export const mopoPoints = [
   1,
 ];
 
-export const calculateStandings = (events, cup, simple) => {
+export const calculateStandings = (events, cup, simple, forceSkip = false) => {
   let standings = [];
   let skipStandings = [];
   const teamStandings = [];
   const nationStandings = [];
   let teamEntries = {};
   let nationEntries = {};
+  let finishedEvents = 0;
+  if (forceSkip) {
+    finishedEvents = events.filter(
+      e => parseInt(e.EndTime) < new Date().getTime() / 1000,
+    ).length;
+  }
   forEach(events, event => {
     teamEntries = {};
     nationEntries = {};
@@ -207,12 +213,13 @@ export const calculateStandings = (events, cup, simple) => {
   });
   if (cup.Skips) {
     skipStandings = standings.map(s => {
-      if (s.Events <= cup.Events - cup.Skips) {
+      const totalEvents = forceSkip ? finishedEvents : cup.Events;
+      if (s.Events <= totalEvents - cup.Skips) {
         return s;
       }
       const { AllPoints } = s;
       let { Points, AllPointsDetailed } = s;
-      for (let i = 0; i < s.Events - (cup.Events - cup.Skips); i += 1) {
+      for (let i = 0; i < s.Events - (totalEvents - cup.Skips); i += 1) {
         const min = Math.min(...AllPoints);
         const removeIndex = AllPoints.findIndex(ap => ap === min);
         AllPoints.splice(removeIndex, 1);
