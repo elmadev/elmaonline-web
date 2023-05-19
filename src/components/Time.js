@@ -7,6 +7,22 @@ import {
   parsedTimeToString,
 } from '../utils/recTime';
 
+const SpecialResult = (time, type) => {
+  if (type === 'SP') {
+    return (time / 100).toFixed(2);
+  }
+  return time;
+};
+
+export const BattleTime = ({ time, apples, thousands, color, battleType }) => {
+  if (['FC', 'SP'].indexOf(battleType) > -1) {
+    return <>{SpecialResult(time, battleType)}</>;
+  }
+  return (
+    <Time time={time} apples={apples} thousands={thousands} color={color} />
+  );
+};
+
 class Time extends React.Component {
   static propTypes = {
     time: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})])

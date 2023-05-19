@@ -5,7 +5,7 @@ import { PlayArrow, GetApp } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import { isEmpty } from 'lodash';
-import Time from 'components/Time';
+import Time, { BattleTime } from 'components/Time';
 import Kuski from 'components/Kuski';
 import RankingValue from 'components/RankingValue';
 import { sortResults, getBattleType } from 'utils/battle';
@@ -30,16 +30,12 @@ const getKuskiRankingHistory = (allRankingHistory, KuskiIndex, battle) => {
   ];
 };
 
-const SpecialResult = (time, type) => {
-  if (type === 'SP') {
-    return (time / 100).toFixed(2);
-  }
-  return time;
-};
-
 const LevelStatsContainer = props => {
   const [rankingSelect, setRankingSelect] = useState('All');
   const { battle, rankingHistory, runStats, openReplay, downloadRec } = props;
+
+  const hasNoReplay =
+    ['SP', 'FC', 'AP', 'HT', 'FT'].indexOf(battle.BattleType) > -1;
 
   if (!battle) return <Root>loading</Root>;
   if (runStats)
@@ -105,19 +101,22 @@ const LevelStatsContainer = props => {
                         )}
                       </ListCell>
                       <ListCell right width={150}>
-                        {battle.BattleType !== 'SP' &&
-                        battle.BattleType !== 'FC' ? (
-                          <Time time={r.Time} apples={r.Apples} />
-                        ) : (
-                          SpecialResult(r.Time, battle.BattleType)
-                        )}
-                        <PlayArrow />
-                        <GetApp
-                          onClick={e => {
-                            e.stopPropagation();
-                            downloadRec(r);
-                          }}
+                        <BattleTime
+                          time={r.Time}
+                          apples={r.Apples}
+                          battleType={battle.BattleType}
                         />
+                        {hasNoReplay ? null : (
+                          <>
+                            <PlayArrow />
+                            <GetApp
+                              onClick={e => {
+                                e.stopPropagation();
+                                downloadRec(r);
+                              }}
+                            />
+                          </>
+                        )}
                       </ListCell>
                       <ListCell right>
                         {runStatsForKuski ? (

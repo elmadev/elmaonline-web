@@ -25,6 +25,7 @@ const RecView = props => {
     replayUrl,
     player,
     levelName,
+    hasReplay,
   } = props;
 
   const { toggleRecAutoplay } = useStoreActions(actions => actions.Battle);
@@ -45,7 +46,10 @@ const RecView = props => {
                 {isWindow && battleStatus !== 'Queued' && (
                   <Recplayer
                     rec={
-                      replayUrl || `${config.dlUrl}battlereplay/${BattleIndex}`
+                      !hasReplay
+                        ? undefined
+                        : replayUrl ||
+                          `${config.dlUrl}battlereplay/${BattleIndex}`
                     }
                     lev={`${config.dlUrl}level/${levelIndex}`}
                     autoPlay={autoPlayRecs ? 'if-visible' : 'no'}
@@ -58,7 +62,7 @@ const RecView = props => {
             )}
           </div>
           <Row>
-            {player?.Kuski?.Kuski && !isMobile && (
+            {player?.Kuski?.Kuski && !isMobile && hasReplay && (
               <PlayerTitle>
                 <Kuski kuskiData={player.Kuski} flag={true} team={true} />
                 <span>&nbsp;</span>
