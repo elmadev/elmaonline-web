@@ -104,7 +104,7 @@ export const highlightTime = (time, level) => {
     const targets = level.Targets.split(',');
     let color = '';
     targets.every((target, index) => {
-      if (time <= target) {
+      if (parseInt(time) <= parseInt(target)) {
         color = colors[index];
         return false;
       }
