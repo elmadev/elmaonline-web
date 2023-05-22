@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import config from 'config';
 import { Row } from 'components/Containers';
 import Time from 'components/Time';
-import Kuski from 'components/Kuski.js';
+import Kuski from 'components/Kuski';
 import { downloadRec } from 'utils/misc';
 
 const RecView = props => {

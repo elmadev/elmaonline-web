@@ -3,7 +3,7 @@ const url = 'https://apitest.elma.online/';
 
 const s3SubFolder = 'test/';
 
-module.exports = {
+const config = {
   url,
   port: 3000,
   s3SubFolder,
@@ -15,3 +15,5 @@ module.exports = {
   maxUploadSize: 10485760,
   s3Url: `https://space.elma.online/${s3SubFolder}`,
 };
+
+export default config;
