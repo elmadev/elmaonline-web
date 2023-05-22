@@ -250,6 +250,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
                     format="YYYY-MM-DD HH:mm:ss"
                     parse="X"
                   />
+                  {replay.Unlisted ? ' (Unlisted)' : null}
                 </BattleTimestamp>
                 <br />
                 <ReplayRating

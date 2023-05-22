@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import LocalTime from 'components/LocalTime';
-import Time from 'components/Time';
+import { BattleTime } from 'components/Time';
 import Kuski from 'components/Kuski';
 import styled, { ThemeContext } from 'styled-components';
 import { Level, BattleType } from 'components/Names';
@@ -114,7 +114,11 @@ export const BattleListTable = ({
                   to={`/battles/${b.BattleIndex}`}
                 >
                   {b.Results.length > 0 && (
-                    <Time time={sorted[0].Time} apples={sorted[0].Apples} />
+                    <BattleTime
+                      time={sorted[0].Time}
+                      apples={sorted[0].Apples}
+                      battleType={b.BattleType}
+                    />
                   )}
                 </ListCell>
                 {!condensed && (

@@ -84,9 +84,10 @@ export const combinedTT = (levels, timeObjs) => {
     timeObjs.forEach(b => {
       if (l[b]) {
         if (bestTime === undefined) {
-          bestTime = l[b].Time;
+          bestTime = parseInt(l[b].Time);
         } else {
-          bestTime = l[b].Time < bestTime ? l[b].Time : bestTime;
+          bestTime =
+            parseInt(l[b].Time) < bestTime ? parseInt(l[b].Time) : bestTime;
         }
       }
     });

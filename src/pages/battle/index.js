@@ -153,6 +153,7 @@ const Battle = ({ BattleId }) => {
             replayUrl={replayUrl}
             player={winner}
             levelName={battle.LevelData.LevelName}
+            hasReplay={Boolean(battle.RecFileName)}
           />
         ) : (
           <div />
