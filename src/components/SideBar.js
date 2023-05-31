@@ -4,6 +4,7 @@ import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { mod } from 'utils/nick';
 import SideBarSubItem from 'components/SideBarSubItem';
 import Link from 'components/Link';
+import banner from 'images/banner.png';
 import { useLocation } from '@reach/router';
 
 const SideBar = () => {
@@ -56,7 +57,7 @@ const SideBar = () => {
             &#9776;
           </Burger>
           <Header to="/" expanded={+sideBarVisible}>
-            Elma Online
+            <BannerImg src={banner} alt="banner" />
           </Header>
         </Title>
         <Content expanded={+sideBarVisible}>
@@ -151,11 +152,16 @@ const Content = styled.div`
 const Title = styled.div`
   background: #1f1f1f;
   opacity: 0.9;
-  line-height: 54px;
+  height: 54px;
   color: #fff;
   text-transform: uppercase;
   outline: 0;
   cursor: pointer;
+`;
+
+const BannerImg = styled.img`
+  height: 54px;
+  width: auto;
 `;
 
 export default SideBar;
