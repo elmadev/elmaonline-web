@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { mod } from 'utils/nick';
 import SideBarSubItem from 'components/SideBarSubItem';
+import { useMediaQuery } from '@material-ui/core';
 import Link from 'components/Link';
 import banner from 'images/banner.png';
 import { useLocation } from '@reach/router';
@@ -10,6 +11,7 @@ import { useLocation } from '@reach/router';
 const SideBar = () => {
   const location = useLocation();
   const isRehydrated = useStoreRehydrated();
+  const mobile = useMediaQuery('(max-width: 768px)');
   const {
     sideBarVisible,
     sideBar: { menu },
@@ -57,7 +59,7 @@ const SideBar = () => {
             &#9776;
           </Burger>
           <Header to="/" expanded={+sideBarVisible}>
-            <BannerImg src={banner} alt="banner" />
+            {mobile ? 'Elma Online' : <BannerImg src={banner} alt="banner" />}
           </Header>
         </Title>
         <Content expanded={+sideBarVisible}>
@@ -157,6 +159,9 @@ const Title = styled.div`
   text-transform: uppercase;
   outline: 0;
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const BannerImg = styled.img`
