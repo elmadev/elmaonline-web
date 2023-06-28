@@ -3,7 +3,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import Header from 'components/Header';
 import { Row, Text } from 'components/Containers';
 import styled from 'styled-components';
-import { Grid } from '@material-ui/core';
+import { Grid, Tooltip } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import Button from 'components/Buttons';
 import queryString from 'query-string';
@@ -168,8 +168,56 @@ const Notifications = () => {
             </>
           )}
         </Paper>
+        <Paper top padding width="auto">
+          <Header h2>Battle Notifier</Header>
+          {notifSettings?.DiscordId ? (
+            <Text t="Medium">
+              To manage your battle notifications, go to Discord Elma Online and
+              write <CopyToClipboard text="!bn" /> in any channel.
+            </Text>
+          ) : (
+            <Text t="Medium">
+              You can get notifications as PMs from the @ElmaOnline Discord bot
+              when a battle is started.
+              <ol>
+                <li>Join Discord Elma Online.</li>
+                <li>
+                  In this page, click{' '}
+                  <Button little naked onClick={() => authDiscord()}>
+                    Log in to discord
+                  </Button>{' '}
+                  to connect your Discord account.
+                </li>
+                <li>
+                  Finally, go back to Discord Elma Online and write{' '}
+                  <CopyToClipboard text="!bn" /> in any channel.
+                  <br /> You will get a PM from the bot with the instructions to
+                  get started.
+                </li>
+              </ol>
+            </Text>
+          )}
+        </Paper>
       </Grid>
     </Grid>
+  );
+};
+
+const CopyToClipboard = ({ text }) => {
+  const [copied, setCopied] = React.useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <Tooltip title="Copy to clipboard" placement="top" arrow>
+      <span>
+        <Button little naked onClick={copy}>
+          {copied ? 'Copied!' : text}
+        </Button>
+      </span>
+    </Tooltip>
   );
 };
 
