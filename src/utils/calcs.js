@@ -91,7 +91,7 @@ export const combinedTT = (levels, timeObjs) => {
         }
       }
     });
-    if (bestTime !== undefined) {
+    if (bestTime !== undefined && !isNaN(bestTime)) {
       tt += bestTime;
       finished += 1;
       levs += 1;

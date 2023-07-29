@@ -38,9 +38,12 @@ const OtherKuskiLink = ({ otherKuski, getTimes, selectLevel }) => {
 };
 
 const compareOptions = [
-  { type: '', title: 'Multi time', id: 0, key: 'multi', default: true },
+  { type: '', title: 'Multi time', id: 0, key: 'multi' },
   { type: '', title: 'Multi combined', id: 0, key: 'both' },
   { type: '', title: 'Record', id: 0, key: 'record', default: true },
+];
+
+const targetsOptionsSeven = [
   { type: 'Targets', title: 'Next target', id: 7, key: 'next' },
   { type: 'Targets', title: 'Beginner', id: 6, key: 'beginner' },
   { type: 'Targets', title: 'OK', id: 5, key: 'ok' },
@@ -49,6 +52,13 @@ const compareOptions = [
   { type: 'Targets', title: 'World Class', id: 2, key: 'wc' },
   { type: 'Targets', title: 'Legendary', id: 1, key: 'legendary' },
   { type: 'Targets', title: 'Godlike', id: 0, key: 'godlike' },
+];
+
+const targetsOptionsThree = [
+  { type: 'Targets', title: 'Next target', id: 7, key: 'next' },
+  { type: 'Targets', title: 'Bronze', id: 6, key: 'bronze' },
+  { type: 'Targets', title: 'Silver', id: 5, key: 'silver' },
+  { type: 'Targets', title: 'Gold', id: 4, key: 'gold' },
 ];
 
 const Personal = ({ name }) => {
@@ -229,11 +239,22 @@ const Personal = ({ name }) => {
   };
 
   const compareOptionsWithKuskis = useMemo(() => {
+    let targetsCount = 0;
+    let compareOptionsWithTargets = compareOptions;
+    if (levelPackInfo?.levels?.[0]?.Targets) {
+      targetsCount = levelPackInfo.levels[0].Targets.split(',').length;
+      if (targetsCount === 7) {
+        compareOptionsWithTargets = [...compareOptions, ...targetsOptionsSeven];
+      }
+      if (targetsCount === 3) {
+        compareOptionsWithTargets = [...compareOptions, ...targetsOptionsThree];
+      }
+    }
     if (!kuskis?.length > 0) {
-      return compareOptions;
+      return compareOptionsWithTargets;
     }
     return [
-      ...compareOptions,
+      ...compareOptionsWithTargets,
       ...kuskis
         .filter(k => k.Kuski !== kuski)
         .map(k => ({
