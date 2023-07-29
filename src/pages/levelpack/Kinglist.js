@@ -3,8 +3,9 @@ import { useStoreState } from 'easy-peasy';
 import Loading from 'components/Loading';
 import Header from 'components/Header';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
+import Link from 'components/Link';
 
-const Kinglist = ({ highlight, highlightWeeks }) => {
+const Kinglist = ({ highlight, highlightWeeks, name }) => {
   const { kinglist, recordsLoading } = useStoreState(state => state.LevelPack);
 
   if (recordsLoading) {
@@ -31,7 +32,13 @@ const Kinglist = ({ highlight, highlightWeeks }) => {
               .map((r, no) => (
                 <ListRow key={r.KuskiIndex}>
                   <ListCell width={70}>{no + 1}</ListCell>
-                  <ListCell width={320}>{r.KuskiData.Kuski}</ListCell>
+                  <ListCell width={320}>
+                    <Link
+                      to={`/levels/packs/${name}/personal/${r.KuskiData.Kuski}`}
+                    >
+                      {r.KuskiData.Kuski}
+                    </Link>
+                  </ListCell>
                   <ListCell
                     width={180}
                     highlight={r.TimeIndex >= highlight[highlightWeeks]}

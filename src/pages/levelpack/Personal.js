@@ -16,6 +16,7 @@ import Link from 'components/Link';
 import AutoComplete, { KuskiAutoComplete } from 'components/AutoComplete';
 import FieldBoolean from 'components/FieldBoolean';
 import { highlightTime } from 'utils/misc';
+import { useEffect } from 'react';
 
 const OtherKuskiLink = ({ otherKuski, getTimes, selectLevel }) => {
   return (
@@ -61,7 +62,7 @@ const targetsOptionsThree = [
   { type: 'Targets', title: 'Gold', id: 4, key: 'gold' },
 ];
 
-const Personal = ({ name }) => {
+const Personal = ({ name, player }) => {
   const [level, selectLevel] = useState(-1);
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
@@ -101,6 +102,16 @@ const Personal = ({ name }) => {
     setRelative,
     setHighlightTargets,
   } = useStoreActions(actions => actions.LevelPack);
+
+  useEffect(() => {
+    if (player && player !== kuski) {
+      getPersonalTimes({
+        PersonalKuskiIndex: player,
+        name,
+        eolOnly: showLegacy ? 0 : 1,
+      });
+    }
+  }, [player]);
 
   const levels = useMemo(() => {
     let arr = [];

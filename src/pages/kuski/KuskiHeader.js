@@ -4,8 +4,9 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import styled from 'styled-components';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
+import Link from 'components/Link';
 
-const KuskiHeader = ({ KuskiIndex }) => {
+const KuskiHeader = ({ KuskiIndex, Kuski }) => {
   const { ranking, intTotalTime: tt } = useStoreState(state => state.Kuski);
   const { getRanking, getIntTotalTime } = useStoreActions(
     actions => actions.Kuski,
@@ -30,7 +31,7 @@ const KuskiHeader = ({ KuskiIndex }) => {
           {tt === false ? (
             <Loading />
           ) : (
-            <>
+            <Link to={`/levels/packs/Int/personal/${Kuski}`}>
               {tt.allFinished && <Time time={tt.timeSum} />}
               {!tt.allFinished && (
                 <Time
@@ -41,7 +42,7 @@ const KuskiHeader = ({ KuskiIndex }) => {
                   }}
                 />
               )}
-            </>
+            </Link>
           )}
         </div>
         <StatsTitle>Int total time</StatsTitle>

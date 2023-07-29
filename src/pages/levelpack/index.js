@@ -136,15 +136,23 @@ const LevelPack = ({ name, tab, ...props }) => {
         </Row>
         {!tab && <Records levelStats={levelStats} />}
         {tab === 'total-times' && (
-          <TotalTimes highlight={highlight} highlightWeeks={highlightWeeks} />
+          <TotalTimes
+            highlight={highlight}
+            highlightWeeks={highlightWeeks}
+            name={name}
+          />
         )}
         {tab === 'king-list' && (
-          <Kinglist highlight={highlight} highlightWeeks={highlightWeeks} />
+          <Kinglist
+            highlight={highlight}
+            highlightWeeks={highlightWeeks}
+            name={name}
+          />
         )}
         {tab === 'record-history' && (
           <RecordHistory levelPackInfo={levelPackInfo} />
         )}
-        {tab === 'personal' && <Personal name={name} />}
+        {tab === 'personal' && <Personal name={name} player={subTab} />}
         {tab === 'multi' && (
           <MultiRecords
             name={name}
