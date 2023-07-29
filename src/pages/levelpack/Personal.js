@@ -534,7 +534,11 @@ const Personal = ({ name }) => {
               </ListCell>
               {compares.map(compare => {
                 if (!compare.type) {
-                  if (compare.key === 'multi' && tts.multi?.finished) {
+                  if (
+                    compare.key === 'multi' &&
+                    tts.multi?.finished &&
+                    !isNaN(tts.multi?.tt)
+                  ) {
                     return (
                       <ListCell key={compare.key}>
                         <Time time={tts.multi} />
@@ -576,7 +580,8 @@ const Personal = ({ name }) => {
                   ['Players', 'Targets', 'Countries', 'Teams'].indexOf(
                     compare.type,
                   ) > -1 &&
-                  tts[compare.key]
+                  tts[compare.key] &&
+                  !isNaN(tts[compare.key]?.tt)
                 ) {
                   return (
                     <ListCell key={compare.key}>
