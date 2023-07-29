@@ -207,6 +207,8 @@ export const PersonalLatest = data =>
   api.get(
     `allfinished/${data.KuskiIndex}/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,
   );
+export const PersonalLatestRuns = data =>
+  api.get(`allfinished/runs/${data.KuskiIndex}/${data.limit}`);
 export const LeaderHistory = data => {
   const { from = '', to = '', KuskiIndex = '', BattleIndex = '' } = data;
   return api.get(

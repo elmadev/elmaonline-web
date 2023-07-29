@@ -4,6 +4,7 @@ import { model } from 'utils/easy-peasy';
 import {
   PersonalLatest,
   PersonalLatestPRs,
+  PersonalLatestRuns,
   PersonalRanking,
   BattlesByDesigner,
   GiveRights,
@@ -142,6 +143,9 @@ export default {
   },
   PRsAndReplays: {
     ...model(PersonalLatestPRs),
+  },
+  runsAndReplays: {
+    ...model(PersonalLatestRuns),
   },
   shareTimeFile: thunk(async (actions, payload) => {
     const post = await ShareTimeFile(payload);
