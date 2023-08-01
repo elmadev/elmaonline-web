@@ -139,6 +139,15 @@ export default {
       const index = state.sideBar.menu.findIndex(m => m.header === payload);
       state.sideBar.menu[index].expanded = !state.sideBar.menu[index].expanded;
     }),
+    extras: persist(
+      {
+        extrasTab: 'install',
+        setExtrasTab: action((state, payload) => {
+          state.extrasTab = payload;
+        }),
+      },
+      { storage: 'localStorage' },
+    ),
   },
   test: {
     derp: 'hi',

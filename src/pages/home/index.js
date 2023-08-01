@@ -10,6 +10,7 @@ import CurrentBattleCard from './cards/CurrentBattleCard';
 import FeedCard from './cards/FeedCard';
 import PacksCard from './cards/PacksCard';
 import RankingCard from './cards/RankingCard';
+import ExtrasCard from './cards/ExtrasCard';
 
 export default function Home() {
   const { loggedIn } = useStoreState(state => state.Login);
@@ -41,6 +42,9 @@ export default function Home() {
           <PacksCard />
           <Grid item xs={12}>
             <News amount={5} />
+          </Grid>
+          <Grid item xs={12}>
+            <ExtrasCard />
           </Grid>
         </Grid>
       </Grid>
