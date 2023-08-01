@@ -9,6 +9,7 @@ import ReplaysCard from './cards/ReplaysCard';
 import CurrentBattleCard from './cards/CurrentBattleCard';
 import FeedCard from './cards/FeedCard';
 import PacksCard from './cards/PacksCard';
+import RankingCard from './cards/RankingCard';
 
 export default function Home() {
   const { loggedIn } = useStoreState(state => state.Login);
@@ -29,6 +30,9 @@ export default function Home() {
           </Grid>
           <Grid item xs={12}>
             <ReplaysCard />
+          </Grid>
+          <Grid item xs={12}>
+            <RankingCard />
           </Grid>
         </Grid>
         <Grid container spacing={3} item sm alignContent="flex-start">

@@ -9,7 +9,7 @@ import { Paper, Content } from 'components/Paper';
 import { BATTLETYPES, BATTLETYPES_LONG } from 'constants/ranking';
 import Selector from 'components/Selector';
 
-const formatPeriod = (type, year, month, week, day) => {
+export const formatPeriod = (type, year, month, week, day) => {
   const monthFixed = `0${month}`.slice(-2);
   const weekFixed = `0${week}`.slice(-2);
   const dayFixed = `0${day}`.slice(-2);
