@@ -10,7 +10,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 
 const parseDonations = donations => {
   const accountBalance = sumBy(donations, v =>
-    v.Processed === 1 ? v.mc_gross : 0,
+    v.Processed === 1 ? v.mc_gross - v.mc_fee : 0,
   );
   const donos = filter(donations, r => r.KuskiIndex !== 0 && r.Processed === 1);
   const a = groupBy(donos, 'KuskiIndex');
