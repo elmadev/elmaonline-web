@@ -7,7 +7,15 @@ const DeveloperApi = () => {
     <div>
       <Text>
         <Header h2>Developer API</Header>
-        <p>Coming soon...</p>
+        <p>
+          There's no documentation for the API, but the API used by the site is
+          open and the code is open source. So you can either inspect the
+          website or check the source code.
+        </p>
+        <p>
+          Source code can be found on{' '}
+          <a href="https://github.com/elmadev/elmaonline-site">github</a>.
+        </p>
       </Text>
     </div>
   );
