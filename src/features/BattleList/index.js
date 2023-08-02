@@ -15,6 +15,7 @@ const BattleList = ({
   limit = 250,
   condensed = false,
   latest = false,
+  height = 0,
 }) => {
   const { battles } = useStoreState(state => state.BattleList);
   const { getBattles } = useStoreActions(actions => actions.BattleList);
@@ -38,7 +39,11 @@ const BattleList = ({
 
   return (
     <Container>
-      <BattleListTable battles={battles} condensed={condensed} />
+      <BattleListTable
+        battles={battles}
+        condensed={condensed}
+        height={height}
+      />
     </Container>
   );
 };
@@ -49,99 +54,113 @@ export const BattleListTable = ({
   condensed,
   startedFormat = 'HH:mm',
   wideStartedCol = false,
+  height = 0,
 }) => {
   const theme = useContext(ThemeContext);
   const startedWidth = wideStartedCol ? 160 : 80;
 
   return (
-    <ListContainer>
-      <ListHeader>
-        <ListCell width={startedWidth}>Started</ListCell>
-        <ListCell width={condensed ? 100 : 120}>Type</ListCell>
-        <ListCell width={150}>Designer</ListCell>
-        <ListCell width={100}>Level</ListCell>
-        <ListCell width={150}>Winner</ListCell>
-        <ListCell width={60}>Time</ListCell>
-        {!condensed && <ListCell>Players</ListCell>}
-      </ListHeader>
-      {battles.length > 0 && (
-        <>
-          {battles.map(b => {
-            const sorted = [...b.Results].sort(sortResults(b.BattleType));
-            return (
-              <ListRow key={b.BattleIndex} bg={battleStatusBgColor(b, theme)}>
-                <ListCell width={startedWidth} to={`/battles/${b.BattleIndex}`}>
-                  <LocalTime
-                    date={b.Started}
-                    format={startedFormat}
-                    parse="X"
-                  />
-                </ListCell>
-                {condensed ? (
-                  <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
-                    <CondensedCon>
-                      <CondensedDuration>{b.Duration} min</CondensedDuration>
-                      <CondensedType>
-                        <BattleType small upper type={b.BattleType} />
-                      </CondensedType>
-                    </CondensedCon>
-                  </ListCell>
-                ) : (
-                  <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
-                    {b.Duration} min <BattleType lower type={b.BattleType} />
-                  </ListCell>
-                )}
-                <ListCell width={150}>
-                  <Kuski kuskiData={b.KuskiData} team flag />
-                </ListCell>
-                <ListCell width={100}>
-                  {b.LevelData && (
-                    <Level LevelIndex={b.LevelIndex} LevelData={b.LevelData} />
-                  )}
-                </ListCell>
-                {b.Finished === 1 && b.Results.length > 0 ? (
-                  <ListCell width={150}>
-                    <Kuski kuskiData={sorted[0].KuskiData} team flag />
-                  </ListCell>
-                ) : (
-                  <ListCell width={150} to={`/battles/${b.BattleIndex}`}>
-                    {battleStatus(b)}
-                  </ListCell>
-                )}
-                <ListCell
-                  whiteSpace="nowrap"
-                  width={60}
-                  to={`/battles/${b.BattleIndex}`}
-                >
-                  {b.Results.length > 0 && (
-                    <BattleTime
-                      time={sorted[0].Time}
-                      apples={sorted[0].Apples}
-                      battleType={b.BattleType}
+    <Scroll height={height}>
+      <ListContainer>
+        <ListHeader>
+          <ListCell width={startedWidth}>Started</ListCell>
+          <ListCell width={condensed ? 100 : 120}>Type</ListCell>
+          <ListCell width={150}>Designer</ListCell>
+          <ListCell width={100}>Level</ListCell>
+          <ListCell width={150}>Winner</ListCell>
+          <ListCell width={60}>Time</ListCell>
+          {!condensed && <ListCell>Players</ListCell>}
+        </ListHeader>
+        {battles.length > 0 && (
+          <>
+            {battles.map(b => {
+              const sorted = [...b.Results].sort(sortResults(b.BattleType));
+              return (
+                <ListRow key={b.BattleIndex} bg={battleStatusBgColor(b, theme)}>
+                  <ListCell
+                    width={startedWidth}
+                    to={`/battles/${b.BattleIndex}`}
+                  >
+                    <LocalTime
+                      date={b.Started}
+                      format={startedFormat}
+                      parse="X"
                     />
-                  )}
-                </ListCell>
-                {!condensed && (
-                  <ListCell title={`${b.Results.length} Player(s)`}>
-                    <Popularity>
-                      <Popularity
-                        bar
-                        style={{
-                          width: `${(b.Results.length / 20) * 100}%`,
-                          opacity: b.Results.length / 20 + 0.1,
-                        }}
-                      />
-                    </Popularity>
                   </ListCell>
-                )}
-              </ListRow>
-            );
-          })}
-        </>
-      )}
-    </ListContainer>
+                  {condensed ? (
+                    <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
+                      <CondensedCon>
+                        <CondensedDuration>{b.Duration} min</CondensedDuration>
+                        <CondensedType>
+                          <BattleType small upper type={b.BattleType} />
+                        </CondensedType>
+                      </CondensedCon>
+                    </ListCell>
+                  ) : (
+                    <ListCell width={100} to={`/battles/${b.BattleIndex}`}>
+                      {b.Duration} min <BattleType lower type={b.BattleType} />
+                    </ListCell>
+                  )}
+                  <ListCell width={150}>
+                    <Kuski kuskiData={b.KuskiData} team flag />
+                  </ListCell>
+                  <ListCell width={100}>
+                    {b.LevelData && (
+                      <Level
+                        LevelIndex={b.LevelIndex}
+                        LevelData={b.LevelData}
+                      />
+                    )}
+                  </ListCell>
+                  {b.Finished === 1 && b.Results.length > 0 ? (
+                    <ListCell width={150}>
+                      <Kuski kuskiData={sorted[0].KuskiData} team flag />
+                    </ListCell>
+                  ) : (
+                    <ListCell width={150} to={`/battles/${b.BattleIndex}`}>
+                      {battleStatus(b)}
+                    </ListCell>
+                  )}
+                  <ListCell
+                    whiteSpace="nowrap"
+                    width={60}
+                    to={`/battles/${b.BattleIndex}`}
+                  >
+                    {b.Results.length > 0 && (
+                      <BattleTime
+                        time={sorted[0].Time}
+                        apples={sorted[0].Apples}
+                        battleType={b.BattleType}
+                      />
+                    )}
+                  </ListCell>
+                  {!condensed && (
+                    <ListCell title={`${b.Results.length} Player(s)`}>
+                      <Popularity>
+                        <Popularity
+                          bar
+                          style={{
+                            width: `${(b.Results.length / 20) * 100}%`,
+                            opacity: b.Results.length / 20 + 0.1,
+                          }}
+                        />
+                      </Popularity>
+                    </ListCell>
+                  )}
+                </ListRow>
+              );
+            })}
+          </>
+        )}
+      </ListContainer>
+    </Scroll>
   );
 };
+
+const Scroll = styled.div`
+  ${p => (p.height ? `max-height: ${p.height}px;` : '')}
+  overflow-y: auto;
+`;
 
 const Popularity = styled.div`
   max-width: 150px;

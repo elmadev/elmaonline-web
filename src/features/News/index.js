@@ -7,7 +7,7 @@ import { ListRow, ListCell, ListContainer } from 'components/List';
 import { Parser } from 'react-tiny-bbcode';
 import Header from 'components/Header';
 
-const News = ({ amount }) => {
+const News = ({ amount, height = 0 }) => {
   const [open, setOpen] = useState(0);
   const { news } = useStoreState(state => state.News);
   const { getNews } = useStoreActions(actions => actions.News);
@@ -27,33 +27,40 @@ const News = ({ amount }) => {
     <Card>
       <CardContent>
         <Header h2>News</Header>
-        <ListContainer>
-          {news.map(n => (
-            <ListRow key={n.NewsIndex} onClick={() => openNews(n.NewsIndex)}>
-              <ListCell>
-                <Headline selected={open === n.NewsIndex}>
-                  {n.Headline}{' '}
-                  <Written>
-                    <LocalTime
-                      date={n.Written}
-                      format="ddd D MMM YYYY"
-                      parse="X"
-                    />
-                  </Written>
-                </Headline>
-                {open === n.NewsIndex && (
-                  <div>
-                    <Parser bbcode={n.News} />
-                  </div>
-                )}
-              </ListCell>
-            </ListRow>
-          ))}
-        </ListContainer>
+        <Scroll height={height}>
+          <ListContainer>
+            {news.map(n => (
+              <ListRow key={n.NewsIndex} onClick={() => openNews(n.NewsIndex)}>
+                <ListCell>
+                  <Headline selected={open === n.NewsIndex}>
+                    {n.Headline}{' '}
+                    <Written>
+                      <LocalTime
+                        date={n.Written}
+                        format="ddd D MMM YYYY"
+                        parse="X"
+                      />
+                    </Written>
+                  </Headline>
+                  {open === n.NewsIndex && (
+                    <div>
+                      <Parser bbcode={n.News} />
+                    </div>
+                  )}
+                </ListCell>
+              </ListRow>
+            ))}
+          </ListContainer>
+        </Scroll>
       </CardContent>
     </Card>
   );
 };
+
+const Scroll = styled.div`
+  ${p => (p.height ? `max-height: ${p.height}px;` : '')}
+  overflow-y: auto;
+`;
 
 const Headline = styled.div`
   font-weight: ${p => (p.selected ? 'bold' : 'normal')};

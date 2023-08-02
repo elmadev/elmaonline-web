@@ -11,7 +11,7 @@ export default function BattlesCard() {
     <Card>
       <CardContent>
         <Header h2>Latest Battles</Header>
-        <BattleList limit={5} condensed latest />
+        <BattleList limit={15} condensed latest height={260} />
       </CardContent>
       <CardActions>
         <Button to="/battles" naked little>

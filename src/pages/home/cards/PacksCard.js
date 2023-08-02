@@ -16,7 +16,7 @@ export default function PacksCard() {
       <Card>
         <CardContent>
           <Header h2>New Level Packs</Header>
-          <LevelPackList amount={5} />
+          <LevelPackList amount={10} height={200} />
         </CardContent>
         <CardActions>
           <Button size="small" color="primary">

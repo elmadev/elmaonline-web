@@ -41,7 +41,7 @@ export default function Home() {
           <FeedCard />
           <PacksCard />
           <Grid item xs={12}>
-            <News amount={5} />
+            <News amount={15} height={220} />
           </Grid>
           <Grid item xs={12}>
             <ExtrasCard />
