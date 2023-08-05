@@ -1,22 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
-import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Tabs, Tab } from '@material-ui/core';
 import { Install } from 'components/Welcome';
 import Links from 'pages/help/tabs/Links';
 import Programs from 'pages/help/tabs/Programs';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { Card, Cross } from '../';
 
 export default function ExtrasCard() {
   const {
     extras: { setExtrasTab },
+    cards: { setHidden },
   } = useStoreActions(actions => actions.Page);
   const {
     extras: { extrasTab },
   } = useStoreState(state => state.Page);
   return (
     <Card>
+      <span title="Hide section">
+        <Cross onClick={() => setHidden('extras')} />
+      </span>
       <CardContent>
         <Tabs
           variant="scrollable"

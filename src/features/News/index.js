@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import LocalTime from 'components/LocalTime';
 import styled from 'styled-components';
-import { Card, CardContent } from '@material-ui/core';
+import { CardContent } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListRow, ListCell, ListContainer } from 'components/List';
 import { Parser } from 'react-tiny-bbcode';
 import Header from 'components/Header';
+import { Card, Cross } from 'pages/home';
 
-const News = ({ amount, height = 0 }) => {
+const News = ({ amount, height = 0, onCross = null }) => {
   const [open, setOpen] = useState(0);
   const { news } = useStoreState(state => state.News);
   const { getNews } = useStoreActions(actions => actions.News);
@@ -25,6 +26,11 @@ const News = ({ amount, height = 0 }) => {
 
   return (
     <Card>
+      {onCross ? (
+        <span title="Hide section">
+          <Cross onClick={() => onCross()} />
+        </span>
+      ) : null}
       <CardContent>
         <Header h2>News</Header>
         <Scroll height={height}>

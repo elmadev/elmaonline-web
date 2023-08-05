@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import CupCurrent from 'components/CupCurrent';
 import Header from 'components/Header';
-import { Card, CardContent, Grid } from '@material-ui/core';
+import { CardContent, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useNavigate } from '@reach/router';
 import { isEmpty } from 'lodash';
+import { Card, Cross } from 'pages/home';
 
-const CupWidget = () => {
+const CupWidget = ({ onCross = null }) => {
   const navigate = useNavigate();
   const [status, cups] = useStoreState(state => state.Cup.onGoingCups);
   const { getOnGoingCups } = useStoreActions(actions => actions.Cup);
@@ -25,6 +26,11 @@ const CupWidget = () => {
   return (
     <Grid item xs={12}>
       <Card>
+        {onCross ? (
+          <span title="Hide section">
+            <Cross onClick={() => onCross()} />
+          </span>
+        ) : null}
         <CardContent>
           <Header h2>Events</Header>
           {cups.map(cup => {

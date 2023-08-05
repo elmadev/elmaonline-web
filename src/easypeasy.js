@@ -148,6 +148,26 @@ export default {
       },
       { storage: 'localStorage' },
     ),
+    cards: persist(
+      {
+        hidden: {
+          battles: false,
+          replays: false,
+          ranking: false,
+          events: false,
+          levelpacks: false,
+          news: false,
+          extras: false,
+        },
+        setHidden: action((state, payload) => {
+          state.hidden[payload] = true;
+        }),
+        setShown: action((state, payload) => {
+          state.hidden[payload] = false;
+        }),
+      },
+      { storage: 'localStorage' },
+    ),
   },
   test: {
     derp: 'hi',
