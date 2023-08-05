@@ -5,6 +5,7 @@ import { Tabs, Tab } from '@material-ui/core';
 import { Install } from 'components/Welcome';
 import Links from 'pages/help/tabs/Links';
 import Programs from 'pages/help/tabs/Programs';
+import Donate from 'pages/help/tabs/Donate';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Card, Cross } from '../';
 
@@ -30,10 +31,16 @@ export default function ExtrasCard() {
             setExtrasTab(value);
           }}
         >
+          <Tab label="Donate" value="donate" />
           <Tab label="Install" value="install" />
           <Tab label="Links" value="links" />
           <Tab label="Programs" value="programs" />
         </Tabs>
+        {extrasTab === 'donate' && (
+          <Con>
+            <Donate small cached />
+          </Con>
+        )}
         {extrasTab === 'install' && (
           <Con>
             <Install />

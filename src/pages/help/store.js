@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { action, thunk } from 'easy-peasy';
+import { action, thunk, persist } from 'easy-peasy';
 import { GetCrew, GetDonations } from 'api';
+import { format } from 'date-fns';
 
 export default {
   crew: null,
@@ -14,15 +15,31 @@ export default {
       actions.setCrew(crew.data);
     }
   }),
-  donations: null,
-  setDonations: action((state, payload) => {
-    state.donations = payload;
-  }),
-  getDonations: thunk(async (actions, payload) => {
-    actions.setDonations(null);
-    const donations = await GetDonations(payload);
-    if (donations.ok) {
-      actions.setDonations(donations.data);
-    }
-  }),
+  donate: persist(
+    {
+      donations: null,
+      donationsCacheDate: '',
+      setDonations: action((state, payload) => {
+        state.donations = payload;
+        state.donationsCacheDate = format(new Date(), 'yyyy-DDD');
+      }),
+      getDonations: thunk(async (actions, payload, helpers) => {
+        if (payload.cached) {
+          if (
+            helpers.getState().donations &&
+            helpers.getState().donationsCacheDate ===
+              format(new Date(), 'yyyy-DDD')
+          ) {
+            return;
+          }
+        }
+        actions.setDonations(null);
+        const donations = await GetDonations(payload);
+        if (donations.ok) {
+          actions.setDonations(donations.data);
+        }
+      }),
+    },
+    { storage: 'localStorage' },
+  ),
 };
