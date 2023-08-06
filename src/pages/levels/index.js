@@ -39,7 +39,7 @@ const Levels = ({ tab, detailed }) => {
   const GridRef = useRef();
   const navigate = useNavigate();
   const windowSize = useElementSize();
-  const listHeight = windowSize.height - 160;
+  const listHeight = windowSize.height - 186;
   const listWidth =
     windowSize.width > 1000 ? windowSize.width - 250 : windowSize.width || 0;
 

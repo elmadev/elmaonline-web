@@ -48,6 +48,7 @@ const Controls = ({ detailed, sort }) => {
             }}
           >
             <MenuItem value="default">Default</MenuItem>
+            <MenuItem value="alpha">Alphabetical</MenuItem>
             <MenuItem value="created">Created</MenuItem>
             <MenuItem value="attempts"># Attempts</MenuItem>
             <MenuItem value="time">Total Time Spent</MenuItem>

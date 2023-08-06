@@ -25,6 +25,9 @@ const sortPacks = (packsRef, favs, stats, sort) => {
     return { ...lp, Fav };
   });
 
+  // stats object from pack object. It's possible that some packs don't have stats.
+  const st = p => stats[p.LevelPackIndex] || {};
+
   if (sort === 'default') {
     return packs.sort((a, b) => {
       if (a.LevelPackName === 'Int') return -1;
@@ -33,9 +36,7 @@ const sortPacks = (packsRef, favs, stats, sort) => {
         if (a.Fav) return -1;
         if (b.Fav) return 1;
       }
-      return a.LevelPackName.toLowerCase().localeCompare(
-        b.LevelPackName.toLowerCase(),
-      );
+      return st(b).AvgKuskiPerLevel - st(a).AvgKuskiPerLevel;
     });
   }
 
@@ -45,12 +46,17 @@ const sortPacks = (packsRef, favs, stats, sort) => {
 
   let sorted = [];
 
-  // stats object from pack object. It's possible that some packs don't have stats.
-  const st = p => stats[p.LevelPackIndex] || {};
-
   const pct = (num, div) => {
     return div > 0 ? num / div : 0;
   };
+
+  if (sort === 'alpha') {
+    sorted = packs.sort((a, b) =>
+      a.LevelPackName.toLowerCase().localeCompare(
+        b.LevelPackName.toLowerCase(),
+      ),
+    );
+  }
 
   if (sort === 'created') {
     sorted = orderBy(packs, 'LevelPackIndex', ['desc']);
