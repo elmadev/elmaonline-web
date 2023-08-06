@@ -13,12 +13,14 @@ import {
   Grid,
   Chip,
 } from '@material-ui/core';
+import Header from 'components/Header';
 import Dropzone from 'components/Dropzone';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Alert from 'components/Alert';
 import Link from 'components/Link';
+import { Text, Column } from 'components/Containers';
 import config from 'config';
-import { authToken } from 'utils/nick';
+import { authToken, nick } from 'utils/nick';
 import { xor } from 'lodash';
 import { renameFile } from 'utils/misc';
 
@@ -275,7 +277,22 @@ const Upload = ({ onUpload, filetype }) => {
 
   return (
     <>
-      <section>
+      <Column p="Large">
+        <Header h1>Replay upload</Header>
+        <Text>
+          Upload a replay to view it in browser and get a unique url to share it
+          privately or publicly.
+        </Text>
+        <Text>
+          Note that any finished run since september 5th 2021 can be viewed and
+          shared from your{' '}
+          {nick() ? (
+            <Link to={`/kuskis/${nick()}/times`}>profile</Link>
+          ) : (
+            'profile'
+          )}
+          .
+        </Text>
         <div className="dropzone">
           <Dropzone filetype={filetype} error={error} onDrop={e => onDrop(e)} />
         </div>
@@ -415,7 +432,7 @@ const Upload = ({ onUpload, filetype }) => {
             )}
           </Grid>
         </UploadButtonContainer>
-      </section>
+      </Column>
       <Alert
         title="Duplicate replay file"
         open={duplicate}

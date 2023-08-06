@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const Row = ({ children, center, ai, jc, t, b, l, r, width }) => {
+export const Row = ({ children, center, ai, jc, t, b, l, r, width, p }) => {
   return (
     <FlexRow
       ai={ai}
@@ -12,6 +12,7 @@ export const Row = ({ children, center, ai, jc, t, b, l, r, width }) => {
       l={l}
       r={r}
       width={width}
+      p={p}
     >
       {children}
     </FlexRow>
@@ -29,11 +30,12 @@ const FlexRow = styled.div`
   ${p => p.b && `margin-bottom ${p.theme[`pad${p.b}`]};`}
   ${p => p.l && `margin-left ${p.theme[`pad${p.l}`]};`}
   ${p => p.r && `margin-right ${p.theme[`pad${p.r}`]};`}
+  ${p => p.p && `padding: ${p.theme[`pad${p.p}`]};`}
 `;
 
-export const Column = ({ children, center, ai, jc, t, b, l, r }) => {
+export const Column = ({ children, center, ai, jc, t, b, l, r, p }) => {
   return (
-    <FlexColumn ai={ai} jc={jc} center={center} t={t} b={b} l={l} r={r}>
+    <FlexColumn ai={ai} jc={jc} center={center} t={t} b={b} l={l} r={r} p={p}>
       {children}
     </FlexColumn>
   );
@@ -49,6 +51,7 @@ const FlexColumn = styled.div`
   ${p => p.b && `margin-bottom ${p.theme[`pad${p.b}`]};`}
   ${p => p.l && `margin-left ${p.theme[`pad${p.l}`]};`}
   ${p => p.r && `margin-right ${p.theme[`pad${p.r}`]};`}
+  ${p => p.p && `padding: ${p.theme[`pad${p.p}`]};`}
 `;
 
 export const Text = styled.div`

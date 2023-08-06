@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { Backdrop, Button as MuiButton } from '@material-ui/core';
+import { Backdrop, Button as MuiButton, Fab } from '@material-ui/core';
 import Button from 'components/Buttons';
 import { Dropdown, TextField } from 'components/Inputs';
-import { Edit, HighlightOffOutlined as CloseIcon } from '@material-ui/icons';
+import {
+  Edit,
+  HighlightOffOutlined as CloseIcon,
+  Add as AddIcon,
+} from '@material-ui/icons';
 import { Row } from 'components/Containers';
 import LocalTime from 'components/LocalTime';
 import { formatDistanceStrict } from 'date-fns';
 import styled from 'styled-components';
 import config from 'config';
 import { FixedSizeList as List } from 'react-window';
+import { useNavigate } from '@reach/router';
 import {
   ListContainer,
   ListCell,
@@ -22,6 +27,7 @@ import useElementSize from 'utils/useWindowSize';
 const expireValues = ['365 days', '30 days', '7 days', '1 day', 'Never'];
 
 const FileList = ({ collapse }) => {
+  const navigate = useNavigate();
   const [hover, setHover] = useState(0);
   const [selectedFile, openFile] = useState(null);
   const [expire, setExpire] = useState('30 days');
@@ -199,6 +205,15 @@ const FileList = ({ collapse }) => {
               );
             }}
           </List>
+          <FabCon>
+            <Fab
+              color="primary"
+              aria-label="Add"
+              onClick={() => navigate(`/up`)}
+            >
+              <AddIcon />
+            </Fab>
+          </FabCon>
         </ListContainer>
       )}
       {selectedFile && (
@@ -286,6 +301,12 @@ const Close = styled(CloseIcon)`
   :hover {
     color: red;
   }
+`;
+
+const FabCon = styled.div`
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
 `;
 
 const Container = styled.div`
