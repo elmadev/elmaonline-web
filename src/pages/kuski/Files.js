@@ -4,6 +4,7 @@ import { Backdrop, Button as MuiButton } from '@material-ui/core';
 import Button from 'components/Buttons';
 import { Dropdown, TextField } from 'components/Inputs';
 import { Edit, HighlightOffOutlined as CloseIcon } from '@material-ui/icons';
+import Fab from 'components/Fab';
 import { Row } from 'components/Containers';
 import LocalTime from 'components/LocalTime';
 import { formatDistanceStrict } from 'date-fns';
@@ -199,6 +200,7 @@ const FileList = ({ collapse }) => {
               );
             }}
           </List>
+          <Fab url="/up" />
         </ListContainer>
       )}
       {selectedFile && (

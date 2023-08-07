@@ -38,12 +38,14 @@ const getColor = kuski => {
   return colorMap[kuski];
 };
 
+const sortByEntered = (a, b) => b.Entered - a.Entered;
+
 const Comments = props => {
   const { comments, loading } = props;
   if (loading) return null;
   return (
     <Column>
-      {comments.map(c => (
+      {comments.sort(sortByEntered).map(c => (
         <Row key={c.ReplayCommentIndex}>
           <Timestamp>
             <LocalTime date={c.Entered} format="D MMM YYYY" parse="X" />

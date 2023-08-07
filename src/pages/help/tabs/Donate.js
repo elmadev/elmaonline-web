@@ -10,7 +10,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 
 const parseDonations = donations => {
   const accountBalance = sumBy(donations, v =>
-    v.Processed === 1 ? v.mc_gross : 0,
+    v.Processed === 1 ? v.mc_gross - v.mc_fee : 0,
   );
   const donos = filter(donations, r => r.KuskiIndex !== 0 && r.Processed === 1);
   const a = groupBy(donos, 'KuskiIndex');
@@ -42,12 +42,16 @@ const paymentInfo = balance => {
   };
 };
 
-const Donate = () => {
-  const { donations } = useStoreState(state => state.Help);
-  const { getDonations } = useStoreActions(actions => actions.Help);
+const Donate = ({ cached = false, small = false }) => {
+  const {
+    donate: { donations },
+  } = useStoreState(state => state.Help);
+  const {
+    donate: { getDonations },
+  } = useStoreActions(actions => actions.Help);
 
   useEffect(() => {
-    if (!donations) getDonations();
+    if (!donations) getDonations({ cached });
   });
 
   if (!donations) return <span>loading...</span>;
@@ -57,16 +61,22 @@ const Donate = () => {
 
   return (
     <Text>
-      <div className="header">
-        <Header h2>Donate</Header>
-      </div>
+      {small ? null : (
+        <div className="header">
+          <Header h2>Donate</Header>
+        </div>
+      )}
       <div className="main">
-        <RightContainer>
-          <Header h3>Donate</Header>
-          <p>
-            Read the QR code or click the button underneath to donate via
-            paypal.
-          </p>
+        <RightContainer small={small}>
+          {small ? null : (
+            <>
+              <Header h3>Donate</Header>
+              <p>
+                Read the QR code or click the button underneath to donate via
+                paypal.
+              </p>
+            </>
+          )}
           <div
             style={{
               display: 'flex',
@@ -104,23 +114,28 @@ const Donate = () => {
               </form>
             </div>
           </div>
-          <p>
-            It is completely free to play EOL, however it costs a little sum to
-            keep the server running, which is what donations goes towards.
-          </p>
-          <p>
-            Donations are paid to a dedicated EOL paypal account, which is only
-            used for paying the server bill, and competition prizes. Remember to
-            add your nick in the comment field if you want your donation
-            attributed here. You can pay without a paypal account, just select
-            credit card payment.
-          </p>
-          <p>
-            Server costs are ${runningCosts} a month, paid forward on the 1st of
-            every month. It should be noted that donating does not guarantee any
-            sort of uptime, service or support.
-          </p>
-          <Header h3>Payment status</Header>
+          {small ? null : (
+            <>
+              <p>
+                It is completely free to play EOL, however it costs a little sum
+                to keep the server running, which is what donations goes
+                towards.
+              </p>
+              <p>
+                Donations are paid to a dedicated EOL paypal account, which is
+                only used for paying the server bill, and competition prizes.
+                Remember to add your nick in the comment field if you want your
+                donation attributed here. You can pay without a paypal account,
+                just select credit card payment.
+              </p>
+              <p>
+                Server costs are ${runningCosts} a month, paid forward on the
+                1st of every month. It should be noted that donating does not
+                guarantee any sort of uptime, service or support.
+              </p>
+              <Header h3>Payment status</Header>
+            </>
+          )}
           <p>
             <BoldText>{paymentDates.percentage.toFixed(2)}%</BoldText> of the
             next payment is paid.
@@ -132,38 +147,40 @@ const Donate = () => {
             Paid until: <BoldText>{paymentDates.date}</BoldText>.
           </p>
         </RightContainer>
-        <div className="left">
-          <Header h3>Donator toplist</Header>
-          <Table size="small">
-            <TableBody>
-              {donators.donators &&
-                donators.donators.map((r, i) => {
-                  return (
-                    <TableRow key={`${i.toString()}r`}>
-                      <TableCell key={`${i.toString()}p`}>
-                        <Flag nationality={r.Country} />{' '}
-                        <Link to={`/kuskis/${r.Kuski}`}>{r.Kuski}</Link>{' '}
-                        {r.Team && (
-                          <Link to={`/team/${r.Team}`}> [{r.Team}]</Link>
-                        )}
-                      </TableCell>
-                      <TableCell
-                        align="right"
-                        key={`${i.toString()}a`}
-                      >{`$${r.Amount.toFixed(2)}`}</TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </div>
+        {small ? null : (
+          <div className="left">
+            <Header h3>Donator toplist</Header>
+            <Table size="small">
+              <TableBody>
+                {donators.donators &&
+                  donators.donators.map((r, i) => {
+                    return (
+                      <TableRow key={`${i.toString()}r`}>
+                        <TableCell key={`${i.toString()}p`}>
+                          <Flag nationality={r.Country} />{' '}
+                          <Link to={`/kuskis/${r.Kuski}`}>{r.Kuski}</Link>{' '}
+                          {r.Team && (
+                            <Link to={`/team/${r.Team}`}> [{r.Team}]</Link>
+                          )}
+                        </TableCell>
+                        <TableCell
+                          align="right"
+                          key={`${i.toString()}a`}
+                        >{`$${r.Amount.toFixed(2)}`}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </div>
+        )}
       </div>
     </Text>
   );
 };
 
 const RightContainer = styled.div`
-  width: 50%;
+  width: ${p => (p.small ? '100%' : '50%')};
   padding: 4px;
 `;
 

@@ -4,6 +4,35 @@ import Link from 'components/Link';
 import Video from 'components/Video';
 import { Grid } from '@material-ui/core';
 
+export const Install = () => {
+  return (
+    <List>
+      <li>
+        <a
+          href="https://store.steampowered.com/app/1290220/Elasto_Mania_Remastered/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Buy Elasto Mania on steam
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://steamcommunity.com/workshop/filedetails/?id=2094059600"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Install the Elma Online mod on steam workshop
+        </a>
+      </li>
+      <li>
+        <Link to="register">Register on this site</Link>
+      </li>
+      <li>Hostname: eol.elma.online</li>
+    </List>
+  );
+};
+
 const Welcome = () => {
   return (
     <Grid container spacing={1}>
@@ -12,31 +41,10 @@ const Welcome = () => {
           Welcome to the Elasto Mania online website. Elma online is a patch for
           the game Elasto Mania which enables online play, such as battles,
           multiplay and watching others. To get started:
-          <List>
-            <li>
-              <a
-                href="https://store.steampowered.com/app/1290220/Elasto_Mania_Remastered/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Buy Elasto Mania on steam
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://steamcommunity.com/workshop/filedetails/?id=2094059600"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Install the Elma Online mod on steam workshop
-              </a>
-            </li>
-            <li>
-              <Link to="register">Register on this site</Link>
-            </li>
-            <RedLi>New IP May 2020: 161.35.35.82</RedLi>
-          </List>
-          For additional information check out the <Link to="help">Help</Link>{' '}
+          <Install />
+          For additional information check out the <Link to="help">
+            Help
+          </Link>{' '}
           section.
         </Text>
       </Grid>
@@ -62,10 +70,6 @@ const Text = styled.div`
 const List = styled.ol`
   margin-top: 8px;
   margin-bottom: 8px;
-`;
-
-const RedLi = styled.li`
-  color: red;
 `;
 
 const Trailer = styled.div`

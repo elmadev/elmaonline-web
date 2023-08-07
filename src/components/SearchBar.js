@@ -71,6 +71,7 @@ const SearchBar = props => {
             <li>Use ? as wildcard for a single character</li>
             <li>Use * as wildcard for multiple characters</li>
             <li>By default there&apos;s a * wildcard at the end</li>
+            <li>You can use "int01" etc. to search for internals</li>
           </ul>
         </InfoBox>
       </Drawer>

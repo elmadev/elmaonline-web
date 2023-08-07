@@ -4,21 +4,25 @@ import Header from 'components/Header';
 import { ListCell, ListContainer, ListRow, ListHeader } from 'components/List';
 import * as sections from './programs.json';
 
-const Programs = () => {
+const Programs = ({ hideHeader = false }) => {
   return (
     <div>
       <Text>
-        <Header h2>Programs</Header>
-        This is a list of community made programs and tools. If anything is
-        missing make a pull request to{' '}
-        <a href="https://github.com/elmadev/elmaonline-web/blob/changelog/src/pages/help/tabs/programs.json">
-          this file
-        </a>{' '}
-        or make a{' '}
-        <a href="https://github.com/elmadev/elmaonline-site/issues/479">
-          comment here
-        </a>
-        .
+        {hideHeader ? null : (
+          <>
+            <Header h2>Programs</Header>
+            This is a list of community made programs and tools. If anything is
+            missing make a pull request to{' '}
+            <a href="https://github.com/elmadev/elmaonline-web/blob/dev/src/pages/help/tabs/programs.json">
+              this file
+            </a>{' '}
+            or make a{' '}
+            <a href="https://github.com/elmadev/elmaonline-site/issues/479">
+              comment here
+            </a>
+            .
+          </>
+        )}
         {sections.default.map(section => (
           <Fragment key={section.name}>
             <Header h2 top>

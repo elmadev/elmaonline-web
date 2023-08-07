@@ -97,39 +97,18 @@ export default {
           {
             header: 'Playing',
             expanded: true,
-            items: [
-              { name: 'Battles', to: '/battles', hidden: false },
-              { name: 'Levels', to: '/levels', hidden: false },
-              { name: 'Replays', to: '/replays', hidden: false },
-              { name: 'Ranking', to: '/ranking', hidden: false },
-            ],
           },
           {
             header: 'Community',
             expanded: true,
-            items: [
-              { name: 'Chat Log', to: '/chatlog', hidden: false },
-              { name: 'Players', to: '/kuskis', hidden: false },
-              { name: 'Teams', to: '/teams', hidden: false },
-              { name: 'Kuski map', to: '/map', hidden: false },
-            ],
           },
           {
             header: 'Competitions',
             expanded: true,
-            items: [
-              { name: 'Cups', to: '/cups', hidden: false },
-              { name: 'Battle Leagues', to: '/battleleagues', hidden: false },
-            ],
           },
           {
             header: 'Tools',
             expanded: true,
-            items: [
-              { name: 'Help', to: '/help', hidden: false },
-              { name: 'Editor', to: '/editor', hidden: false },
-              { name: 'File upload', to: '/up', hidden: false },
-            ],
           },
         ],
       },
@@ -139,6 +118,35 @@ export default {
       const index = state.sideBar.menu.findIndex(m => m.header === payload);
       state.sideBar.menu[index].expanded = !state.sideBar.menu[index].expanded;
     }),
+    extras: persist(
+      {
+        extrasTab: 'install',
+        setExtrasTab: action((state, payload) => {
+          state.extrasTab = payload;
+        }),
+      },
+      { storage: 'localStorage' },
+    ),
+    cards: persist(
+      {
+        hidden: {
+          battles: false,
+          replays: false,
+          ranking: false,
+          events: false,
+          levelpacks: false,
+          news: false,
+          extras: false,
+        },
+        setHidden: action((state, payload) => {
+          state.hidden[payload] = true;
+        }),
+        setShown: action((state, payload) => {
+          state.hidden[payload] = false;
+        }),
+      },
+      { storage: 'localStorage' },
+    ),
   },
   test: {
     derp: 'hi',

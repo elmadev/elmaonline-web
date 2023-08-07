@@ -4,31 +4,38 @@ import { Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import Link from 'components/Link';
 
-const LevelPackList = () => {
+const LevelPackList = ({ amount = 4, height = 0 }) => {
   const { data } = useStoreState(state => state.LevelPackList);
   const { fetch } = useStoreActions(actions => actions.LevelPackList);
 
   useEffect(() => {
-    fetch(4);
+    fetch(amount);
   }, []);
 
   return (
-    <Grid container spacing={0}>
-      {data?.length > 0 &&
-        data.map((pack, index) => (
-          <Grid key={pack.LevelPackIndex} item xs={6}>
-            <Container odd={index % 2} title={pack.LevelPackDesc}>
-              <Link to={`/levels/packs/${pack.LevelPackName}`}>
-                <Short>{pack.LevelPackName}</Short>
-                <Long>{pack.LevelPackLongName}</Long>
-                <By>by {pack.KuskiData.Kuski}</By>
-              </Link>
-            </Container>
-          </Grid>
-        ))}
-    </Grid>
+    <Scroll height={height}>
+      <Grid container spacing={0}>
+        {data?.length > 0 &&
+          data.map((pack, index) => (
+            <Grid key={pack.LevelPackIndex} item xs={6}>
+              <Container odd={index % 2} title={pack.LevelPackDesc}>
+                <Link to={`/levels/packs/${pack.LevelPackName}`}>
+                  <Short>{pack.LevelPackName}</Short>
+                  <Long>{pack.LevelPackLongName}</Long>
+                  <By>by {pack.KuskiData.Kuski}</By>
+                </Link>
+              </Container>
+            </Grid>
+          ))}
+      </Grid>
+    </Scroll>
   );
 };
+
+const Scroll = styled.div`
+  ${p => (p.height ? `max-height: ${p.height}px;` : '')}
+  overflow-y: auto;
+`;
 
 const Container = styled.div`
   border-radius: 4px;

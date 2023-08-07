@@ -6,8 +6,9 @@ import Loading from 'components/Loading';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import { FixedSizeList as List } from 'react-window';
 import useElementSize from 'utils/useWindowSize';
+import Link from 'components/Link';
 
-const TotalTimes = ({ highlight, highlightWeeks }) => {
+const TotalTimes = ({ highlight, highlightWeeks, name }) => {
   const { totaltimes, recordsLoading } = useStoreState(
     state => state.LevelPack,
   );
@@ -50,7 +51,13 @@ const TotalTimes = ({ highlight, highlightWeeks }) => {
                 <div style={style} key={r.KuskiIndex}>
                   <ListRow>
                     <ListCell width={70}>{index + 1}</ListCell>
-                    <ListCell width={320}>{r.KuskiData.Kuski}</ListCell>
+                    <ListCell width={320}>
+                      <Link
+                        to={`/levels/packs/${name}/personal/${r.KuskiData.Kuski}`}
+                      >
+                        {r.KuskiData.Kuski}
+                      </Link>
+                    </ListCell>
                     <ListCell
                       highlight={r.TimeIndex >= highlight[highlightWeeks]}
                     >

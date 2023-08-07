@@ -16,6 +16,7 @@ import Link from 'components/Link';
 import AutoComplete, { KuskiAutoComplete } from 'components/AutoComplete';
 import FieldBoolean from 'components/FieldBoolean';
 import { highlightTime } from 'utils/misc';
+import { useEffect } from 'react';
 
 const OtherKuskiLink = ({ otherKuski, getTimes, selectLevel }) => {
   return (
@@ -38,9 +39,12 @@ const OtherKuskiLink = ({ otherKuski, getTimes, selectLevel }) => {
 };
 
 const compareOptions = [
-  { type: '', title: 'Multi time', id: 0, key: 'multi', default: true },
+  { type: '', title: 'Multi time', id: 0, key: 'multi' },
   { type: '', title: 'Multi combined', id: 0, key: 'both' },
   { type: '', title: 'Record', id: 0, key: 'record', default: true },
+];
+
+const targetsOptionsSeven = [
   { type: 'Targets', title: 'Next target', id: 7, key: 'next' },
   { type: 'Targets', title: 'Beginner', id: 6, key: 'beginner' },
   { type: 'Targets', title: 'OK', id: 5, key: 'ok' },
@@ -51,7 +55,14 @@ const compareOptions = [
   { type: 'Targets', title: 'Godlike', id: 0, key: 'godlike' },
 ];
 
-const Personal = ({ name }) => {
+const targetsOptionsThree = [
+  { type: 'Targets', title: 'Next target', id: 7, key: 'next' },
+  { type: 'Targets', title: 'Bronze', id: 6, key: 'bronze' },
+  { type: 'Targets', title: 'Silver', id: 5, key: 'silver' },
+  { type: 'Targets', title: 'Gold', id: 4, key: 'gold' },
+];
+
+const Personal = ({ name, player }) => {
   const [level, selectLevel] = useState(-1);
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
@@ -91,6 +102,16 @@ const Personal = ({ name }) => {
     setRelative,
     setHighlightTargets,
   } = useStoreActions(actions => actions.LevelPack);
+
+  useEffect(() => {
+    if (player && player !== kuski) {
+      getPersonalTimes({
+        PersonalKuskiIndex: player,
+        name,
+        eolOnly: showLegacy ? 0 : 1,
+      });
+    }
+  }, [player]);
 
   const levels = useMemo(() => {
     let arr = [];
@@ -229,11 +250,22 @@ const Personal = ({ name }) => {
   };
 
   const compareOptionsWithKuskis = useMemo(() => {
+    let targetsCount = 0;
+    let compareOptionsWithTargets = compareOptions;
+    if (levelPackInfo?.levels?.[0]?.Targets) {
+      targetsCount = levelPackInfo.levels[0].Targets.split(',').length;
+      if (targetsCount === 7) {
+        compareOptionsWithTargets = [...compareOptions, ...targetsOptionsSeven];
+      }
+      if (targetsCount === 3) {
+        compareOptionsWithTargets = [...compareOptions, ...targetsOptionsThree];
+      }
+    }
     if (!kuskis?.length > 0) {
-      return compareOptions;
+      return compareOptionsWithTargets;
     }
     return [
-      ...compareOptions,
+      ...compareOptionsWithTargets,
       ...kuskis
         .filter(k => k.Kuski !== kuski)
         .map(k => ({
@@ -534,7 +566,11 @@ const Personal = ({ name }) => {
               </ListCell>
               {compares.map(compare => {
                 if (!compare.type) {
-                  if (compare.key === 'multi' && tts.multi?.finished) {
+                  if (
+                    compare.key === 'multi' &&
+                    tts.multi?.finished &&
+                    !isNaN(tts.multi?.tt)
+                  ) {
                     return (
                       <ListCell key={compare.key}>
                         <Time time={tts.multi} />
@@ -576,7 +612,8 @@ const Personal = ({ name }) => {
                   ['Players', 'Targets', 'Countries', 'Teams'].indexOf(
                     compare.type,
                   ) > -1 &&
-                  tts[compare.key]
+                  tts[compare.key] &&
+                  !isNaN(tts[compare.key]?.tt)
                 ) {
                   return (
                     <ListCell key={compare.key}>

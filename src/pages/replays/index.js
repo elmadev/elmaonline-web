@@ -35,7 +35,7 @@ export default function Replays(props) {
       </Tabs>
       <Container>
         <Router primary={false}>
-          <ReplayList persist="recentlyUploaded" default />
+          <ReplayList persist="recentlyUploaded" default uploadFab />
           <ReplayListBattle path="battle" showPagination />
           <Upload path="upload" filetype=".rec" />
           <ReplayCommentArchive path="comments" />

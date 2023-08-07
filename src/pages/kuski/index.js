@@ -51,7 +51,7 @@ const Kuski = ({ name, tab, recordSort, ...props }) => {
                 {kuski.TeamData && `Team: ${kuski.TeamData.Team}`}
               </TeamNat>
             </Profile>
-            <KuskiHeader KuskiIndex={kuski.KuskiIndex} />
+            <KuskiHeader KuskiIndex={kuski.KuskiIndex} Kuski={kuski.Kuski} />
             <Expand>
               {collapse ? (
                 <ExpandMore onClick={() => setCollapse(false)} />

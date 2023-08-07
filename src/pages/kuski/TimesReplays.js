@@ -7,8 +7,9 @@ import {
   Checkbox,
   TextField,
   Typography,
-  Switch,
   Chip,
+  RadioGroup,
+  Radio,
 } from '@material-ui/core';
 import { Row } from 'components/Containers';
 import Time from 'components/Time';
@@ -39,29 +40,19 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { downloadRec } from 'utils/misc';
 
 const TimesReplays = ({ KuskiIndex, collapse }) => {
-  const [PRs, setPRs] = useState(false);
+  const [type, setType] = useState('timesAndReplays');
   const [hover, setHover] = useState(0);
   const [replay, openReplay] = useState(null);
   const [replayIndex, setReplayIndex] = useState(0);
   const [share, setShare] = useState(null);
-  const {
-    timesAndReplays: {
-      data: timesData,
-      loading: timesLoading,
-      error: timesError,
-    },
-    PRsAndReplays: { data: PRsData, loading: PRsLoading, error: PRsError },
-    search,
-    kuski,
-  } = useStoreState(state => state.Kuski);
+  const { search, kuski } = useStoreState(state => state.Kuski);
+  const state = useStoreState(state => state.Kuski);
   const { getTagOptions } = useStoreActions(actions => actions.Upload);
   const { tagOptions } = useStoreState(state => state.Upload);
-  const {
-    timesAndReplays: { fetch: timesFetch },
-    PRsAndReplays: { fetch: PRsFetch },
-    shareTimeFile,
-    setSearch,
-  } = useStoreActions(actions => actions.Kuski);
+  const { shareTimeFile, setSearch } = useStoreActions(
+    actions => actions.Kuski,
+  );
+  const actions = useStoreActions(actions => actions.Kuski);
   const windowSize = useElementSize();
   const listHeight = windowSize.height - 379 + (collapse ? 100 : 0);
   useEffect(() => {
@@ -70,16 +61,18 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
 
   useEffect(() => {
     fetch();
-  }, [PRs]);
+  }, [type]);
 
   const isMobile = useMediaQuery('(max-width: 1024px)');
 
   const fetch = newSearch => {
-    if (PRs) {
-      PRsFetch({ limit: 100, search: { ...search, ...newSearch }, KuskiIndex });
-      return;
+    if (actions[type]?.fetch) {
+      actions[type].fetch({
+        limit: 100,
+        search: { ...search, ...newSearch },
+        KuskiIndex,
+      });
     }
-    timesFetch({ limit: 100, search: { ...search, ...newSearch }, KuskiIndex });
   };
 
   const close = () => {
@@ -87,9 +80,9 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
     setReplayIndex(0);
   };
 
-  const data = PRs ? PRsData : timesData;
-  const loading = PRs ? PRsLoading : timesLoading;
-  const error = PRs ? PRsError : timesError;
+  const data = state[type]?.data || null;
+  const loading = state[type]?.loading || false;
+  const error = state[type]?.error || null;
 
   const nextReplay = () => {
     const next = replayIndex + 1;
@@ -167,48 +160,66 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
           <ListCell width={100}></ListCell>
           <ListCell width={300}>Replay</ListCell>
           <ListCell>
-            <FormControlLabel
-              control={
-                <SwitchThin
-                  checked={PRs}
-                  onChange={() => setPRs(!PRs)}
-                  color="primary"
-                />
-              }
-              label="Show only PRs"
-            />
+            <RadioGroup
+              aria-label="type"
+              value={type}
+              onChange={n => setType(n.target.value)}
+              name="weeks"
+              row
+            >
+              <FormControlLabel
+                value="timesAndReplays"
+                checked={type === 'timesAndReplays'}
+                label="Finished times"
+                control={<RadioThin size="small" />}
+              />
+              <FormControlLabel
+                value="PRsAndReplays"
+                checked={type === 'PRsAndReplays'}
+                label="Only PR's"
+                control={<RadioThin size="small" />}
+              />
+              <FormControlLabel
+                value="runsAndReplays"
+                checked={type === 'runsAndReplays'}
+                label="All runs"
+                control={<RadioThin size="small" />}
+              />
+            </RadioGroup>
           </ListCell>
         </ListHeader>
-        <ListRow>
-          <ListInput
-            label="Search level"
-            value={search.level}
-            onChange={value => setSearch({ field: 'level', value })}
-            maxLength={11}
-            onEnter={level => fetch({ ...search, level })}
-          />
-          <ListCell />
-          <ListInput
-            label="Driven on or after"
-            date
-            value={search.from}
-            onChange={value => {
-              setSearch({ field: 'from', value });
-              fetch({ ...search, from: value });
-            }}
-          />
-          <ListInput
-            label="Driven on or before"
-            date
-            value={search.to}
-            onChange={value => {
-              setSearch({ field: 'to', value });
-              fetch({ ...search, to: value });
-            }}
-          />
-          <ListCell />
-          <ListCell />
-        </ListRow>
+        {type === 'runsAndReplays' ? null : (
+          <ListRow>
+            <ListInput
+              label="Search level"
+              value={search.level}
+              onChange={value => setSearch({ field: 'level', value })}
+              maxLength={11}
+              onEnter={level => fetch({ ...search, level })}
+            />
+            <ListCell />
+            <ListInput
+              label="Driven on or after"
+              date
+              value={search.from}
+              onChange={value => {
+                setSearch({ field: 'from', value });
+                fetch({ ...search, from: value });
+              }}
+            />
+            <ListInput
+              label="Driven on or before"
+              date
+              value={search.to}
+              onChange={value => {
+                setSearch({ field: 'to', value });
+                fetch({ ...search, to: value });
+              }}
+            />
+            <ListCell />
+            <ListCell />
+          </ListRow>
+        )}
       </ListContainer>
       {data?.length > 0 && (
         <ListContainer flex>
@@ -437,8 +448,11 @@ const Container = styled.div`
   padding: ${p => p.theme.padMedium};
 `;
 
-const SwitchThin = styled(Switch)`
-  margin: -10px;
+const RadioThin = styled(Radio)`
+  && {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 `;
 
 export default TimesReplays;

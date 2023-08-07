@@ -13,6 +13,7 @@ import { Row, Text } from 'components/Containers';
 import { formatBytes } from 'utils/calcs';
 import { nickId } from 'utils/nick';
 import { format } from 'date-fns';
+import Link from 'components/Link';
 
 const Upload = () => {
   const [error, setError] = useState('');
@@ -94,6 +95,10 @@ const Upload = () => {
   return (
     <Layout t="Upload">
       <Header>Upload</Header>
+      <Text>
+        If you are looking for replay uploading go{' '}
+        <Link to="/replays/upload">here</Link>.
+      </Text>
       <Text>
         Upload any file with a unique secret url. Max file size is 10MB. By
         default files are deleted after 30 days and allow inifite downloads. If

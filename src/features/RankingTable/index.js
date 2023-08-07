@@ -16,6 +16,7 @@ const RankingTable = ({
   period,
   tableIndex,
   periodType,
+  fixedHeight = 0,
 }) => {
   const { rankingData, loading } = useStoreState(state => state.RankingTable);
   const { getRankingData } = useStoreActions(actions => actions.RankingTable);
@@ -33,7 +34,11 @@ const RankingTable = ({
   const [sortOrder, setSortOrder] = useState('desc');
   const [sort, setSort] = useState(`Ranking${battleType}`);
   const windowSize = useElementSize();
-  const listHeight = windowSize.height ? windowSize.height - 332 : 0;
+  const listHeight = fixedHeight
+    ? fixedHeight
+    : windowSize.height
+    ? windowSize.height - 332
+    : 0;
   const Points = `Points${battleType}`;
   const Ranking = `Ranking${battleType}`;
   const Wins = `Wins${battleType}`;
@@ -118,7 +123,9 @@ const RankingTable = ({
                 );
               }}
             </List>
-            <Amount>Players: {FilteredRanking.length}</Amount>
+            {fixedHeight ? null : (
+              <Amount>Players: {FilteredRanking.length}</Amount>
+            )}
           </ListContainer>
         </>
       )}

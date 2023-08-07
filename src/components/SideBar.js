@@ -8,6 +8,30 @@ import Link from 'components/Link';
 import banner from 'images/banner.png';
 import { useLocation } from '@reach/router';
 
+const items = {
+  Playing: [
+    { name: 'Battles', to: '/battles' },
+    { name: 'Levels', to: '/levels' },
+    { name: 'Replays', to: '/replays' },
+    { name: 'Ranking', to: '/ranking' },
+  ],
+  Community: [
+    { name: 'Chat Log', to: '/chatlog' },
+    { name: 'Players', to: '/kuskis' },
+    { name: 'Teams', to: '/teams' },
+    { name: 'Kuski map', to: '/map' },
+  ],
+  Competitions: [
+    { name: 'Cups', to: '/cups' },
+    { name: 'Battle Leagues', to: '/battleleagues' },
+  ],
+  Tools: [
+    { name: 'Replay upload', to: '/replays/upload' },
+    { name: 'Help', to: '/help' },
+    { name: 'Editor', to: '/editor' },
+  ],
+};
+
 const SideBar = () => {
   const location = useLocation();
   const isRehydrated = useStoreRehydrated();
@@ -69,7 +93,7 @@ const SideBar = () => {
               name={m.header}
               expanded={m.expanded}
             >
-              {m.items.map(i => (
+              {items[m.header].map(i => (
                 <MenuLink
                   selected={isSelected(i.to)}
                   key={i.name}

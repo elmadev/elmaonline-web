@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { Grid } from '@material-ui/core';
 import Header from 'components/Header';
 
-const Links = () => {
+const Links = ({ hideHeader = false }) => {
   return (
     <Text>
-      <Header h2>Community links</Header>
+      {hideHeader ? null : <Header h2>Community links</Header>}
       <Grid>
         <Grid>
           <a href="https://mopolauta.moposite.com/">mopolauta.moposite.com</a>{' '}
@@ -17,7 +17,8 @@ const Links = () => {
           discord.
         </Grid>
         <Grid>
-          <a href="http://wiki.elmaonline.net/">Elma wiki</a> Elma wiki.
+          <a href="http://wiki.elmaonline.net/">Elma wiki</a> Elasto Mania and
+          EOL wiki.
         </Grid>
         <Grid>
           <a href="https://moposite.com/records_elma_wrs.php">
@@ -34,11 +35,6 @@ const Links = () => {
           jonsykkel dedicated to keep the community up to date with internal
           times, total times etc. You can also restore your old state.dat, find
           replays and much more.
-        </Grid>
-        <Grid>
-          <a href="http://kopasite.net/up">Kopasite.net/up</a> A file uploading
-          service hosted by Kopaka, if you ever need to upload an elma-related
-          item to share with others.
         </Grid>
       </Grid>
     </Text>
