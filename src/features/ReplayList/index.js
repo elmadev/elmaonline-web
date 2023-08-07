@@ -17,6 +17,7 @@ import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined'
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import Pagination from '@material-ui/lab/Pagination';
+import Fab from 'components/Fab';
 
 export default function ReplayList({
   defaultPage = 0,
@@ -27,6 +28,7 @@ export default function ReplayList({
   nonsticky = false,
   levelPack = 0,
   persist = '',
+  uploadFab = false,
 }) {
   const [selectedTags, setSelectedTags] = useState([]);
   const [excludedTags, setExcludedTags] = useState([]);
@@ -289,6 +291,7 @@ export default function ReplayList({
           />
         </Box>
       )}
+      {uploadFab ? <Fab url="/replays/upload" /> : null}
     </Container>
   );
 }

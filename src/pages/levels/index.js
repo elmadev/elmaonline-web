@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { Add as AddIcon } from '@material-ui/icons';
-import { Tabs, Tab, Fab } from '@material-ui/core';
+import { Tabs, Tab } from '@material-ui/core';
 import { useNavigate, useLocation } from '@reach/router';
 import { VariableSizeGrid as Grid } from 'react-window';
 import { parse } from 'query-string';
@@ -10,6 +9,7 @@ import Layout from 'components/Layout';
 import GridItem from 'components/GridItem';
 import Popularity from 'components/Popularity';
 import useElementSize from 'utils/useWindowSize';
+import Fab from 'components/Fab';
 import LevelpacksDetailed from './LevelpacksDetailed';
 import Controls from './Controls';
 import FavStar from './FavStar';
@@ -177,15 +177,7 @@ const Levels = ({ tab, detailed }) => {
                 )}
               </>
             )}
-            <FabCon>
-              <Fab
-                color="primary"
-                aria-label="Add"
-                onClick={() => navigate(`/levels/add`)}
-              >
-                <AddIcon />
-              </Fab>
-            </FabCon>
+            <Fab url="/levels/add" />
           </>
         )}
         {tab === 'collections' && (
@@ -203,15 +195,7 @@ const Levels = ({ tab, detailed }) => {
                   ))}
               </>
             )}
-            <FabCon>
-              <Fab
-                color="primary"
-                aria-label="Add"
-                onClick={() => navigate(`/levels/collections/add`)}
-              >
-                <AddIcon />
-              </Fab>
-            </FabCon>
+            <Fab url="/levels/collections/add" />
           </>
         )}
         {tab === 'recent-records' && (
@@ -250,12 +234,6 @@ const StarCon = styled.div`
   position: absolute;
   top: 12px;
   right: 13px;
-`;
-
-const FabCon = styled.div`
-  position: fixed;
-  right: 30px;
-  bottom: 30px;
 `;
 
 const Container = styled.div`
