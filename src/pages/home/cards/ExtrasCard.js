@@ -24,17 +24,17 @@ export default function ExtrasCard() {
       </span>
       <CardContent>
         <Tabs
-          variant="scrollable"
+          variant="fullWidth"
           scrollButtons="auto"
           value={extrasTab}
           onChange={(e, value) => {
             setExtrasTab(value);
           }}
         >
-          <Tab label="Donate" value="donate" />
-          <Tab label="Install" value="install" />
-          <Tab label="Links" value="links" />
-          <Tab label="Programs" value="programs" />
+          <FixedTab label="Donate" value="donate" />
+          <FixedTab label="Install" value="install" />
+          <FixedTab label="Links" value="links" />
+          <FixedTab label="Programs" value="programs" />
         </Tabs>
         {extrasTab === 'donate' && (
           <Con>
@@ -60,6 +60,12 @@ export default function ExtrasCard() {
     </Card>
   );
 }
+
+const FixedTab = styled(Tab)`
+  && {
+    min-width: 72px;
+  }
+`;
 
 const Con = styled.div`
   padding-top: ${p => p.theme.padMedium};

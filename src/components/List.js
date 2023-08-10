@@ -133,6 +133,7 @@ export const ListCell = ({
   verticalAlign = 'baseline',
   textAlign = 'left',
   cutText,
+  minWidth,
 }) => {
   if (to) {
     return (
@@ -146,6 +147,7 @@ export const ListCell = ({
         verticalAlign={verticalAlign}
         textAlign={textAlign}
         cutText={cutText}
+        minWidth={minWidth}
         title={title ? title : typeof children === 'string' ? children : ''}
       >
         <CellLink to={to}>{children}</CellLink>
@@ -164,6 +166,7 @@ export const ListCell = ({
       verticalAlign={verticalAlign}
       textAlign={textAlign}
       cutText={cutText}
+      minWidth={minWidth}
       title={title ? title : typeof children === 'string' ? children : ''}
     >
       {children}
@@ -192,6 +195,7 @@ const Cell = styled.span`
   vertical-align: ${p => p.verticalAlign};
   ${p => p.cutText && 'white-space: nowrap; overflow: hidden;'}
   ${p => p.pointer && 'cursor: pointer;'}
+  ${p => p.minWidth && `min-width: ${p.minWidth}px;`}
   button {
     max-height: 20px;
   }

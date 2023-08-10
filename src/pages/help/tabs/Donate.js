@@ -32,7 +32,7 @@ const runningCosts = 52.0;
 const paymentInfo = balance => {
   const date = new Date(Date.now());
   const now = new Date(date);
-  date.setMonth(date.getMonth() + parseInt(balance / runningCosts, 10));
+  date.setMonth(date.getMonth() + 1 + parseInt(balance / runningCosts, 10));
   now.setMonth(now.getMonth() + 1);
   now.setDate(1);
   return {

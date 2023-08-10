@@ -43,6 +43,7 @@ export const SortableList = ({
               whiteSpace="nowrap"
               right={h.right || null}
               width={h.width || null}
+              minWidth={h.minWidth || undefined}
               onClick={() => h.sort && doSort(h.name)}
             >
               {sortHeader === h.name && (

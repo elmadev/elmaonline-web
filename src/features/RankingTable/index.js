@@ -69,7 +69,7 @@ const RankingTable = ({
           <SortableList
             headers={[
               { name: '#', sort: false, width: 40 },
-              { name: 'Player', sort: false, width: 0 },
+              { name: 'Player', sort: false, width: 0, minWidth: 110 },
               { name: 'Ranking', sort: true, width: 76, right: 1 },
               { name: 'Points', sort: true, width: 76, right: 1 },
               { name: 'Wins', sort: true, width: 76, right: 1 },
@@ -95,7 +95,7 @@ const RankingTable = ({
                   <div style={style} key={i[tableIndex]}>
                     <ListRow>
                       <ListCell width={40}>{index + 1}.</ListCell>
-                      <ListCell>
+                      <ListCell minWidth={110}>
                         <Kuski kuskiData={i.KuskiData} team flag />
                       </ListCell>
                       <ListCell right width={76}>
