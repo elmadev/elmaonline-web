@@ -9,7 +9,7 @@ import LevelMap from 'features/LevelMap';
 import styled from 'styled-components';
 import { toLocalTime } from 'utils/time';
 import m from 'moment';
-import useInterval from '@use-it/interval';
+import { useInterval } from 'utils/useInterval';
 import LinearProgressWithLabel from 'components/LinearProgressWithLabel';
 
 const BattleCard = props => {

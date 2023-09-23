@@ -4,7 +4,7 @@ import Header from 'components/Header';
 import styled from 'styled-components';
 import Layout from 'components/Layout';
 import { Button } from '@material-ui/core';
-import GettingStarted from './tabs/GettingStarted.js';
+import GettingStarted from './tabs/GettingStarted';
 import HowToInstall from './tabs/HowToInstall';
 import RegisterAndConnect from './tabs/RegisterAndConnect';
 import KeyBindings from './tabs/KeyBindings';

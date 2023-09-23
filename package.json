@@ -12,7 +12,6 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "@use-it/interval": "^1.0.0",
     "apisauce": "^2.1.1",
     "date-fns": "^2.21.1",
     "easy-peasy": "^4.0.1",
@@ -46,10 +45,9 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
     "g": "plop",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
@@ -90,15 +88,17 @@
     ]
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@storybook/addon-actions": "^6.1.14",
     "@storybook/addon-essentials": "^6.1.14",
     "@storybook/addon-links": "^6.1.14",
     "@storybook/node-logger": "^6.1.14",
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/react": "^6.1.14",
+    "@vitejs/plugin-react": "^4.0.4",
     "commitizen": "^4.2.3",
     "compression-webpack-plugin": "6.0.5",
-    "customize-cra": "^1.0.0",
     "cz-customizable": "^6.3.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.1",
@@ -107,7 +107,9 @@
     "plop": "^2.7.4",
     "prettier": "2.2.1",
     "react-app-rewired": "^2.1.8",
-    "storybook-addon-styled-component-theme": "^2.0.0"
+    "rollup-plugin-polyfill-node": "^0.12.0",
+    "storybook-addon-styled-component-theme": "^2.0.0",
+    "vite": "^4.4.9"
   },
   "config": {
     "commitizen": {
