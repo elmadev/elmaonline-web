@@ -29,7 +29,7 @@ React based frontend for the [elmaonline site](https://elma.online). The backend
 
 ## Tech stack
 
-- React 17 using [Create React App](https://github.com/facebook/create-react-app)
+- React 17 using [vitejs](https://vitejs.dev/)
 - Styling with [styled-components](https://styled-components.com/) and [Material-UI](https://material-ui.com/)
 - Navigation using [@reach-router](https://reach.tech/router/)
 - Simplified redux using [easy-peasy](https://easy-peasy.now.sh/)
