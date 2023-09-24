@@ -6,7 +6,7 @@ import Layout from 'components/Layout';
 import styled from 'styled-components';
 import config from 'config';
 import Time from '../../components/Time';
-import Kuski from '../../components/Kuski.js';
+import Kuski from '../../components/Kuski';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { battleStatus } from 'utils/battle';
 import RecView from './RecView';
