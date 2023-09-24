@@ -6,30 +6,33 @@ import { Grid } from '@material-ui/core';
 
 export const Install = () => {
   return (
-    <List>
-      <li>
-        <a
-          href="https://store.steampowered.com/app/1290220/Elasto_Mania_Remastered/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Buy Elasto Mania on steam
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://steamcommunity.com/workshop/filedetails/?id=2094059600"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Install the Elma Online mod on steam workshop
-        </a>
-      </li>
-      <li>
-        <Link to="register">Register on this site</Link>
-      </li>
-      <li>Hostname: eol.elma.online</li>
-    </List>
+    <>
+      <List>
+        <li>
+          <a
+            href="https://store.steampowered.com/app/1290220/Elasto_Mania_Remastered/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Buy Elasto Mania on steam
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://steamcommunity.com/workshop/filedetails/?id=2094059600"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Install the Elma Online mod on steam workshop
+          </a>
+        </li>
+        <li>
+          <Link to="register">Register on this site</Link>
+        </li>
+        <li>Hostname: eol.elma.online</li>
+      </List>
+      <Link to="help/howtoinstall">More</Link>
+    </>
   );
 };
 
