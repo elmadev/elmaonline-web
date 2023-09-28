@@ -63,7 +63,28 @@ const HowToInstall = () => {
           aware.
         </li>
       </List>
-      <Header h3>Issues</Header>
+      <Header h3>Common issues</Header>
+      <List>
+        <li>
+          Gray square, non working editor, low fps: Try different
+          resolution/zoom in eolconf (preferably native res of your monitor). Or
+          try a different ddraw.dll file, find the different ones under{' '}
+          <Link to="help/programs">help/programs</Link>.
+        </li>
+        <li>
+          msvcr120.dll missing, vcruntime140 missing or similar error: You need
+          to install visual studio redistributable. Usually{' '}
+          <a href="https://aka.ms/vs/16/release/vc_redist.x64.exe">2013 x64</a>{' '}
+          or <a href="https://aka.ms/highdpimfc2013x86enu">2013 x86</a> helps,
+          otherwise google the error and see which version you need. Try both
+          both 32bit and 64bit versions. Older versions can be found{' '}
+          <a href="https://learn.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170">
+            here
+          </a>
+          .
+        </li>
+      </List>
+      <Header h3>Other issues</Header>
       If you run into issues you can ask someone in{' '}
       <a href="https://discord.gg/j5WMFC6" target="_blank" rel="noreferrer">
         discord
