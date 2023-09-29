@@ -22,7 +22,8 @@ const GetWinner = times => {
     const ordered = times.sort((a, b) => a.Time - b.Time);
     return (
       <>
-        <Time time={ordered[0].Time} /> by {ordered[0].KuskiData.Kuski}
+        <Time time={ordered[0].Time} apples={-1} /> by{' '}
+        {ordered[0].KuskiData.Kuski}
       </>
     );
   }
