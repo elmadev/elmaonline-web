@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import LocalTime from 'components/LocalTime';
 import { BattleTime } from 'components/Time';
@@ -37,10 +37,43 @@ const BattleList = ({
     }
   }, [latest]);
 
+  const battlesData = useMemo(() => {
+    if (battles.length) {
+      const inQueue = battles.filter(b => b.InQueue && !b.Aborted);
+      if (inQueue.length === 0) {
+        return battles;
+      }
+      const started = battles.filter(b => !b.InQueue && !b.Aborted);
+      if (started.length === 0) {
+        return battles;
+      }
+      const battles2 = [...battles];
+      const remaining = started[0].Finished
+        ? 120 -
+          (Math.floor(Date.now() / 1000) -
+            (parseInt(started[0].Started) + started[0].Duration * 60))
+        : 120 +
+          (parseInt(started[0].Started) +
+            started[0].Duration * 60 -
+            Math.floor(Date.now() / 1000));
+      let inQueueTime = 0;
+      inQueue.reverse().forEach((b, index) => {
+        const ogIndex = inQueue.length - 1 - index;
+        battles2[ogIndex] = {
+          ...battles2[ogIndex],
+          Starts: Math.floor(Date.now() / 1000) + remaining + inQueueTime,
+        };
+        inQueueTime += 120 + b.Duration * 60 + b.Countdown;
+      });
+      return battles2;
+    }
+    return [];
+  }, [battles]);
+
   return (
     <Container>
       <BattleListTable
-        battles={battles}
+        battles={battlesData}
         condensed={condensed}
         height={height}
       />
@@ -81,11 +114,22 @@ export const BattleListTable = ({
                     width={startedWidth}
                     to={`/battles/${b.BattleIndex}`}
                   >
-                    <LocalTime
-                      date={b.Started}
-                      format={startedFormat}
-                      parse="X"
-                    />
+                    {b.InQueue && !b.Aborted && b.Starts ? (
+                      <>
+                        Est.{' '}
+                        <LocalTime
+                          date={b.Starts}
+                          format={startedFormat}
+                          parse="X"
+                        />
+                      </>
+                    ) : (
+                      <LocalTime
+                        date={b.Started}
+                        format={startedFormat}
+                        parse="X"
+                      />
+                    )}
                   </ListCell>
                   {condensed ? (
                     <ListCell width={100} to={`/battles/${b.BattleIndex}`}>

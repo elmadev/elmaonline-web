@@ -20,6 +20,7 @@ import Links from './tabs/Links';
 import Crew from './tabs/Crew';
 import EolFolder from './tabs/EolFolder';
 import GameUpdates from './tabs/GameUpdates';
+import MoreLevels from './tabs/MoreLevels';
 import Programs from './tabs/Programs';
 
 const Help = () => {
@@ -76,10 +77,11 @@ const Help = () => {
           <Header h3>3. Playing online</Header>
           <ButtonContainer>
             {makeButtons('playingbattles', '3.1. Playing Battles')}
-            {makeButtons('rules', '3.2. Rules')}
-            {makeButtons('etiquette', '3.3. Etiquette')}
-            {makeButtons('glossary', '3.4. Glossary')}
-            {makeButtons('updates', '3.5. Game updates')}
+            {makeButtons('morelevels', '3.2. More Levels')}
+            {makeButtons('rules', '3.3. Rules')}
+            {makeButtons('etiquette', '3.4. Etiquette')}
+            {makeButtons('glossary', '3.5. Glossary')}
+            {makeButtons('updates', '3.6. Game updates')}
           </ButtonContainer>
           <Header h3>4. The community</Header>
           <ButtonContainer>
@@ -100,6 +102,7 @@ const Help = () => {
             <Glossary path="glossary" />
             <ConfiguringEol path="eolconfiguration" />
             <PlayingBattles path="playingbattles" />
+            <MoreLevels path="morelevels" />
             <GameUpdates path="updates" />
             <Etiquette path="etiquette" />
             <Faq path="faq" />

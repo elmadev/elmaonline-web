@@ -18,12 +18,11 @@ const schema = yup.object().shape({
 const AddCup = props => {
   const { add } = props;
   const [AppleResults, setAppleResults] = useState(false);
-  const [ReplayRequired, setReplayRequired] = useState(false);
   const formal = useFormal(
     {},
     {
       schema,
-      onSubmit: values => add({ ...values, AppleResults, ReplayRequired }),
+      onSubmit: values => add({ ...values, AppleResults }),
     },
   );
   return (
@@ -36,11 +35,6 @@ const AddCup = props => {
             label="Apple Results"
             value={AppleResults}
             onChange={() => setAppleResults(!AppleResults)}
-          />
-          <FieldBoolean
-            label="Replays Required"
-            value={ReplayRequired}
-            onChange={() => setReplayRequired(!ReplayRequired)}
           />
           <Field label="Short Name" {...formal.getFieldProps('ShortName')} />
           <Field label="Skips" {...formal.getFieldProps('Skips')} />
