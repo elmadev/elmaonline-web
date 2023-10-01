@@ -41,7 +41,7 @@ class Time extends React.Component {
   static formatTime = (time, apples, thousands) => {
     // for cup results
     if (apples === -1) {
-      if (time === 9999100) {
+      if (time === 9999100 || time === 10000000) {
         return '0 apples';
       }
       if (time >= 999900 && time <= 999999) {

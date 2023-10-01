@@ -220,11 +220,24 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
                         {isWindow ? (
                           <>
                             <a href={dlLink}>
-                              <Time thousands time={replay.ReplayTime} />
+                              {type === 'cup' ? (
+                                <Time
+                                  time={replay.ReplayTime / 10}
+                                  apples={-1}
+                                />
+                              ) : (
+                                <Time thousands time={replay.ReplayTime} />
+                              )}
                             </a>{' '}
                           </>
                         ) : (
-                          <Time thousands time={replay.ReplayTime} />
+                          <>
+                            {type === 'cup' ? (
+                              <Time time={replay.ReplayTime / 10} apples={-1} />
+                            ) : (
+                              <Time thousands time={replay.ReplayTime} />
+                            )}
+                          </>
                         )}{' '}
                         in{' '}
                         <Level
