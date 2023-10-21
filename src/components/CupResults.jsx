@@ -34,7 +34,15 @@ const CupResults = props => {
           <ListRow key={r.KuskiIndex}>
             <ListCell>{no + 1}.</ListCell>
             <ListCell>
-              <Kuski kuskiData={r.KuskiData} team flag />
+              <Kuski
+                kuskiData={{
+                  Country: r.KuskiData.Country,
+                  Kuski: r.KuskiData.Kuski,
+                  TeamData: r.TeamData,
+                }}
+                team
+                flag
+              />
             </ListCell>
             <ListCell>
               {r.Replay || r.UUID ? (

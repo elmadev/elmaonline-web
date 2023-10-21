@@ -139,7 +139,12 @@ export const calculateStandings = (events, cup, simple, forceSkip = false) => {
           KuskiIndex: time.KuskiIndex,
           Points: time.Points,
           Kuski: time.KuskiData.Kuski,
-          KuskiData: time.KuskiData,
+          KuskiData: {
+            Kuski: time.KuskiData.Kuski,
+            TeamIndex: time.TeamIndex,
+            Country: time.KuskiData.Country,
+            TeamData: time.TeamData,
+          },
           Events: 1,
           AllPoints: [time.Points],
           AllPointsDetailed: [pointsDetailed],
@@ -154,32 +159,38 @@ export const calculateStandings = (events, cup, simple, forceSkip = false) => {
             ...standings[existsIndex].AllPointsDetailed,
             pointsDetailed,
           ],
+          KuskiData: {
+            Kuski: time.KuskiData.Kuski,
+            TeamIndex: time.TeamIndex,
+            Country: time.KuskiData.Country,
+            TeamData: time.TeamData,
+          },
         };
       }
       // team standings
-      if (time.KuskiData.TeamIndex && !simple) {
+      if (time.TeamIndex && !simple) {
         const existsTeam = teamStandings.findIndex(
-          x => x.TeamIndex === time.KuskiData.TeamIndex,
+          x => x.TeamIndex === time.TeamIndex,
         );
         if (existsTeam === -1) {
           teamStandings.push({
-            TeamIndex: time.KuskiData.TeamIndex,
+            TeamIndex: time.TeamIndex,
             Points: time.Points,
-            Team: time.KuskiData.TeamData.Team,
+            Team: time.TeamData.Team,
           });
-          teamEntries[time.KuskiData.TeamIndex] = 1;
+          teamEntries[time.TeamIndex] = 1;
         } else if (
-          teamEntries[time.KuskiData.TeamIndex] < 3 ||
-          !teamEntries[time.KuskiData.TeamIndex]
+          teamEntries[time.TeamIndex] < 3 ||
+          !teamEntries[time.TeamIndex]
         ) {
           teamStandings[existsTeam] = {
             ...teamStandings[existsTeam],
             Points: teamStandings[existsTeam].Points + time.Points,
           };
-          if (teamEntries[time.KuskiData.TeamIndex]) {
-            teamEntries[time.KuskiData.TeamIndex] += 1;
+          if (teamEntries[time.TeamIndex]) {
+            teamEntries[time.TeamIndex] += 1;
           } else {
-            teamEntries[time.KuskiData.TeamIndex] = 1;
+            teamEntries[time.TeamIndex] = 1;
           }
         }
       }
