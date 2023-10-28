@@ -32,7 +32,7 @@ const AddCup = props => {
           <Field label="Cup Name" {...formal.getFieldProps('CupName')} />
           <Field label="Description" {...formal.getFieldProps('Description')} />
           <FieldBoolean
-            label="Apple Results"
+            label="Apple Results (default, can be changed per event)"
             value={AppleResults}
             onChange={() => setAppleResults(!AppleResults)}
           />

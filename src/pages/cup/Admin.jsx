@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button, Checkbox, Grid } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -45,6 +45,12 @@ const Admin = () => {
   const [error, setError] = useState('');
   const [selectedLevel, setSelectedLevel] = useState(0);
   const [shown, setShown] = useState(false);
+  const [appleResults, setAppleResults] = useState(false);
+
+  useEffect(() => {
+    setAppleResults(Boolean(cup.AppleResults));
+  }, [cup]);
+
   const formal = useFormal(
     {},
     {
@@ -55,6 +61,7 @@ const Admin = () => {
             ...values,
             LevelIndex: selectedLevel,
             ShownTimes: shown ? 1 : 0,
+            AppleResults: appleResults ? 1 : 0,
           },
           last: lastCupShortName,
           CupGroupIndex: cup.CupGroupIndex,
@@ -108,6 +115,11 @@ const Admin = () => {
                 label="Shown times"
                 value={shown}
                 onChange={() => setShown(!shown)}
+              />
+              <FieldBoolean
+                label="Apple results"
+                value={appleResults}
+                onChange={() => setAppleResults(!appleResults)}
               />
               <Button variant="contained" onClick={() => formal.submit()}>
                 Add
