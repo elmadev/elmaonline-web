@@ -130,6 +130,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
       Comment: share.comment,
       Tags: share.tags,
       search,
+      KuskiIndex,
     });
     setShare(null);
   };
@@ -142,7 +143,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
     const levName =
       time.LevelData.LevelName.substring(0, 6) === 'QWQUU0'
         ? time.LevelData.LevelName.substring(6, 8)
-        : time.LevelData.LevelName;
+        : time.LevelData.LevelName.replace('#', '');
     const RecFileName = `${levName}${nick().substring(
       0,
       Math.min(15 - (levName.length + timeAsString.length), 4),

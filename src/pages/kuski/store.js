@@ -150,7 +150,11 @@ export default {
   shareTimeFile: thunk(async (actions, payload) => {
     const post = await ShareTimeFile(payload);
     if (post.ok) {
-      actions.timesAndReplays.fetch({ search: payload.search, limit: 100 });
+      actions.timesAndReplays.fetch({
+        search: payload.search,
+        limit: 100,
+        KuskiIndex: payload.KuskiIndex,
+      });
     }
   }),
   search: {
