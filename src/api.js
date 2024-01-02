@@ -451,8 +451,8 @@ export const SearchChat = data => api.get('chatlog', { params: data });
 export const Level = (LevelIndex, withLevelStats = false) =>
   api.get(`level/${LevelIndex}`, { stats: withLevelStats ? '1' : '' });
 export const LevelData = LevelIndex => api.get(`level/leveldata/${LevelIndex}`);
-export const LevelTimeStats = LevelIndex =>
-  api.get(`level/timestats/${LevelIndex}`);
+export const LevelTimeStats = ({ LevelIndex, from, to }) =>
+  api.get(`level/timestats/${LevelIndex}`, { from, to });
 export const UpdateLevel = data =>
   api.post(`level/${data.LevelIndex}`, data.update);
 
