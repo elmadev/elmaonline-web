@@ -17,6 +17,7 @@ export default {
         ? payload.DrivenByData.Kuski
         : payload.DrivenByText,
       Unlisted: payload.Unlisted,
+      Tags: payload.Tags.map(tag => tag.TagIndex),
     };
   }),
   setEdit: action((state, payload) => {

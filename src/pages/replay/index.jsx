@@ -4,6 +4,9 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Chip,
+  Box,
+  Typography,
 } from '@material-ui/core';
 import {
   ExpandMore,
@@ -11,6 +14,7 @@ import {
   AddBox,
   Visibility,
 } from '@material-ui/icons';
+import { xor } from 'lodash';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import styled from 'styled-components';
 import Avatar from 'components/Avatar';
@@ -89,6 +93,8 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
   const {
     settings: { theater },
   } = useStoreState(state => state.ReplaySettings);
+  const { getTagOptions } = useStoreActions(actions => actions.Upload);
+  const { tagOptions } = useStoreState(state => state.Upload);
 
   const getReplay = async payload => {
     if (!fingerprint.current) {
@@ -107,6 +113,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
   useEffect(() => {
     if (ReplayUuid) {
       getReplay({ ReplayUuid, merge, RecFileName });
+      getTagOptions();
     }
     setCupEvent(null);
     if (ReplayUuid && ReplayUuid.includes('c-')) {
@@ -314,9 +321,52 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
                     setEdit({ field: 'Unlisted', value: 1 - edit.Unlisted })
                   }
                 />
+                <Box padding={2}>
+                  <Typography color="textSecondary">Tags</Typography>
+                  {tagOptions.map(option => {
+                    if (edit.Tags.includes(option.TagIndex)) {
+                      return (
+                        <Chip
+                          label={option.Name}
+                          onDelete={() =>
+                            setEdit({
+                              field: 'Tags',
+                              value: xor(edit.Tags, [option.TagIndex]),
+                            })
+                          }
+                          color="primary"
+                          style={{ margin: 4 }}
+                        />
+                      );
+                    } else {
+                      return (
+                        <Chip
+                          label={option.Name}
+                          onClick={() =>
+                            setEdit({
+                              field: 'Tags',
+                              value: xor(edit.Tags, [option.TagIndex]),
+                            })
+                          }
+                          style={{ margin: 4 }}
+                        />
+                      );
+                    }
+                  })}
+                </Box>
                 <Button
                   onClick={() =>
-                    submitEdit({ edit, ReplayUuid, merge, RecFileName })
+                    submitEdit({
+                      edit: {
+                        ...edit,
+                        Tags: tagOptions.filter(option =>
+                          edit.Tags.includes(option.TagIndex),
+                        ),
+                      },
+                      ReplayUuid,
+                      merge,
+                      RecFileName,
+                    })
                   }
                 >
                   Edit
