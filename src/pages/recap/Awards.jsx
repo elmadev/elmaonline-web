@@ -28,7 +28,7 @@ const Name = ({ award, index }) => {
   return <>{val}</>;
 };
 
-const Awards = ({ overall }) => {
+const Awards = ({ overall, year }) => {
   const [open, setOpen] = useState([]);
   const ref = useRef();
   const {
@@ -230,7 +230,7 @@ const Awards = ({ overall }) => {
       </StepCon>
       <Header>
         <HeadlineTop>Best of</HeadlineTop>
-        <Headline>EOL 2022</Headline>
+        <Headline>EOL {year}</Headline>
       </Header>
       <Container ref={ref}>
         {awards.map((award, awardIndex) => {

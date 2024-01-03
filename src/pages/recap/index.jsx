@@ -32,7 +32,7 @@ import designed from 'images/recap/designed.jpg';
 import seasons from 'images/recap/seasons.jpg';
 
 const Recap = () => {
-  const year = 2022;
+  const year = 2023;
   const [tab, setTab] = useState(nickId() === 0 ? 1 : 0);
   const container = useRef();
   const {
@@ -71,12 +71,18 @@ const Recap = () => {
   const ranking = playerData?.ranking;
 
   const hours = t => {
+    if (!t) {
+      return 0;
+    }
     return (t / (100 * 60 * 60)).toLocaleString(undefined, {
       maximumFractionDigits: 2,
     });
   };
 
   const percent = (value, of) => {
+    if (!value || !of) {
+      return 0;
+    }
     return `${((value * 100) / of).toFixed(0)}%`;
   };
 
@@ -230,7 +236,7 @@ const Recap = () => {
           />
         </StepCon>
       )}
-      {tab === 2 && <Awards overall={overallData} />}
+      {tab === 2 && <Awards overall={overallData} year={year} />}
       {(tab === 0 || tab === 1) && (
         <Sections ref={container}>
           <Section bg="white">
@@ -285,11 +291,17 @@ const Recap = () => {
           <Section bg="white">
             <Text>
               {pronoun} took an average of{' '}
-              <V>
-                {(int(data.Runs) / int(data.Apples)).toLocaleString(undefined, {
-                  maximumFractionDigits: 3,
-                })}
-              </V>{' '}
+              {!data.Runs || !data.Apples ? (
+                <V>0 </V>
+              ) : (
+                <>
+                  <V>
+                    {(
+                      int(data.Runs) / int(data.Apples)
+                    ).toLocaleString(undefined, { maximumFractionDigits: 3 })}
+                  </V>{' '}
+                </>
+              )}
               apples per run
             </Text>
             <TextSmall>
@@ -510,11 +522,15 @@ const Recap = () => {
             <Section bg="white">
               <Text>
                 Average replay rating was{' '}
-                <V>
-                  {average.toLocaleString(undefined, {
-                    maximumFractionDigits: 2,
-                  })}
-                </V>
+                {!average ? (
+                  <V>0</V>
+                ) : (
+                  <V>
+                    {average.toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                    })}
+                  </V>
+                )}
               </Text>
               <TextSmall>
                 for the <V>{avgVotes.length}</V> replays with more than 1 vote
