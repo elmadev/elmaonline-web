@@ -49,6 +49,7 @@ import {
   CrippledTimeStats,
   useQueryAlt,
 } from 'api';
+import Button from 'components/Buttons';
 
 const Level = ({ LevelId }) => {
   const theme = useContext(ThemeContext);
@@ -57,7 +58,7 @@ const Level = ({ LevelId }) => {
   const [tab, setTab] = useState(0);
   const [cripple, setCripple] = useState('');
   const [from, setFrom] = useState('');
-  const [to, setTo] = useState(new Date().toISOString().slice(0, 10));
+  const [to, setTo] = useState('');
 
   const {
     besttimes,
@@ -149,10 +150,6 @@ const Level = ({ LevelId }) => {
       });
     }
   };
-
-  useEffect(() => {
-    fetchPersonalStats();
-  }, [from, to]);
 
   const onTabClick = (e, value) => {
     setTab(value);
@@ -428,7 +425,7 @@ const Level = ({ LevelId }) => {
                       <Box
                         m={4}
                         display="flex"
-                        alignItems="center"
+                        alignItems="self-end"
                         flexDirection="row"
                       >
                         <RangeField
@@ -452,6 +449,13 @@ const Level = ({ LevelId }) => {
                             shrink: true,
                           }}
                         />
+                        <Button
+                          secondary
+                          onClick={() => fetchPersonalStats()}
+                          disabled={!to || !from}
+                        >
+                          Submit
+                        </Button>
                       </Box>
                       <StatsTable
                         data={timeStats}
