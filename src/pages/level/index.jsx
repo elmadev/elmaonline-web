@@ -239,7 +239,6 @@ const Level = ({ LevelId }) => {
                     </Download>
                     <LevelFullName>{level.LongName}</LevelFullName>
                     <br />
-                    <Tags tags={level.Tags.map(tag => tag.Name)} />
                     <div>{`Level ID: ${LevelIndex}`}</div>
                     <div>
                       {pluralize(level.Apples, 'apple')},{' '}
@@ -266,6 +265,8 @@ const Level = ({ LevelId }) => {
                         site.
                       </div>
                     )}
+                    <br />
+                    <Tags tags={level.Tags.map(tag => tag.Name)} />
                   </LevelDescription>
                 </AccordionDetails>
               </Accordion>
