@@ -106,7 +106,10 @@ export default {
   getTimeStats: thunk(async (actions, payload) => {
     const stats = await LevelTimeStats(payload);
     if (stats.ok) {
-      actions.setTimeStats({ data: stats.data, id: payload });
+      actions.setTimeStats({
+        data: stats.data,
+        id: payload.LevelIndex,
+      });
     }
   }),
   setPersonalLeaderHistory: action((state, payload) => {

@@ -17,6 +17,8 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Box,
+  TextField,
 } from '@material-ui/core';
 import styled, { ThemeContext } from 'styled-components';
 import Layout from 'components/Layout';
@@ -47,6 +49,7 @@ import {
   CrippledTimeStats,
   useQueryAlt,
 } from 'api';
+import Button from 'components/Buttons';
 
 const Level = ({ LevelId }) => {
   const theme = useContext(ThemeContext);
@@ -54,6 +57,9 @@ const Level = ({ LevelId }) => {
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
   const [cripple, setCripple] = useState('');
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+
   const {
     besttimes,
     besttimesLoading,
@@ -133,6 +139,18 @@ const Level = ({ LevelId }) => {
     { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2 },
   );
 
+  const fetchPersonalStats = () => {
+    getTimeStats({ LevelIndex, from, to });
+    if (nickId() > 0) {
+      getPersonalLeaderHistory({
+        LevelIndex,
+        KuskiIndex: nickId(),
+        from: from ? new Date(from).getTime() / 1000 : '',
+        to: to ? new Date(to).getTime() / 1000 : '',
+      });
+    }
+  };
+
   const onTabClick = (e, value) => {
     setTab(value);
     if (
@@ -145,10 +163,7 @@ const Level = ({ LevelId }) => {
       value === 2 &&
       (timeStats.length === 0 || statsLoading !== LevelIndex)
     ) {
-      getTimeStats(LevelIndex);
-      if (nickId() > 0) {
-        getPersonalLeaderHistory({ LevelIndex, KuskiIndex: nickId() });
-      }
+      fetchPersonalStats();
     }
     if (
       value === 3 &&
@@ -407,6 +422,41 @@ const Level = ({ LevelId }) => {
 
                   {tab === 2 && loggedIn && (
                     <>
+                      <Box
+                        m={4}
+                        display="flex"
+                        alignItems="self-end"
+                        flexDirection="row"
+                      >
+                        <RangeField
+                          id="date-from"
+                          label="From"
+                          type="date"
+                          defaultValue={from}
+                          onChange={event => setFrom(event.target?.value)}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+
+                        <RangeField
+                          id="date-to"
+                          label="To"
+                          type="date"
+                          defaultValue={to}
+                          onChange={event => setTo(event.target?.value)}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                        <Button
+                          secondary
+                          onClick={() => fetchPersonalStats()}
+                          disabled={!to || !from}
+                        >
+                          Submit
+                        </Button>
+                      </Box>
                       <StatsTable
                         data={timeStats}
                         loading={statsLoading !== LevelIndex}
@@ -605,6 +655,10 @@ const LevelStatsAccordion = styled(AccordionDetails)`
     padding-left: 0;
     padding-right: 0;
   }
+`;
+
+const RangeField = styled(TextField)`
+  margin-right: 16px !important;
 `;
 
 Level.propTypes = {
