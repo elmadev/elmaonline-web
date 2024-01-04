@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { Tabs, Tab } from '@material-ui/core';
 import Layout from 'components/Layout';
+import Tags from 'components/Tags';
 import { nick, nickId, mod } from 'utils/nick';
 import { Row } from 'components/Containers';
 import Download from 'components/Download';
@@ -128,6 +129,7 @@ const LevelPack = ({ name, tab, ...props }) => {
             <DescriptionStyle>
               {levelPackInfo.LevelPackDesc} - Maintainer:{' '}
               <Kuski kuskiData={levelPackInfo.KuskiData} />
+              <Tags tags={levelPackInfo.Tags.map(tag => tag.Name)} />
             </DescriptionStyle>
           </div>
           {['record-history', 'replays', 'admin'].indexOf(tab) === -1 && (
