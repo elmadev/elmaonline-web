@@ -3,7 +3,7 @@ import { action, thunk, persist } from 'easy-peasy';
 import {
   Replays,
   LatestBattleReplays,
-  GetTags,
+  GetReplayTags,
   ReplayDrivenBy,
   ReplayUploadedBy,
 } from 'api';
@@ -50,7 +50,7 @@ export default {
     state.tagOptions = payload;
   }),
   getTagOptions: thunk(async actions => {
-    const get = await GetTags();
+    const get = await GetReplayTags();
     if (get.ok) {
       actions.setTagOptions(get.data);
     }

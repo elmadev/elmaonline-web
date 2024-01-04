@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk } from 'easy-peasy';
-import { ReplaysByLevelIndex, GetTags } from 'api';
+import { ReplaysByLevelIndex, GetReplayTags } from 'api';
 
 export default {
   loading: false,
@@ -24,7 +24,7 @@ export default {
     state.tagOptions = payload;
   }),
   getTagOptions: thunk(async actions => {
-    const get = await GetTags();
+    const get = await GetReplayTags();
     if (get.ok) {
       actions.setTagOptions(get.data);
     }
