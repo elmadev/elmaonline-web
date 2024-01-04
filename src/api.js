@@ -499,6 +499,7 @@ export const DeleteFile = data =>
 
 // tags
 export const GetReplayTags = () => api.get(`tag?type=replay`);
+export const GetLevelPackTags = () => api.get(`tag?type=levelpack`);
 export const GetTags = () => api.get(`tag`);
 export const CreateTag = data => api.post(`tag`, data);
 export const UpdateTag = (TagIndex, data) => api.put(`tag/${TagIndex}`, data);

@@ -20,6 +20,7 @@ import {
   UpdateLevelPack,
   LevelPackRecords,
   LevelPackRecordsFilter,
+  GetLevelPackTags,
 } from 'api';
 
 export default {
@@ -323,5 +324,15 @@ export default {
   kuskisFilter: [],
   setKuskisFilter: action((state, payload) => {
     state.kuskisFilter = payload;
+  }),
+  tagOptions: [],
+  setTagOptions: action((state, payload) => {
+    state.tagOptions = payload;
+  }),
+  getTagOptions: thunk(async actions => {
+    const get = await GetLevelPackTags();
+    if (get.ok) {
+      actions.setTagOptions(get.data);
+    }
   }),
 };

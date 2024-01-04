@@ -1,22 +1,32 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Chip, Box, Typography } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import FormResponse from 'components/FormResponse';
 import Field from 'components/Field';
+import { xor } from 'lodash';
 
 // form to update level pack long name, desc.
 const UpdateForm = () => {
-  const { updateLevelPack } = useStoreActions(store => store.LevelPack);
-  const { levelPackInfo } = useStoreState(store => store.LevelPack);
+  const { updateLevelPack, getTagOptions } = useStoreActions(
+    store => store.LevelPack,
+  );
+  const { levelPackInfo, tagOptions } = useStoreState(store => store.LevelPack);
 
   const [LevelPackLongName, setLongName] = useState(
     levelPackInfo.LevelPackLongName,
   );
 
   const [LevelPackDesc, setDesc] = useState(levelPackInfo.LevelPackDesc);
+  const [Tags, setTags] = useState(
+    levelPackInfo.Tags?.map(tag => tag.TagIndex) || [],
+  );
 
   const [response, setResponse] = useState({});
+
+  useEffect(() => {
+    getTagOptions();
+  }, []);
 
   useEffect(() => {
     if (levelPackInfo?.LevelPackLongName && !LevelPackLongName) {
@@ -24,6 +34,10 @@ const UpdateForm = () => {
     }
     if (levelPackInfo?.LevelPackDesc && !LevelPackDesc) {
       setDesc(levelPackInfo.LevelPackDesc);
+    }
+
+    if (levelPackInfo?.Tags && !Tags.length) {
+      setTags(levelPackInfo.Tags.map(tag => tag.TagIndex));
     }
   }, [levelPackInfo]);
 
@@ -38,6 +52,7 @@ const UpdateForm = () => {
       LevelPackIndex: levelPackInfo.LevelPackIndex,
       LevelPackLongName,
       LevelPackDesc,
+      Tags,
     }).then(errors => {
       setResponse({
         done: true,
@@ -58,6 +73,32 @@ const UpdateForm = () => {
         value={LevelPackDesc}
         onChange={e => setDesc(e.target.value)}
       />
+      <Box padding={2}>
+        <Typography color="textSecondary">Tags</Typography>
+        {tagOptions.map(option => {
+          if (Tags.includes(option.TagIndex)) {
+            return (
+              <Chip
+                key={option.TagIndex}
+                label={option.Name}
+                onDelete={() => setTags(() => xor(Tags, [option.TagIndex]))}
+                color="primary"
+                style={{ margin: 4 }}
+              />
+            );
+          } else {
+            return (
+              <Chip
+                key={option.TagIndex}
+                label={option.Name}
+                onClick={() => setTags(() => xor(Tags, [option.TagIndex]))}
+                style={{ margin: 4 }}
+              />
+            );
+          }
+        })}
+      </Box>
+
       <Button type="submit" variant="contained" style={{ margin: '10px 0' }}>
         Update
       </Button>
