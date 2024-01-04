@@ -31,6 +31,7 @@ import Recplayer from 'components/Recplayer';
 import RecList from 'features/RecList';
 import Header from 'components/Header';
 import Loading from 'components/Loading';
+import Tags from 'components/Tags';
 import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
 import LocalTime from 'components/LocalTime';
@@ -238,6 +239,7 @@ const Level = ({ LevelId }) => {
                     </Download>
                     <LevelFullName>{level.LongName}</LevelFullName>
                     <br />
+                    <Tags tags={level.Tags.map(tag => tag.Name)} />
                     <div>{`Level ID: ${LevelIndex}`}</div>
                     <div>
                       {pluralize(level.Apples, 'apple')},{' '}
