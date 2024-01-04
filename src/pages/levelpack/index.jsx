@@ -129,7 +129,9 @@ const LevelPack = ({ name, tab, ...props }) => {
             <DescriptionStyle>
               {levelPackInfo.LevelPackDesc} - Maintainer:{' '}
               <Kuski kuskiData={levelPackInfo.KuskiData} />
-              <Tags tags={levelPackInfo.Tags.map(tag => tag.Name)} />
+              {levelPackInfo.Tags && (
+                <Tags tags={levelPackInfo.Tags.map(tag => tag.Name)} />
+              )}
             </DescriptionStyle>
           </div>
           {['record-history', 'replays', 'admin'].indexOf(tab) === -1 && (
