@@ -34,6 +34,7 @@ import Loading from 'components/Loading';
 import Tags from 'components/Tags';
 import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
+import UpdateForm from 'pages/Level/UpdateForm';
 import LocalTime from 'components/LocalTime';
 import { useNavigate } from '@reach/router';
 import config from 'config';
@@ -41,7 +42,7 @@ import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
 import LevelInfoLevelStats from './LevelInfoLevelStats';
-import { nickId } from 'utils/nick';
+import { nickId, mod } from 'utils/nick';
 import { pluralize } from 'utils/misc';
 import LeaderHistory from 'components/LeaderHistory';
 import {
@@ -91,6 +92,8 @@ const Level = ({ LevelId }) => {
     getPersonalLeaderHistory,
     getLeaderHistory,
   } = useStoreActions(actions => actions.Level);
+
+  const { userid } = useStoreState(state => state.Login);
 
   useEffect(() => {
     getBesttimes({ levelId: LevelIndex, limit: 10000, eolOnly: 0 });
@@ -266,10 +269,22 @@ const Level = ({ LevelId }) => {
                       </div>
                     )}
                     <br />
-                    <Tags tags={level.Tags.map(tag => tag.Name)} />
+                    {level.Tags && (
+                      <Tags tags={level.Tags.map(tag => tag.Name)} />
+                    )}
                   </LevelDescription>
                 </AccordionDetails>
               </Accordion>
+              {(userid === level.UploadedBy || mod() === 1) && (
+                <Accordion>
+                  <AccordionSummary expandIcon={<ExpandMore />}>
+                    <Header h3>Edit tags</Header>
+                  </AccordionSummary>
+                  <AccordionDetails style={{ flexDirection: 'column' }}>
+                    <UpdateForm />
+                  </AccordionDetails>
+                </Accordion>
+              )}
               <Accordion defaultExpanded>
                 <AccordionSummary expandIcon={<ExpandMore />}>
                   <Header h3>Play stats</Header>

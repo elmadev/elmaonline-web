@@ -455,6 +455,8 @@ export const LevelTimeStats = ({ LevelIndex, from, to }) =>
   api.get(`level/timestats/${LevelIndex}`, { from, to });
 export const UpdateLevel = data =>
   api.post(`level/${data.LevelIndex}`, data.update);
+export const UpdateLevelTags = data =>
+  api.post(`level/${data.LevelIndex}/tags`, data.tags);
 
 // ranking
 export const PersonalRanking = KuskiIndex =>
@@ -499,6 +501,7 @@ export const DeleteFile = data =>
 
 // tags
 export const GetReplayTags = () => api.get(`tag?type=replay`);
+export const GetLevelTags = () => api.get(`tag?type=level`);
 export const GetLevelPackTags = () => api.get(`tag?type=levelpack`);
 export const GetTags = () => api.get(`tag`);
 export const CreateTag = data => api.post(`tag`, data);
