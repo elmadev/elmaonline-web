@@ -114,7 +114,7 @@ const Cups = props => {
               {eventTab === 'results' && (
                 <CupResults
                   CupIndex={event.CupIndex}
-                  ShortName={cup.ShortName}
+                  cup={cup}
                   eventNo={eventIndex + 1}
                   results={event.CupTimes}
                 />
