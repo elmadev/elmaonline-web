@@ -179,7 +179,7 @@ const Dashboard = props => {
             {events[lastEvent] && (
               <CupResults
                 CupIndex={events[lastEvent].CupIndex}
-                ShortName={cup.ShortName}
+                cup={cup}
                 eventNo={lastEvent + 1}
                 results={events[lastEvent].CupTimes.slice(0, 5)}
               />

@@ -13,7 +13,7 @@ import { downloadWithAuth } from 'utils/misc';
 
 const CupResults = props => {
   const navigate = useNavigate();
-  const { results, ShortName, eventNo, CupIndex } = props;
+  const { results, cup, eventNo, CupIndex } = props;
 
   const goToReplay = (index, filename) => {
     navigate(`/r/c-${index}/${filename}`);
@@ -34,17 +34,26 @@ const CupResults = props => {
           <ListRow key={r.KuskiIndex}>
             <ListCell>{no + 1}.</ListCell>
             <ListCell>
-              <Kuski kuskiData={r.KuskiData} team flag />
+              {cup.TeamPoints ? (
+                <Kuski
+                  kuskiData={{
+                    Country: r.KuskiData.Country,
+                    Kuski: r.KuskiData.Kuski,
+                    TeamData: r.TeamData,
+                  }}
+                  team
+                  flag
+                />
+              ) : (
+                <Kuski kuskiData={r.KuskiData} team flag />
+              )}
             </ListCell>
             <ListCell>
               {r.Replay || r.UUID ? (
                 <a
-                  href={`${config.dlUrl}cupreplay/${
-                    r.CupTimeIndex
-                  }/${ShortName}${zeroPad(
-                    eventNo,
-                    2,
-                  )}${r.KuskiData.Kuski.substring(0, 6)}`}
+                  href={`${config.dlUrl}cupreplay/${r.CupTimeIndex}/${
+                    cup.ShortName
+                  }${zeroPad(eventNo, 2)}${r.KuskiData.Kuski.substring(0, 6)}`}
                   onClick={e => e.stopPropagation()}
                 >
                   <Time time={r.Time} apples={-1} />
@@ -56,7 +65,7 @@ const CupResults = props => {
                 onClick={() => {
                   goToReplay(
                     r.CupTimeIndex,
-                    `${ShortName}${zeroPad(
+                    `${cup.ShortName}${zeroPad(
                       eventNo,
                       2,
                     )}${r.KuskiData.Kuski.substring(0, 6)}`,
@@ -77,8 +86,8 @@ const CupResults = props => {
           <Dl
             onClick={() =>
               downloadWithAuth(
-                `eventrecs/${CupIndex}/${ShortName}${zeroPad(eventNo, 2)}`,
-                `${ShortName}${zeroPad(eventNo, 2)}.zip`,
+                `eventrecs/${CupIndex}/${cup.ShortName}${zeroPad(eventNo, 2)}`,
+                `${cup.ShortName}${zeroPad(eventNo, 2)}.zip`,
                 'application/zip',
               )
             }
