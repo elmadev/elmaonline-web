@@ -457,6 +457,36 @@ export const UpdateLevel = data =>
   api.post(`level/${data.LevelIndex}`, data.update);
 export const UpdateLevelTags = data =>
   api.post(`level/${data.LevelIndex}/tags`, data.tags);
+export const Levels = ({
+  page,
+  pageSize,
+  tags,
+  sortBy,
+  order,
+  levelPack,
+  excludedTags,
+  addedBy,
+  finished,
+  battled,
+  finishedBy,
+  q,
+}) => {
+  return api.get(`level`, {
+    page,
+    pageSize,
+    tags,
+    sortBy,
+    order,
+    levelPack,
+    excludedTags,
+    addedBy,
+    finished,
+    battled,
+    finishedBy,
+    q,
+  });
+};
+export const GetLevelKuskis = data => api.get(`level/kuskis`);
 
 // ranking
 export const PersonalRanking = KuskiIndex =>

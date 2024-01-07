@@ -88,6 +88,7 @@ const Routes = () => {
           <Levels path="levels/collections" tab="collections" />
           <Levels path="levels/detailed" tab="" detailed={1} />
           <Levels path="levels/recent-records" tab="recent-records" />
+          <Levels path="levels/search" tab="search" />
           <LevelsAdd path="levels/add" />
           <LevelsAddCollection path="levels/collections/add" />
           <LevelpackCollection path="levels/collections/:name" />
