@@ -108,6 +108,7 @@ const Cups = props => {
               path="rules"
               description={cup.Description}
               owner={admins(cup)}
+              cup={cup}
               updateDesc={newDesc => {
                 update({
                   CupGroupIndex: cup.CupGroupIndex,

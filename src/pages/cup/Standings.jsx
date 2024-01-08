@@ -7,7 +7,7 @@ import Header from 'components/Header';
 import Kuski from 'components/Kuski';
 import FieldBoolean from 'components/FieldBoolean';
 import { Row } from 'components/Containers';
-import { calculateStandings } from 'utils/cups';
+import { calculateStandings, pts } from 'utils/cups';
 import Flag from 'components/Flag';
 import { Paper, Content } from 'components/Paper';
 import { AddCircleOutlineRounded } from '@material-ui/icons';
@@ -62,9 +62,7 @@ const Standings = props => {
                     <ListCell>
                       <Kuski kuskiData={r.KuskiData} team flag />
                     </ListCell>
-                    <ListCell right>
-                      {r.Points} point{r.Points > 1 ? 's' : ''}
-                    </ListCell>
+                    <ListCell right>{pts(r.Points)}</ListCell>
                     <ListCell width={20} right>
                       <IconButton
                         aria-label="details"
@@ -96,9 +94,7 @@ const Standings = props => {
                   <ListRow key={r.Team}>
                     <ListCell>{no + 1}.</ListCell>
                     <ListCell>{r.Team}</ListCell>
-                    <ListCell right>
-                      {r.Points} point{r.Points > 1 ? 's' : ''}
-                    </ListCell>
+                    <ListCell right>{pts(r.Points)}</ListCell>
                   </ListRow>
                 ))}
               </DerpTable>
@@ -121,9 +117,7 @@ const Standings = props => {
                         <Flag nationality={r.Country} /> {r.Country}
                       </span>
                     </ListCell>
-                    <ListCell right>
-                      {r.Points} point{r.Points > 1 ? 's' : ''}
-                    </ListCell>
+                    <ListCell right>{pts(r.Points)}</ListCell>
                   </ListRow>
                 ))}
               </DerpTable>

@@ -66,6 +66,59 @@ export const points = [
   1,
 ];
 
+export const pointsSystem2 = [
+  100,
+  85,
+  75,
+  70,
+  65,
+  60,
+  56,
+  52,
+  49,
+  46,
+  45,
+  44,
+  43,
+  42,
+  41,
+  40,
+  39,
+  38,
+  37,
+  36,
+  35,
+  34,
+  33,
+  32,
+  31,
+  30,
+  29,
+  28,
+  27,
+  26,
+  25,
+  24,
+  23,
+  22,
+  21,
+  20,
+  19,
+  18,
+  17,
+  16,
+  15,
+  14,
+  13,
+  12,
+  11,
+  10,
+  9,
+  8,
+  7,
+  6,
+];
+
 export const mopoPoints = [
   100,
   80,
@@ -323,4 +376,12 @@ export const getPrivateCupRecUri = (
     levelNumber,
     2,
   )}${Kuski.substring(0, 6)}/${Code}`;
+};
+
+export const pts = points => {
+  const p = points / 10;
+  if (p === 1) {
+    return '1 point';
+  }
+  return `${p} points`;
 };

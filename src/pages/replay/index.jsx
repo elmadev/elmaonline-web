@@ -44,6 +44,7 @@ import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import { MergeContainer } from 'components/RecListItem';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Row, Column } from 'components/Containers';
+import { pts } from 'utils/cups';
 
 const getLink = replay => {
   let link = '';
@@ -430,9 +431,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
                         >
                           <Time apples={-1} time={t.Time} />
                         </ListCell>
-                        <ListCell>
-                          {t.Points} point{t.Points > 1 ? 's' : ''}
-                        </ListCell>
+                        <ListCell>{pts(t.Points)}</ListCell>
                         {(isMobile || isHover === index) && (
                           <MergeContainer
                             title={
