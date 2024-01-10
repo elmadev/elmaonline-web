@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Grid, Checkbox, Button, TextField } from '@material-ui/core';
 import Header from 'components/Header';
 import DerpTable from 'components/Table/DerpTable';
-import { calculateStandings } from 'utils/cups';
+import { calculateStandings, pts } from 'utils/cups';
 import CupResults from 'components/CupResults';
 import Dropzone from 'components/Dropzone';
 import Time from 'components/Time';
@@ -202,9 +202,7 @@ const Dashboard = props => {
                     <ListCell>
                       <Kuski kuskiData={r.KuskiData} team flag />
                     </ListCell>
-                    <ListCell right>
-                      {r.Points} point{r.Points > 1 ? 's' : ''}
-                    </ListCell>
+                    <ListCell right>{pts(r.Points)}</ListCell>
                   </ListRow>
                 ))}
               </DerpTable>

@@ -7,10 +7,10 @@ import { Paper } from 'components/Paper';
 import DerpTable from 'components/Table/DerpTable';
 import Header from 'components/Header';
 import { ListRow, ListCell } from 'components/List';
-import { points } from 'utils/cups';
+import { points, pointsSystem2, pts } from 'utils/cups';
 
 const RulesInfo = props => {
-  const { description, owner, updateDesc } = props;
+  const { description, owner, updateDesc, cup } = props;
   const [edit, openEdit] = useState(false);
   const [editDesc, setEditDesc] = useState('');
 
@@ -18,6 +18,8 @@ const RulesInfo = props => {
     openEdit(false);
     updateDesc(editDesc);
   };
+
+  const ptsSystem = cup.PointSystem === 1 ? pointsSystem2 : points;
 
   return (
     <Container>
@@ -96,19 +98,30 @@ const RulesInfo = props => {
           </Paper>
           <Paper padding top>
             <Header h2>Points awarded</Header>
-            <DerpTable headers={['#', 'Points']} length={points.length}>
-              {points.map((p, no) => (
+            <DerpTable headers={['#', 'Points']} length={ptsSystem.length}>
+              {ptsSystem.map((p, no) => (
                 <ListRow key={p}>
                   <ListCell>{no + 1}.</ListCell>
-                  <ListCell right>
-                    {p} point{p > 1 ? 's' : ''}
-                  </ListCell>
+                  <ListCell right>{pts(p * 10)}</ListCell>
                 </ListRow>
               ))}
-              <ListRow hover key="51">
-                <ListCell>51...</ListCell>
-                <ListCell right>1 point</ListCell>
-              </ListRow>
+              {cup.PointSystem === 1 ? (
+                <>
+                  <ListRow hover key="51">
+                    <ListCell>51...</ListCell>
+                    <ListCell right>above minus 0.1 points</ListCell>
+                  </ListRow>
+                  <ListRow hover key="100">
+                    <ListCell>100...</ListCell>
+                    <ListCell right>1 point</ListCell>
+                  </ListRow>
+                </>
+              ) : (
+                <ListRow hover key="51">
+                  <ListCell>51...</ListCell>
+                  <ListCell right>1 point</ListCell>
+                </ListRow>
+              )}
             </DerpTable>
           </Paper>
         </Grid>

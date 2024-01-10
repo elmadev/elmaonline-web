@@ -10,6 +10,7 @@ import { PlayArrow } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
 import config from 'config';
 import { downloadWithAuth } from 'utils/misc';
+import { pts } from 'utils/cups';
 
 const CupResults = props => {
   const navigate = useNavigate();
@@ -75,9 +76,7 @@ const CupResults = props => {
                 <PlayArrow />
               </Button>
             </ListCell>
-            <ListCell right>
-              {r.Points} point{r.Points > 1 ? 's' : ''}
-            </ListCell>
+            <ListCell right>{pts(r.Points)}</ListCell>
           </ListRow>
         ))}
       </DerpTable>
