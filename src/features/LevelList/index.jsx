@@ -71,6 +71,12 @@ export default function LevelList({
     getLevels(buildSearchQueryParams());
   };
 
+  const handleSearchKeyPress = event => {
+    if (event.key === 'Enter') {
+      getLevels(buildSearchQueryParams());
+    }
+  };
+
   const updatePage = pageNo => {
     setPage(pageNo);
   };
@@ -125,6 +131,7 @@ export default function LevelList({
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               onBlur={handleSearchBlur}
+              onKeyDown={handleSearchKeyPress}
             />
 
             <Filter
