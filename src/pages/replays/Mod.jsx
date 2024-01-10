@@ -10,7 +10,7 @@ import FieldBoolean from 'components/FieldBoolean';
 import { Button } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
-const initialForm = { Name: '', Hidden: false };
+const initialForm = { Name: '', Hidden: false, Type: '' };
 
 export default function Mod() {
   const [form, setForm] = useState(initialForm);
@@ -49,6 +49,7 @@ export default function Mod() {
               <ListCell width={100}>TagIndex</ListCell>
               <ListCell width={300}>Name</ListCell>
               <ListCell width={100}>Hidden</ListCell>
+              <ListCell width={100}>Type</ListCell>
               <ListCell>Edit</ListCell>
               <ListCell>Delete</ListCell>
             </ListHeader>
@@ -57,6 +58,7 @@ export default function Mod() {
                 <ListCell>{tag.TagIndex}</ListCell>
                 <ListCell>{tag.Name}</ListCell>
                 <ListCell>{tag.Hidden ? 'Yes' : 'No'}</ListCell>
+                <ListCell>{tag.Type}</ListCell>
                 <ListCell>
                   <Edit onClick={() => setForm(tag)} />
                 </ListCell>
@@ -76,6 +78,12 @@ export default function Mod() {
               label="Name"
               value={form.Name}
               onChange={ev => setForm({ ...form, Name: ev.target.value })}
+            />
+            <Field
+              label="Type (level, levelpack or replay)"
+              value={form.Type}
+              placeholder=""
+              onChange={ev => setForm({ ...form, Type: ev.target.value })}
             />
             <FieldBoolean
               label="Hidden"

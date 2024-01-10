@@ -35,6 +35,7 @@ import Levels from 'pages/levels/store';
 import News from 'features/News/store';
 import FileUpload from 'pages/upload/store';
 import ReplayList from 'features/ReplayList/store';
+import LevelList from 'features/LevelList/store';
 import ReplaySettings from 'features/ReplaySettings/store';
 import Notifications from 'features/Notifications/store';
 import ReplayCommentArchive from 'features/ReplayCommentArchive/store';
@@ -58,6 +59,7 @@ export default {
   Search,
   Kuski,
   Help,
+  LevelList,
   LevelsAdd,
   LevelsAddCollection,
   LevelpackCollection,

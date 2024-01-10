@@ -48,6 +48,9 @@ export const KuskiAutoComplete = ({
   onChange,
   selected,
   multiple = true,
+  label = 'Kuski',
+  variant = 'outlined',
+  disabled = false,
 }) => {
   const acClasses = useStyles();
   return (
@@ -74,9 +77,9 @@ export const KuskiAutoComplete = ({
             <TextField
               // eslint-disable-next-line react/jsx-props-no-spreading
               {...params}
-              label="Kuski"
+              label={label}
               placeholder="Name(s)"
-              variant="outlined"
+              variant={variant}
             />
           )}
           renderOption={option => <Kuski kuskiData={option} flag team noLink />}
@@ -84,6 +87,7 @@ export const KuskiAutoComplete = ({
           ListboxComponent={ListboxComponent}
           renderGroup={renderGroup}
           classes={acClasses}
+          disabled={disabled}
         />
       ) : (
         <CircularProgress />

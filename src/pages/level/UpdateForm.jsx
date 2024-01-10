@@ -3,24 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { Button, Chip, Box, Typography } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import FormResponse from 'components/FormResponse';
-import Field from 'components/Field';
 import { xor } from 'lodash';
 
-// form to update level pack long name, desc.
 const UpdateForm = () => {
-  const { updateLevelPack, getTagOptions } = useStoreActions(
-    store => store.LevelPack,
+  const { updateLevelTags, getTagOptions } = useStoreActions(
+    store => store.Level,
   );
-  const { levelPackInfo, tagOptions } = useStoreState(store => store.LevelPack);
+  const { level, tagOptions } = useStoreState(store => store.Level);
 
-  const [LevelPackLongName, setLongName] = useState(
-    levelPackInfo.LevelPackLongName,
-  );
-
-  const [LevelPackDesc, setDesc] = useState(levelPackInfo.LevelPackDesc);
-  const [Tags, setTags] = useState(
-    levelPackInfo.Tags?.map(tag => tag.TagIndex) || [],
-  );
+  const [Tags, setTags] = useState(level.Tags?.map(tag => tag.TagIndex) || []);
 
   const [response, setResponse] = useState({});
 
@@ -29,17 +20,10 @@ const UpdateForm = () => {
   }, []);
 
   useEffect(() => {
-    if (levelPackInfo?.LevelPackLongName && !LevelPackLongName) {
-      setLongName(levelPackInfo.LevelPackLongName);
+    if (level?.Tags && !Tags.length) {
+      setTags(level.Tags.map(tag => tag.TagIndex));
     }
-    if (levelPackInfo?.LevelPackDesc && !LevelPackDesc) {
-      setDesc(levelPackInfo.LevelPackDesc);
-    }
-
-    if (levelPackInfo?.Tags && !Tags.length) {
-      setTags(levelPackInfo.Tags.map(tag => tag.TagIndex));
-    }
-  }, [levelPackInfo]);
+  }, [level]);
 
   const { errors, done } = response;
 
@@ -48,11 +32,9 @@ const UpdateForm = () => {
 
     setResponse({});
 
-    updateLevelPack({
-      LevelPackIndex: levelPackInfo.LevelPackIndex,
-      LevelPackLongName,
-      LevelPackDesc,
-      Tags,
+    updateLevelTags({
+      LevelIndex: level?.LevelIndex,
+      tags: { Tags },
     }).then(errors => {
       setResponse({
         done: true,
@@ -63,16 +45,6 @@ const UpdateForm = () => {
 
   return (
     <form onSubmit={submit} style={{ display: 'block', width: '100%' }}>
-      <Field
-        label="Level pack long name"
-        value={LevelPackLongName}
-        onChange={e => setLongName(e.target.value)}
-      />
-      <Field
-        label="Level pack description"
-        value={LevelPackDesc}
-        onChange={e => setDesc(e.target.value)}
-      />
       <Box padding={2}>
         <Typography color="textSecondary">Tags</Typography>
         {tagOptions.map(option => {
@@ -107,8 +79,8 @@ const UpdateForm = () => {
           <br />
           <br />
           <FormResponse
-            msgs={errors.length ? errors : ['Level Pack Updated.']}
-            isError={errors.length > 0}
+            msgs={errors?.length ? errors : ['Level tags updated.']}
+            isError={errors?.length > 0}
           />
         </>
       )}

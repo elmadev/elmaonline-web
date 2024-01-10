@@ -1,6 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { action, thunk } from 'easy-peasy';
-import { InsertReplay, UpdateReplay, UserInfoByIdentifier, GetTags } from 'api';
+import {
+  InsertReplay,
+  UpdateReplay,
+  UserInfoByIdentifier,
+  GetReplayTags,
+} from 'api';
 
 export default {
   inserted: {},
@@ -45,7 +50,7 @@ export default {
     state.tagOptions = payload;
   }),
   getTagOptions: thunk(async actions => {
-    const get = await GetTags();
+    const get = await GetReplayTags();
     if (get.ok) {
       const tagOptions = get.data.filter(tag => !tag.Hidden);
       actions.setTagOptions(tagOptions);

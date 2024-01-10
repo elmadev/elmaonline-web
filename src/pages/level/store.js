@@ -8,6 +8,8 @@ import {
   LevelTimeStats,
   LeaderHistory,
   LevelPacksByLevel,
+  GetLevelTags,
+  UpdateLevelTags,
 } from 'api';
 
 export default {
@@ -136,6 +138,25 @@ export default {
         data: leaderHistory.data,
         id: payload.LevelIndex,
       });
+    }
+  }),
+  tagOptions: [],
+  setTagOptions: action((state, payload) => {
+    state.tagOptions = payload;
+  }),
+  getTagOptions: thunk(async actions => {
+    const get = await GetLevelTags();
+    if (get.ok) {
+      actions.setTagOptions(get.data);
+    }
+  }),
+  updateLevelTags: thunk(async (actions, payload) => {
+    const response = await UpdateLevelTags(payload);
+
+    if (response.ok) {
+      actions.setLevel(response.data);
+    } else {
+      return ['Server error.'];
     }
   }),
 };

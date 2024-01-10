@@ -455,6 +455,38 @@ export const LevelTimeStats = ({ LevelIndex, from, to }) =>
   api.get(`level/timestats/${LevelIndex}`, { from, to });
 export const UpdateLevel = data =>
   api.post(`level/${data.LevelIndex}`, data.update);
+export const UpdateLevelTags = data =>
+  api.post(`level/${data.LevelIndex}/tags`, data.tags);
+export const Levels = ({
+  page,
+  pageSize,
+  tags,
+  sortBy,
+  order,
+  levelPack,
+  excludedTags,
+  addedBy,
+  finished,
+  battled,
+  finishedBy,
+  q,
+}) => {
+  return api.get(`level`, {
+    page,
+    pageSize,
+    tags,
+    sortBy,
+    order,
+    levelPack,
+    excludedTags,
+    addedBy,
+    finished,
+    battled,
+    finishedBy,
+    q,
+  });
+};
+export const GetLevelKuskis = data => api.get(`level/kuskis`);
 
 // ranking
 export const PersonalRanking = KuskiIndex =>
@@ -498,6 +530,9 @@ export const DeleteFile = data =>
   api.delete(`upload/${data.index}/${data.uuid}/${data.filename}`);
 
 // tags
+export const GetReplayTags = () => api.get(`tag?type=replay`);
+export const GetLevelTags = () => api.get(`tag?type=level`);
+export const GetLevelPackTags = () => api.get(`tag?type=levelpack`);
 export const GetTags = () => api.get(`tag`);
 export const CreateTag = data => api.post(`tag`, data);
 export const UpdateTag = (TagIndex, data) => api.put(`tag/${TagIndex}`, data);

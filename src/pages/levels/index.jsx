@@ -14,6 +14,7 @@ import LevelpacksDetailed from './LevelpacksDetailed';
 import Controls from './Controls';
 import FavStar from './FavStar';
 import RecordsCard from './RecordsCard';
+import LevelList from '../../features/LevelList';
 
 const getColumnCount = window_width => {
   if (window_width > 1300) {
@@ -95,115 +96,115 @@ const Levels = ({ tab, detailed }) => {
 
   return (
     <Layout edge t="Levels">
-      <Container>
-        <Tabs
-          variant="scrollable"
-          scrollButtons="auto"
-          value={tab}
-          onChange={(e, value) =>
-            navigate(['/levels', value].filter(Boolean).join('/'))
-          }
-        >
-          <Tab label="Packs" value="" />
-          <Tab label="Collections" value="collections" />
-          <Tab label="Recent Records" value="recent-records" />
-        </Tabs>
-        {!tab && (
-          <>
-            <Controls detailed={detailed} sort={sort} />
-            {detailed && (
-              <LevelpacksDetailed
-                levelpacksSorted={levelpacksSorted}
-                stats={stats}
-                addFav={addFav}
-                removeFav={removeFav}
-                loggedIn={loggedIn}
-              />
-            )}
-            {!detailed && (
-              <>
-                {levelpacksSorted.length > 0 && (
-                  <Grid
-                    ref={GridRef}
-                    columnCount={columnCount}
-                    columnWidth={i => (listWidth - 20) / columnCount}
-                    height={listHeight}
-                    rowCount={
-                      Math.floor(levelpacksSorted.length / columnCount) + 1
+      <Tabs
+        variant="scrollable"
+        scrollButtons="auto"
+        value={tab}
+        onChange={(e, value) =>
+          navigate(['/levels', value].filter(Boolean).join('/'))
+        }
+      >
+        <Tab label="Packs" value="" />
+        <Tab label="Collections" value="collections" />
+        <Tab label="Recent Records" value="recent-records" />
+        <Tab label="Search" value="search" />
+      </Tabs>
+      {!tab && (
+        <>
+          <Controls detailed={detailed} sort={sort} />
+          {detailed && (
+            <LevelpacksDetailed
+              levelpacksSorted={levelpacksSorted}
+              stats={stats}
+              addFav={addFav}
+              removeFav={removeFav}
+              loggedIn={loggedIn}
+            />
+          )}
+          {!detailed && (
+            <>
+              {levelpacksSorted.length > 0 && (
+                <Grid
+                  ref={GridRef}
+                  columnCount={columnCount}
+                  columnWidth={i => (listWidth - 20) / columnCount}
+                  height={listHeight}
+                  rowCount={
+                    Math.floor(levelpacksSorted.length / columnCount) + 1
+                  }
+                  rowHeight={i => 100}
+                  width={listWidth}
+                >
+                  {({ columnIndex, rowIndex, style }) => {
+                    const index =
+                      rowIndex * columnCount + (columnIndex + 1) - 1;
+                    const p = levelpacksSorted[index];
+                    if (!p) {
+                      return <GridItem2 full></GridItem2>;
                     }
-                    rowHeight={i => 100}
-                    width={listWidth}
-                  >
-                    {({ columnIndex, rowIndex, style }) => {
-                      const index =
-                        rowIndex * columnCount + (columnIndex + 1) - 1;
-                      const p = levelpacksSorted[index];
-                      if (!p) {
-                        return <GridItem2 full></GridItem2>;
-                      }
-                      const s = stats[p.LevelPackIndex] ?? {};
+                    const s = stats[p.LevelPackIndex] ?? {};
 
-                      const widthPct = (s.NormalizedPopularity || 0) * 100;
-                      const avg = (s.AvgKuskiPerLevel || 0).toFixed(1);
-                      const count = s.LevelCountAll || 0;
+                    const widthPct = (s.NormalizedPopularity || 0) * 100;
+                    const avg = (s.AvgKuskiPerLevel || 0).toFixed(1);
+                    const count = s.LevelCountAll || 0;
 
-                      return (
-                        <div style={style} key={p.LevelPackIndex}>
-                          <GridItem2
-                            key={p.LevelPackIndex}
-                            to={`/levels/packs/${p.LevelPackName}`}
-                            name={p.LevelPackName}
-                            longname={p.LevelPackLongName}
-                            afterName={` (${count} levels)`}
-                            afterLongname={
-                              <Popularity2
-                                title={`Avg. number of kuskis played per level: ${avg}`}
-                                widthPct={widthPct}
-                                after={<span>{avg}</span>}
-                              />
-                            }
-                          >
-                            <StarCon>
-                              <FavStar
-                                pack={p}
-                                {...{ loggedIn, addFav, removeFav }}
-                              />
-                            </StarCon>
-                          </GridItem2>
-                        </div>
-                      );
-                    }}
-                  </Grid>
-                )}
-              </>
-            )}
-            <Fab url="/levels/add" />
-          </>
-        )}
-        {tab === 'collections' && (
-          <>
-            {collections && (
-              <>
-                {collections.length > 0 &&
-                  collections.map(c => (
-                    <GridItem
-                      to={`/levels/collections/${c.CollectionName}`}
-                      name={c.CollectionName}
-                      longname={c.CollectionLongName}
-                      key={c.LevelPackCollectionIndex}
-                    />
-                  ))}
-              </>
-            )}
-            <Fab url="/levels/collections/add" />
-          </>
-        )}
-        {tab === 'recent-records' && (
-          <StyledRecentRecords>
-            <RecordsCard />
-          </StyledRecentRecords>
-        )}
-      </Container>
+                    return (
+                      <div style={style} key={p.LevelPackIndex}>
+                        <GridItem2
+                          key={p.LevelPackIndex}
+                          to={`/levels/packs/${p.LevelPackName}`}
+                          name={p.LevelPackName}
+                          longname={p.LevelPackLongName}
+                          afterName={` (${count} levels)`}
+                          afterLongname={
+                            <Popularity2
+                              title={`Avg. number of kuskis played per level: ${avg}`}
+                              widthPct={widthPct}
+                              after={<span>{avg}</span>}
+                            />
+                          }
+                        >
+                          <StarCon>
+                            <FavStar
+                              pack={p}
+                              {...{ loggedIn, addFav, removeFav }}
+                            />
+                          </StarCon>
+                        </GridItem2>
+                      </div>
+                    );
+                  }}
+                </Grid>
+              )}
+            </>
+          )}
+          <Fab url="/levels/add" />
+        </>
+      )}
+      {tab === 'collections' && (
+        <>
+          {collections && (
+            <>
+              {collections.length > 0 &&
+                collections.map(c => (
+                  <GridItem
+                    to={`/levels/collections/${c.CollectionName}`}
+                    name={c.CollectionName}
+                    longname={c.CollectionLongName}
+                    key={c.LevelPackCollectionIndex}
+                  />
+                ))}
+            </>
+          )}
+          <Fab url="/levels/collections/add" />
+        </>
+      )}
+      {tab === 'recent-records' && (
+        <StyledRecentRecords>
+          <RecordsCard />
+        </StyledRecentRecords>
+      )}
+      {tab === 'search' && <LevelList />}
     </Layout>
   );
 };
