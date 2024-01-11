@@ -11,7 +11,7 @@ const UpdateForm = () => {
   );
   const { level, tagOptions } = useStoreState(store => store.Level);
 
-  const [Tags, setTags] = useState(level.Tags?.map(tag => tag.TagIndex) || []);
+  const [tags, setTags] = useState(level.Tags?.map(tag => tag.TagIndex) || []);
 
   const [response, setResponse] = useState({});
 
@@ -20,7 +20,7 @@ const UpdateForm = () => {
   }, []);
 
   useEffect(() => {
-    if (level?.Tags && !Tags.length) {
+    if (level?.Tags) {
       setTags(level.Tags.map(tag => tag.TagIndex));
     }
   }, [level]);
@@ -34,7 +34,7 @@ const UpdateForm = () => {
 
     updateLevelTags({
       LevelIndex: level?.LevelIndex,
-      tags: { Tags },
+      tags: { Tags: tags },
     }).then(errors => {
       setResponse({
         done: true,
@@ -48,12 +48,12 @@ const UpdateForm = () => {
       <Box padding={2}>
         <Typography color="textSecondary">Tags</Typography>
         {tagOptions.map(option => {
-          if (Tags.includes(option.TagIndex)) {
+          if (tags.includes(option.TagIndex)) {
             return (
               <Chip
                 key={option.TagIndex}
                 label={option.Name}
-                onDelete={() => setTags(() => xor(Tags, [option.TagIndex]))}
+                onDelete={() => setTags(() => xor(tags, [option.TagIndex]))}
                 color="primary"
                 style={{ margin: 4 }}
               />
@@ -63,7 +63,7 @@ const UpdateForm = () => {
               <Chip
                 key={option.TagIndex}
                 label={option.Name}
-                onClick={() => setTags(() => xor(Tags, [option.TagIndex]))}
+                onClick={() => setTags(() => xor(tags, [option.TagIndex]))}
                 style={{ margin: 4 }}
               />
             );
