@@ -101,8 +101,8 @@ export default function LevelList({
 
   const columns = [
     'Added',
-    'Level',
-    'Name',
+    'Filename',
+    'Level name',
     'By',
     'Best time',
     'Battles',
@@ -252,16 +252,16 @@ export default function LevelList({
         </>
       )}
 
-      <ListContainer>
+      <ListContainerScrollable flex>
         <ListHeader>
-          <ListCell>Added</ListCell>
-          <ListCell>Name</ListCell>
-          <ListCell>Level</ListCell>
-          <ListCell>By</ListCell>
-          <ListCell>Best time</ListCell>
-          <ListCell>Battles</ListCell>
-          <ListCell>Apples</ListCell>
-          <ListCell>Kiilers</ListCell>
+          <ListCell width={170}>Added</ListCell>
+          <ListCell width={150}>Filename</ListCell>
+          <ListCell>Level name</ListCell>
+          <ListCell width={100}>By</ListCell>
+          <ListCell width={100}>Best time</ListCell>
+          <ListCell width={100}>Battles</ListCell>
+          <ListCell width={100}>Apples</ListCell>
+          <ListCell width={100}>Kiilers</ListCell>
 
           {!summary && (
             <>
@@ -281,13 +281,13 @@ export default function LevelList({
                   />
                 </ListCell>
               )}
-              {columns.indexOf('Level') !== -1 && (
-                <ListCell width={100}>
+              {columns.indexOf('Filename') !== -1 && (
+                <ListCell width={150}>
                   <Level LevelIndex={level.LevelIndex} LevelData={level} />
                 </ListCell>
               )}
-              {columns.indexOf('Name') !== -1 && (
-                <ListCell width={100}>{level.LongName}</ListCell>
+              {columns.indexOf('Level name') !== -1 && (
+                <ListCell>{level.LongName}</ListCell>
               )}
               {columns.indexOf('By') !== -1 && (
                 <ListCell width={100}>
@@ -316,14 +316,14 @@ export default function LevelList({
                 <ListCell>{level.Unlisted === 1 ? 'Yes' : ''}</ListCell>
               )}
               {columns.indexOf('Tags') !== -1 && (
-                <ListCell width={300}>
+                <ListCell>
                   <Tags tags={getTags(level)} />
                 </ListCell>
               )}
             </ListRow>
           );
         })}
-      </ListContainer>
+      </ListContainerScrollable>
 
       {!summary && (
         <Box p={2}>
@@ -364,6 +364,7 @@ const StickyContainer = styled.div`
   padding-left: 1rem;
   align-items: center;
   z-index: 10;
+  flex-wrap: wrap;
 `;
 
 const Filter = styled(Autocomplete)`
@@ -411,4 +412,9 @@ const KuskiFilter = styled.div`
   .MuiInput-underline:after {
     content: none;
   }
+`;
+
+const ListContainerScrollable = styled(ListContainer)`
+  overflow: auto;
+  width: 100%;
 `;
