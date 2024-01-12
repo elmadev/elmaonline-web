@@ -29,7 +29,7 @@ export default function LevelList({
 }) {
   const [selectedTags, setSelectedTags] = useState([]);
   const [excludedTags, setExcludedTags] = useState([]);
-  const [addedBy, setAddedBy] = useState(defaultAddedBy);
+  const [addedBy, setAddedBy] = useState(defaultAddedBy || null);
   const [selectedLevelpack, setSelectedLevelpack] = useState(levelPack);
   const [finished, setFinished] = useState('all');
   const [finishedBy, setFinishedBy] = useState(null);
@@ -91,7 +91,7 @@ export default function LevelList({
     tags: selectedTags.map(tag => tag.TagIndex),
     excludedTags: excludedTags.map(tag => tag.TagIndex),
     order: 'desc',
-    addedBy: addedBy?.KuskiIndex || undefined,
+    addedBy,
     finished,
     battled,
     finishedBy: finishedBy?.KuskiIndex || undefined,
@@ -190,19 +190,21 @@ export default function LevelList({
                 <TextField {...params} label="Levelpack" />
               )}
             />
-            <KuskiFilter>
-              <KuskiAutoComplete
-                list={kuskiOptions}
-                value={addedBy}
-                onChange={newValue => {
-                  setAddedBy(newValue);
-                  updatePage(0);
-                }}
-                multiple={false}
-                label="Added by"
-                variant="standard"
-              />
-            </KuskiFilter>
+            {!defaultAddedBy && (
+              <KuskiFilter>
+                <KuskiAutoComplete
+                  list={kuskiOptions}
+                  value={kuskiOptions.find(k => +k.KuskiIndex === +addedBy)}
+                  onChange={newValue => {
+                    setAddedBy(newValue?.KuskiIndex || null);
+                    updatePage(0);
+                  }}
+                  multiple={false}
+                  label="Added by"
+                  variant="standard"
+                />
+              </KuskiFilter>
+            )}
             <FormControl>
               <InputLabel id="battled">Battled</InputLabel>
               <SelectFilter

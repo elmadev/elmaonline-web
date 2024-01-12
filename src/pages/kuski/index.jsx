@@ -19,6 +19,7 @@ import Info from './Info';
 import Records from './Records';
 import Files from './Files';
 import { isEmpty } from 'lodash';
+import LevelList from '../../features/LevelList';
 
 const Kuski = ({ name, tab, recordSort, ...props }) => {
   const { getKuskiByName, setCollapse } = useStoreActions(state => state.Kuski);
@@ -72,6 +73,7 @@ const Kuski = ({ name, tab, recordSort, ...props }) => {
             <Tab label="Designed Battles" value="designed-battles" />
             <Tab label="Records" value="records" />
             <Tab label="Times" value="times" />
+            <Tab label="Levels Added" value="levels-added" />
             <Tab label="Replays Uploaded" value="replays-uploaded" />
             <Tab label="Replays Driven" value="replays-driven" />
             <Tab label="Info" value="info" />
@@ -95,6 +97,11 @@ const Kuski = ({ name, tab, recordSort, ...props }) => {
           )}
           {tab === 'records' && !isEmpty(kuski) && (
             <Records kuski={kuski} sort={recordSort} />
+          )}
+          {tab === 'levels-added' && !isEmpty(kuski) && (
+            <Width100>
+              <LevelList nonsticky defaultAddedBy={kuski.KuskiIndex} />
+            </Width100>
           )}
           {tab === 'replays-uploaded' && (
             <Width100>
