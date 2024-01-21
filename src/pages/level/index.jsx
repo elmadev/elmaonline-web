@@ -275,7 +275,7 @@ const Level = ({ LevelId }) => {
                   </LevelDescription>
                 </AccordionDetails>
               </Accordion>
-              {(userid === level.UploadedBy || mod() === 1) && (
+              {(parseInt(userid, 10) === level.AddedBy || mod() === 1) && (
                 <Accordion>
                   <AccordionSummary expandIcon={<ExpandMore />}>
                     <Header h3>Edit tags</Header>

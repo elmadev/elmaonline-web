@@ -13,9 +13,11 @@ const TagsContainer = styled.div`
 
 const Tags = ({ tags }) => (
   <TagsContainer>
-    {tags.map((tag, index) => {
-      return <Tag tag={tag} key={index} />;
-    })}
+    {tags
+      .sort((a, b) => a.localeCompare(b))
+      .map((tag, index) => {
+        return <Tag tag={tag} key={index} />;
+      })}
   </TagsContainer>
 );
 

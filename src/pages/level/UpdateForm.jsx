@@ -47,28 +47,30 @@ const UpdateForm = () => {
     <form onSubmit={submit} style={{ display: 'block', width: '100%' }}>
       <Box padding={2}>
         <Typography color="textSecondary">Tags</Typography>
-        {tagOptions.map(option => {
-          if (tags.includes(option.TagIndex)) {
-            return (
-              <Chip
-                key={option.TagIndex}
-                label={option.Name}
-                onDelete={() => setTags(() => xor(tags, [option.TagIndex]))}
-                color="primary"
-                style={{ margin: 4 }}
-              />
-            );
-          } else {
-            return (
-              <Chip
-                key={option.TagIndex}
-                label={option.Name}
-                onClick={() => setTags(() => xor(tags, [option.TagIndex]))}
-                style={{ margin: 4 }}
-              />
-            );
-          }
-        })}
+        {tagOptions
+          .filter(option => !option.Hidden)
+          .map(option => {
+            if (tags.includes(option.TagIndex)) {
+              return (
+                <Chip
+                  key={option.TagIndex}
+                  label={option.Name}
+                  onDelete={() => setTags(() => xor(tags, [option.TagIndex]))}
+                  color="primary"
+                  style={{ margin: 4 }}
+                />
+              );
+            } else {
+              return (
+                <Chip
+                  key={option.TagIndex}
+                  label={option.Name}
+                  onClick={() => setTags(() => xor(tags, [option.TagIndex]))}
+                  style={{ margin: 4 }}
+                />
+              );
+            }
+          })}
       </Box>
 
       <Button type="submit" variant="contained" style={{ margin: '10px 0' }}>
