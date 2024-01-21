@@ -4,14 +4,20 @@ import { Levels, GetLevelTags, GetLevelKuskis } from 'api';
 
 export default {
   levels: null,
+  loadingLevels: false,
+  setLoadingLevels: action((state, payload) => {
+    state.loadingLevels = payload;
+  }),
   setLevels: action((state, payload) => {
     state.levels = payload;
   }),
   getLevels: thunk(async (actions, payload) => {
+    actions.setLoadingLevels(true);
     const get = await Levels(payload);
     if (get.ok) {
       actions.setLevels(get.data);
     }
+    actions.setLoadingLevels(false);
   }),
 
   tagOptions: [],

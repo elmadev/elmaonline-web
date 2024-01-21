@@ -18,6 +18,7 @@ import Tags from 'components/Tags';
 import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
 import { KuskiAutoComplete } from 'components/AutoComplete';
+import Loading from 'components/Loading';
 
 export default function LevelList({
   defaultPage = 0,
@@ -37,7 +38,7 @@ export default function LevelList({
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(defaultPage);
   const [pageSize] = useState(defaultPageSize);
-  const { levels, tagOptions, kuskiOptions } = useStoreState(
+  const { levels, tagOptions, kuskiOptions, loadingLevels } = useStoreState(
     state => state.LevelList,
   );
   const { levelpacksSorted } = useStoreState(state => state.Levels);
@@ -271,60 +272,64 @@ export default function LevelList({
             </>
           )}
         </ListHeader>
-        {levels.rows.map(level => {
-          return (
-            <ListRow key={`${level.LevelIndex}`}>
-              {columns.indexOf('Added') !== -1 && (
-                <ListCell width={170}>
-                  <LocalTime
-                    date={level.Added}
-                    format="ddd D MMM YYYY HH:mm"
-                    parse="X"
-                  />
-                </ListCell>
-              )}
-              {columns.indexOf('Filename') !== -1 && (
-                <ListCell width={150}>
-                  <Level LevelIndex={level.LevelIndex} LevelData={level} />
-                </ListCell>
-              )}
-              {columns.indexOf('Level name') !== -1 && (
-                <ListCell>{level.LongName}</ListCell>
-              )}
-              {columns.indexOf('By') !== -1 && (
-                <ListCell width={100}>
-                  {level.KuskiData ? (
-                    <Kuski kuskiData={level.KuskiData} />
-                  ) : (
-                    <div>{level.AddedByText || 'Unknown'}</div>
-                  )}
-                </ListCell>
-              )}
-              {columns.indexOf('Best time') !== -1 && (
-                <ListCell width={100}>
-                  {level.Besttime ? <Time time={level.Besttime} /> : '-'}
-                </ListCell>
-              )}
-              {columns.indexOf('Battles') !== -1 && (
-                <ListCell width={100}>{level.BattleCount || '-'}</ListCell>
-              )}
-              {columns.indexOf('Apples') !== -1 && (
-                <ListCell width={100}>{level.Apples}</ListCell>
-              )}
-              {columns.indexOf('Killers') !== -1 && (
-                <ListCell width={100}>{level.Killers}</ListCell>
-              )}
-              {columns.indexOf('Unlisted') !== -1 && (
-                <ListCell>{level.Unlisted === 1 ? 'Yes' : ''}</ListCell>
-              )}
-              {columns.indexOf('Tags') !== -1 && (
-                <ListCell>
-                  <Tags tags={getTags(level)} />
-                </ListCell>
-              )}
-            </ListRow>
-          );
-        })}
+        {loadingLevels ? (
+          <Loading />
+        ) : (
+          levels.rows.map(level => {
+            return (
+              <ListRow key={`${level.LevelIndex}`}>
+                {columns.indexOf('Added') !== -1 && (
+                  <ListCell width={170}>
+                    <LocalTime
+                      date={level.Added}
+                      format="ddd D MMM YYYY HH:mm"
+                      parse="X"
+                    />
+                  </ListCell>
+                )}
+                {columns.indexOf('Filename') !== -1 && (
+                  <ListCell width={150}>
+                    <Level LevelIndex={level.LevelIndex} LevelData={level} />
+                  </ListCell>
+                )}
+                {columns.indexOf('Level name') !== -1 && (
+                  <ListCell>{level.LongName}</ListCell>
+                )}
+                {columns.indexOf('By') !== -1 && (
+                  <ListCell width={100}>
+                    {level.KuskiData ? (
+                      <Kuski kuskiData={level.KuskiData} />
+                    ) : (
+                      <div>{level.AddedByText || 'Unknown'}</div>
+                    )}
+                  </ListCell>
+                )}
+                {columns.indexOf('Best time') !== -1 && (
+                  <ListCell width={100}>
+                    {level.Besttime ? <Time time={level.Besttime} /> : '-'}
+                  </ListCell>
+                )}
+                {columns.indexOf('Battles') !== -1 && (
+                  <ListCell width={100}>{level.BattleCount || '-'}</ListCell>
+                )}
+                {columns.indexOf('Apples') !== -1 && (
+                  <ListCell width={100}>{level.Apples}</ListCell>
+                )}
+                {columns.indexOf('Killers') !== -1 && (
+                  <ListCell width={100}>{level.Killers}</ListCell>
+                )}
+                {columns.indexOf('Unlisted') !== -1 && (
+                  <ListCell>{level.Unlisted === 1 ? 'Yes' : ''}</ListCell>
+                )}
+                {columns.indexOf('Tags') !== -1 && (
+                  <ListCell>
+                    <Tags tags={getTags(level)} />
+                  </ListCell>
+                )}
+              </ListRow>
+            );
+          })
+        )}
       </ListContainerScrollable>
 
       {!summary && (
