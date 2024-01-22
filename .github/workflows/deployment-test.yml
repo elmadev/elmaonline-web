@@ -33,3 +33,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: "build/*"
           target: "${{ secrets.SSH_BUILD_PATH }}"
+          strip_components: 1
