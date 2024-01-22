@@ -14601,10 +14601,10 @@ recompose@^0.27.1:
     react-lifecycles-compat "^3.0.2"
     symbol-observable "^1.0.4"
 
-recplayer-react@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/recplayer-react/-/recplayer-react-1.5.2.tgz#92be1deb80fc30860e0c95f0158c60fac1a67a7d"
-  integrity sha512-TpF9CUXKtfvHblIFB4ackLxaJKDA2/sygHlxow2pFJJQtqDjfjBPb9j25Z5bBLCG9IkNbKBPuVquOVGvzUabLQ==
+recplayer-react@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/recplayer-react/-/recplayer-react-1.6.0.tgz#ccf72d0b736a897e819ad3e8d8ac61d465acec8d"
+  integrity sha512-QWdsrn1GdW1zu8+sLvP8noH6OQQXbsboKX4b1Iaj90Pgfj7h4Jr3x5ilYhnRRAulsTBFN8P+Rr8Gl6PSDeHHuQ==
 
 recursive-readdir@2.2.2:
   version "2.2.2"

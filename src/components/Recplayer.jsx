@@ -73,6 +73,8 @@ const Recplayer = props => {
           }}
           showStartPos
           fitLev={!rec}
+          showZoomBtns
+          showPlaybackBtns={Boolean(rec)}
         />
       ) : (
         <span>Loading..</span>
