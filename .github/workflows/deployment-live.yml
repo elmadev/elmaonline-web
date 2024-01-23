@@ -1,9 +1,9 @@
-name: Build and Deploy test
+name: Build and Deploy live
 
 on:
   push:
     branches:
-      - dev
+      - master
 
 jobs:
   build-and-deploy:
@@ -17,6 +17,13 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
+    
+      - name: Replace config values
+        run: |
+          sed -i "s|https://apitest.elma.online/|${{ secrets.API_URL_LIVE }}|g" config.js
+          sed -i "s|'test/'|${{ secrets.S3_SUB_FOLDER_LIVE }}|g" config.js
+          sed -i "s|${url}u/|${{ secrets.UP_LIVE }}|g" config.js
+          sed -i "s|6Le-n9QUAAAAAG-3bYyysXddxwD6I6iJeDBTHf2r|${{ secrets.RECAPTCHA_LIVE }}|g" config.js
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -27,7 +34,7 @@ jobs:
       - name: Deploy to server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.SSH_HOST }}
+          host: ${{ secrets.SSH_HOST_LIVE }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
