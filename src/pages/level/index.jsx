@@ -34,7 +34,7 @@ import Loading from 'components/Loading';
 import Tags from 'components/Tags';
 import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
-import UpdateForm from 'pages/Level/UpdateForm';
+import UpdateForm from 'pages/level/UpdateForm';
 import LocalTime from 'components/LocalTime';
 import { useNavigate } from '@reach/router';
 import config from 'config';
