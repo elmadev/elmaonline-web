@@ -32,11 +32,15 @@ export default {
   settings: persist(
     {
       fancyMap: navigator.userAgent.toLowerCase().indexOf('firefox') === -1,
+      showGravityApples: false,
     },
     { storage: 'localStorage' },
   ),
   toggleFancyMap: action(state => {
     state.settings.fancyMap = !state.settings.fancyMap;
+  }),
+  toggleShowGravityApples: action(state => {
+    state.settings.showGravityApples = !state.settings.showGravityApples;
   }),
   setBestLoading: action((state, payload) => {
     state.besttimesLoading = payload;
