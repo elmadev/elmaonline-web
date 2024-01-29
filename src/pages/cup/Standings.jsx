@@ -197,19 +197,23 @@ const Container = styled.div`
 export const Position = ({ r, no, amountEvents }) => {
   if (r.Position[amountEvents - 1] < no + 1) {
     return (
-      <Number>
+      <Number title={`Down from ${r.Position[amountEvents - 1]}`}>
         {no + 1}. <TriangleDown />
       </Number>
     );
   }
   if (r.Position[amountEvents - 1] > no + 1) {
     return (
-      <Number>
+      <Number title={`Up from ${r.Position[amountEvents - 1]}`}>
         {no + 1}. <TriangleUp />
       </Number>
     );
   }
-  return <Number margin={29}>{no + 1}.</Number>;
+  return (
+    <Number margin={29} title="No change">
+      {no + 1}.
+    </Number>
+  );
 };
 
 const Number = styled.span`
