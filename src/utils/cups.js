@@ -152,9 +152,59 @@ export const mopoPoints = [
   1,
 ];
 
+const calcSkipStandings = (
+  standings,
+  forceSkip,
+  finishedEvents,
+  cup,
+  eventIndex,
+) => {
+  return standings
+    .map(s => {
+      const totalEvents = forceSkip ? finishedEvents : cup.Events;
+      if (s.Events <= totalEvents - cup.Skips) {
+        return s;
+      }
+      const { AllPoints } = s;
+      let { Points, AllPointsDetailed } = s;
+      for (let i = 0; i < s.Events - (totalEvents - cup.Skips); i += 1) {
+        const min = Math.min(...AllPoints);
+        const removeIndex = AllPoints.findIndex(ap => ap === min);
+        AllPoints.splice(removeIndex, 1);
+        Points -= min;
+
+        const skippedLevel = AllPointsDetailed.find(apd => apd.Points === min);
+        AllPointsDetailed = AllPointsDetailed.map(apd => {
+          if (apd.LevelIndex === skippedLevel.LevelIndex) {
+            return { ...apd, Skipped: true };
+          }
+          return apd;
+        });
+      }
+      return { ...s, AllPoints, Points, AllPointsDetailed };
+    })
+    .sort((a, b) => b.Points - a.Points)
+    .map((s, i) => ({
+      ...s,
+      Position: s.Position
+        ? { ...s.Position, [`${eventIndex + 1}`]: i + 1 }
+        : { [`${eventIndex + 1}`]: i + 1 },
+    }));
+};
+
+const calcStandings = (standings, eventIndex) => {
+  return standings
+    .sort((a, b) => b.Points - a.Points)
+    .map((s, i) => ({
+      ...s,
+      Position: s.Position
+        ? { ...s.Position, [`${eventIndex + 1}`]: i + 1 }
+        : { [`${eventIndex + 1}`]: i + 1 },
+    }));
+};
+
 export const calculateStandings = (events, cup, simple, forceSkip = false) => {
   let standings = [];
-  let skipStandings = [];
   const teamStandings = [];
   const nationStandings = [];
   let teamEntries = {};
@@ -165,7 +215,7 @@ export const calculateStandings = (events, cup, simple, forceSkip = false) => {
       e => parseInt(e.EndTime) < new Date().getTime() / 1000,
     ).length;
   }
-  forEach(events, event => {
+  forEach(events, (event, eventIndex) => {
     teamEntries = {};
     nationEntries = {};
     forEach(event.CupTimes, (time, index) => {
@@ -185,6 +235,7 @@ export const calculateStandings = (events, cup, simple, forceSkip = false) => {
         Position: index + 1,
         TotalPlayers: event.CupTimes.length,
         Skipped: false,
+        Event: eventIndex + 1,
       };
 
       if (exists.length === 0) {
@@ -280,35 +331,20 @@ export const calculateStandings = (events, cup, simple, forceSkip = false) => {
         }
       }
     });
+    if (cup.Skips) {
+      standings = calcSkipStandings(
+        standings,
+        forceSkip,
+        finishedEvents,
+        cup,
+        eventIndex,
+      );
+    } else {
+      standings = calcStandings(standings, eventIndex);
+    }
   });
-  if (cup.Skips) {
-    skipStandings = standings.map(s => {
-      const totalEvents = forceSkip ? finishedEvents : cup.Events;
-      if (s.Events <= totalEvents - cup.Skips) {
-        return s;
-      }
-      const { AllPoints } = s;
-      let { Points, AllPointsDetailed } = s;
-      for (let i = 0; i < s.Events - (totalEvents - cup.Skips); i += 1) {
-        const min = Math.min(...AllPoints);
-        const removeIndex = AllPoints.findIndex(ap => ap === min);
-        AllPoints.splice(removeIndex, 1);
-        Points -= min;
-
-        const skippedLevel = AllPointsDetailed.find(apd => apd.Points === min);
-        AllPointsDetailed = AllPointsDetailed.map(apd => {
-          if (apd.LevelIndex === skippedLevel.LevelIndex) {
-            return { ...apd, Skipped: true };
-          }
-          return apd;
-        });
-      }
-      return { ...s, AllPoints, Points, AllPointsDetailed };
-    });
-    standings = skipStandings;
-  }
   return {
-    player: standings.sort((a, b) => b.Points - a.Points),
+    player: standings,
     team: teamStandings.sort((a, b) => b.Points - a.Points),
     nation: nationStandings.sort((a, b) => b.Points - a.Points),
   };
@@ -378,10 +414,10 @@ export const getPrivateCupRecUri = (
   )}${Kuski.substring(0, 6)}/${Code}`;
 };
 
-export const pts = points => {
+export const pts = (points, short = false) => {
   const p = points / 10;
   if (p === 1) {
-    return '1 point';
+    return `1 ${short ? 'pt' : 'point'}`;
   }
-  return `${p} points`;
+  return `${p} ${short ? 'pts' : 'points'}`;
 };
