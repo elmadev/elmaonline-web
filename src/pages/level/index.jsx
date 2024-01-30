@@ -75,7 +75,7 @@ const Level = ({ LevelId }) => {
     timeStats,
     levelpacks,
     statsLoading,
-    settings: { fancyMap },
+    settings: { fancyMap, showGravityApples },
     personalLeaderHistory,
     personalLeaderHistoryLoading,
     leaderHistory,
@@ -89,6 +89,7 @@ const Level = ({ LevelId }) => {
     getEoltimes,
     getTimeStats,
     toggleFancyMap,
+    toggleShowGravityApples,
     getPersonalLeaderHistory,
     getLeaderHistory,
   } = useStoreActions(actions => actions.Level);
@@ -223,6 +224,19 @@ const Level = ({ LevelId }) => {
               }
               label="Fancy map"
             />
+            {!fancyMap && (
+              <StyledFormControlLabel
+                control={
+                  <Checkbox
+                    onChange={() => toggleShowGravityApples()}
+                    checked={showGravityApples}
+                    color="primary"
+                    size="small"
+                  />
+                }
+                label="Show gravity apples"
+              />
+            )}
           </>
         )}
       </PlayerContainer>

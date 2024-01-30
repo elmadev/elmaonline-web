@@ -7353,7 +7353,7 @@ elliptic@^6.5.4:
 
 "elma-js@https://github.com/ville-j/elma-js":
   version "1.0.0"
-  resolved "https://github.com/ville-j/elma-js#4946ca1f428f76d124dbb571882daf4ad6bec61b"
+  resolved "https://github.com/ville-j/elma-js#b93955b2de32f2896011e14d76e02ff1536348dc"
 
 emittery@^0.7.1:
   version "0.7.2"

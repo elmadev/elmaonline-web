@@ -22,6 +22,9 @@ const LevelMap = ({
   const getByLevelIndex = useStoreState(
     state => state.LevelMap.getByLevelIndex,
   );
+  const {
+    settings: { showGravityApples },
+  } = useStoreState(state => state.Level);
   const levelData = getByLevelIndex(LevelIndex);
 
   useEffect(() => {
@@ -47,6 +50,7 @@ const LevelMap = ({
             onClick={() => setFullscreen(!fullscreen)}
             width={width}
             height={height}
+            showGravityApples={showGravityApples}
           >
             <div dangerouslySetInnerHTML={{ __html: svg }} />
           </MapContainer>
@@ -56,6 +60,7 @@ const LevelMap = ({
           fullscreen={fullscreen}
           interaction={interaction}
           onClick={() => (interaction ? setFullscreen(!fullscreen) : null)}
+          showGravityApples={showGravityApples}
           width={width}
           height={height}
         >
@@ -113,6 +118,58 @@ const MapContainer = styled.div`
   }
   svg .START {
   }
+
+  ${props =>
+    props.showGravityApples &&
+    `
+  svg .GRAV_UP {
+    clip-path: polygon(
+      50% 0,
+      100% 40%,
+      70% 40%,
+      70% 100%,
+      30% 100%,
+      30% 40%,
+      0 40%
+    );
+  }
+
+  svg .GRAV_LEFT {
+    clip-path: polygon(
+      40% 0%,
+      40% 30%,
+      100% 30%,
+      100% 70%,
+      40% 70%,
+      40% 100%,
+      0% 50%
+    );
+  }
+
+  svg .GRAV_RIGHT {
+    clip-path: polygon(
+      0% 30%,
+      60% 30%,
+      60% 0%,
+      100% 50%,
+      60% 100%,
+      60% 70%,
+      0% 70%
+    );
+  }
+
+  svg .GRAV_DOWN {
+    clip-path: polygon(
+      50% 100%,
+      100% 60%,
+      70% 60%,
+      70% 0,
+      30% 0,
+      30% 60%,
+      0 60%
+    );
+  }`}
+
   svg {
     overflow: hidden;
     object-fit: contain;
