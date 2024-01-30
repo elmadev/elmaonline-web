@@ -162,7 +162,7 @@ const Admin = () => {
               <li>
                 When an event is over the first thing you do is click Generate
                 Results. Now the results are visible to only you, and you can
-                puplish them in Discord or elsewhere first if you wish. When you
+                publish them in Discord or elsewhere first if you wish. When you
                 want the results to be shown to everyone on the site, tick the
                 public checkbox.
               </li>
