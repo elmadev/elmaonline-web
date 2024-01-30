@@ -150,6 +150,7 @@ const Cups = props => {
 const CupName = styled.div`
   padding: 8px;
   background-color: ${p => (p.bgColor ? p.bgColor : 'transparent')};
+  ${p => (p.bgColor ? `margin-bottom: ${p.theme.padSmall};` : '')}
   h1 {
     margin: 0;
     margin-right: ${p => p.theme.padLarge};
