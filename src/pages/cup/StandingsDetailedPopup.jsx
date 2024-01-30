@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'components/Link';
 import Header from 'components/Header';
+import { pts } from 'utils/cups';
 
 const StandingsDetailedPopup = ({ data, events, close }) => {
   return (
@@ -44,10 +45,7 @@ const StandingsDetailedPopup = ({ data, events, close }) => {
                     <span>
                       {pointsForEvent.Position}/{pointsForEvent.TotalPlayers}
                     </span>
-                    <span>
-                      {pointsForEvent.Points} point
-                      {pointsForEvent.Points > 1 ? 's' : ''}
-                    </span>
+                    <span>{pts(pointsForEvent.Points)}</span>
                   </>
                 )}
                 {!pointsForEvent && (

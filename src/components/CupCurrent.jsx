@@ -49,13 +49,18 @@ const CupResults = props => {
                   </Download>
                 </span>
               )}
-              {c.Level && timesShown && (
-                <Link
-                  title="Go to level page; times for this event are shown."
-                  to={`/levels/${c.LevelIndex}`}
-                >
-                  {' - '}level page
-                </Link>
+              {c.Level && (
+                <>
+                  {' - '}
+                  <Link
+                    title={`Go to level page.${
+                      timesShown ? ' Times for this event are shown' : ''
+                    }.`}
+                    to={`/levels/${c.LevelIndex}`}
+                  >
+                    level page
+                  </Link>
+                </>
               )}
             </EventInfo>
             <EventInfo>

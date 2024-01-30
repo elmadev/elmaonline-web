@@ -14,6 +14,7 @@ import config from 'config';
 import { Paper } from 'components/Paper';
 import Interviews from './Interviews';
 import Leaders from './Leaders';
+import EventStandings from './EventStandings';
 
 const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
@@ -109,6 +110,7 @@ const Cups = props => {
               {hasEnded && <Tab label="Map" value="map" />}
               {hasEnded && <Tab label="Interviews" value="interviews" />}
               {hasEnded && <Tab label="Leaders" value="leaders" />}
+              {hasEnded && <Tab label="Standings" value="standings" />}
             </Tabs>
             <Paper>
               {eventTab === 'results' && (
@@ -132,6 +134,12 @@ const Cups = props => {
               )}
               {eventTab === 'leaders' && hasEnded && (
                 <Leaders event={events[eventIndex]} />
+              )}
+              {eventTab === 'standings' && hasEnded && (
+                <EventStandings
+                  events={events.slice(0, eventIndex + 1)}
+                  cup={cup}
+                />
               )}
             </Paper>
           </Grid>
