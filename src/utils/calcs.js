@@ -82,13 +82,16 @@ export const combinedTT = (levels, timeObjs) => {
   forEach(levels, l => {
     let bestTime;
     timeObjs.forEach(b => {
-      if (bestTime === undefined) {
-        bestTime = l[b].Time;
-      } else {
-        bestTime = l[b].Time < bestTime ? l[b].Time : bestTime;
+      if (l[b]) {
+        if (bestTime === undefined) {
+          bestTime = parseInt(l[b].Time);
+        } else {
+          bestTime =
+            parseInt(l[b].Time) < bestTime ? parseInt(l[b].Time) : bestTime;
+        }
       }
     });
-    if (bestTime !== undefined) {
+    if (bestTime !== undefined && !isNaN(bestTime)) {
       tt += bestTime;
       finished += 1;
       levs += 1;
@@ -116,4 +119,27 @@ export const formatBytes = (bytes, decimals = 2) => {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
   return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
+};
+
+export const forceInt = (val, def = 0, min = null, max = null) => {
+  // not sure what parseInt on these vals returns.
+  if (val === '' || val === null || val === undefined || val === false) {
+    return def;
+  }
+
+  const ret = parseInt(val, 10);
+
+  if (Number.isNaN(ret)) {
+    return def;
+  }
+
+  if (min !== null && ret < min) {
+    return min;
+  }
+
+  if (max !== null && ret > max) {
+    return max;
+  }
+
+  return ret;
 };

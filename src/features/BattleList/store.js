@@ -13,7 +13,10 @@ export default {
       if (get.ok && Array.isArray(get.data)) {
         const countInQueue = get.data.filter(d => d.InQueue === 1);
         actions.setBattles(
-          get.data.slice(0, Math.max(5, countInQueue.length + 2)),
+          get.data.slice(
+            0,
+            Math.max(payload.limit || 5, countInQueue.length + 2),
+          ),
         );
       }
     } else {

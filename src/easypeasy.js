@@ -9,6 +9,8 @@ import Register from 'pages/register/store';
 import Login from 'pages/login/store';
 import RankingTable from 'features/RankingTable/store';
 import BattleList from 'features/BattleList/store';
+import BattleLeagues from 'pages/battleleagues/store';
+import BattleLeague from 'pages/battleleague/store';
 import Upload from 'features/Upload/store';
 import Cups from 'pages/cups/store';
 import Cup from 'pages/cup/store';
@@ -19,8 +21,8 @@ import Kuski from 'pages/kuski/store';
 import LevelsAdd from 'pages/levels-add/store';
 import LevelsAddCollection from 'pages/levels-add-collection/store';
 import LevelpackCollection from 'pages/levelpack-collection/store';
+import LevelPackList from 'features/LevelPackList/store';
 import Settings from 'pages/settings/store';
-import Replay from 'pages/cupreplay/store';
 import ReplayByUUID from 'pages/replay/store';
 import Teams from 'pages/teams/store';
 import Kuskis from 'pages/kuskis/store';
@@ -33,9 +35,11 @@ import Levels from 'pages/levels/store';
 import News from 'features/News/store';
 import FileUpload from 'pages/upload/store';
 import ReplayList from 'features/ReplayList/store';
+import LevelList from 'features/LevelList/store';
 import ReplaySettings from 'features/ReplaySettings/store';
 import Notifications from 'features/Notifications/store';
 import ReplayCommentArchive from 'features/ReplayCommentArchive/store';
+import Recap from 'pages/recap/store';
 
 export default {
   ReplayCommentArchive,
@@ -43,6 +47,8 @@ export default {
   ReplayRating,
   Register,
   BattleList,
+  BattleLeagues,
+  BattleLeague,
   ChatView,
   Cups,
   Cup,
@@ -53,16 +59,17 @@ export default {
   Search,
   Kuski,
   Help,
+  LevelList,
   LevelsAdd,
   LevelsAddCollection,
   LevelpackCollection,
   Levels,
+  LevelPackList,
   Settings,
   Upload,
   Mod,
   News,
   Teams,
-  Replay,
   ReplayByUUID,
   RecList,
   RankingTable,
@@ -74,6 +81,7 @@ export default {
   FileUpload,
   Replays,
   Notifications,
+  Recap,
   Page: {
     sideBarVisible: true,
     showSideBar: action(state => {
@@ -91,36 +99,18 @@ export default {
           {
             header: 'Playing',
             expanded: true,
-            items: [
-              { name: 'Battles', to: '/battles', hidden: false },
-              { name: 'Levels', to: '/levels', hidden: false },
-              { name: 'Replays', to: '/replays', hidden: false },
-              { name: 'Ranking', to: '/ranking', hidden: false },
-            ],
           },
           {
             header: 'Community',
             expanded: true,
-            items: [
-              { name: 'Chat Log', to: '/chatlog', hidden: false },
-              { name: 'Players', to: '/kuskis', hidden: false },
-              { name: 'Teams', to: '/teams', hidden: false },
-              { name: 'Kuski map', to: '/map', hidden: false },
-            ],
           },
           {
             header: 'Competitions',
             expanded: true,
-            items: [{ name: 'Cups', to: '/cups', hidden: false }],
           },
           {
             header: 'Tools',
             expanded: true,
-            items: [
-              { name: 'Help', to: '/help', hidden: false },
-              { name: 'Editor', to: '/editor', hidden: false },
-              { name: 'File upload', to: '/up', hidden: false },
-            ],
           },
         ],
       },
@@ -130,6 +120,35 @@ export default {
       const index = state.sideBar.menu.findIndex(m => m.header === payload);
       state.sideBar.menu[index].expanded = !state.sideBar.menu[index].expanded;
     }),
+    extras: persist(
+      {
+        extrasTab: 'install',
+        setExtrasTab: action((state, payload) => {
+          state.extrasTab = payload;
+        }),
+      },
+      { storage: 'localStorage' },
+    ),
+    cards: persist(
+      {
+        hidden: {
+          battles: false,
+          replays: false,
+          ranking: false,
+          events: false,
+          levelpacks: false,
+          news: false,
+          extras: false,
+        },
+        setHidden: action((state, payload) => {
+          state.hidden[payload] = true;
+        }),
+        setShown: action((state, payload) => {
+          state.hidden[payload] = false;
+        }),
+      },
+      { storage: 'localStorage' },
+    ),
   },
   test: {
     derp: 'hi',

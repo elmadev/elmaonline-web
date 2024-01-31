@@ -2,8 +2,8 @@
 import { action, thunk, persist } from 'easy-peasy';
 import {
   Replays,
-  BattleListPeriod,
-  GetTags,
+  LatestBattleReplays,
+  GetReplayTags,
   ReplayDrivenBy,
   ReplayUploadedBy,
 } from 'api';
@@ -16,9 +16,17 @@ export default {
   getReplays: thunk(async (actions, payload) => {
     let get = null;
     if (payload.drivenBy) {
-      get = await ReplayDrivenBy(payload.drivenBy);
+      get = await ReplayDrivenBy(payload.drivenBy, {
+        page: payload.page,
+        pageSize: payload.pageSize,
+        tags: payload.tags,
+      });
     } else if (payload.uploadedBy) {
-      get = await ReplayUploadedBy(payload.uploadedBy);
+      get = await ReplayUploadedBy(payload.uploadedBy, {
+        page: payload.page,
+        pageSize: payload.pageSize,
+        tags: payload.tags,
+      });
     } else {
       get = await Replays(payload);
     }
@@ -31,7 +39,7 @@ export default {
     state.battles = payload;
   }),
   getBattles: thunk(async (actions, payload) => {
-    const get = await BattleListPeriod(payload);
+    const get = await LatestBattleReplays(payload);
     if (get.ok) {
       actions.setBattles(get.data);
     }
@@ -42,7 +50,7 @@ export default {
     state.tagOptions = payload;
   }),
   getTagOptions: thunk(async actions => {
-    const get = await GetTags();
+    const get = await GetReplayTags();
     if (get.ok) {
       actions.setTagOptions(get.data);
     }
@@ -56,5 +64,9 @@ export default {
   ),
   setSettings: action((state, payload) => {
     state.settings = { ...state.settings, ...payload };
+  }),
+  persistPage: {},
+  setPersistPage: action((state, payload) => {
+    state.persistPage[payload.key] = payload.pageNo;
   }),
 };

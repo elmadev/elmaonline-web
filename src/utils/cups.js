@@ -66,14 +66,156 @@ export const points = [
   1,
 ];
 
-export const calculateStandings = (events, cup, simple) => {
+export const pointsSystem2 = [
+  100,
+  85,
+  75,
+  70,
+  65,
+  60,
+  56,
+  52,
+  49,
+  46,
+  45,
+  44,
+  43,
+  42,
+  41,
+  40,
+  39,
+  38,
+  37,
+  36,
+  35,
+  34,
+  33,
+  32,
+  31,
+  30,
+  29,
+  28,
+  27,
+  26,
+  25,
+  24,
+  23,
+  22,
+  21,
+  20,
+  19,
+  18,
+  17,
+  16,
+  15,
+  14,
+  13,
+  12,
+  11,
+  10,
+  9,
+  8,
+  7,
+  6,
+];
+
+export const mopoPoints = [
+  100,
+  80,
+  60,
+  50,
+  45,
+  40,
+  36,
+  32,
+  29,
+  26,
+  24,
+  22,
+  20,
+  18,
+  16,
+  15,
+  14,
+  13,
+  12,
+  11,
+  10,
+  9,
+  8,
+  7,
+  6,
+  5,
+  4,
+  3,
+  2,
+  1,
+];
+
+const calcSkipStandings = (
+  standings,
+  forceSkip,
+  finishedEvents,
+  cup,
+  eventIndex,
+) => {
+  return standings
+    .map(s => {
+      const totalEvents = forceSkip ? finishedEvents : cup.Events;
+      if (s.Events <= totalEvents - cup.Skips) {
+        return s;
+      }
+      const { AllPoints } = s;
+      let { Points, AllPointsDetailed } = s;
+      for (let i = 0; i < s.Events - (totalEvents - cup.Skips); i += 1) {
+        const min = Math.min(...AllPoints);
+        const removeIndex = AllPoints.findIndex(ap => ap === min);
+        AllPoints.splice(removeIndex, 1);
+        Points -= min;
+
+        const skippedLevel = AllPointsDetailed.find(apd => apd.Points === min);
+        AllPointsDetailed = AllPointsDetailed.map(apd => {
+          if (apd.LevelIndex === skippedLevel.LevelIndex) {
+            return { ...apd, Skipped: true };
+          }
+          return apd;
+        });
+      }
+      return { ...s, AllPoints, Points, AllPointsDetailed };
+    })
+    .sort((a, b) => b.Points - a.Points)
+    .map((s, i) => ({
+      ...s,
+      Position: s.Position
+        ? { ...s.Position, [`${eventIndex + 1}`]: i + 1 }
+        : { [`${eventIndex + 1}`]: i + 1 },
+    }));
+};
+
+const calcStandings = (standings, eventIndex) => {
+  return standings
+    .sort((a, b) => b.Points - a.Points)
+    .map((s, i) => ({
+      ...s,
+      Position: s.Position
+        ? { ...s.Position, [`${eventIndex + 1}`]: i + 1 }
+        : { [`${eventIndex + 1}`]: i + 1 },
+    }));
+};
+
+export const calculateStandings = (events, cup, simple, forceSkip = false) => {
   let standings = [];
-  let skipStandings = [];
   const teamStandings = [];
   const nationStandings = [];
   let teamEntries = {};
   let nationEntries = {};
-  forEach(events, event => {
+  let finishedEvents = 0;
+  if (forceSkip) {
+    finishedEvents = events.filter(
+      e => parseInt(e.EndTime) < new Date().getTime() / 1000,
+    ).length;
+  }
+  forEach(events, (event, eventIndex) => {
     teamEntries = {};
     nationEntries = {};
     forEach(event.CupTimes, (time, index) => {
@@ -93,6 +235,7 @@ export const calculateStandings = (events, cup, simple) => {
         Position: index + 1,
         TotalPlayers: event.CupTimes.length,
         Skipped: false,
+        Event: eventIndex + 1,
       };
 
       if (exists.length === 0) {
@@ -100,7 +243,14 @@ export const calculateStandings = (events, cup, simple) => {
           KuskiIndex: time.KuskiIndex,
           Points: time.Points,
           Kuski: time.KuskiData.Kuski,
-          KuskiData: time.KuskiData,
+          KuskiData: cup.TeamPoints
+            ? {
+                Kuski: time.KuskiData.Kuski,
+                TeamIndex: time.TeamIndex,
+                Country: time.KuskiData.Country,
+                TeamData: time.TeamData,
+              }
+            : time.KuskiData,
           Events: 1,
           AllPoints: [time.Points],
           AllPointsDetailed: [pointsDetailed],
@@ -115,32 +265,42 @@ export const calculateStandings = (events, cup, simple) => {
             ...standings[existsIndex].AllPointsDetailed,
             pointsDetailed,
           ],
+          KuskiData: cup.TeamPoints
+            ? {
+                Kuski: time.KuskiData.Kuski,
+                TeamIndex: time.TeamIndex,
+                Country: time.KuskiData.Country,
+                TeamData: time.TeamData,
+              }
+            : standings[existsIndex].KuskiData,
         };
       }
       // team standings
-      if (time.KuskiData.TeamIndex && !simple) {
+      const teamIndex = cup.TeamPoints
+        ? time.TeamIndex
+        : time.KuskiData.TeamIndex;
+      if (teamIndex && !simple) {
         const existsTeam = teamStandings.findIndex(
-          x => x.TeamIndex === time.KuskiData.TeamIndex,
+          x => x.TeamIndex === teamIndex,
         );
         if (existsTeam === -1) {
           teamStandings.push({
-            TeamIndex: time.KuskiData.TeamIndex,
+            TeamIndex: teamIndex,
             Points: time.Points,
-            Team: time.KuskiData.TeamData.Team,
+            Team: cup.TeamPoints
+              ? time.TeamData.Team
+              : time.KuskiData.TeamData.Team,
           });
-          teamEntries[time.KuskiData.TeamIndex] = 1;
-        } else if (
-          teamEntries[time.KuskiData.TeamIndex] < 3 ||
-          !teamEntries[time.KuskiData.TeamIndex]
-        ) {
+          teamEntries[teamIndex] = 1;
+        } else if (teamEntries[teamIndex] < 3 || !teamEntries[teamIndex]) {
           teamStandings[existsTeam] = {
             ...teamStandings[existsTeam],
             Points: teamStandings[existsTeam].Points + time.Points,
           };
-          if (teamEntries[time.KuskiData.TeamIndex]) {
-            teamEntries[time.KuskiData.TeamIndex] += 1;
+          if (teamEntries[teamIndex]) {
+            teamEntries[teamIndex] += 1;
           } else {
-            teamEntries[time.KuskiData.TeamIndex] = 1;
+            teamEntries[teamIndex] = 1;
           }
         }
       }
@@ -171,34 +331,20 @@ export const calculateStandings = (events, cup, simple) => {
         }
       }
     });
+    if (cup.Skips) {
+      standings = calcSkipStandings(
+        standings,
+        forceSkip,
+        finishedEvents,
+        cup,
+        eventIndex,
+      );
+    } else {
+      standings = calcStandings(standings, eventIndex);
+    }
   });
-  if (cup.Skips) {
-    skipStandings = standings.map(s => {
-      if (s.Events <= cup.Events - cup.Skips) {
-        return s;
-      }
-      const { AllPoints } = s;
-      let { Points, AllPointsDetailed } = s;
-      for (let i = 0; i < s.Events - (cup.Events - cup.Skips); i += 1) {
-        const min = Math.min(...AllPoints);
-        const removeIndex = AllPoints.findIndex(ap => ap === min);
-        AllPoints.splice(removeIndex, 1);
-        Points -= min;
-
-        const skippedLevel = AllPointsDetailed.find(apd => apd.Points === min);
-        AllPointsDetailed = AllPointsDetailed.map(apd => {
-          if (apd.LevelIndex === skippedLevel.LevelIndex) {
-            return { ...apd, Skipped: true };
-          }
-          return apd;
-        });
-      }
-      return { ...s, AllPoints, Points, AllPointsDetailed };
-    });
-    standings = skipStandings;
-  }
   return {
-    player: standings.sort((a, b) => b.Points - a.Points),
+    player: standings,
     team: teamStandings.sort((a, b) => b.Points - a.Points),
     nation: nationStandings.sort((a, b) => b.Points - a.Points),
   };
@@ -266,4 +412,12 @@ export const getPrivateCupRecUri = (
     levelNumber,
     2,
   )}${Kuski.substring(0, 6)}/${Code}`;
+};
+
+export const pts = (points, short = false) => {
+  const p = points / 10;
+  if (p === 1) {
+    return `1 ${short ? 'pt' : 'point'}`;
+  }
+  return `${p} ${short ? 'pts' : 'points'}`;
 };

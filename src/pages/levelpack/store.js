@@ -4,10 +4,13 @@ import {
   Highlight,
   PersonalAllFinished,
   Besttime,
+  BesttimeFilter,
   LevelPackStats,
+  LevelPackStatsFilter,
   MultiRecords,
   MultiBesttime,
   PersonalWithMulti,
+  PersonalTimes,
   LevelPackDeleteLevel,
   LevelsSearchAll,
   LevelPackAddLevel,
@@ -15,6 +18,9 @@ import {
   LevelPackSort,
   LevelPack,
   UpdateLevelPack,
+  LevelPackRecords,
+  LevelPackRecordsFilter,
+  GetLevelPackTags,
 } from 'api';
 
 export default {
@@ -23,7 +29,7 @@ export default {
     state.levelPackInfo = payload;
   }),
   getLevelPackInfo: thunk(async (actions, payload) => {
-    const get = await LevelPack(payload);
+    const get = await LevelPack(payload, true);
     if (get.ok) {
       actions.setLevelPackInfo(get.data);
     }
@@ -61,6 +67,8 @@ export default {
       showLegacyIcon: true,
       showLegacy: true,
       showMoreStats: false,
+      relative: false,
+      highlightTargets: false,
     },
     { storage: 'localStorage' },
   ),
@@ -76,6 +84,12 @@ export default {
   setShowMoreStats: action((state, payload) => {
     state.settings.showMoreStats = payload;
   }),
+  setRelative: action((state, payload) => {
+    state.settings.relative = payload;
+  }),
+  setHighlightTargets: action((state, payload) => {
+    state.settings.highlightTargets = payload;
+  }),
   totaltimes: [],
   kinglist: [],
   setTotalTimes: action((state, payload) => {
@@ -83,6 +97,48 @@ export default {
   }),
   setKinglist: action((state, payload) => {
     state.kinglist = payload;
+  }),
+  teams: [],
+  countries: [],
+  kuskis: [],
+  setTeams: action((state, payload) => {
+    state.teams = payload;
+  }),
+  setCountries: action((state, payload) => {
+    state.countries = payload;
+  }),
+  setKuskis: action((state, payload) => {
+    state.kuskis = payload;
+  }),
+  compareKuski: {},
+  setCompare: action((state, payload) => {
+    state.compareKuski[payload.PersonalKuskiIndex] = payload.Times;
+  }),
+  getCompareKuski: thunk(async (actions, payload) => {
+    const get = await PersonalTimes(payload);
+    if (get.ok) {
+      actions.setCompare({ ...payload, Times: get.data });
+    }
+  }),
+  compareCountry: {},
+  setCompareCountry: action((state, payload) => {
+    state.compareCountry[payload.filterValue] = payload.Times;
+  }),
+  getCompareCountry: thunk(async (actions, payload) => {
+    const get = await LevelPackRecordsFilter(payload);
+    if (get.ok) {
+      actions.setCompareCountry({ ...payload, Times: get.data });
+    }
+  }),
+  compareTeam: {},
+  setCompareTeam: action((state, payload) => {
+    state.compareTeam[payload.filterValue] = payload.Times;
+  }),
+  getCompareTeam: thunk(async (actions, payload) => {
+    const get = await LevelPackRecordsFilter(payload);
+    if (get.ok) {
+      actions.setCompareTeam({ ...payload, Times: get.data });
+    }
   }),
   personalTimes: [],
   setPersonalTimes: action((state, payload) => {
@@ -122,7 +178,12 @@ export default {
     state.levelBesttimes = payload;
   }),
   getLevelBesttimes: thunk(async (actions, payload) => {
-    const times = await Besttime(payload);
+    let times;
+    if (payload.filter) {
+      times = await BesttimeFilter(payload);
+    } else {
+      times = await Besttime(payload);
+    }
     if (times.ok) {
       actions.setLevelBesttimes(times.data);
     }
@@ -137,24 +198,54 @@ export default {
       actions.setLevelMultiBesttimes(times.data);
     }
   }),
-  records: [],
   recordsLoading: false,
-  setRecords: action((state, payload) => {
-    state.records = payload;
-  }),
   setRecordsLoading: action((state, payload) => {
     state.recordsLoading = payload;
   }),
   getStats: thunk(async (actions, payload) => {
     actions.setRecordsLoading(true);
-    const times = await LevelPackStats(payload);
+    let times;
+    if (payload.filter) {
+      times = await LevelPackStatsFilter(payload);
+    } else {
+      times = await LevelPackStats(payload);
+    }
     if (times.ok) {
-      actions.setRecords(times.data.records);
       actions.setTotalTimes(times.data.tts);
       actions.setKinglist(times.data.points);
+      if (times.data.teams) {
+        actions.setTeams(times.data.teams);
+      }
+      if (times.data.countries) {
+        actions.setCountries(times.data.countries);
+      }
+      if (times.data.kuskis) {
+        actions.setKuskis(times.data.kuskis);
+      }
     }
     actions.setRecordsLoading(false);
     actions.setAdminLoading(false);
+  }),
+  recordsOnly: [],
+  setRecordsOnly: action((state, payload) => {
+    state.recordsOnly = payload;
+  }),
+  recordsOnlyLoading: false,
+  setRecordsOnlyLoading: action((state, payload) => {
+    state.recordsOnlyLoading = payload;
+  }),
+  getRecordsOnly: thunk(async (actions, payload) => {
+    actions.setRecordsOnlyLoading(true);
+    let get;
+    if (payload.filter) {
+      get = await LevelPackRecordsFilter(payload);
+    } else {
+      get = await LevelPackRecords(payload);
+    }
+    if (get.ok) {
+      actions.setRecordsOnly(get.data);
+    }
+    actions.setRecordsOnlyLoading(false);
   }),
   multiRecords: [],
   multiRecordsLoading: false,
@@ -175,10 +266,7 @@ export default {
   deleteLevel: thunk(async (actions, payload) => {
     const del = await LevelPackDeleteLevel(payload);
     if (del.ok) {
-      actions.getStats({
-        name: payload.name,
-        eolOnly: payload.showLegacy ? 0 : 1,
-      });
+      actions.getLevelPackInfo(payload.name);
     }
   }),
   levelsFound: [],
@@ -198,10 +286,7 @@ export default {
   addLevel: thunk(async (actions, payload) => {
     const add = await LevelPackAddLevel(payload);
     if (add.ok) {
-      actions.getStats({
-        name: payload.name,
-        eolOnly: payload.showLegacy ? 0 : 1,
-      });
+      actions.getLevelPackInfo(payload.name);
     }
   }),
   sortLevel: thunk(async (actions, payload) => {
@@ -226,6 +311,28 @@ export default {
       });
     } else {
       actions.setAdminLoading(false);
+    }
+  }),
+  team: '',
+  setTeam: action((state, payload) => {
+    state.team = payload;
+  }),
+  country: '',
+  setCountry: action((state, payload) => {
+    state.country = payload;
+  }),
+  kuskisFilter: [],
+  setKuskisFilter: action((state, payload) => {
+    state.kuskisFilter = payload;
+  }),
+  tagOptions: [],
+  setTagOptions: action((state, payload) => {
+    state.tagOptions = payload;
+  }),
+  getTagOptions: thunk(async actions => {
+    const get = await GetLevelPackTags();
+    if (get.ok) {
+      actions.setTagOptions(get.data);
     }
   }),
 };

@@ -36,7 +36,7 @@
     { "n": "Map Maker", "d": "Create mini map look alike images from level files.", "l": "https://up.elma.online/u/a7i60qplth/MM117b.exe" },
     { "n": "New!", "d": "External level editor made by totem.", "l": "https://up.elma.online/u/obiaf0137s/NEW!_1.7.5b.rar" },
     { "n": "Rad's Level Maker", "d": "Takes images and converts them to levs and back.", "l": "https://up.elma.online/u/bsne30vy19/rad.zip" },
-    { "n": "SLE", "d": "Smibu's Level Editor, Replay Manager and Level Manager.", "l": "https://up.elma.online/u/0a0a0a0a01/Elmanager.zip" },
+    { "n": "SLE", "d": "Smibu's Level Editor, Replay Manager and Level Manager.", "l": "https://m-l.fi/files/Elmanager.zip" },
     { "n": "Vectrast", "d": "Makes bmp from lev file and back.", "l": "https://up.elma.online/u/lqrhf9h280/vectrast.zip" },
     { "n": "Verzio Maker", "d": "Converts Elma levs to Across levs in the Verzio file format - Moving objects. Made by sunl.", "l": "https://up.elma.online/u/59w4avs59h/Verzio_Maker.zip" },
     { "n": "ZLE", "d": "Zebra's Level Editor.", "l": "https://up.elma.online/u/ur73jygq8m/ZLE_v1.0.zip" }
@@ -90,7 +90,7 @@
     { "n": "Noty Balle", "d": "Easy to use desktop program that shows notifications of battles from Elma Online made by Ropelli.", "l": "https://up.elma.online/u/vp7r40dzru/notifyballe.zip" },
     { "n": "Out Of Bounds Zoom Fix", "d": "Modifies levels to avoid out-of-bounds errors at very high resolution made by sunl.", "l": "https://up.elma.online/u/douvyr7q9p/OutOfBoundsZoomFix.zip" },
     { "n": "SKIPPED.dat", "d": "All internals levels SKIPPED! (nickname: SKIPPED).", "l": "https://up.elma.online/u/df9sacmlc3/state.dat" },
-    { "n": "State.dat Utility v3", "d": "Import internal times from Elma webs into a state.dat file / unlock internal levs. Made by sunl.", "l": [{ "t": "32 bit", "l": "https://up.elma.online/u/nxl2ju4rsb/State%20dat%20utility%20v3%2032b.rar" }, { "t": "64 bit", "l": "https://up.elma.online/u/cw7l8snjrf/State%20Dat%20Utility%20v3%2064b.rar" }] },
+    { "n": "State.dat Utility v6", "d": "Import internal times from Elma webs into a state.dat file / unlock internal levs. Made by sunl.", "l": "https://up.elma.online/u/b98l9o9nle/StateDatUtilityV6.zip" },
     { "n": "Stategak", "d": "Converts two state.dat with different nicks into one.", "l": "https://up.elma.online/u/ttc65xgsjt/stategak.rar" },
     { "n": "Text Colors", "d": "Changes text colors in Elma in another way so you do not have to change the lgr palete.", "l": "https://up.elma.online/u/ts4weic2gu/textcolors.zip" },
     { "n": "XtraBMP 2019", "d": "Extra bmps for those who have not t-shirt on Elma Online. Made by Polarix and iCS.", "l": "https://up.elma.online/u/fndr7rmh2s/2019_12_04_XtraBMP.zip" }

@@ -30,49 +30,56 @@ export const setApiAuth = authToken => {
   api.setHeader('Authorization', authToken);
 };
 
-// wraps useQuery to parse the result of api.get/post/etc.,
-// usage: useQueryAlt( 'key', async () => api.get('replay_comment/23') );
-// You can set 4th param to true and have queryFn return a promise
-// that resolves to: [ success, payload ]. This might be useful if you have
-// to hit more than one endpoint or do some data manipulation on the response.
+// apisauce adapter
+// ie. useQueryAlt( 'key', async () => api.get('replay_comment/23') );
+// with useQuery, queryFn should resolve to its payload or throw an error.
+// with useQueryAlt, it can resolve to object like { ok: success, data: payload },
+// (ie. like apisauce functions) or an array like [ success, payload ]
+// (if 4th parameter is true).
 export const useQueryAlt = (
   queryKey,
   queryFn,
   queryOpts = {},
   arrayFormat = false,
 ) => {
+  // I thought this should be added to defaultOptions (src/react-query.js),
+  // but this didn't stop queries from re-fetching when using navigate.
+  if (queryOpts.staleTime === undefined) {
+    queryOpts.staleTime = 300000;
+  }
+
   return useQuery(
     queryKey,
     async (...args) => {
       const res = await queryFn(...args);
 
-      let ok, data;
-
       if (arrayFormat) {
         assert(
           isArray(res) && res.length === 2,
-          'Expected an async queryFn resolved to an array of length 2.',
+          'Expected an async queryFn that resolves to an array of length 2.',
         );
 
-        [ok, data] = res;
+        if (res[0]) {
+          return res[1];
+        }
+
+        // eslint-disable-next-line no-console
+        console.error('Status not OK', queryKey, res[1]);
+        throw new Error('Status not OK');
       } else {
         assert(
           isObjectLike(res),
-          'Expected an async queryFn that resolved to an object.',
+          'Expected an async queryFn that resolves to an object.',
         );
 
-        ok = res.ok;
-        data = res.data;
-      }
+        if (res.ok) {
+          return res.data;
+        }
 
-      if (ok) {
-        return data;
+        // eslint-disable-next-line no-console
+        console.error('Status not OK', queryKey, res.data);
+        throw new Error('Status not OK');
       }
-
-      // perhaps we can improve error handling here later
-      // eslint-disable-next-line no-console
-      console.error('Status not OK', queryKey, data);
-      throw new Error('Status not OK');
     },
     queryOpts,
   );
@@ -82,15 +89,17 @@ export const useQueryAlt = (
 export const ReplayComment = replayIndex =>
   api.get(`replay_comment/${replayIndex}`);
 export const AddReplayComment = data => api.post(`replay_comment/add`, data);
-export const AllReplayComments = () => api.get('replay_comment/');
+export const AllReplayComments = (limit, offset) =>
+  api.get('replay_comment/', { limit, offset });
 export const ReplayRating = replayIndex =>
   api.get(`replay_rating/${replayIndex}`);
 export const AddReplayRating = data => api.post(`replay_rating/add`, data);
-export const ReplayDrivenBy = kuskiIndex =>
-  api.get(`replay/driven_by/${kuskiIndex}`);
-export const ReplayUploadedBy = kuskiIndex =>
-  api.get(`replay/uploaded_by/${kuskiIndex}`);
-export const ReplayByUUID = UUID => api.get(`replay/byUUID/${UUID}`);
+export const ReplayDrivenBy = (kuskiIndex, query = {}) =>
+  api.get(`replay/driven_by/${kuskiIndex}`, query);
+export const ReplayUploadedBy = (kuskiIndex, query = {}) =>
+  api.get(`replay/uploaded_by/${kuskiIndex}`, query);
+export const ReplayByUUID = (UUID, Fingerprint) =>
+  api.get(`replay/byUUID/${UUID}?f=${Fingerprint}`);
 export const ReplaysSearchByDriven = data =>
   api.get(`replay/search/byDriven/${data.q}/${data.offset}`);
 export const ReplaysSearchByLevel = data =>
@@ -101,7 +110,15 @@ export const ReplaysByLevelIndex = LevelIndex =>
   api.get(`replay/byLevelIndex/${LevelIndex}`);
 export const InsertReplay = data => api.post('replay', data);
 export const UpdateReplay = data => api.post('replay/update', data);
-export const Replays = ({ page, pageSize, tags, sortBy, order, levelPack }) => {
+export const Replays = ({
+  page,
+  pageSize,
+  tags,
+  sortBy,
+  order,
+  levelPack,
+  excludedTags,
+}) => {
   return api.get(`replay`, {
     page,
     pageSize,
@@ -109,6 +126,7 @@ export const Replays = ({ page, pageSize, tags, sortBy, order, levelPack }) => {
     sortBy,
     order,
     levelPack,
+    excludedTags,
   });
 };
 export const AllMyReplays = ({ page, pageSize, tags, sortBy, order }) => {
@@ -134,7 +152,7 @@ export const ResetPasswordConfirm = data =>
 export const ResetPassword = data => api.post('register/reset', data);
 export const DiscordAuthUrl = data => api.post('/register/discord', data);
 export const DiscordCode = data => api.post('/register/discord/code', data);
-export const DiscordRemove = () => api.post('/register/discord/remove');
+export const DiscordRemove = () => api.post('/register/discord/remove', {});
 
 // cups
 export const Cups = () => api.get('cups');
@@ -144,6 +162,8 @@ export const CupEvents = cupGroupIndex =>
   api.get(`cups/events/${cupGroupIndex}`);
 export const CupEvent = data =>
   api.get(`cups/event/${data.cupGroupIndex}/${data.cupIndex}`);
+export const CupEventByTimeIndex = index =>
+  api.get(`cups/eventByTimeIndex/${index}`);
 export const UpdateCup = (cupGroupIndex, data) =>
   api.post(`cups/edit/${cupGroupIndex}`, data);
 export const UpdateCupBlog = data => api.post(`cups/blog/add`, data);
@@ -187,6 +207,8 @@ export const PersonalLatest = data =>
   api.get(
     `allfinished/${data.KuskiIndex}/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,
   );
+export const PersonalLatestRuns = data =>
+  api.get(`allfinished/runs/${data.KuskiIndex}/${data.limit}`);
 export const LeaderHistory = data => {
   const { from = '', to = '', KuskiIndex = '', BattleIndex = '' } = data;
   return api.get(
@@ -208,6 +230,12 @@ export const CrippledPersonal = (LevelIndex, KuskiIndex = 0, cripple, limit) =>
 
 export const CrippledTimeStats = (LevelIndex, KuskiIndex = 0, cripple) =>
   api.get(`crippled/timeStats/${LevelIndex}/${KuskiIndex}/${cripple}`);
+
+export const CrippledLevelPackRecords = (LevelPackName, cripple) =>
+  api.get(`crippled/levelPackRecords/${LevelPackName}/${cripple}`);
+
+export const CrippledLevelPackPersonalRecords = (LevelPackName, KuskiIndex) =>
+  api.get(`crippled/levelPackPersonalRecords/${LevelPackName}/${KuskiIndex}`);
 
 // levelpack
 export const LevelPacks = () => api.get('levelpack');
@@ -251,8 +279,11 @@ export const LevelPackLevelStats = async (byName, NameOrIndex) => {
 
   return ret;
 };
+export const LevelPack = (LevelPackName, levels = 0) =>
+  api.get(`levelpack/${LevelPackName}`, {
+    levels: levels ? '1' : undefined,
+  });
 
-export const LevelPack = LevelPackName => api.get(`levelpack/${LevelPackName}`);
 export const TotalTimes = data =>
   api.get(`levelpack/${data.levelPackIndex}/totaltimes/${data.eolOnly}`);
 export const PersonalTimes = data =>
@@ -264,7 +295,25 @@ export const PersonalWithMulti = data =>
     `levelpack/${data.name}/personalwithmulti/${data.PersonalKuskiIndex}/${data.eolOnly}`,
   );
 export const LevelPackStats = data =>
-  api.get(`levelpack/${data.name}/stats/${data.eolOnly}`);
+  api.get(`levelpack/${data.name}/stats/${data.eolOnly}`, null, {
+    timeout: 60000,
+  });
+export const LevelPackStatsFilter = data =>
+  api.get(
+    `levelpack/${data.name}/stats/${data.eolOnly}/${data.filter}/${data.filterValue}`,
+    null,
+    {
+      timeout: 60000,
+    },
+  );
+export const LevelPackRecords = data =>
+  api.get(`levelpack/${data.name}/records/${data.eolOnly ? 1 : 0}`);
+export const LevelPackRecordsFilter = data =>
+  api.get(
+    `levelpack/${data.name}/records/${data.eolOnly ? 1 : 0}/${data.filter}/${
+      data.filterValue
+    }`,
+  );
 export const MultiRecords = LevelPackName =>
   api.get(`levelpack/${LevelPackName}/multirecords`);
 export const LevelPackSearch = q => api.get(`levelpack/search/${q}`);
@@ -287,13 +336,19 @@ export const LevelPackFavAdd = data =>
 export const LevelPackFavRemove = data =>
   api.post('levelpack/favourite/remove', data);
 export const LevelPackFavs = () => api.get('levelpack/favourite');
-
 export const IntBestTimes = kuskiIndex => {
   return api.get(`levelpack/internals/besttimes/${kuskiIndex}`);
 };
-
 export const LevelPacksByLevel = LevelIndex =>
   api.get(`levelpack/byLevel/${+LevelIndex}`);
+export const LatestLevelPacks = limit => api.get(`levelpack/latest/${limit}`);
+
+export const LevelPackRecordHistory = (name, opts) =>
+  api.get(`levelpack/record-history/${name}`, {
+    limit: opts.limit,
+    offset: opts.offset,
+    sort: opts.sort || 'desc',
+  });
 
 // collections
 export const AddCollection = data =>
@@ -309,6 +364,10 @@ export const DeletePack = data =>
 // besttime
 export const Besttime = data =>
   api.get(`besttime/${data.levelId}/${data.limit}/${data.eolOnly}`);
+export const BesttimeFilter = data =>
+  api.get(
+    `besttime/${data.levelId}/${data.limit}/${data.eolOnly}/${data.filter}/${data.filterValue}`,
+  );
 export const PersonalLatestPRs = data =>
   api.get(
     `besttime/latest/${data.KuskiIndex}/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,
@@ -332,6 +391,7 @@ export const BattlesSearchByFilename = data =>
   api.get(`battle/search/byFilename/${data.q}/${data.offset}`);
 export const BattlesSearchByDesigner = data =>
   api.get(`battle/search/byDesigner/${data.q}/${data.offset}`);
+export const BattlesSearch = data => api.get(`battle/search/generic`, data);
 export const BattlesByLevel = LevelIndex =>
   api.get(`battle/byLevel/${LevelIndex}`);
 export const BattleResults = BattleIndex =>
@@ -355,6 +415,8 @@ export const BattleListPeriod = data =>
 export const BattleReplays = BattleIndex =>
   api.get(`battle/replays/${BattleIndex}`);
 export const LatestBattles = limit => api.get(`battle/${limit}`);
+export const LatestBattleReplays = limit =>
+  api.get(`battle/replays?limit=${limit}`);
 
 // players
 export const PlayersSearch = data =>
@@ -365,9 +427,10 @@ export const UserInfo = KuskiIndex => api.get(`player/${KuskiIndex}`);
 export const UserInfoByIdentifier = data =>
   api.get(`player/${data.IdentifierType}/${data.KuskiIdentifier}`);
 export const UpdateUserInfo = data => api.post(`register/update`, data);
-export const Ignore = Kuski => api.post(`player/ignore/${Kuski}`);
+export const Ignore = Kuski => api.post(`player/ignore/${Kuski}`, {});
 export const Ignored = () => api.get('player/ignored');
-export const Unignore = KuskiIndex => api.post(`player/unignore/${KuskiIndex}`);
+export const Unignore = KuskiIndex =>
+  api.post(`player/unignore/${KuskiIndex}`, {});
 export const Players = () => api.get('player/');
 export const GetCrew = () => api.get('player/crew/');
 export const NotificationSettings = () => api.get('player/settings');
@@ -388,10 +451,42 @@ export const SearchChat = data => api.get('chatlog', { params: data });
 export const Level = (LevelIndex, withLevelStats = false) =>
   api.get(`level/${LevelIndex}`, { stats: withLevelStats ? '1' : '' });
 export const LevelData = LevelIndex => api.get(`level/leveldata/${LevelIndex}`);
-export const LevelTimeStats = LevelIndex =>
-  api.get(`level/timestats/${LevelIndex}`);
+export const LevelTimeStats = ({ LevelIndex, from, to }) =>
+  api.get(`level/timestats/${LevelIndex}`, { from, to });
 export const UpdateLevel = data =>
   api.post(`level/${data.LevelIndex}`, data.update);
+export const UpdateLevelTags = data =>
+  api.post(`level/${data.LevelIndex}/tags`, data.tags);
+export const Levels = ({
+  page,
+  pageSize,
+  tags,
+  sortBy,
+  order,
+  levelPack,
+  excludedTags,
+  addedBy,
+  finished,
+  battled,
+  finishedBy,
+  q,
+}) => {
+  return api.get(`level`, {
+    page,
+    pageSize,
+    tags,
+    sortBy,
+    order,
+    levelPack,
+    excludedTags,
+    addedBy,
+    finished,
+    battled,
+    finishedBy,
+    q,
+  });
+};
+export const GetLevelKuskis = data => api.get(`level/kuskis`);
 
 // ranking
 export const PersonalRanking = KuskiIndex =>
@@ -404,9 +499,9 @@ export const RankingHistoryByBattle = BattleIndex =>
 // mod
 export const NickRequests = () => api.get(`mod/nickrequests`);
 export const NickAccept = data =>
-  api.post(`mod/nickrequests/accept/${data.SiteSettingIndex}`);
+  api.post(`mod/nickrequests/accept/${data.SiteSettingIndex}`, {});
 export const NickDecline = data =>
-  api.post(`mod/nickrequests/decline/${data.SiteSettingIndex}`);
+  api.post(`mod/nickrequests/decline/${data.SiteSettingIndex}`, {});
 export const Banlist = () => api.get('mod/banlist');
 export const BanlistKuski = KuskiIndex => api.get(`mod/banlist/${KuskiIndex}`);
 export const BanKuski = data => api.post('mod/bankuski', data);
@@ -435,6 +530,9 @@ export const DeleteFile = data =>
   api.delete(`upload/${data.index}/${data.uuid}/${data.filename}`);
 
 // tags
+export const GetReplayTags = () => api.get(`tag?type=replay`);
+export const GetLevelTags = () => api.get(`tag?type=level`);
+export const GetLevelPackTags = () => api.get(`tag?type=levelpack`);
 export const GetTags = () => api.get(`tag`);
 export const CreateTag = data => api.post(`tag`, data);
 export const UpdateTag = (TagIndex, data) => api.put(`tag/${TagIndex}`, data);
@@ -443,7 +541,24 @@ export const DeleteTag = TagIndex => api.delete(`tag/${TagIndex}`);
 // notifications
 export const GetNotifications = () => api.get(`notification`);
 export const GetNotificationsCount = () => api.get(`notification/count`);
-export const MarkNotificationsSeen = () => api.post(`notification/markSeen`);
+export const MarkNotificationsSeen = () =>
+  api.post(`notification/markSeen`, {});
 
 // status
 export const SystemStatus = () => api.get('news/status');
+
+// battle league
+export const BattleLeagues = () => api.get('battleleague');
+export const AddBattleLeague = data => api.post('battleleague/add', data);
+export const BattleLeague = shortName => api.get(`battleleague/${shortName}`);
+export const AddBattleLeagueBattle = data =>
+  api.post('battleleague/add/battle', data);
+export const UpdateBattleLeagueBattle = data =>
+  api.post('battleleague/update/battle', data);
+export const DeleteBattleLeagueBattle = id =>
+  api.delete(`battleleague/delete/battle/${id}`);
+
+// recap
+export const RecapOverall = () => api.get('recap/2023');
+export const RecapPlayer = id => api.get(`recap/2023/${id}`);
+export const RecapBestof = () => api.get('recap/bestof/2023');
