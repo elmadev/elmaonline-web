@@ -39,17 +39,11 @@ const StatsTable = ({ data, loading }) => {
   };
 
   const lastPlayed = () => {
-    return maxBy(
-      data.filter(f => f.Finished !== 'S'),
-      'LastPlayed',
-    ).LastPlayed;
+    return maxBy(data, 'LastPlayed').LastPlayed;
   };
 
   const firstPlayed = () => {
-    return minBy(
-      data.filter(f => f.Finished !== 'S'),
-      'FirstPlayed',
-    ).FirstPlayed;
+    return minBy(data, 'FirstPlayed').FirstPlayed;
   };
 
   return (
