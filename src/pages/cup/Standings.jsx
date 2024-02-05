@@ -83,7 +83,11 @@ const Standings = props => {
                 {standings.player.map((r, no) => (
                   <ListRow key={r.KuskiIndex}>
                     <ListCell width={70}>
-                      <Position r={r} no={no} amountEvents={events.length} />
+                      <Position
+                        r={r}
+                        no={r.FinalPosition ? r.FinalPosition - 1 : no}
+                        amountEvents={events.length}
+                      />
                     </ListCell>
                     <ListCell>
                       <Kuski kuskiData={r.KuskiData} team flag />

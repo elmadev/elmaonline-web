@@ -45,6 +45,7 @@ import { MergeContainer } from 'components/RecListItem';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Row, Column } from 'components/Containers';
 import { pts } from 'utils/cups';
+import { mod } from 'utils/nick';
 
 const getLink = replay => {
   let link = '';
@@ -299,29 +300,33 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
               />
             </AccordionDetails>
           </Accordion>
-          {userid === `${replay.UploadedBy}` && type === 'replay' && (
+          {(userid === `${replay.UploadedBy}` || mod() === 1) && type === 'replay' && (
             <Accordion>
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Header h3>Edit replay</Header>
               </AccordionSummary>
               <AccordionDetails style={{ flexDirection: 'column' }}>
-                <TextField
-                  name="Comment"
-                  value={edit.Comment}
-                  onChange={value => setEdit({ field: 'Comment', value })}
-                />
+                {userid === `${replay.UploadedBy}` && (
+                  <TextField
+                    name="Comment"
+                    value={edit.Comment}
+                    onChange={value => setEdit({ field: 'Comment', value })}
+                  />
+                )}
                 <TextField
                   name="Driven by"
                   value={edit.DrivenBy}
                   onChange={value => setEdit({ field: 'DrivenBy', value })}
                 />
-                <FieldBoolean
-                  label="Unlisted"
-                  value={edit.Unlisted}
-                  onChange={() =>
-                    setEdit({ field: 'Unlisted', value: 1 - edit.Unlisted })
-                  }
-                />
+                {userid === `${replay.UploadedBy}` && (
+                  <FieldBoolean
+                    label="Unlisted"
+                    value={edit.Unlisted}
+                    onChange={() =>
+                      setEdit({ field: 'Unlisted', value: 1 - edit.Unlisted })
+                    }
+                  />
+                )}
                 <Box padding={2}>
                   <Typography color="textSecondary">Tags</Typography>
                   {tagOptions.map(option => {

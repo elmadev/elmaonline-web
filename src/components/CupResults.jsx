@@ -33,7 +33,7 @@ const CupResults = props => {
       >
         {results.map((r, no) => (
           <ListRow key={r.KuskiIndex}>
-            <ListCell>{no + 1}.</ListCell>
+            <ListCell>{r.Position ? r.Position : no + 1}.</ListCell>
             <ListCell>
               {cup.TeamPoints ? (
                 <Kuski
