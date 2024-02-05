@@ -239,10 +239,12 @@ export default function LevelList({
             </FormControl>
             <KuskiFilter>
               <KuskiAutoComplete
-                disabled={finished === 'all'}
                 list={kuskiOptions}
-                value={finishedBy}
+                selected={finishedBy}
                 onChange={newValue => {
+                  if (finished === 'all') {
+                    setFinished(true);
+                  }
                   setFinishedBy(newValue);
                   updatePage(0);
                 }}
