@@ -159,6 +159,8 @@ const calcSkipStandings = (
   cup,
   eventIndex,
 ) => {
+  let lastPoints = 0;
+  let drawPos = 0;
   return standings
     .map(s => {
       const totalEvents = forceSkip ? finishedEvents : cup.Events;
@@ -184,23 +186,51 @@ const calcSkipStandings = (
       return { ...s, AllPoints, Points, AllPointsDetailed };
     })
     .sort((a, b) => b.Points - a.Points)
-    .map((s, i) => ({
-      ...s,
-      Position: s.Position
-        ? { ...s.Position, [`${eventIndex + 1}`]: i + 1 }
-        : { [`${eventIndex + 1}`]: i + 1 },
-    }));
+    .map((s, i) => {
+      let position = i + 1;
+      if (lastPoints === s.Points) {
+        if (!drawPos) {
+          drawPos = i;
+        }
+        position = drawPos;
+      } else if (drawPos) {
+        drawPos = 0;
+      }
+      lastPoints = s.Points;
+      return {
+        ...s,
+        Position: s.Position
+          ? { ...s.Position, [`${eventIndex + 1}`]: position }
+          : { [`${eventIndex + 1}`]: position },
+        FinalPosition: position,
+      };
+    });
 };
 
 const calcStandings = (standings, eventIndex) => {
+  let lastPoints = 0;
+  let drawPos = 0;
   return standings
     .sort((a, b) => b.Points - a.Points)
-    .map((s, i) => ({
-      ...s,
-      Position: s.Position
-        ? { ...s.Position, [`${eventIndex + 1}`]: i + 1 }
-        : { [`${eventIndex + 1}`]: i + 1 },
-    }));
+    .map((s, i) => {
+      let position = i + 1;
+      if (lastPoints === s.Points) {
+        if (!drawPos) {
+          drawPos = i;
+        }
+        position = drawPos;
+      } else if (drawPos) {
+        drawPos = 0;
+      }
+      lastPoints = s.Points;
+      return {
+        ...s,
+        Position: s.Position
+          ? { ...s.Position, [`${eventIndex + 1}`]: position }
+          : { [`${eventIndex + 1}`]: position },
+        FinalPosition: position,
+      };
+    });
 };
 
 export const calculateStandings = (events, cup, simple, forceSkip = false) => {
@@ -232,7 +262,7 @@ export const calculateStandings = (events, cup, simple, forceSkip = false) => {
       const pointsDetailed = {
         Points: time.Points,
         LevelIndex: event.LevelIndex,
-        Position: index + 1,
+        Position: time.Position ? time.Position : index + 1,
         TotalPlayers: event.CupTimes.length,
         Skipped: false,
         Event: eventIndex + 1,
