@@ -7,6 +7,7 @@ export default {
       revealOnClick: false,
       autoPlay: false,
       grass: true,
+      arrows: false,
       pictures: true,
       customSkyGround: true,
       theater: false,

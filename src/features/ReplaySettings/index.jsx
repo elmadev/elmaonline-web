@@ -15,6 +15,7 @@ const ReplaySettings = ({ battle = false }) => {
       pictures,
       customSkyGround,
       theater,
+      arrows,
     },
   } = useStoreState(state => state.ReplaySettings);
   const { toggleSetting } = useStoreActions(actions => actions.ReplaySettings);
@@ -50,6 +51,12 @@ const ReplaySettings = ({ battle = false }) => {
             value={grass}
             label="Grass"
             onChange={() => toggleSetting('grass')}
+          />
+          <FieldBoolean
+            size="small"
+            value={arrows}
+            label="Gravity arrows"
+            onChange={() => toggleSetting('arrows')}
           />
           <FieldBoolean
             size="small"
