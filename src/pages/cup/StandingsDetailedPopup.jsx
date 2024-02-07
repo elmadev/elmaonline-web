@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import Link from 'components/Link';
 import Header from 'components/Header';
 import { pts } from 'utils/cups';
+import useKeyPress from '../../hooks/use-keypress';
 
 const StandingsDetailedPopup = ({ data, events, close }) => {
+  useKeyPress('Escape', close);
   return (
     <DetailedPopup>
       <DetailedPopupContainer>
