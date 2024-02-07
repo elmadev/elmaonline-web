@@ -37,7 +37,7 @@
     "react-tiny-bbcode": "^0.1.4",
     "react-window": "^1.8.6",
     "recharts": "^2.2.0",
-    "recplayer-react": "^1.6.0",
+    "recplayer-react": "^1.6.4",
     "styled-components": "^5.2.3",
     "universal-cookie": "^4.0.4",
     "use-debounce": "^6.0.1",

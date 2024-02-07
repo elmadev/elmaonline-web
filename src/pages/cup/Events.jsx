@@ -12,6 +12,8 @@ import Download from 'components/Download';
 import EventItem from 'components/EventItem';
 import config from 'config';
 import { Paper } from 'components/Paper';
+import { admins } from 'utils/cups';
+import { nickId } from 'utils/nick';
 import Interviews from './Interviews';
 import Leaders from './Leaders';
 import EventStandings from './EventStandings';
@@ -45,6 +47,9 @@ const Cups = props => {
   if (event === undefined) {
     return <div>Event does not exist.</div>;
   }
+
+  const isCupAdmin =
+    admins(cup).length > 0 && admins(cup).indexOf(nickId()) > -1;
 
   return (
     <Grid container spacing={0}>
@@ -111,6 +116,9 @@ const Cups = props => {
               {hasEnded && <Tab label="Interviews" value="interviews" />}
               {hasEnded && <Tab label="Leaders" value="leaders" />}
               {hasEnded && <Tab label="Standings" value="standings" />}
+              {hasEnded && isCupAdmin && (
+                <Tab label="Paste friendly" value="paste" />
+              )}
             </Tabs>
             <Paper>
               {eventTab === 'results' && (
@@ -139,6 +147,15 @@ const Cups = props => {
                 <EventStandings
                   events={events.slice(0, eventIndex + 1)}
                   cup={cup}
+                />
+              )}
+              {eventTab === 'paste' && hasEnded && (
+                <CupResults
+                  CupIndex={event.CupIndex}
+                  cup={cup}
+                  eventNo={eventIndex + 1}
+                  results={event.CupTimes}
+                  pasteFriendly
                 />
               )}
             </Paper>
