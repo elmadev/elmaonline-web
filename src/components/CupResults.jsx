@@ -14,11 +14,36 @@ import { pts } from 'utils/cups';
 
 const CupResults = props => {
   const navigate = useNavigate();
-  const { results, cup, eventNo, CupIndex } = props;
+  const { results, cup, eventNo, CupIndex, pasteFriendly } = props;
 
   const goToReplay = (index, filename) => {
     navigate(`/r/c-${index}/${filename}`);
   };
+
+  if (pasteFriendly) {
+    return (
+      <Container>
+        {results.map((r, no) => (
+          <div>
+            {r.Position ? r.Position : no + 1}.{' '}
+            {cup.TeamPoints ? (
+              <Kuski
+                kuskiData={{
+                  Country: r.KuskiData.Country,
+                  Kuski: r.KuskiData.Kuski,
+                  TeamData: r.TeamData,
+                }}
+                team
+              />
+            ) : (
+              <Kuski kuskiData={r.KuskiData} team />
+            )}{' '}
+            <Time time={r.Time} apples={-1} /> {pts(r.Points)}
+          </div>
+        ))}
+      </Container>
+    );
+  }
 
   return (
     <Container>
