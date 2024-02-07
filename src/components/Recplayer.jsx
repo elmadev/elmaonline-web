@@ -16,7 +16,7 @@ const Recplayer = props => {
     merge,
   } = props;
   const {
-    settings: { grass, pictures, customSkyGround, zoomScale },
+    settings: { grass, pictures, customSkyGround, zoomScale, arrows },
   } = useStoreState(state => state.ReplaySettings);
 
   let defaultZoom = 1;
@@ -70,6 +70,7 @@ const Recplayer = props => {
             grass,
             pictures,
             customBackgroundSky: customSkyGround,
+            arrows,
           }}
           showStartPos
           fitLev={!rec}
