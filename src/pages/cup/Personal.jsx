@@ -39,17 +39,19 @@ const Personal = () => {
   const [previewRecIndex, setPreviewRecIndex] = useState(null);
 
   useEffect(() => {
-    getMyReplays(cup.CupGroupIndex);
-    const indices = currentEventIndex(events);
-    forEach(indices, index => {
-      getMyTimes({
-        LevelIndex: index,
-        KuskiIndex: nickId(),
-        limit: 10000,
-        levels: indices,
+    if (cup?.CupGroupIndex && events?.length > 0) {
+      getMyReplays(cup.CupGroupIndex);
+      const indices = currentEventIndex(events);
+      forEach(indices, index => {
+        getMyTimes({
+          LevelIndex: index,
+          KuskiIndex: nickId(),
+          limit: 10000,
+          levels: indices,
+        });
       });
-    });
-  }, []);
+    }
+  }, [cup, events]);
 
   const isPlayingPreview = CupTimeIndex => {
     return CupTimeIndex === previewRecIndex;
