@@ -22,7 +22,7 @@ const Standings = props => {
 
   useEffect(() => {
     setStandings(calculateStandings(events, cup, false));
-  }, []);
+  }, [events, cup]);
 
   const onKuskiRowClick = kuskiData => {
     setStandingsDetailedData(kuskiData);
@@ -86,7 +86,9 @@ const Standings = props => {
                       <Position
                         r={r}
                         no={r.FinalPosition ? r.FinalPosition - 1 : no}
-                        amountEvents={events.length}
+                        amountEvents={
+                          events.filter(e => e.Updated && e.ShowResults).length
+                        }
                       />
                     </ListCell>
                     <ListCell>

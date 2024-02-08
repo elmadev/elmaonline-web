@@ -167,23 +167,28 @@ const calcSkipStandings = (
       if (s.Events <= totalEvents - cup.Skips) {
         return s;
       }
-      const { AllPoints } = s;
-      let { Points, AllPointsDetailed } = s;
+      let allPoints = s.AllPoints;
+      let points = s.Points;
+      let allPointsDetailed = s.AllPointsDetailed;
       for (let i = 0; i < s.Events - (totalEvents - cup.Skips); i += 1) {
-        const min = Math.min(...AllPoints);
-        const removeIndex = AllPoints.findIndex(ap => ap === min);
-        AllPoints.splice(removeIndex, 1);
-        Points -= min;
-
-        const skippedLevel = AllPointsDetailed.find(apd => apd.Points === min);
-        AllPointsDetailed = AllPointsDetailed.map(apd => {
+        const min = Math.min(...allPoints);
+        const removeIndex = allPoints.findIndex(ap => ap === min);
+        allPoints.splice(removeIndex, 1);
+        points -= min;
+        const skippedLevel = allPointsDetailed.find(apd => apd.Points === min);
+        allPointsDetailed = allPointsDetailed.map(apd => {
           if (apd.LevelIndex === skippedLevel.LevelIndex) {
             return { ...apd, Skipped: true };
           }
           return apd;
         });
       }
-      return { ...s, AllPoints, Points, AllPointsDetailed };
+      return {
+        ...s,
+        AllPoints: allPoints,
+        Points: points,
+        AllPointsDetailed: allPointsDetailed,
+      };
     })
     .sort((a, b) => b.Points - a.Points)
     .map((s, i) => {
@@ -245,7 +250,8 @@ export const calculateStandings = (events, cup, simple, forceSkip = false) => {
       e => parseInt(e.EndTime) < new Date().getTime() / 1000,
     ).length;
   }
-  forEach(events, (event, eventIndex) => {
+  const completedEvents = events.filter(e => e.Updated && e.ShowResults);
+  forEach(completedEvents, (event, eventIndex) => {
     teamEntries = {};
     nationEntries = {};
     forEach(event.CupTimes, (time, index) => {
