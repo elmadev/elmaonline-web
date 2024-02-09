@@ -152,64 +152,35 @@ export const mopoPoints = [
   1,
 ];
 
-const calcSkipStandings = (
-  standings,
-  forceSkip,
-  finishedEvents,
-  cup,
-  eventIndex,
-) => {
-  let lastPoints = 0;
-  let drawPos = 0;
-  return standings
-    .map(s => {
-      const totalEvents = forceSkip ? finishedEvents : cup.Events;
-      if (s.Events <= totalEvents - cup.Skips) {
-        return s;
-      }
-      let allPoints = s.AllPoints;
-      let points = s.Points;
-      let allPointsDetailed = s.AllPointsDetailed;
-      for (let i = 0; i < s.Events - (totalEvents - cup.Skips); i += 1) {
-        const min = Math.min(...allPoints);
-        const removeIndex = allPoints.findIndex(ap => ap === min);
-        allPoints.splice(removeIndex, 1);
-        points -= min;
-        const skippedLevel = allPointsDetailed.find(apd => apd.Points === min);
-        allPointsDetailed = allPointsDetailed.map(apd => {
-          if (apd.LevelIndex === skippedLevel.LevelIndex) {
-            return { ...apd, Skipped: true };
-          }
-          return apd;
-        });
-      }
-      return {
-        ...s,
-        AllPoints: allPoints,
-        Points: points,
-        AllPointsDetailed: allPointsDetailed,
-      };
-    })
-    .sort((a, b) => b.Points - a.Points)
-    .map((s, i) => {
-      let position = i + 1;
-      if (lastPoints === s.Points) {
-        if (!drawPos) {
-          drawPos = i;
+const calcSkipStandings = (standings, forceSkip, finishedEvents, cup) => {
+  return standings.map(s => {
+    const totalEvents = forceSkip ? finishedEvents : cup.Events;
+    if (s.Events <= totalEvents - cup.Skips) {
+      return s;
+    }
+    let allPoints = s.AllPoints;
+    let points = s.Points;
+    let allPointsDetailed = s.AllPointsDetailed;
+    for (let i = 0; i < s.Events - (totalEvents - cup.Skips); i += 1) {
+      const min = Math.min(...allPoints);
+      const removeIndex = allPoints.findIndex(ap => ap === min);
+      allPoints.splice(removeIndex, 1);
+      points -= min;
+      const skippedLevel = allPointsDetailed.find(apd => apd.Points === min);
+      allPointsDetailed = allPointsDetailed.map(apd => {
+        if (apd.LevelIndex === skippedLevel.LevelIndex) {
+          return { ...apd, Skipped: true };
         }
-        position = drawPos;
-      } else if (drawPos) {
-        drawPos = 0;
-      }
-      lastPoints = s.Points;
-      return {
-        ...s,
-        Position: s.Position
-          ? { ...s.Position, [`${eventIndex + 1}`]: position }
-          : { [`${eventIndex + 1}`]: position },
-        FinalPosition: position,
-      };
-    });
+        return apd;
+      });
+    }
+    return {
+      ...s,
+      AllPoints: allPoints,
+      Points: points,
+      AllPointsDetailed: allPointsDetailed,
+    };
+  });
 };
 
 const calcStandings = (standings, eventIndex) => {
@@ -367,18 +338,14 @@ export const calculateStandings = (events, cup, simple, forceSkip = false) => {
         }
       }
     });
-    if (cup.Skips) {
-      standings = calcSkipStandings(
-        standings,
-        forceSkip,
-        finishedEvents,
-        cup,
-        eventIndex,
-      );
-    } else {
+    if (eventIndex < completedEvents.length - 1) {
       standings = calcStandings(standings, eventIndex);
     }
   });
+  if (cup.Skips) {
+    standings = calcSkipStandings(standings, forceSkip, finishedEvents, cup);
+  }
+  standings = calcStandings(standings, completedEvents.length);
   return {
     player: standings,
     team: teamStandings.sort((a, b) => b.Points - a.Points),
