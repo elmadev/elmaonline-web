@@ -40,6 +40,7 @@ const Cups = () => {
               <Header h1>Finished Cups</Header>
               {cupList
                 .filter(c => c.Finished === 1)
+                .sort((a, b) => b.CupGroupIndex - a.CupGroupIndex)
                 .map(c => (
                   <LinkWithDesc
                     key={c.ShortName}
