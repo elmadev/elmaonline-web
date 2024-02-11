@@ -7,7 +7,6 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { nickId } from 'utils/nick';
 import Layout from 'components/Layout';
 import Loading from 'components/Loading';
-import { Row } from 'components/Containers';
 import { admins } from 'utils/cups';
 import Events from './Events';
 import Standings from './Standings';
@@ -20,7 +19,6 @@ import Team from './Team';
 
 const Cups = props => {
   const { ShortName } = props;
-  const theme = useContext(ThemeContext);
 
   const cupTab = (() => {
     let c = props['*'];
@@ -51,16 +49,6 @@ const Cups = props => {
     return null;
   }
 
-  const cover = cup.Cover ? cup.Cover : null;
-  let bgColor = null;
-  if (cover) {
-    if (theme.type === 'dark' && cover.split('-')[2]) {
-      bgColor = `#${cover.split('-')[2].split('.')[0]}`;
-    } else if (cover.split('-')[1]) {
-      bgColor = `#${cover.split('-')[1]}`;
-    }
-  }
-
   return (
     <Layout edge t={`Cup - ${cup ? cup.CupName : ShortName}`}>
       {!cup ? (
@@ -85,17 +73,7 @@ const Cups = props => {
             {nickId() > 0 && <Tab label="Team" value="team" />}
             {isCupAdmin && <Tab label="Admin" value="admin" />}
           </Tabs>
-          <CupName bgColor={bgColor}>
-            <Row jc="space-between" ai="center">
-              <Row jc="flex-start" ai="center">
-                {cover ? <Img src={cover} alt="" /> : null}
-                <Header h1>{cup.CupName}</Header>
-              </Row>
-              <Description
-                dangerouslySetInnerHTML={{ __html: cup.Description }}
-              />
-            </Row>
-          </CupName>
+          <CupCover cup={cup} />
           <Router primary={false}>
             <Dashboard default cup={cup} events={events} />
             <div path="events">
@@ -147,10 +125,51 @@ const Cups = props => {
   );
 };
 
+export const CupCover = ({ cup, noBottomMargin = false }) => {
+  const theme = useContext(ThemeContext);
+  const cover = cup.Cover ? cup.Cover : null;
+  let bgColor = null;
+  let textColor = null;
+  let hideHeadline = false;
+  if (cover) {
+    if (theme.type === 'dark' && cover.split('-')[2]) {
+      bgColor = `#${cover.split('-')[2].split('.')[0]}`;
+      if (cover.split('-')[4]) {
+        textColor = `#${cover.split('-')[4].split('.')[0]}`;
+      }
+    } else if (cover.split('-')[1]) {
+      bgColor = `#${cover.split('-')[1].split('.')[0]}`;
+      if (cover.split('-')[3]) {
+        textColor = `#${cover.split('-')[3].split('.')[0]}`;
+      }
+    }
+    if (cover.split('-')[5]?.split('.')[0] === 'hide') {
+      hideHeadline = true;
+    }
+  }
+  return (
+    <CupName noBottomMargin={noBottomMargin} bgColor={bgColor}>
+      <CoverCon>
+        <CoverHeadline>
+          {cover ? <Img src={cover} alt="" /> : null}
+          {hideHeadline ? null : <Header h1>{cup.CupName}</Header>}
+        </CoverHeadline>
+        <Description
+          dangerouslySetInnerHTML={{ __html: cup.Description }}
+          textColor={textColor}
+        />
+      </CoverCon>
+    </CupName>
+  );
+};
+
 const CupName = styled.div`
   padding: 8px;
   background-color: ${p => (p.bgColor ? p.bgColor : 'transparent')};
-  ${p => (p.bgColor ? `margin-bottom: ${p.theme.padSmall};` : '')}
+  ${p =>
+    p.bgColor && !p.noBottomMargin ? `margin-bottom: ${p.theme.padSmall};` : ''}
+  ${p => p.link && 'cursor: pointer;'}
+  border: 1px solid black;
   h1 {
     margin: 0;
     margin-right: ${p => p.theme.padLarge};
@@ -161,11 +180,32 @@ const CupName = styled.div`
 const Description = styled.div`
   padding-bottom: 8px;
   padding-top: 8px;
+  ${p => (p.textColor ? `color: ${p.textColor};` : '')}
 `;
 
 const Img = styled.img`
   height: 100px;
   margin-right: ${p => p.theme.padLarge};
+`;
+
+const CoverCon = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
+`;
+
+const CoverHeadline = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  @media (max-width: 400px) {
+    flex-direction: column;
+  }
 `;
 
 export default Cups;

@@ -11,6 +11,7 @@ import Recplayer from 'components/Recplayer';
 import { getPrivateCupRecUri } from 'utils/cups';
 import PreviewRecButton from 'components/PreviewRecButton';
 import FieldBoolean from 'components/FieldBoolean';
+import { CupUpload } from './Dashboard';
 import config from 'config';
 
 const eventSort = (a, b) => a.CupIndex - b.CupIndex;
@@ -147,6 +148,9 @@ const Team = () => {
                   </Fragment>
                 ))}
             </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <CupUpload />
           </Grid>
         </Grid>
       )}
