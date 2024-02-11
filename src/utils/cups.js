@@ -1,5 +1,6 @@
 import { forEach } from 'lodash';
 import config from 'config';
+import { nickId } from 'utils/nick';
 import { zeroPad } from 'utils/time';
 
 export const admins = cup => {
@@ -221,7 +222,11 @@ export const calculateStandings = (events, cup, simple, forceSkip = false) => {
       e => parseInt(e.EndTime) < new Date().getTime() / 1000,
     ).length;
   }
-  const completedEvents = events.filter(e => e.Updated && e.ShowResults);
+  const isCupAdmin =
+    admins(cup).length > 0 && admins(cup).indexOf(nickId()) > -1;
+  const completedEvents = events.filter(
+    e => e.Updated && (e.ShowResults || isCupAdmin),
+  );
   forEach(completedEvents, (event, eventIndex) => {
     teamEntries = {};
     nationEntries = {};
