@@ -15,6 +15,7 @@ import FeedCard from './cards/FeedCard';
 import PacksCard from './cards/PacksCard';
 import RankingCard from './cards/RankingCard';
 import ExtrasCard from './cards/ExtrasCard';
+import HighlightedCup from './cards/HighlightedCup';
 
 export default function Home() {
   const { loggedIn } = useStoreState(state => state.Login);
@@ -28,6 +29,7 @@ export default function Home() {
   return (
     <Layout t="Home">
       <Grid container spacing={3}>
+        <HighlightedCup />
         {!loggedIn && (
           <Grid container item xs={12}>
             <Grid item xs={12}>
