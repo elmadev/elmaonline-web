@@ -113,11 +113,15 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
   };
 
   const selectToShare = rec => {
+    let unlisted = false;
+    if (rec.LevelData?.LevelName?.substring(0, 5).toLowerCase() === 'wcup9') {
+      unlisted = true;
+    }
     setShare({
       time: rec,
       comment: '',
       hide: false,
-      unlisted: false,
+      unlisted,
       tags: [],
     });
   };
@@ -362,7 +366,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                   />
                 }
                 label="Unlisted"
-                title="You only and people you share the link with can see it"
+                title="Only you and people you share the link with can see it"
               />
             </div>
             <div>
