@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Snackbar, SnackbarContent, IconButton } from '@material-ui/core';
 import { Close as CloseIcon } from '@material-ui/icons';
 
-const Feedback = ({ open, text, type, close }) => {
+const Feedback = ({ open, text, type, close, autoHide = true }) => {
   const [show, setShow] = useState(false);
   useEffect(() => {
     setShow(open);
@@ -20,7 +20,7 @@ const Feedback = ({ open, text, type, close }) => {
         horizontal: 'left',
       }}
       open={show}
-      autoHideDuration={7000}
+      autoHideDuration={autoHide ? 7000 : null}
       onClose={() => {
         setShow(false);
         if (close) {

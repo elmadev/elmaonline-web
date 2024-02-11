@@ -23,6 +23,7 @@ import config from 'config';
 import { authToken, nick } from 'utils/nick';
 import { xor } from 'lodash';
 import { renameFile } from 'utils/misc';
+import Feedback from 'components/Feedback';
 
 const Upload = ({ onUpload, filetype }) => {
   const {
@@ -46,6 +47,7 @@ const Upload = ({ onUpload, filetype }) => {
   const [duplicateReplayIndex, setDuplicateReplayIndex] = useState(0);
   const [uploaded, setUploaded] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [warning, setWarning] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [update, setUpdate] = useState(0);
 
@@ -54,10 +56,17 @@ const Upload = ({ onUpload, filetype }) => {
     const fixedFiles = newFiles.map(f => {
       return renameFile(f, f.name.replace('.REC', '.rec'));
     });
+    let unlisted = false;
+    if (fixedFiles[0].name.substring(0, 2).toLowerCase() === 'wc') {
+      unlisted = true;
+      setWarning(
+        `It looks like you're uploading a World Cup replay, it will be unlisted by default. Please avoid sharing it publicly. To share with your team, you can also use the team tab on the cup page.`,
+      );
+    }
     fixedFiles.forEach((file, index) => {
       newFileInfo[file.name] = {
         name: file.name,
-        unlisted: false,
+        unlisted,
         hide: false,
         tas: false,
         bug: false,
@@ -376,7 +385,7 @@ const Upload = ({ onUpload, filetype }) => {
                                 />
                               }
                               label="Unlisted"
-                              title="You only and people you share the link with can see it"
+                              title="Only you and people you share the link with can see it"
                             />
                           </div>
                           <div>
@@ -440,6 +449,13 @@ const Upload = ({ onUpload, filetype }) => {
         link={duplicateLink}
         options={duplicateOptions}
         onClose={i => handleAlert(i)}
+      />
+      <Feedback
+        open={warning !== ''}
+        text={warning}
+        type="warning"
+        close={() => setWarning('')}
+        autoHide={false}
       />
     </>
   );
