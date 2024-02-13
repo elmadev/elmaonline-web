@@ -40,11 +40,11 @@ const Dashboard = props => {
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <CupUpload />
-          <Paper padding top>
+          <Paper padding>
             <Header h2>Current Event</Header>
             <CupCurrent events={events} />
           </Paper>
+          <CupUpload top />
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper>
@@ -93,7 +93,7 @@ const Dashboard = props => {
   );
 };
 
-export const CupUpload = ({ onUpload }) => {
+export const CupUpload = ({ onUpload, top = false }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [warning, setWarning] = useState('');
@@ -156,7 +156,7 @@ export const CupUpload = ({ onUpload }) => {
   };
 
   return (
-    <Paper padding>
+    <Paper padding top={top}>
       <Header h2>Upload</Header>
       <Text>
         Cup replays are saved automatically, so you won't need to upload your
