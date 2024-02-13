@@ -32,7 +32,7 @@ import {
 } from 'components/List';
 import useElementSize from 'utils/useWindowSize';
 import Link from 'components/Link';
-import { nick } from 'utils/nick';
+import { nick, nickId } from 'utils/nick';
 import Button from 'components/Buttons';
 import { xor } from 'lodash';
 import Preview from './Preview';
@@ -184,12 +184,14 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                 label="Only PR's"
                 control={<RadioThin size="small" />}
               />
-              <FormControlLabel
-                value="runsAndReplays"
-                checked={type === 'runsAndReplays'}
-                label="All runs"
-                control={<RadioThin size="small" />}
-              />
+              {KuskiIndex === nickId() ? (
+                <FormControlLabel
+                  value="runsAndReplays"
+                  checked={type === 'runsAndReplays'}
+                  label="All runs"
+                  control={<RadioThin size="small" />}
+                />
+              ) : null}
             </RadioGroup>
           </ListCell>
         </ListHeader>
@@ -247,7 +249,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                       }
                     }}
                   >
-                    <ListCell width={120}>
+                    <ListCell width={120} title={time.LevelData?.LongName}>
                       <Level
                         LevelIndex={time.LevelIndex}
                         LevelData={time.LevelData}
