@@ -150,7 +150,7 @@ const Team = () => {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CupUpload />
+            <CupUpload onUpload={() => getTeamReplays(cup.CupGroupIndex)} />
           </Grid>
         </Grid>
       )}

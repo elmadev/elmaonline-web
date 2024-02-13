@@ -93,7 +93,7 @@ const Dashboard = props => {
   );
 };
 
-export const CupUpload = () => {
+export const CupUpload = ({ onUpload }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [warning, setWarning] = useState('');
@@ -144,6 +144,9 @@ export const CupUpload = () => {
           }
           if (json.Match === -1 && json.Finished) {
             setWarning(<>Your time was not verified and will not count</>);
+          }
+          if (onUpload) {
+            onUpload();
           }
         }
         setFile(null);
