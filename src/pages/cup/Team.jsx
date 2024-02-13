@@ -18,10 +18,7 @@ const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
 const timeSort = (a, b) => a.Time - b.Time;
 
-const kuskiSort = (a, b) =>
-  a.KuskiData.Kuski.toLowerCase().localeCompare(
-    b.KuskiData.Kuski.toLowerCase(),
-  );
+const uploadedSort = (a, b) => b.CupTimeIndex - a.CupTimeIndex;
 
 const Team = () => {
   const isRehydrated = useStoreRehydrated();
@@ -101,7 +98,7 @@ const Team = () => {
                     <Header h3 top>
                       Event {getEventNumber(e.CupIndex)}
                     </Header>
-                    {e.CupTimes.sort(sortByTime ? timeSort : kuskiSort)
+                    {e.CupTimes.sort(sortByTime ? timeSort : uploadedSort)
                       .filter(t => t.Replay)
                       .map(replay => (
                         <Fragment key={replay.CupTimeIndex}>
@@ -150,7 +147,7 @@ const Team = () => {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CupUpload />
+            <CupUpload onUpload={() => getTeamReplays(cup.CupGroupIndex)} />
           </Grid>
         </Grid>
       )}
