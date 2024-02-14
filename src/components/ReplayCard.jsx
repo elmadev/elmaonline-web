@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import PictureInPictureIcon from '@material-ui/icons/PictureInPicture';
 import LevelMap from 'features/LevelMap';
 import { Level } from 'components/Names';
+import Kuski from 'components/Kuski';
 import { formatDistanceStrict } from 'date-fns';
 import config from 'config';
 import { navigate } from '@reach/router';
@@ -56,7 +57,13 @@ export default function ReplayCard({ replay, onPreviewClick }) {
             <PictureInPictureIcon />
           </IconButton>
         }
-        title={replay.DrivenByData?.Kuski || 'Unknown'}
+        title={
+          replay.DrivenByData ? (
+          <Kuski noLink kuskiData={replay.DrivenByData} />
+          ) : (
+            replay.DrivenByText || 'Unknown'
+          )
+        }
         subheader={formatDistanceStrict(replay.Uploaded * 1000, Date.now(), {
           addSuffix: true,
         })}

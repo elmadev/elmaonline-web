@@ -223,7 +223,11 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
                     ) : null}
                     <Column jc="space-around" l="Small">
                       <div>
-                        <Kuski kuskiData={replay.DrivenByData} flag team />
+                        {replay.DrivenByData ? (
+                          <Kuski kuskiData={replay.DrivenByData} flag team />
+                        ) : (
+                          replay.DrivenByText || 'Unknown'
+                        )}
                       </div>
                       <div>
                         {isWindow ? (
