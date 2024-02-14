@@ -3,7 +3,7 @@ import React, { useEffect, Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { nickId } from 'utils/nick';
 import { Paper } from 'components/Paper';
-import { Grid } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import Header from 'components/Header';
 import Time from 'components/Time';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
@@ -14,7 +14,7 @@ import FieldBoolean from 'components/FieldBoolean';
 import { CupUpload } from './Dashboard';
 import config from 'config';
 import Link from '../../components/Link';
-import { Share } from '@material-ui/icons';
+import { Share, AddBox, IndeterminateCheckBox } from '@material-ui/icons';
 
 const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
@@ -31,6 +31,7 @@ const Team = () => {
   const { showOngoing, sortByTime } = teamOptions;
 
   const [previewRecIndex, setPreviewRecIndex] = useState(null);
+  const [mergeRecIndex, setMergeRecIndex] = useState(null);
 
   useEffect(() => {
     if (cup.CupGroupIndex) {
@@ -45,6 +46,7 @@ const Team = () => {
   const handlePreviewRecButtonClick = CupTimeIndex => {
     const newIndex = isPlayingPreview(CupTimeIndex) ? null : CupTimeIndex;
     setPreviewRecIndex(newIndex);
+    setMergeRecIndex(null);
   };
 
   const isOngoingFilter = teamReplay => {
@@ -64,6 +66,40 @@ const Team = () => {
       .findIndex(teamReplay => teamReplay.CupIndex === CupIndex);
 
     return eventIndex + 1;
+  };
+
+  const canMerge = (cupIndex, cupTimeIndex) => {
+    if (mergeRecIndex !== null || previewRecIndex === null) {
+      return false;
+    }
+
+    if (previewRecIndex === cupTimeIndex) {
+      return false;
+    }
+
+    return (
+      teamReplays
+        .find(e => e.CupIndex === cupIndex)
+        ?.CupTimes.findIndex(r => r.CupTimeIndex === previewRecIndex) > -1
+    );
+  };
+
+  const getMergeRecUri = cupIndex => {
+    const replay = teamReplays
+      .find(e => e.CupIndex === cupIndex)
+      ?.CupTimes.find(r => r.CupTimeIndex === mergeRecIndex);
+
+    if (!replay) {
+      return '';
+    }
+
+    return `;${getPrivateCupRecUri(
+      replay.CupTimeIndex,
+      cup.ShortName,
+      replay.KuskiData.Kuski,
+      replay.Code,
+      getEventNumber(cupIndex),
+    )}`;
   };
 
   if (!isRehydrated) {
@@ -136,6 +172,25 @@ const Team = () => {
                             >
                               <Share />
                             </ShareLink>
+                            {mergeRecIndex === replay.CupTimeIndex ? (
+                              <Button
+                                onClick={() => setMergeRecIndex(null)}
+                                title="Unmerge replay"
+                              >
+                                <IndeterminateCheckBox />
+                              </Button>
+                            ) : (
+                              canMerge(e.CupIndex, replay.CupTimeIndex) && (
+                                <Button
+                                  onClick={() =>
+                                    setMergeRecIndex(replay.CupTimeIndex)
+                                  }
+                                  title="Merge replay"
+                                >
+                                  <AddBox />
+                                </Button>
+                              )
+                            )}
                             {replay.Comment !== '0' &&
                               replay.Comment !== '' && (
                                 <Desc>{replay.Comment}</Desc>
@@ -143,13 +198,13 @@ const Team = () => {
                           </ReplayCon>
                           {isPlayingPreview(replay.CupTimeIndex) && (
                             <Recplayer
-                              rec={getPrivateCupRecUri(
+                              rec={`${getPrivateCupRecUri(
                                 replay.CupTimeIndex,
                                 cup.ShortName,
                                 replay.KuskiData.Kuski,
                                 replay.Code,
                                 getEventNumber(e.CupIndex),
-                              )}
+                              )}${getMergeRecUri(e.CupIndex)}`}
                               lev={`${config.dlUrl}level/${e.LevelIndex}`}
                               height={400}
                               controls
@@ -172,6 +227,7 @@ const Team = () => {
 
 const ShareLink = styled(Link)`
   color: black;
+  padding: 12px;
 `;
 
 const ReplayCon = styled.div`

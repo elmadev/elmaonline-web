@@ -57,6 +57,7 @@ const Recplayer = props => {
     <>
       {RecPlayerReact && lev ? (
         <RecPlayerReact
+          key={rec}
           recUrl={rec}
           levUrl={lev}
           width={width}
