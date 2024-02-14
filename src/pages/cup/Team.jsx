@@ -13,6 +13,8 @@ import PreviewRecButton from 'components/PreviewRecButton';
 import FieldBoolean from 'components/FieldBoolean';
 import { CupUpload } from './Dashboard';
 import config from 'config';
+import Link from '../../components/Link';
+import { Share } from '@material-ui/icons';
 
 const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
@@ -121,6 +123,19 @@ const Team = () => {
                               setPreviewRecIndex={handlePreviewRecButtonClick}
                               CupTimeIndex={replay.CupTimeIndex}
                             />
+                            <ShareLink
+                              to={`/r?levUrl=${config.dlUrl}level/${
+                                e.LevelIndex
+                              }&recUrl=${getPrivateCupRecUri(
+                                replay.CupTimeIndex,
+                                cup.ShortName,
+                                replay.KuskiData.Kuski,
+                                replay.Code,
+                                getEventNumber(e.CupIndex),
+                              )}`}
+                            >
+                              <Share />
+                            </ShareLink>
                             {replay.Comment !== '0' &&
                               replay.Comment !== '' && (
                                 <Desc>{replay.Comment}</Desc>
@@ -154,6 +169,10 @@ const Team = () => {
     </Container>
   );
 };
+
+const ShareLink = styled(Link)`
+  color: black;
+`;
 
 const ReplayCon = styled.div`
   display: flex;
