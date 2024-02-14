@@ -40,6 +40,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { useStoreState, useStoreRehydrated } from 'easy-peasy';
 import { themes, muiTheme } from './theme';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import ReplayStandalone from './pages/replay-standalone';
 
 const Router100 = styled(Router)`
   height: 100%;
@@ -98,6 +99,7 @@ const Routes = () => {
           <Ranking path="ranking" />
           <Recap path="recap" />
           <Register path="register" />
+          <ReplayStandalone path="r" />
           <Replay path="r/:ReplayUuid" />
           <Replay path="r/:ReplayUuid/:RecFileName" />
           <Replays path="replays/*" />
