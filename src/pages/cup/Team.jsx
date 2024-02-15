@@ -99,6 +99,7 @@ const Team = () => {
       replay.KuskiData.Kuski,
       replay.Code,
       getEventNumber(cupIndex),
+      replay.Time,
     )}`;
   };
 
@@ -148,6 +149,7 @@ const Team = () => {
                                 replay.KuskiData.Kuski,
                                 replay.Code,
                                 getEventNumber(e.CupIndex),
+                                replay.Time,
                               )}
                             >
                               {replay.TimeExists === 1 && <>✓ </>}
@@ -168,6 +170,7 @@ const Team = () => {
                                 replay.KuskiData.Kuski,
                                 replay.Code,
                                 getEventNumber(e.CupIndex),
+                                replay.Time,
                               )}`}
                             >
                               <Share />
@@ -204,6 +207,7 @@ const Team = () => {
                                 replay.KuskiData.Kuski,
                                 replay.Code,
                                 getEventNumber(e.CupIndex),
+                                replay.Time,
                               )}${getMergeRecUri(e.CupIndex)}`}
                               lev={`${config.dlUrl}level/${e.LevelIndex}`}
                               height={400}
@@ -226,7 +230,7 @@ const Team = () => {
 };
 
 const ShareLink = styled(Link)`
-  color: black;
+  color: ${p => (p.theme.type === 'dark' ? 'white' : 'black')};
   padding: 12px;
 `;
 

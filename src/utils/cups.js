@@ -2,6 +2,7 @@ import { forEach } from 'lodash';
 import config from 'config';
 import { nickId } from 'utils/nick';
 import { zeroPad } from 'utils/time';
+import { createRecName } from 'utils/misc';
 
 export const admins = cup => {
   let a = [cup.KuskiIndex];
@@ -415,11 +416,15 @@ export const getPrivateCupRecUri = (
   Kuski,
   Code,
   levelNumber,
+  time = 0,
 ) => {
-  return `${config.dlUrl}cupreplay/${CupTimeIndex}/${ShortName}${zeroPad(
-    levelNumber,
-    2,
-  )}${Kuski.substring(0, 6)}/${Code}`;
+  const filename = createRecName(
+    `${ShortName}${zeroPad(levelNumber, 2)}`,
+    Kuski,
+    time,
+    true,
+  ).replace('.rec', '');
+  return `${config.dlUrl}cupreplay/${CupTimeIndex}/${filename}/${Code}`;
 };
 
 export const pts = (points, short = false) => {
