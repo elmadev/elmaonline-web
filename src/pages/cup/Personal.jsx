@@ -101,6 +101,7 @@ const Personal = () => {
                             replay.KuskiData.Kuski,
                             replay.Code,
                             i + 1,
+                            replay.Time,
                           )}
                         >
                           {replay.TimeExists === 1 && <>✓ </>}
@@ -123,6 +124,7 @@ const Personal = () => {
                             replay.KuskiData.Kuski,
                             replay.Code,
                             i + 1,
+                            replay.Time,
                           )}
                           lev={`${config.dlUrl}level/${e.LevelIndex}`}
                           height={400}
