@@ -59,8 +59,19 @@ export const renameFile = (originalFile, newName) => {
   });
 };
 
-export const createRecName = (LevelName, nick, recTime) => {
-  const timeAsString = `${recTime}`;
+export const createRecName = (LevelName, nick, recTime, apple = false) => {
+  let timeAsString = `${recTime}`;
+  if (apple) {
+    if (recTime === 9999100 || recTime === 10000000) {
+      timeAsString = '0ap';
+    }
+    if (recTime >= 999900 && recTime <= 999999) {
+      timeAsString = `${1000000 - recTime}ap`;
+    }
+    if (recTime >= 9999000 && recTime <= 9999999) {
+      timeAsString = `${10000000 - recTime}ap`;
+    }
+  }
   const levName =
     LevelName.substring(0, 6) === 'QWQUU0'
       ? LevelName.substring(6, 8)
