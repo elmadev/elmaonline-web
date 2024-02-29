@@ -8,6 +8,7 @@ const Recplayer = props => {
   const {
     rec,
     lev,
+    shirt,
     width,
     height,
     controls,
@@ -60,6 +61,7 @@ const Recplayer = props => {
           key={rec}
           recUrl={rec}
           levUrl={lev}
+          shirtUrl={shirt}
           width={width}
           height={height}
           zoom={zoom}
