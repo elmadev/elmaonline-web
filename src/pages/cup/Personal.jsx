@@ -164,7 +164,9 @@ const Personal = () => {
                             replay.Time,
                           )}
                           lev={`${config.dlUrl}level/${e.LevelIndex}`}
-                          shirt={[`${config.dlUrl}shirt/${replay.KuskiData.KuskiIndex}`]}
+                          shirt={[
+                            `${config.dlUrl}shirt/${replay.KuskiData.KuskiIndex}`,
+                          ]}
                           height={400}
                           controls
                         />
