@@ -51,8 +51,8 @@ const Donate = ({ cached = false, small = false }) => {
   } = useStoreActions(actions => actions.Help);
 
   useEffect(() => {
-    if (!donations) getDonations({ cached });
-  });
+    getDonations({ cached });
+  }, [cached]);
 
   if (!donations) return <span>loading...</span>;
 
