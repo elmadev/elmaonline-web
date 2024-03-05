@@ -17,10 +17,10 @@ const finishedTypes = {
 };
 
 const StatsTable = ({ data, loading }) => {
-  if (data.length === 0) {
+  if (loading) return <Loading />;
+  if (!data?.length) {
     return <Container>You have not played this level yet.</Container>;
   }
-  if (loading) return <Loading />;
 
   const getTotalRunCount = () => {
     return sumBy(data, 'RunCount');
@@ -122,7 +122,7 @@ const StatsTable = ({ data, loading }) => {
 };
 
 StatsTable.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 const Container = styled.div`

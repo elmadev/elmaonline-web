@@ -110,7 +110,7 @@ const Level = ({ LevelId }) => {
   } = useQueryAlt(
     ['CrippledTimes', LevelId, cripple],
     async () => CrippledTimes(LevelId, cripple, 1000, 1, 10000),
-    { enabled: cripple !== '' && tab !== 2 },
+    { enabled: cripple !== '' && tab !== 2, retry: 0 },
   );
 
   const {
@@ -126,7 +126,7 @@ const Level = ({ LevelId }) => {
   } = useQueryAlt(
     ['CrippledPersonal', LevelId, kuskiIndex, cripple],
     async () => CrippledPersonal(LevelId, kuskiIndex, cripple, 1000),
-    { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2 },
+    { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2, retry: 0 },
   );
 
   const {
@@ -141,7 +141,7 @@ const Level = ({ LevelId }) => {
   } = useQueryAlt(
     ['CrippledTimeStats', LevelId, kuskiIndex, cripple],
     async () => CrippledTimeStats(LevelId, kuskiIndex, cripple),
-    { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2 },
+    { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2, retry: 0 },
   );
 
   const fetchPersonalStats = () => {
