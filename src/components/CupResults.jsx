@@ -26,6 +26,9 @@ const CupResults = props => {
         {results.map((r, no) => (
           <div>
             {r.Position ? r.Position : no + 1}.{' '}
+            {r.KuskiData.Country
+              ? `:flag_${r.KuskiData.Country.toLowerCase()}: `
+              : null}
             {cup.TeamPoints ? (
               <Kuski
                 kuskiData={{
