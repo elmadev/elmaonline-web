@@ -133,6 +133,18 @@ export default {
       actions.pushMyTimes({ times: times.data, level: payload.LevelIndex });
     }
   }),
+  myTimesOptions: persist(
+    {
+      order: 'byTime',
+      onlyImproved: false,
+    },
+    {
+      storage: 'localStorage',
+    },
+  ),
+  setMyTimesOptions: action((state, payload) => {
+    state.myTimesOptions = payload;
+  }),
   teamReplays: [],
   teamOptions: persist(
     {

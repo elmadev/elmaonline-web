@@ -112,7 +112,7 @@ export default function LeaderHistory({
   return (
     <Container>
       <TimeDevelopment>
-        {[...allFinished]
+        {[...(allFinished || [])]
           .reduce((acc, cur) => {
             if (acc.length < 1 || acc[acc.length - 1].Time > cur.Time)
               acc.push(cur);

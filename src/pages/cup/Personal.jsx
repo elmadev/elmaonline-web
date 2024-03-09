@@ -1,10 +1,15 @@
-/* eslint-disable react/no-danger */
 import React, { useEffect, Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { nickId } from 'utils/nick';
 import { forEach } from 'lodash';
 import { format } from 'date-fns';
-import { Grid, Checkbox } from '@material-ui/core';
+import {
+  Grid,
+  Checkbox,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import Header from 'components/Header';
 import LocalTime from 'components/LocalTime';
@@ -14,6 +19,7 @@ import Recplayer from 'components/Recplayer';
 import { getPrivateCupRecUri } from 'utils/cups';
 import PreviewRecButton from 'components/PreviewRecButton';
 import config from 'config';
+import FieldBoolean from 'components/FieldBoolean';
 
 const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
@@ -31,10 +37,15 @@ const currentEventIndex = events => {
 };
 
 const Personal = () => {
-  const { myReplays, cup, events, myTimes } = useStoreState(state => state.Cup);
-  const { getMyReplays, updateReplay, getMyTimes } = useStoreActions(
-    actions => actions.Cup,
+  const { myReplays, cup, events, myTimes, myTimesOptions } = useStoreState(
+    state => state.Cup,
   );
+  const {
+    getMyReplays,
+    updateReplay,
+    getMyTimes,
+    setMyTimesOptions,
+  } = useStoreActions(actions => actions.Cup);
 
   const [previewRecIndex, setPreviewRecIndex] = useState(null);
 
@@ -60,6 +71,32 @@ const Personal = () => {
   const handlePreviewRecButtonClick = CupTimeIndex => {
     const newIndex = isPlayingPreview(CupTimeIndex) ? null : CupTimeIndex;
     setPreviewRecIndex(newIndex);
+  };
+
+  const timesSort = (a, b) => {
+    if (myTimesOptions.order === 'byTime') {
+      return a.Time - b.Time;
+    }
+    if (myTimesOptions.order === 'byDriven') {
+      return a.Driven - b.Driven;
+    }
+  };
+
+  const timesFilter = times => {
+    if (myTimesOptions.onlyImproved) {
+      const improved = [];
+      times
+        .sort((a, b) => a.Driven - b.Driven)
+        .forEach((t, i) => {
+          if (i === 0) {
+            improved.push(t);
+          } else if (t.Time < improved[improved.length - 1].Time) {
+            improved.push(t);
+          }
+        });
+      return improved;
+    }
+    return times;
   };
 
   return (
@@ -140,12 +177,47 @@ const Personal = () => {
           <Grid item xs={12} sm={6}>
             <Paper padding>
               <Header h2>Current event times</Header>
-              <div>
+              <MyTimesDesc>
                 This shows your online times for current event. Can be used to
                 verify that your times was registered on the server, as you
                 can&apos;t see these anywhere else. Apples results are not shown
                 here.
-              </div>
+              </MyTimesDesc>
+              <RadioGroup
+                aria-label="type"
+                value={myTimesOptions.order}
+                onChange={n =>
+                  setMyTimesOptions({
+                    ...myTimesOptions,
+                    order: n.target.value,
+                  })
+                }
+                name="weeks"
+                row
+              >
+                <FormControlLabel
+                  value="byTime"
+                  checked={myTimesOptions.order === 'byTime'}
+                  label="Order by time"
+                  control={<RadioThin size="small" />}
+                />
+                <FormControlLabel
+                  value="byDriven"
+                  checked={myTimesOptions.order === 'byDriven'}
+                  label="Order chronologically"
+                  control={<RadioThin size="small" />}
+                />
+              </RadioGroup>
+              <FieldBoolean
+                label="Show only improved times"
+                value={myTimesOptions.onlyImproved}
+                onChange={() =>
+                  setMyTimesOptions({
+                    ...myTimesOptions,
+                    onlyImproved: !myTimesOptions.onlyImproved,
+                  })
+                }
+              />
               {myTimes && (
                 <>
                   {events.sort(eventSort).map((e, i) => {
@@ -158,22 +230,24 @@ const Personal = () => {
                         <Header h3 top>
                           Event {i + 1}
                         </Header>
-                        {myTimesInLev[0].times.map(t => (
-                          <ReplayCon key={t.TimeIndex}>
-                            <div>
-                              <Time time={t.Time} />
-                            </div>
-                            <Desc>
-                              (
-                              <LocalTime
-                                date={t.Driven}
-                                format="dddd HH:mm:ss"
-                                parse="X"
-                              />
-                              )
-                            </Desc>
-                          </ReplayCon>
-                        ))}
+                        {timesFilter(myTimesInLev[0].times)
+                          .sort(timesSort)
+                          .map(t => (
+                            <ReplayCon key={t.TimeIndex}>
+                              <div>
+                                <Time time={t.Time} />
+                              </div>
+                              <Desc>
+                                (
+                                <LocalTime
+                                  date={t.Driven}
+                                  format="dddd HH:mm:ss"
+                                  parse="X"
+                                />
+                                )
+                              </Desc>
+                            </ReplayCon>
+                          ))}
                       </>
                     );
                   })}
@@ -203,6 +277,17 @@ const Desc = styled.div`
 
 const Container = styled.div`
   padding: 8px;
+`;
+
+const RadioThin = styled(Radio)`
+  && {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+`;
+
+const MyTimesDesc = styled.div`
+  margin-bottom: ${p => p.theme.padSmall};
 `;
 
 export default Personal;

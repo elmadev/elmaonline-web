@@ -73,7 +73,7 @@ const TimeTable = ({ data, latestBattle, loading, height }) => {
 };
 
 TimeTable.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 export default TimeTable;

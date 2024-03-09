@@ -12,6 +12,7 @@ import Download from 'components/Download';
 import EventItem from 'components/EventItem';
 import config from 'config';
 import { Paper } from 'components/Paper';
+import { Level } from 'components/Names';
 import { admins } from 'utils/cups';
 import { nickId } from 'utils/nick';
 import Interviews from './Interviews';
@@ -68,9 +69,15 @@ const Cups = props => {
               )
             }
             level={
-              <Download href={`level/${e.LevelIndex}`}>
-                {e.Level ? e.Level.LevelName : ''}
-              </Download>
+              e.Level ? (
+                <>
+                  <Download href={`level/${e.LevelIndex}`}>
+                    {`${e.Level.LevelName}.lev`}
+                  </Download>
+                  <> - </>
+                  <Level LevelIndex={e.LevelIndex} LevelData={e.Level} />
+                </>
+              ) : null
             }
             by={<Kuski kuskiData={e.KuskiData} />}
             eventTime={

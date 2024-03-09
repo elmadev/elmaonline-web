@@ -38,6 +38,7 @@ export default function LevelList({
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(defaultPage);
   const [pageSize] = useState(defaultPageSize);
+  const { loggedIn } = useStoreState(state => state.Login);
   const { levels, tagOptions, kuskiOptions, loadingLevels } = useStoreState(
     state => state.LevelList,
   );
@@ -104,8 +105,9 @@ export default function LevelList({
     'Added',
     'Filename',
     'Level name',
-    'By',
+    'Added by',
     'Best time',
+    'My time',
     'Battles',
     'Apples',
     'Killers',
@@ -262,11 +264,12 @@ export default function LevelList({
           <ListCell width={170}>Added</ListCell>
           <ListCell width={150}>Filename</ListCell>
           <ListCell>Level name</ListCell>
-          <ListCell width={100}>By</ListCell>
+          <ListCell width={100}>Added by</ListCell>
           <ListCell width={100}>Best time</ListCell>
+          {loggedIn && <ListCell width={100}>My time</ListCell>}
           <ListCell width={100}>Battles</ListCell>
           <ListCell width={100}>Apples</ListCell>
-          <ListCell width={100}>Kiilers</ListCell>
+          <ListCell width={100}>Killers</ListCell>
 
           {!summary && (
             <>
@@ -297,7 +300,7 @@ export default function LevelList({
                 {columns.indexOf('Level name') !== -1 && (
                   <ListCell>{level.LongName}</ListCell>
                 )}
-                {columns.indexOf('By') !== -1 && (
+                {columns.indexOf('Added by') !== -1 && (
                   <ListCell width={100}>
                     {level.KuskiData ? (
                       <Kuski kuskiData={level.KuskiData} />
@@ -311,6 +314,11 @@ export default function LevelList({
                     {level.Besttime ? <Time time={level.Besttime} /> : '-'}
                   </ListCell>
                 )}
+                {loggedIn && columns.indexOf('My time') !== -1 && (
+                  <ListCell width={100}>
+                    {level.Mytime ? <Time time={level.Mytime} /> : '-'}
+                  </ListCell>
+                )}
                 {columns.indexOf('Battles') !== -1 && (
                   <ListCell width={100}>{level.BattleCount || '-'}</ListCell>
                 )}
@@ -319,9 +327,6 @@ export default function LevelList({
                 )}
                 {columns.indexOf('Killers') !== -1 && (
                   <ListCell width={100}>{level.Killers}</ListCell>
-                )}
-                {columns.indexOf('Unlisted') !== -1 && (
-                  <ListCell>{level.Unlisted === 1 ? 'Yes' : ''}</ListCell>
                 )}
                 {columns.indexOf('Tags') !== -1 && (
                   <ListCell>
