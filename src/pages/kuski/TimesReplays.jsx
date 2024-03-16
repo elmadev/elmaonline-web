@@ -195,38 +195,37 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
             </RadioGroup>
           </ListCell>
         </ListHeader>
-        {type === 'runsAndReplays' ? null : (
-          <ListRow>
-            <ListInput
-              label="Search level"
-              value={search.level}
-              onChange={value => setSearch({ field: 'level', value })}
-              maxLength={11}
-              onEnter={level => fetch({ ...search, level })}
-            />
-            <ListCell />
-            <ListInput
-              label="Driven on or after"
-              date
-              value={search.from}
-              onChange={value => {
-                setSearch({ field: 'from', value });
-                fetch({ ...search, from: value });
-              }}
-            />
-            <ListInput
-              label="Driven on or before"
-              date
-              value={search.to}
-              onChange={value => {
-                setSearch({ field: 'to', value });
-                fetch({ ...search, to: value });
-              }}
-            />
-            <ListCell />
-            <ListCell />
-          </ListRow>
-        )}
+        <ListRow>
+          <ListInput
+            label="Search level"
+            title="Exact file name"
+            value={search.level}
+            onChange={value => setSearch({ field: 'level', value })}
+            maxLength={11}
+            onEnter={level => fetch({ ...search, level })}
+          />
+          <ListCell />
+          <ListInput
+            label="Driven on or after"
+            date
+            value={search.from}
+            onChange={value => {
+              setSearch({ field: 'from', value });
+              fetch({ ...search, from: value });
+            }}
+          />
+          <ListInput
+            label="Driven on or before"
+            date
+            value={search.to}
+            onChange={value => {
+              setSearch({ field: 'to', value });
+              fetch({ ...search, to: value });
+            }}
+          />
+          <ListCell />
+          <ListCell />
+        </ListRow>
       </ListContainer>
       {data?.length > 0 && (
         <ListContainer flex>

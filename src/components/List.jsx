@@ -209,6 +209,7 @@ export const ListInput = ({
   maxLength,
   onEnter,
   width,
+  title = label,
 }) => {
   return (
     <ListCell width={width}>
@@ -218,7 +219,7 @@ export const ListInput = ({
         value={value}
         onChange={e => onChange && onChange(e.target.value)}
         inputProps={{ maxLength }}
-        title={label}
+        title={title}
         onKeyUp={e => {
           if (e.key === 'Enter') {
             if (onEnter) {
