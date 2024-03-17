@@ -195,7 +195,7 @@ const Level = ({ LevelId }) => {
     <Layout t={`Level - ${level.LevelName}.lev`}>
       <PlayerContainer>
         {loading && <Loading />}
-        {!loading && (
+        {!loading && !level.Locked ? (
           <>
             <Player>
               {fancyMap ? (
@@ -238,7 +238,7 @@ const Level = ({ LevelId }) => {
               />
             )}
           </>
-        )}
+        ) : null}
       </PlayerContainer>
       <RightBarContainer>
         <ChatContainer>
@@ -250,43 +250,47 @@ const Level = ({ LevelId }) => {
                   <Header h3>Level info</Header>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <LevelDescription>
-                    <Download href={`level/${LevelIndex}`}>
-                      {level.LevelName}.lev
-                    </Download>
-                    <LevelFullName>{level.LongName}</LevelFullName>
-                    <br />
-                    <div>{`Level ID: ${LevelIndex}`}</div>
-                    <div>
-                      {pluralize(level.Apples, 'apple')},{' '}
-                      {pluralize(level.Killers, 'killer')} and{' '}
-                      {pluralize(level.Flowers, 'flower')}.
-                    </div>
-                    {levelpacks.length > 0 && (
+                  {level.Locked ? (
+                    <LevelDescription>{level.LevelName}.lev</LevelDescription>
+                  ) : (
+                    <LevelDescription>
+                      <Download href={`level/${LevelIndex}`}>
+                        {level.LevelName}.lev
+                      </Download>
+                      <LevelFullName>{level.LongName}</LevelFullName>
+                      <br />
+                      <div>{`Level ID: ${LevelIndex}`}</div>
                       <div>
-                        {`Level Pack: `}
-                        {levelpacks.map((pack, index) => [
-                          index > 0 && ', ',
-                          <Link to={`/levels/packs/${pack.LevelPackName}`}>
-                            {pack.LevelPackName}
-                          </Link>,
-                        ])}
+                        {pluralize(level.Apples, 'apple')},{' '}
+                        {pluralize(level.Killers, 'killer')} and{' '}
+                        {pluralize(level.Flowers, 'flower')}.
                       </div>
-                    )}
-                    {level.AcceptBugs !== 0 && (
-                      <div>Apple bugs are allowed in this level.</div>
-                    )}
-                    {level.Legacy !== 0 && (
-                      <div>
-                        This level has legacy times imported from a third party
-                        site.
-                      </div>
-                    )}
-                    <br />
-                    {level.Tags && (
-                      <Tags tags={level.Tags.map(tag => tag.Name)} />
-                    )}
-                  </LevelDescription>
+                      {levelpacks.length > 0 && (
+                        <div>
+                          {`Level Pack: `}
+                          {levelpacks.map((pack, index) => [
+                            index > 0 && ', ',
+                            <Link to={`/levels/packs/${pack.LevelPackName}`}>
+                              {pack.LevelPackName}
+                            </Link>,
+                          ])}
+                        </div>
+                      )}
+                      {level.AcceptBugs !== 0 && (
+                        <div>Apple bugs are allowed in this level.</div>
+                      )}
+                      {level.Legacy !== 0 && (
+                        <div>
+                          This level has legacy times imported from a third
+                          party site.
+                        </div>
+                      )}
+                      <br />
+                      {level.Tags && (
+                        <Tags tags={level.Tags.map(tag => tag.Name)} />
+                      )}
+                    </LevelDescription>
+                  )}
                 </AccordionDetails>
               </Accordion>
               {(parseInt(userid, 10) === level.AddedBy || mod() === 1) && (
@@ -386,7 +390,7 @@ const Level = ({ LevelId }) => {
         </ChatContainer>
       </RightBarContainer>
       <ResultsContainer>
-        <CrippledSelectWrapper>
+        <CrippledSelectWrapper topMargin={level.Locked}>
           <FormControl>
             <InputLabel id="cripple">Crippled Condition</InputLabel>
             <Select
@@ -667,7 +671,7 @@ const StyledTabs = styled(Tabs)`
 const CrippledSelectWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: -38px;
+  margin-top: ${p => (p.topMargin ? '-12px' : '-38px')};
   margin-bottom: 15px;
   .MuiFormControl-root {
     min-width: 180px;
