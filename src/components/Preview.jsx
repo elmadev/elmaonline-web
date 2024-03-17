@@ -36,6 +36,9 @@ export default function Preview({
           <Recplayer
             rec={getRecUri()}
             lev={`${config.dlUrl}level/${previewRec.LevelIndex}?UUID=${previewRec.UUID}`}
+            shirt={[
+              `${config.dlUrl}shirt/${previewRec.DrivenByData.KuskiIndex}`,
+            ]}
             controls
             autoPlay="yes"
           />

@@ -34,6 +34,7 @@ export default function Preview({
           <Recplayer
             rec={`${config.s3Url}time/${previewRec.TimeFileData.UUID}-${previewRec.TimeFileData.MD5}/${previewRec.TimeIndex}.rec`}
             lev={`${config.dlUrl}level/${previewRec.LevelIndex}?UUID=${previewRec.TimeFileData.UUID}`}
+            shirt={[`${config.dlUrl}shirt/${previewRec.KuskiIndex}`]}
             controls
             autoPlay="yes"
           />

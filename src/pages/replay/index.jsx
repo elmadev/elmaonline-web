@@ -200,6 +200,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
             <Recplayer
               rec={link}
               lev={`${config.dlUrl}level/${replay.LevelIndex}`}
+              shirt={[`${config.dlUrl}shirt/${replay.DrivenByData.KuskiIndex}`]}
               controls
             />
           )}

@@ -210,6 +210,7 @@ const Team = () => {
                                 replay.Time,
                               )}${getMergeRecUri(e.CupIndex)}`}
                               lev={`${config.dlUrl}level/${e.LevelIndex}`}
+                              shirt={[`${config.dlUrl}shirt/${replay.KuskiData.KuskiIndex}`]}
                               height={400}
                               controls
                             />

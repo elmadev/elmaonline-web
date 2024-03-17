@@ -52,6 +52,9 @@ const RecView = props => {
                           `${config.dlUrl}battlereplay/${BattleIndex}`
                     }
                     lev={`${config.dlUrl}level/${levelIndex}`}
+                    shirt={[
+                      `${config.dlUrl}shirt/${player?.Kuski?.KuskiIndex}`,
+                    ]}
                     autoPlay={autoPlayRecs ? 'if-visible' : 'no'}
                     controls
                   />
