@@ -14620,10 +14620,10 @@ recompose@^0.27.1:
     react-lifecycles-compat "^3.0.2"
     symbol-observable "^1.0.4"
 
-recplayer-react@^1.6.4:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/recplayer-react/-/recplayer-react-1.6.4.tgz#bd9543180a7e6d90b8fc083ce4564e36b7ce40fd"
-  integrity sha512-Z/4CA4kM9MEg34UKSP0s1+Dh22D8qMOIGyF+BO+tVhVqwfMxeS9ruLWP0e1ZLxMwsitcTzrV1XLJeqEZ1E0sMw==
+recplayer-react@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/recplayer-react/-/recplayer-react-1.7.1.tgz#c3f8cc4eaaf8bca9e0492c412c2618563a156cd0"
+  integrity sha512-eor8M+wMu4J8+wcvWj+rfad2Y3/BjWNWzgRxdrUcdderVS9Cclwxiy1vA+7sVyJYshiwRUGkX8tZgd/amSgVOQ==
 
 recursive-readdir@2.2.2:
   version "2.2.2"
