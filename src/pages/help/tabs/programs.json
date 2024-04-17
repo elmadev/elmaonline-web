@@ -39,7 +39,7 @@
     { "n": "SLE", "d": "Smibu's Level Editor, Replay Manager and Level Manager.", "l": "https://m-l.fi/files/Elmanager.zip" },
     { "n": "Vectrast", "d": "Makes bmp from lev file and back.", "l": "https://up.elma.online/u/lqrhf9h280/vectrast.zip" },
     { "n": "Verzio Maker", "d": "Converts Elma levs to Across levs in the Verzio file format - Moving objects. Made by sunl.", "l": "https://up.elma.online/u/59w4avs59h/Verzio_Maker.zip" },
-    { "n": "ZLE", "d": "Zebra's Level Editor.", "l": "https://up.elma.online/u/ur73jygq8m/ZLE_v1.0.zip" }
+    { "n": "ZLE (v1.1)", "d": "Zebra's Level Editor.", "l": "https://up.elma.online/u/3hh7dzheve/ZLE_v1.1.zip" }
   ] },
   { "name": "LGR", "items": [
     { "n": "Change LGR", "d": "Change easily lgr before entering Elma.", "l": "https://up.elma.online/u/hj7mmpj2uv/chanlgrs.rar" },
@@ -70,7 +70,7 @@
     { "n": "Elma Skip", "d": "Skips from 1 to 54 internal levels.", "l": "https://up.elma.online/u/h8r92ksknc/elmaskip.zip" },
     { "n": "Elma Text", "d": "Changes text in game (Only for 1.0v).", "l": "https://up.elma.online/u/fwchur0m24/elmatext.zip" },
     { "n": "Elma Ultimate Dvd", "d": "Collection of the best Elma (and Across) stuff made from 1997 to 2010.", "l": "https://mega.co.nz/#!mVNhWCDZ!DoDJ7BAVP-j9Ew6k2P4x-h6eOBkUv4uswbHgPebgGaM" },
-    { "n": "EOL Reso Fix", "d": "Fixes high resolution problems.", "l": "https://up.elma.online/u/uf5r4w5eh2/eolresofix.exe" },
+    { "n": "EOL Reso Fix", "d": "Fixes high resolution problems. Built-in in EOL v1.0.11 and newer.", "l": "https://up.elma.online/u/uf5r4w5eh2/eolresofix.exe" },
     { "n": "EOL Shirts", "d": "Download latest user shirts (.bmp files for your bmp folder).", "l": "https://api.elma.online/dl/allshirts" },
     { "n": "FEM photos", "d": "All images and videos from Finnish Elma Meetings.", "l": [
       { "t": "2014", "l": "http://mm.1g.fi/kuvat/FEM2014" },
@@ -102,7 +102,7 @@
   ] },
   { "name": "Save/Load", "items": [
     { "n": "milatools", "d": "Save Load patch made by milagros.", "l": "https://up.elma.online/u/ctnubl9aos/milatools.zip" },
-    { "n": "okeSL", "d": "New save load tool made by jonsykkel. - v004a", "l": "https://up.elma.online/u/z9yw27s1bs/okesl004a.zip" },
+    { "n": "okeSL (v006)", "d": "New save load tool made by jonsykkel.", "l": "https://up.elma.online/u/o9l724cfy1/okesl006.zip" },
     { "n": "SL Key", "d": "Makes Smibu's Save Load patch keys to be configurable.", "l": "https://up.elma.online/u/uuu2g3rrvp/slkey.zip" },
     { "n": "Smibu's Save Load Patch", "d": "Save Load patch made by Smibu.", "l": "https://up.elma.online/u/o3wm9zfq71/smibu_saveload_patch.zip" }
   ] }
