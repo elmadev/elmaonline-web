@@ -139,7 +139,7 @@ const RightBarContainer = props => {
             <Header h3>Leader history</Header>
           </AccordionSummary>
           <AccordionDetails>
-            {allBattleTimes !== null && allBattleTimes !== [] ? (
+            {allBattleTimes !== null ? (
               <LeaderHistory
                 allFinished={allBattleTimes}
                 openReplay={
