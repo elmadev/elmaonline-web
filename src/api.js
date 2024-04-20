@@ -531,6 +531,9 @@ export const MyFiles = data =>
 export const DeleteFile = data =>
   api.delete(`upload/${data.index}/${data.uuid}/${data.filename}`);
 
+// taswr
+export const GetDatInfo = data => api.post(`taswr/getdatinfo`, data);
+
 // tags
 export const GetReplayTags = () => api.get(`tag?type=replay`);
 export const GetLevelTags = () => api.get(`tag?type=level`);
