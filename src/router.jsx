@@ -24,6 +24,7 @@ import LevelsAddCollection from 'pages/levels-add-collection';
 import LevelpackCollection from 'pages/levelpack-collection';
 import Login from 'pages/login';
 import Map from 'pages/map';
+import DatInfo from 'pages/datinfo';
 import Mod from 'pages/mod';
 import NotFound from 'pages/not-found';
 import Ranking from 'pages/ranking';
@@ -103,6 +104,7 @@ const Routes = () => {
           <Replay path="r/:ReplayUuid" />
           <Replay path="r/:ReplayUuid/:RecFileName" />
           <Replays path="replays/*" />
+          <DatInfo path="dat/info" />
           <Search path="search" />
           <Settings path="settings" tab="" />
           <Settings path="settings/:tab" />
