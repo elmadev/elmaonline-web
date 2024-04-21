@@ -59,11 +59,19 @@ const tabs = {
     <Header h3 key="header">
       Lgr folder
     </Header>,
-    `This is where the in-game Lgr's ("skins") are stored.`,
+    `This is where the in-game LGRs ("skins") are stored.`,
     `You will need to have a Default.lgr in this folder.`,
-    `You can name any lgr you have as Default.lgr and you can use it as your
-        primary lgr in levels where no lgr has been specified by the level
+    `You can name any LGR you have as Default.lgr and you can use it as your
+        primary LGR in levels where no LGR has been specified by the level
         maker.`,
+    <p key="p">
+      <span>Download the original Default.lgr file here: </span>
+      <span>
+        <a href="https://up.elma.online/u/ly8259kxy2/Default.lgr">
+          Default.lgr
+        </a>
+      </span>
+    </p>,
   ],
 
   eol: [
