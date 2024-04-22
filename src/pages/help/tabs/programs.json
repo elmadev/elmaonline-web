@@ -42,6 +42,9 @@
     { "n": "ZLE (v1.1)", "d": "Zebra's Level Editor.", "l": "https://up.elma.online/u/3hh7dzheve/ZLE_v1.1.zip" }
   ] },
   { "name": "LGR", "items": [
+    { "n": "Default LGR", "d": "The recommended original Default.lgr file with fixed sky tiling. Fancy boosted (= includes 256 additional single-color pictures, one for each color in the LGR palette).", "l": "https://up.elma.online/u/ly8259kxy2/Default.lgr" },
+    { "n": "LGR Collection", "d": "A large collection of LGRs. Collected by Sla.", "l": "https://elastomania.wixsite.com/tools/lgr" },
+    { "n": "LGR Studio", "d": "An in-browser LGR editor. It works offline, so you can also install it as a web app. Made by jaws.", "l": "https://lgrstudio.janka.la" },
     { "n": "Change LGR", "d": "Change easily lgr before entering Elma.", "l": "https://up.elma.online/u/hj7mmpj2uv/chanlgrs.rar" },
     { "n": "Easy LGR", "d": "Create and modify lgrs with this tool.", "l": "https://up.elma.online/u/0a0a0a0a01/easylgr.zip" },
     { "n": "Lgr-Shirt Palettes", "d": "Default palettes .act files for Photoshop to make bmp t-shirts and lgr images properly.", "l": "https://up.elma.online/u/17tdgwo1dj/elma%20shirt-elma%20lgr.rar" },
