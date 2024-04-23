@@ -24,6 +24,7 @@ const items = {
   Competitions: [
     { name: 'Cups', to: '/cups' },
     { name: 'Battle Leagues', to: '/battleleagues' },
+    { name: 'TAS records', to: '/tas/records' },
   ],
   Tools: [
     { name: 'Replay upload', to: '/replays/upload' },

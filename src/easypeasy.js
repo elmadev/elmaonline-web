@@ -41,6 +41,7 @@ import Notifications from 'features/Notifications/store';
 import ReplayCommentArchive from 'features/ReplayCommentArchive/store';
 import Recap from 'pages/recap/store';
 import DatInfo from 'pages/datinfo/store';
+import TasWrs from 'pages/taswr/store';
 
 export default {
   ReplayCommentArchive,
@@ -72,6 +73,7 @@ export default {
   News,
   Teams,
   DatInfo,
+  TasWrs,
   ReplayByUUID,
   RecList,
   RankingTable,
