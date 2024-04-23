@@ -60,7 +60,7 @@ const DatInfo = () => {
           placeholder="Level id"
         />
         <div className="dropzone">
-          <Dropzone filetype=".dat" error={error} onDrop={e => onDrop(e)} />
+          <Dropzone login filetype=".dat" error={error} onDrop={e => onDrop(e)} />
         </div>
       </Column>
       <UploadButtonContainer container>
