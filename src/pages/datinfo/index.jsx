@@ -60,7 +60,12 @@ const DatInfo = () => {
           placeholder="Level id"
         />
         <div className="dropzone">
-          <Dropzone login filetype=".dat" error={error} onDrop={e => onDrop(e)} />
+          <Dropzone
+            login
+            filetype=".dat"
+            error={error}
+            onDrop={e => onDrop(e)}
+          />
         </div>
       </Column>
       <UploadButtonContainer container>
@@ -82,8 +87,6 @@ const DatInfo = () => {
                 onClick={() => {
                   setFiles([]);
                   setError('');
-                  setDuplicate(false);
-                  setDuplicateReplayIndex(0);
                 }}
                 style={{ float: 'right', marginRight: '8px' }}
                 variant="contained"
@@ -99,12 +102,16 @@ const DatInfo = () => {
           <Column p="Large">
             <Text>Level name: {datInfo.lev_fname}</Text>
             <Text>Finished: {datInfo.finished ? 'Yes' : 'No'}</Text>
-            <Text>Time: <Time thousands time={datInfo.time}/></Text>
+            <Text>
+              Time: <Time thousands time={datInfo.time} />
+            </Text>
 
             <Text>Average fps: {datInfo.fps_avg}</Text>
             <Text>Changed fps: {datInfo.ft_range > 1 ? 'Yes' : 'No'}</Text>
 
-            <Text>Time of strongest bug: <Time thousands time={datInfo.bug_time}/></Text>
+            <Text>
+              Time of strongest bug: <Time thousands time={datInfo.bug_time} />
+            </Text>
             <Text>Strongest bug factor: {datInfo.bug_factor}</Text>
           </Column>
         ))}

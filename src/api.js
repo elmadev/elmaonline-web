@@ -533,6 +533,8 @@ export const DeleteFile = data =>
 
 // taswr
 export const GetDatInfo = data => api.post(`taswr/getdatinfo`, data);
+export const UploadTasWr = data => api.post(`taswr/upload`, data);
+export const GetTasWrs = tableOption => api.get(`/taswr/wrs/${tableOption}`);
 
 // tags
 export const GetReplayTags = () => api.get(`tag?type=replay`);
