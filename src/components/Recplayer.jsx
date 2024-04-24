@@ -15,6 +15,7 @@ const Recplayer = props => {
     imageUrl,
     autoPlay,
     merge,
+    forceRefresh,
   } = props;
   const {
     settings: { grass, pictures, customSkyGround, zoomScale, arrows },
@@ -78,6 +79,7 @@ const Recplayer = props => {
           fitLev={!rec}
           showZoomBtns
           showPlaybackBtns={Boolean(rec)}
+          key={forceRefresh ? rec + shirt : undefined}
         />
       ) : (
         <span>Loading..</span>
@@ -96,6 +98,7 @@ Recplayer.propTypes = {
   imageUrl: PropTypes.string,
   autoPlay: PropTypes.oneOf(['if-visible', 'yes', 'no']),
   merge: PropTypes.bool,
+  forceRefresh: PropTypes.bool,
 };
 
 Recplayer.defaultProps = {
@@ -107,6 +110,7 @@ Recplayer.defaultProps = {
   imageUrl: 'https://api.elma.online/recplayer',
   autoPlay: 'if-visible',
   merge: false,
+  forceRefresh: false,
 };
 
 export default Recplayer;
