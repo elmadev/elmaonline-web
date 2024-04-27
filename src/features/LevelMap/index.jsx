@@ -53,6 +53,7 @@ const LevelMap = ({
             showGravityApples={showGravityApples}
           >
             <div dangerouslySetInnerHTML={{ __html: svg }} />
+            <ArrowSvg />
           </MapContainer>
         </Portal>
       ) : (
@@ -65,6 +66,7 @@ const LevelMap = ({
           height={height}
         >
           <div dangerouslySetInnerHTML={{ __html: svg }} />
+          <ArrowSvg />
           {time && (
             <TimeContainer>
               <Time thousands time={time} />
@@ -73,35 +75,38 @@ const LevelMap = ({
           {rating && <RatingContainer>{rating}</RatingContainer>}
         </MapContainer>
       )}
-      <svg>
-        <clipPath id="up__clip-path" clipPathUnits="objectBoundingBox">
-          <polygon
-            transform="scale(.01)"
-            points="50 0, 100 40, 70 40, 70 100, 30 100,30 40, 0 40"
-          />
-        </clipPath>
-        <clipPath id="left__clip-path" clipPathUnits="objectBoundingBox">
-          <polygon
-            transform="scale(.01)"
-            points="40 0, 40 30, 100 30, 100 70, 40 70, 40 100, 0 50"
-          />
-        </clipPath>
-        <clipPath id="down__clip-path" clipPathUnits="objectBoundingBox">
-          <polygon
-            transform="scale(.01)"
-            points="50 100, 100 60, 70 60, 70 0, 30 0, 30 60, 0 60"
-          />
-        </clipPath>
-        <clipPath id="right__clip-path" clipPathUnits="objectBoundingBox">
-          <polygon
-            transform="scale(.01)"
-            points="0 30, 60 30, 60 0, 100 50, 60 100, 60 70, 0 70"
-          />
-        </clipPath>
-      </svg>
     </>
   );
 };
+
+const ArrowSvg = () => (
+  <svg>
+    <clipPath id="up__clip-path" clipPathUnits="objectBoundingBox">
+      <polygon
+        transform="scale(.01)"
+        points="50 0, 100 40, 70 40, 70 100, 30 100,30 40, 0 40"
+      />
+    </clipPath>
+    <clipPath id="left__clip-path" clipPathUnits="objectBoundingBox">
+      <polygon
+        transform="scale(.01)"
+        points="40 0, 40 30, 100 30, 100 70, 40 70, 40 100, 0 50"
+      />
+    </clipPath>
+    <clipPath id="down__clip-path" clipPathUnits="objectBoundingBox">
+      <polygon
+        transform="scale(.01)"
+        points="50 100, 100 60, 70 60, 70 0, 30 0, 30 60, 0 60"
+      />
+    </clipPath>
+    <clipPath id="right__clip-path" clipPathUnits="objectBoundingBox">
+      <polygon
+        transform="scale(.01)"
+        points="0 30, 60 30, 60 0, 100 50, 60 100, 60 70, 0 70"
+      />
+    </clipPath>
+  </svg>
+);
 
 const MapContainer = styled.div`
   width: ${props => (props.fullscreen ? '100%' : props.width)};

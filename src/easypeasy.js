@@ -40,6 +40,7 @@ import ReplaySettings from 'features/ReplaySettings/store';
 import Notifications from 'features/Notifications/store';
 import ReplayCommentArchive from 'features/ReplayCommentArchive/store';
 import Recap from 'pages/recap/store';
+import DatInfo from 'pages/datinfo/store';
 
 export default {
   ReplayCommentArchive,
@@ -70,6 +71,7 @@ export default {
   Mod,
   News,
   Teams,
+  DatInfo,
   ReplayByUUID,
   RecList,
   RankingTable,
