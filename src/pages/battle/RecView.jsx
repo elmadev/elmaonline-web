@@ -57,6 +57,7 @@ const RecView = props => {
                     ]}
                     autoPlay={autoPlayRecs ? 'if-visible' : 'no'}
                     controls
+                    forceRefresh
                   />
                 )}
               </>
