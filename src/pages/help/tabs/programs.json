@@ -104,9 +104,9 @@
     { "n": "Pipe Collection", "d": "All pipes (or almost) ever made - Collected by pawq.", "l": "https://up.elma.online/u/0a0a0a0a01/pipe%20archive%20-%206669%20levs%20-%202019.06.28.zip" }
   ] },
   { "name": "Save/Load", "items": [
-    { "n": "milatools", "d": "Save Load patch made by milagros.", "l": "https://up.elma.online/u/ctnubl9aos/milatools.zip" },
-    { "n": "okeSL (v006)", "d": "New save load tool made by jonsykkel.", "l": "https://up.elma.online/u/o9l724cfy1/okesl006.zip" },
+    { "n": "milatools", "d": "Save Load patch made by milagros. Patched to work with levels that have up to 20k vertices.", "l": "https://up.elma.online/u/qlt7ca0rbl/milatools.zip" },
+    { "n": "okeSL (v006)", "d": "New save load tool made by jonsykkel. Patched to work with levels that have up to 20k vertices.", "l": "https://up.elma.online/u/43gexi6dqr/okesl006.zip" },
     { "n": "SL Key", "d": "Makes Smibu's Save Load patch keys to be configurable.", "l": "https://up.elma.online/u/uuu2g3rrvp/slkey.zip" },
-    { "n": "Smibu's Save Load Patch", "d": "Save Load patch made by Smibu.", "l": "https://up.elma.online/u/o3wm9zfq71/smibu_saveload_patch.zip" }
+    { "n": "Smibu's Save Load Patch", "d": "Save Load patch made by Smibu. Patched to work with levels that have up to 20k vertices.", "l": "https://up.elma.online/u/5sab3e5vxg/smibu_saveload_patch.zip" }
   ] }
 ]
