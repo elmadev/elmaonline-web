@@ -428,7 +428,7 @@ export const getPrivateCupRecUri = (
 };
 
 export const pts = (points, short = false) => {
-  const p = points / 10;
+  const p = +(points / 10).toFixed(2);
   if (p === 1) {
     return `1 ${short ? 'pt' : 'point'}`;
   }
