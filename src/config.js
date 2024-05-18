@@ -14,6 +14,7 @@ const config = {
   recaptcha: '6Le-n9QUAAAAAG-3bYyysXddxwD6I6iJeDBTHf2r',
   maxUploadSize: 10485760,
   s3Url: `https://space.elma.online/${s3SubFolder}`,
+  hotJarId: 0,
 };
 
 export default config;
