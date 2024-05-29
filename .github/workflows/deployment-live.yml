@@ -22,7 +22,7 @@ jobs:
         run: |
           sed -i "s|https://apitest.elma.online/|${{ secrets.API_URL_LIVE }}|g" src/config.js
           sed -i "s|'test/'|${{ secrets.S3_SUB_FOLDER_LIVE }}|g" src/config.js
-          sed -i "s|${url}u/|${{ secrets.UP_LIVE }}|g" src/config.js
+          sed -i "s|https://apitest.elma.online/u/|${{ secrets.UP_LIVE }}|g" src/config.js
           sed -i "s|6Le-n9QUAAAAAG-3bYyysXddxwD6I6iJeDBTHf2r|${{ secrets.RECAPTCHA_LIVE }}|g" src/config.js
           sed -i "s|hotJarId: 0|hotJarId: ${{ secrets.HOTJAR }}|g" src/config.js
 

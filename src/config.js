@@ -9,7 +9,7 @@ const config = {
   s3SubFolder,
   dlUrl: `${url}dl/`,
   api: `${url}api/`,
-  up: `${url}u/`,
+  up: `https://apitest.elma.online/u/`,
   maps: 'AIzaSyDE8Prt4OybzNNxo1MzIn1XYNGxm9rI8Zk',
   recaptcha: '6Le-n9QUAAAAAG-3bYyysXddxwD6I6iJeDBTHf2r',
   maxUploadSize: 10485760,
