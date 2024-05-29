@@ -35,13 +35,13 @@ export default {
     }
   }),
   // update long name, desc.
-  updateLevelPack: thunk(async (actions, payload) => {
+  updateLevelPack: thunk(async (actions, payload, { getState }) => {
     const response = await UpdateLevelPack(payload.LevelPackIndex, payload);
 
     if (response.ok) {
       const { LevelPack, errors = [], success = false } = response.data;
       if (success) {
-        actions.setLevelPackInfo(LevelPack);
+        actions.setLevelPackInfo({ ...getState().levelPackInfo, ...LevelPack });
       }
 
       return errors;
