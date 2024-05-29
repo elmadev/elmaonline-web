@@ -59,7 +59,7 @@ export default function ReplayCard({ replay, onPreviewClick }) {
         }
         title={
           replay.DrivenByData ? (
-          <Kuski noLink kuskiData={replay.DrivenByData} />
+            <Kuski noLink kuskiData={replay.DrivenByData} />
           ) : (
             replay.DrivenByText || 'Unknown'
           )
