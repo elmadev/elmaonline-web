@@ -154,6 +154,29 @@ export const mopoPoints = [
   1,
 ];
 
+export const top20points = [
+  25,
+  20,
+  18,
+  17,
+  16,
+  15,
+  14,
+  13,
+  12,
+  11,
+  10,
+  9,
+  8,
+  7,
+  6,
+  5,
+  4,
+  3,
+  2,
+  1,
+];
+
 const calcSkipStandings = (standings, forceSkip, finishedEvents, cup) => {
   return standings.map(s => {
     const totalEvents = forceSkip ? finishedEvents : cup.Events;
