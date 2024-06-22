@@ -1,3 +1,7 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Disallow: /r/*
+Disallow: /search*
+Disallow: /battles/search*
+Disallow: /levels/search*
+Disallow: /chatlog*
