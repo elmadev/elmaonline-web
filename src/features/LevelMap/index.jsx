@@ -197,6 +197,7 @@ const RatingContainer = styled.span`
   bottom: 0.5rem;
   padding: 2px 3px;
   background: yellow;
+  color: #222;
 `;
 
 LevelMap.propTypes = {

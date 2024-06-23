@@ -11,7 +11,7 @@ import EventItem, { SeasonItem } from 'components/EventItem';
 import Kuski from 'components/Kuski';
 import Loading from 'components/Loading';
 import { Paper } from 'components/Paper';
-import { points, mopoPoints } from 'utils/cups';
+import { points, mopoPoints, top20points } from 'utils/cups';
 import { BATTLETYPES_LONG } from 'constants/ranking';
 import { Link } from '@reach/router';
 import { sortResults } from 'utils/battle';
@@ -33,6 +33,9 @@ const BattleLeague = ({ ShortName }) => {
   let pointsEnum = points;
   if (data?.PointSystem === 0) {
     pointsEnum = mopoPoints;
+  }
+  if (data?.PointSystem === 2) {
+    pointsEnum = top20points;
   }
 
   let standings = [];
@@ -171,7 +174,7 @@ const BattleLeague = ({ ShortName }) => {
                         ? parseInt(b.BattleData.Started)
                         : parseInt(b.Started)
                     }
-                    format="ddd D MMM HH:mm"
+                    format="ddd D MMM YYYY HH:mm"
                     parse="X"
                   />
                 }

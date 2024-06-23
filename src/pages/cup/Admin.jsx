@@ -45,6 +45,7 @@ const Admin = () => {
   const [error, setError] = useState('');
   const [selectedLevel, setSelectedLevel] = useState(0);
   const [shown, setShown] = useState(false);
+  const [positions, setPositions] = useState(false);
   const [appleResults, setAppleResults] = useState(false);
 
   useEffect(() => {
@@ -62,6 +63,7 @@ const Admin = () => {
             LevelIndex: selectedLevel,
             ShownTimes: shown ? 1 : 0,
             AppleResults: appleResults ? 1 : 0,
+            ShownPositions: positions ? 1 : 0,
           },
           last: lastCupShortName,
           CupGroupIndex: cup.CupGroupIndex,
@@ -116,6 +118,13 @@ const Admin = () => {
                 value={shown}
                 onChange={() => setShown(!shown)}
               />
+              {shown ? null : (
+                <FieldBoolean
+                  label="Shown positions"
+                  value={positions}
+                  onChange={() => setPositions(!positions)}
+                />
+              )}
               <FieldBoolean
                 label="Apple results"
                 value={appleResults}
@@ -160,6 +169,10 @@ const Admin = () => {
               </li>
               <li>Shown times means times are visible during the event.</li>
               <li>
+                Shown positions means that positions are shown in-game without
+                times shown. Only relevant if shown times is off.
+              </li>
+              <li>
                 When an event is over the first thing you do is click Generate
                 Results. Now the results are visible to only you, and you can
                 publish them in Discord or elsewhere first if you wish. When you
@@ -186,6 +199,7 @@ const Admin = () => {
             'LevelIndex',
             'Actions',
             'Shown times',
+            'Shown positions',
           ]}
           length={points.length}
         >
@@ -279,13 +293,29 @@ const Admin = () => {
                   onChange={() =>
                     editEvent({
                       CupIndex: e.CupIndex,
-                      event: { ShownTimes: e.ShownTimes ? 0 : 1 },
+                      event: { ShownTimes: e.ShownTimes === 1 ? 0 : 1 },
                       CupGroupIndex: cup.CupGroupIndex,
                       last: lastCupShortName,
                     })
                   }
                   value="ShownTimes"
                 />
+              </ListCell>
+              <ListCell>
+                {e.ShownTimes === 1 ? null : (
+                  <CheckboxNoPad
+                    checked={e.ShownTimes === 2}
+                    onChange={() =>
+                      editEvent({
+                        CupIndex: e.CupIndex,
+                        event: { ShownTimes: e.ShownTimes ? 0 : 2 },
+                        CupGroupIndex: cup.CupGroupIndex,
+                        last: lastCupShortName,
+                      })
+                    }
+                    value="ShownPositions"
+                  />
+                )}
               </ListCell>
             </ListRow>
           ))}
