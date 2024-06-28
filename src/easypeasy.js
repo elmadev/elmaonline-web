@@ -41,8 +41,10 @@ import Notifications from 'features/Notifications/store';
 import ReplayCommentArchive from 'features/ReplayCommentArchive/store';
 import Recap from 'pages/recap/store';
 import DatInfo from 'pages/datinfo/store';
+import LevelCollectionStats from 'features/LevelCollectionStats/store';
 
 export default {
+  LevelCollectionStats,
   ReplayCommentArchive,
   ReplayComments,
   ReplayRating,
