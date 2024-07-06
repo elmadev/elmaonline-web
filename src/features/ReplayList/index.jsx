@@ -16,7 +16,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
-import Pagination from '@material-ui/lab/Pagination';
+import { TablePagination } from '@material-ui/core';
 import Fab from 'components/Fab';
 
 export default function ReplayList({
@@ -256,7 +256,7 @@ export default function ReplayList({
               </>
             )}
           </ListHeader>
-          {replays.rows.map(replay => {
+          {replays.map(replay => {
             return (
               <RecListItem
                 key={replay.ReplayIndex}
@@ -269,7 +269,7 @@ export default function ReplayList({
       )}
       {showGrid() && (
         <CardGrid>
-          {replays.rows.map(replay => {
+          {replays.map(replay => {
             return (
               <ReplayCard
                 key={replay.ReplayIndex}
@@ -282,12 +282,20 @@ export default function ReplayList({
       )}
       {!summary && (
         <Box p={2}>
-          <Pagination
-            count={Math.ceil(replays.count.length / pageSize)}
-            onChange={(event, value) => updatePage(value - 1)}
-            page={getPage() + 1}
-            showFirstButton
-            showLastButton
+          <TablePagination
+            style={{ width: '600px' }}
+            component="div"
+            count={-1}
+            rowsPerPage={25}
+            page={getPage()}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={(event, newPage) => updatePage(newPage)}
+            rowsPerPageOptions={[]}
           />
         </Box>
       )}
