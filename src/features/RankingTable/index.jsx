@@ -63,75 +63,85 @@ const RankingTable = ({
   }
 
   return (
-    <>
-      {FilteredRanking && (
-        <>
-          <SortableList
-            headers={[
-              { name: '#', sort: false, width: 40 },
-              { name: 'Player', sort: false, width: 0, minWidth: 110 },
-              { name: 'Ranking', sort: true, width: 76, right: 1 },
-              { name: 'Points', sort: true, width: 76, right: 1 },
-              { name: 'Wins', sort: true, width: 76, right: 1 },
-              { name: 'Win %', sort: false, width: 76, right: 1 },
-              { name: 'Designed', sort: true, width: 76, right: 1 },
-              { name: 'Played', sort: true, width: 93, right: 1 },
-            ]}
-            sort={s => {
-              setSortOrder(s.sort);
-              setSort(`${s.header}${battleType}`);
-            }}
-            defaultSort="Ranking"
-          />
-          <ListContainer flex>
-            <List
-              height={listHeight}
-              itemCount={FilteredRanking.length}
-              itemSize={40}
-            >
-              {({ index, style }) => {
-                const i = FilteredRanking[index];
-                return (
-                  <div style={style} key={i[tableIndex]}>
-                    <ListRow>
-                      <ListCell width={40}>{index + 1}.</ListCell>
-                      <ListCell minWidth={110}>
-                        <Kuski kuskiData={i.KuskiData} team flag />
-                      </ListCell>
-                      <ListCell right width={76}>
-                        {parseFloat(i[Ranking]).toFixed(2)}
-                      </ListCell>
-                      <ListCell right width={76}>
-                        {i[Points]}
-                      </ListCell>
-                      <ListCell right width={76}>
-                        {i[Wins]}
-                      </ListCell>
-                      <ListCell right width={76}>
-                        {i[Played5] === 0
-                          ? 'N/A'
-                          : parseFloat((i[Wins] * 100) / i[Played5]).toFixed(2)}
-                      </ListCell>
-                      <ListCell right width={76}>
-                        {i[Designed]}
-                      </ListCell>
-                      <ListCell right width={76}>
-                        {i[Played]}
-                      </ListCell>
-                    </ListRow>
-                  </div>
-                );
+    <Root>
+      <Inner>
+        {FilteredRanking && (
+          <>
+            <SortableList
+              headers={[
+                { name: '#', sort: false, width: 12 },
+                { name: 'Player', sort: false, width: 0, minWidth: 130 },
+                { name: 'Ranking', sort: true, width: 48, right: 1 },
+                { name: 'Points', sort: true, width: 48, right: 1 },
+                { name: 'Wins', sort: true, width: 48, right: 1 },
+                { name: 'Win %', sort: false, width: 48, right: 1 },
+                { name: 'Designed', sort: true, width: 65, right: 1 },
+                { name: 'Played', sort: true, width: 48, right: 1 },
+              ]}
+              sort={s => {
+                setSortOrder(s.sort);
+                setSort(`${s.header}${battleType}`);
               }}
-            </List>
-            {fixedHeight ? null : (
-              <Amount>Players: {FilteredRanking.length}</Amount>
-            )}
-          </ListContainer>
-        </>
-      )}
-    </>
+              defaultSort="Ranking"
+            />
+            <ListContainer flex>
+              <List
+                height={listHeight}
+                itemCount={FilteredRanking.length}
+                itemSize={40}
+              >
+                {({ index, style }) => {
+                  const i = FilteredRanking[index];
+                  return (
+                    <div style={style} key={i[tableIndex]}>
+                      <ListRow>
+                        <ListCell width={12}>{index + 1}.</ListCell>
+                        <ListCell minWidth={130}>
+                          <Kuski kuskiData={i.KuskiData} team flag />
+                        </ListCell>
+                        <ListCell right width={48}>
+                          {parseFloat(i[Ranking]).toFixed(2)}
+                        </ListCell>
+                        <ListCell right width={48}>
+                          {i[Points]}
+                        </ListCell>
+                        <ListCell right width={48}>
+                          {i[Wins]}
+                        </ListCell>
+                        <ListCell right width={48}>
+                          {i[Played5] === 0
+                            ? 'N/A'
+                            : parseFloat((i[Wins] * 100) / i[Played5]).toFixed(2)}
+                        </ListCell>
+                        <ListCell right width={65}>
+                          {i[Designed]}
+                        </ListCell>
+                        <ListCell right width={48}>
+                          {i[Played]}
+                        </ListCell>
+                      </ListRow>
+                    </div>
+                  );
+                }}
+              </List>
+              {fixedHeight ? null : (
+                <Amount>Players: {FilteredRanking.length}</Amount>
+              )}
+            </ListContainer>
+          </>
+        )}
+      </Inner>
+    </Root>
   );
 };
+
+const Root = styled.div`
+  overflow-x: auto;
+`
+
+const Inner = styled.div`
+  min-width: 630px;
+`
 
 const Amount = styled.div`
   padding: ${p => p.theme.padSmall};
