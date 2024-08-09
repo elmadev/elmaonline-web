@@ -16,6 +16,7 @@ import Admin from './Admin';
 import Dashboard from './Dashboard';
 import Personal from './Personal';
 import Team from './Team';
+import PlayStats from './PlayStats';
 
 const Cups = props => {
   const { ShortName } = props;
@@ -68,6 +69,7 @@ const Cups = props => {
             <Tab label="Events" value="events" />
             <Tab label="Standings" value="standings" />
             <Tab label="Rules & Info" value="rules" />
+            <Tab label="Play Stats" value="play-stats" />
             <Tab label="Blog" value="blog" />
             {nickId() > 0 && <Tab label="Personal" value="personal" />}
             {nickId() > 0 && <Tab label="Team" value="team" />}
@@ -118,6 +120,7 @@ const Cups = props => {
             <Personal path="personal" />
             <Team path="team" />
             {isCupAdmin && <Admin path="admin" />}
+            <PlayStats path="play-stats" cup={cup} events={events} />
           </Router>
         </>
       )}

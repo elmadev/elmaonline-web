@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Popularity = ({ before, after, ...props }) => {
   const pct = Number(props.widthPct || 0).toFixed(2);
@@ -28,9 +28,23 @@ const After = styled.div``;
 
 const Root = styled.div`
   .pop-wrapper {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    ${p => p.bordered && css`
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: ${p => p.theme.linkColor};
+        opacity: 0.1;
+      }
+    `}
     &:hover {
       ${BarWrapper} {
         background: ${p => p.pageBackgroundDark};

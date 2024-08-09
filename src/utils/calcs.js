@@ -24,6 +24,29 @@ export const shiftedLogisticFn = (b, x) => {
   return 2 / (1 + Math.pow(b, x)) - 1;
 };
 
+/**
+ * Ie. a shifted logistic function that intersects two points
+ *
+ * If you want a value of 50 to map to 0.2, and a value of 400 to map to 0.8,
+ * then use: shiftedLogisticWithIntersects([50, 0.2], [400, 0.8], value),
+ * so if value is 400, you would expect 0.8 as the return value.
+ *
+ * it seems to work.. Ty chatGPT.
+ */
+export const shiftedLogisticWithIntersects = (
+  [x1, y1],
+  [x2, y2],
+  value,
+  decimals = 5,
+) => {
+  const logit1 = Math.log(y1 / (1 - y1));
+  const logit2 = Math.log(y2 / (1 - y2));
+  const k = (logit2 - logit1) / (x2 - x1);
+  const x0 = (x1 * logit2 - x2 * logit1) / (logit2 - logit1);
+  const result = 1 / (1 + Math.exp(-k * (value - x0)));
+  return Number(result.toFixed(decimals));
+};
+
 // https://stackoverflow.com/questions/5259421/cumulative-distribution-function-in-javascript
 // normal cumulative distribution function
 // maps a value from 0 to infinity to 0 to 1

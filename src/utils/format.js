@@ -11,7 +11,10 @@ export const formatTimeSpent = time => {
 
 // for levelstats, likely large number of attempts.
 export const formatAttempts = num => {
-  return Number(num).toLocaleString();
+  if (num && num > 0) {
+    return Number(num).toLocaleString();
+  }
+  return 0;
 };
 
 export const formatPct = (num, div, precision = 2) => {
