@@ -572,6 +572,8 @@ const Level = ({ LevelId }) => {
 };
 
 const AccordionReplays = styled(AccordionDetails)`
+  max-height: 400px;
+  overflow-y: auto;
   & {
     flex-direction: column;
   }

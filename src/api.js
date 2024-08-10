@@ -285,6 +285,12 @@ export const LevelPack = (LevelPackName, levels = 0) =>
   api.get(`levelpack/${LevelPackName}`, {
     levels: levels ? '1' : undefined,
   });
+export const LevelCollectionStats = (type, value) => {
+  if (type === 'ids') {
+    value = (value || []).join(',');
+  }
+  return api.get(`levelstats/collection/${type}/${value}`);
+};
 
 export const TotalTimes = data =>
   api.get(`levelpack/${data.levelPackIndex}/totaltimes/${data.eolOnly}`);

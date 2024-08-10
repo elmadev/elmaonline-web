@@ -22,6 +22,7 @@ import Admin from './Admin';
 import { useQueryAlt, LevelPackLevelStats } from '../../api';
 import Menus from './Menus';
 import RecordHistory from './RecordHistory';
+import PlayStats from './PlayStats';
 
 const LevelPack = ({ name, tab, ...props }) => {
   const isRehydrated = useStoreRehydrated();
@@ -110,10 +111,11 @@ const LevelPack = ({ name, tab, ...props }) => {
           <Tab label="Records" value="" />
           <Tab label="Total Times" value="total-times" />
           <Tab label="King list" value="king-list" />
-          <Tab label="Record History" value="record-history" />
           <Tab label="Personal" value="personal" />
           <Tab label="Multi records" value="multi" />
           <Tab label="Replays" value="replays" />
+          <Tab label="Play Stats" value="play-stats" />
+          <Tab label="Record History" value="record-history" />
           <Tab label="Crippled" value="crippled" />
           {adminAuth && <Tab label="Admin" value="admin" />}
         </Tabs>
@@ -176,6 +178,11 @@ const LevelPack = ({ name, tab, ...props }) => {
             persist={`levelpack-${levelPackInfo.LevelPackIndex}`}
             nonsticky
             levelPack={levelPackInfo.LevelPackIndex}
+          />
+        )}
+        {tab === 'play-stats' && (
+          <PlayStats
+            LevelPack={levelPackInfo}
           />
         )}
         {tab === 'admin' && adminAuth && <Admin />}

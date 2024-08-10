@@ -102,14 +102,14 @@ export default function ReplayList({
     if (!previewRec) {
       return null;
     }
-    const currentIndex = findIndex(replays.rows, {
+    const currentIndex = findIndex(replays, {
       ReplayIndex: previewRec.ReplayIndex,
     });
 
     const nextIndex =
-      currentIndex + 1 >= replays.rows.length ? currentIndex : currentIndex + 1;
+      currentIndex + 1 >= replays.length ? currentIndex : currentIndex + 1;
 
-    const nextReplay = replays.rows[nextIndex];
+    const nextReplay = replays[nextIndex];
     setPreviewRec(nextReplay);
   };
 
@@ -117,14 +117,14 @@ export default function ReplayList({
     if (!previewRec) {
       return null;
     }
-    const currentIndex = findIndex(replays.rows, {
+    const currentIndex = findIndex(replays, {
       ReplayIndex: previewRec.ReplayIndex,
     });
 
     const previousIndex =
       currentIndex - 1 < 0 ? currentIndex : currentIndex - 1;
 
-    const previousReplay = replays.rows[previousIndex];
+    const previousReplay = replays[previousIndex];
     setPreviewRec(previousReplay);
   };
 
@@ -283,7 +283,7 @@ export default function ReplayList({
       {!summary && (
         <Box p={2}>
           <TablePagination
-            style={{ width: '600px' }}
+            style={{ width: '600px; max-width: 100%;' }}
             component="div"
             count={-1}
             rowsPerPage={25}

@@ -12,7 +12,6 @@ const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
 const CupResults = props => {
   const { events, ShortName } = props;
-
   const currentEvents = events.filter(
     e =>
       e.EndTime > format(new Date(), 't') &&
@@ -25,6 +24,13 @@ const CupResults = props => {
       .findIndex(e => e.CupIndex === event.CupIndex);
     return index + 1;
   };
+
+  const pastEvents = events.sort(eventSort).filter(
+    e => e.EndTime < format(new Date(), 't')
+  );
+
+  const lastEvent = pastEvents[pastEvents.length - 1];
+  const lastEventNumber = lastEvent && getEventNumber(lastEvent);
 
   return (
     <Container>
@@ -80,11 +86,21 @@ const CupResults = props => {
           </Paper>
         );
       })}
+      {lastEvent && (
+        <LastResultsLink>
+            <Link to={`/cup/${ShortName}/events/${lastEventNumber}/results`}>Event {lastEventNumber} Results/Replays</Link>
+        </LastResultsLink>
+      )}
     </Container>
   );
 };
 
 const Container = styled.div``;
+
+const LastResultsLink = styled.div`
+  padding: 5px 0 8px 0;
+  text-align: center;
+`;
 
 const EventHeader = styled.div`
   text-align: center;
