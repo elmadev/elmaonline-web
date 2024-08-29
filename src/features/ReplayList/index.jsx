@@ -16,6 +16,11 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
+
 import { TablePagination } from '@material-ui/core';
 import Fab from 'components/Fab';
 
@@ -58,7 +63,7 @@ export default function ReplayList({
       tags: selectedTags.map(tag => tag.TagIndex),
       excludedTags: excludedTags.map(tag => tag.TagIndex),
       sortBy: !summary ? settings.sortBy : 'uploaded',
-      order: 'desc',
+      order: settings.sortBy === 'time' ? 'asc' : 'desc',
       drivenBy,
       uploadedBy,
       levelPack,
@@ -180,40 +185,42 @@ export default function ReplayList({
                 <TextField {...params} placeholder="Excluded tags" />
               )}
             />
-            <ToggleButton
-              value="check"
+            <ToggleButtonGroup
+              value={settings.sortBy}
               size="small"
-              selected={settings.sortBy === 'rating'}
-              style={{ alignSelf: 'center', marginRight: '8px' }}
-              onChange={() => {
-                setSettings({
-                  sortBy: settings.sortBy === 'rating' ? 'uploaded' : 'rating',
-                });
-              }}
+              exclusive
+              style={{ alignSelf: 'center', marginRight: '12px' }}
+              onChange={(ev, value) => setSettings({ sortBy: value })}
             >
-              {settings.sortBy === 'rating' ? (
-                <StarIcon fontSize="small" />
-              ) : (
-                <StarBorderIcon fontSize="small" />
-              )}
-            </ToggleButton>
-            <ToggleButton
-              value="check"
-              size="small"
-              selected={settings.sortBy === 'views'}
-              style={{ alignSelf: 'center', marginRight: '8px' }}
-              onChange={() => {
-                setSettings({
-                  sortBy: settings.sortBy === 'views' ? 'uploaded' : 'views',
-                });
-              }}
-            >
-              {settings.sortBy === 'views' ? (
-                <VisibilityIcon fontSize="small" />
-              ) : (
-                <VisibilityOffOutlinedIcon fontSize="small" />
-              )}
-            </ToggleButton>
+              <ToggleButton value="">
+                {settings.sortBy === '' ? (
+                  <CalendarTodayIcon fontSize="small" />
+                ) : (
+                  <CalendarTodayOutlinedIcon fontSize="small" />
+                )}
+              </ToggleButton>
+              <ToggleButton value="time">
+                {settings.sortBy === 'time' ? (
+                  <WatchLaterIcon fontSize="small" />
+                ) : (
+                  <AccessTimeIcon fontSize="small" />
+                )}
+              </ToggleButton>
+              <ToggleButton value="rating">
+                {settings.sortBy === 'rating' ? (
+                  <StarIcon fontSize="small" />
+                ) : (
+                  <StarBorderIcon fontSize="small" />
+                )}
+              </ToggleButton>
+              <ToggleButton value="views">
+                {settings.sortBy === 'views' ? (
+                  <VisibilityIcon fontSize="small" />
+                ) : (
+                  <VisibilityOffOutlinedIcon fontSize="small" />
+                )}
+              </ToggleButton>
+            </ToggleButtonGroup>
             <ToggleButtonGroup
               value={settings.grid}
               size="small"
