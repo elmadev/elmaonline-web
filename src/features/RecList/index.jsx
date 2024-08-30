@@ -7,6 +7,7 @@ import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Header from 'components/Header';
 import RecListItem from 'components/RecListItem';
 import styled from 'styled-components';
+import TagFilter from 'components/TagFilter';
 
 const widths = { Replay: 200, Time: 100, Level: null, By: null };
 
@@ -25,12 +26,8 @@ const RecList = ({
   );
   const [includedTags, setIncludedTags] = useState([]);
   const [excludedTags, setExcludedTags] = useState([]);
-  const [availableTags, setAvailableTags] = useState([]);
 
   useEffect(() => {
-    setAvailableTags(
-      tagOptions.filter(tag => !['DNF', 'TAS'].includes(tag.Name)),
-    );
     // Autoexclude DNF and TAS
     setExcludedTags(
       tagOptions.filter(tag => ['DNF', 'TAS'].includes(tag.Name)),
@@ -49,21 +46,6 @@ const RecList = ({
     return currentUUID.indexOf(uuid) !== -1;
   };
 
-  const handleIncludeTag = tag => {
-    setIncludedTags([...includedTags, tag]);
-    setAvailableTags(availableTags.filter(t => t.TagIndex !== tag.TagIndex));
-  };
-
-  const handleExcludeTag = tag => {
-    setExcludedTags([...excludedTags, tag]);
-    setIncludedTags(includedTags.filter(t => t.TagIndex !== tag.TagIndex));
-  };
-
-  const handleRemoveExcludedTag = tag => {
-    setExcludedTags(excludedTags.filter(t => t.TagIndex !== tag.TagIndex));
-    setAvailableTags([...availableTags, tag]);
-  };
-
   const filterByTags = i => {
     return (
       (includedTags.length === 0 ||
@@ -77,45 +59,14 @@ const RecList = ({
   return (
     <>
       <Header h3>Filter</Header>
-      <Box display="flex" flexWrap="wrap">
-        {includedTags
-          .sort((a, b) => a.Name.localeCompare(b.Name))
-          .map(tag => (
-            <IncludedTagChip
-              key={tag.Name}
-              size="small"
-              label={tag.Name}
-              style={{ margin: 4 }}
-              onClick={() => handleExcludeTag(tag)}
-              title="Click to exclude"
-            />
-          ))}
-        {excludedTags
-          .sort((a, b) => a.Name.localeCompare(b.Name))
-          .map(tag => (
-            <ExcludedTagChip
-              key={tag.Name}
-              size="small"
-              label={tag.Name}
-              style={{ margin: 4 }}
-              onClick={() => handleRemoveExcludedTag(tag)}
-              title="Click to remove exclusion"
-            />
-          ))}
-        {availableTags
-          .sort((a, b) => a.Name.localeCompare(b.Name))
-          .map(option => {
-            return (
-              <Chip
-                key={option.Name}
-                size="small"
-                label={option.Name}
-                onClick={() => handleIncludeTag(option)}
-                style={{ margin: 4 }}
-                title="Click to include"
-              />
-            );
-          })}
+      <Box display="flex">
+        <TagFilter
+          tagOptions={tagOptions}
+          selectedTags={includedTags}
+          onSelectedTagsChange={(_event, newValue) => setIncludedTags(newValue)}
+          excludedTags={excludedTags}
+          onExcludedTagsChange={(_event, newValue) => setExcludedTags(newValue)}
+        />
       </Box>
       <ListContainer
         horizontalMargin={`${horizontalMargin}px`}

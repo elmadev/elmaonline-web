@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { TextField, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import RecListItem from 'components/RecListItem';
 import { ListContainer, ListHeader, ListCell } from 'components/List';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import { findIndex } from 'lodash';
 import styled from 'styled-components';
 import Preview from 'components/Preview';
@@ -23,6 +22,7 @@ import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined'
 
 import { TablePagination } from '@material-ui/core';
 import Fab from 'components/Fab';
+import TagFilter from 'components/TagFilter';
 
 export default function ReplayList({
   defaultPage = 0,
@@ -149,41 +149,18 @@ export default function ReplayList({
       {!summary && (
         <>
           <StickyContainer nonsticky={nonsticky}>
-            <Filter
-              value={selectedTags}
-              onChange={(_event, newValue) => {
+            <TagFilter
+              tagOptions={tagOptions}
+              selectedTags={selectedTags}
+              onSelectedTagsChange={(_event, newValue) => {
                 setSelectedTags(newValue);
                 updatePage(0);
               }}
-              forcePopupIcon={false}
-              multiple
-              id="Tags"
-              size="small"
-              options={tagOptions.filter(tag => !excludedTags.includes(tag))}
-              getOptionLabel={option => option.Name}
-              getOptionSelected={(option, value) => option.Name === value.Name}
-              filterSelectedOptions
-              renderInput={params => (
-                <TextField {...params} placeholder="Included tags" />
-              )}
-            />
-            <Filter
-              value={excludedTags}
-              onChange={(_event, newValue) => {
+              excludedTags={excludedTags}
+              onExcludedTagsChange={(_event, newValue) => {
                 setExcludedTags(newValue);
                 updatePage(0);
               }}
-              forcePopupIcon={false}
-              multiple
-              id="Excluded tags"
-              size="small"
-              options={tagOptions.filter(tag => !selectedTags.includes(tag))}
-              getOptionLabel={option => option.Name}
-              getOptionSelected={(option, value) => option.Name === value.Name}
-              filterSelectedOptions
-              renderInput={params => (
-                <TextField {...params} placeholder="Excluded tags" />
-              )}
             />
             <ToggleButtonGroup
               value={settings.sortBy}
@@ -340,18 +317,4 @@ const StickyContainer = styled.div`
   justify-content: space-between;
   top: ${p => (p.nonsticky ? '0' : '52px')};
   z-index: 10;
-`;
-
-const Filter = styled(Autocomplete)`
-  background: ${p => p.theme.pageBackground};
-  padding: 0.7rem 1rem 0.5rem 1rem;
-  flex-grow: 1;
-
-  .MuiInput-underline:before {
-    content: none;
-  }
-
-  .MuiInput-underline:after {
-    content: none;
-  }
 `;
