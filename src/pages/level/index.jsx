@@ -382,7 +382,7 @@ const Level = ({ LevelId }) => {
             <AccordionReplays>
               <RecList
                 LevelIndex={LevelIndex}
-                columns={['Replay', 'Time', 'By']}
+                columns={['Replay', 'Time', 'By', 'Tags']}
                 horizontalMargin={-16}
               />
             </AccordionReplays>
