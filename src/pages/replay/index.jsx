@@ -503,7 +503,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
             <RecList
               LevelIndex={replay.LevelIndex}
               currentUUID={uuidarray}
-              columns={['Uploaded', 'Replay', 'Time', 'By']}
+              columns={['Uploaded', 'Replay', 'Time', 'By', 'Tags']}
               horizontalMargin={-16}
               mergable
             />

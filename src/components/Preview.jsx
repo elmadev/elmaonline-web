@@ -123,6 +123,9 @@ const Close = styled(CloseIcon)`
 const Next = styled(NavigateNextIcon)`
   cursor: pointer;
   color: ${p => p.theme.lightTextColor};
+  // make larger (good for mobile especially)
+  font-size: 34px !important;
+  margin-top: -3px;
 
   :hover {
     color: blue;
@@ -132,6 +135,9 @@ const Next = styled(NavigateNextIcon)`
 const Previous = styled(NavigateBeforeIcon)`
   cursor: pointer;
   color: ${p => p.theme.lightTextColor};
+  // make larger (good for mobile especially)
+  font-size: 34px !important;
+  margin-top: -3px;
 
   :hover {
     color: blue;

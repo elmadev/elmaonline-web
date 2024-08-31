@@ -382,7 +382,7 @@ const Level = ({ LevelId }) => {
             <AccordionReplays>
               <RecList
                 LevelIndex={LevelIndex}
-                columns={['Replay', 'Time', 'By']}
+                columns={['Replay', 'Time', 'By', 'Tags']}
                 horizontalMargin={-16}
               />
             </AccordionReplays>
@@ -572,6 +572,8 @@ const Level = ({ LevelId }) => {
 };
 
 const AccordionReplays = styled(AccordionDetails)`
+  max-height: 400px;
+  overflow-y: auto;
   & {
     flex-direction: column;
   }

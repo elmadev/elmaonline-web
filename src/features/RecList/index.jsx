@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { sortBy, filter, xor, intersectionBy } from 'lodash';
+import { sortBy, filter, intersectionBy } from 'lodash';
 import { Chip, Box } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Header from 'components/Header';
 import RecListItem from 'components/RecListItem';
+import styled from 'styled-components';
+import TagFilter from 'components/TagFilter';
 
 const widths = { Replay: 200, Time: 100, Level: null, By: null };
 
@@ -22,7 +24,15 @@ const RecList = ({
   const { getTagOptions, getReplays } = useStoreActions(
     actions => actions.RecList,
   );
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [includedTags, setIncludedTags] = useState([]);
+  const [excludedTags, setExcludedTags] = useState([]);
+
+  useEffect(() => {
+    // Autoexclude DNF and TAS
+    setExcludedTags(
+      tagOptions.filter(tag => ['DNF', 'TAS'].includes(tag.Name)),
+    );
+  }, [tagOptions]);
 
   useEffect(() => {
     getReplays(LevelIndex);
@@ -36,46 +46,27 @@ const RecList = ({
     return currentUUID.indexOf(uuid) !== -1;
   };
 
-  const handleTagClick = tag => {
-    setSelectedTags(xor(selectedTags, [tag]));
-  };
-
   const filterByTags = i => {
     return (
-      selectedTags.length === 0 ||
-      intersectionBy(i.Tags, selectedTags, 'TagIndex').length >
-        selectedTags.length - 1
+      (includedTags.length === 0 ||
+        intersectionBy(i.Tags, includedTags, 'TagIndex').length >
+          includedTags.length - 1) &&
+      (excludedTags.length === 0 ||
+        intersectionBy(i.Tags, excludedTags, 'TagIndex').length === 0)
     );
   };
 
   return (
     <>
       <Header h3>Filter</Header>
-      <Box display="flex" flexWrap="wrap">
-        {tagOptions.map(option => {
-          if (selectedTags.includes(option)) {
-            return (
-              <Chip
-                key={option.Name}
-                size="small"
-                label={option.Name}
-                onDelete={() => handleTagClick(option)}
-                color="primary"
-                style={{ margin: 4 }}
-              />
-            );
-          } else {
-            return (
-              <Chip
-                key={option.Name}
-                size="small"
-                label={option.Name}
-                onClick={() => handleTagClick(option)}
-                style={{ margin: 4 }}
-              />
-            );
-          }
-        })}
+      <Box display="flex">
+        <TagFilter
+          tagOptions={tagOptions}
+          selectedTags={includedTags}
+          onSelectedTagsChange={(_event, newValue) => setIncludedTags(newValue)}
+          excludedTags={excludedTags}
+          onExcludedTagsChange={(_event, newValue) => setExcludedTags(newValue)}
+        />
       </Box>
       <ListContainer
         horizontalMargin={`${horizontalMargin}px`}
@@ -107,6 +98,16 @@ const RecList = ({
     </>
   );
 };
+
+const IncludedTagChip = styled(Chip)`
+  background-color: green !important;
+  color: white !important;
+`;
+
+const ExcludedTagChip = styled(Chip)`
+  background-color: red !important;
+  color: white !important;
+`;
 
 RecList.propTypes = {
   currentUUID: PropTypes.arrayOf(PropTypes.string),

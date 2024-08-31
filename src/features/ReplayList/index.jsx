@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { TextField, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import RecListItem from 'components/RecListItem';
 import { ListContainer, ListHeader, ListCell } from 'components/List';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import { findIndex } from 'lodash';
 import styled from 'styled-components';
 import Preview from 'components/Preview';
@@ -16,8 +15,14 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffOutlinedIcon from '@material-ui/icons/VisibilityOffOutlined';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
+
 import { TablePagination } from '@material-ui/core';
 import Fab from 'components/Fab';
+import TagFilter from 'components/TagFilter';
 
 export default function ReplayList({
   defaultPage = 0,
@@ -58,7 +63,7 @@ export default function ReplayList({
       tags: selectedTags.map(tag => tag.TagIndex),
       excludedTags: excludedTags.map(tag => tag.TagIndex),
       sortBy: !summary ? settings.sortBy : 'uploaded',
-      order: 'desc',
+      order: settings.sortBy === 'time' ? 'asc' : 'desc',
       drivenBy,
       uploadedBy,
       levelPack,
@@ -102,14 +107,14 @@ export default function ReplayList({
     if (!previewRec) {
       return null;
     }
-    const currentIndex = findIndex(replays.rows, {
+    const currentIndex = findIndex(replays, {
       ReplayIndex: previewRec.ReplayIndex,
     });
 
     const nextIndex =
-      currentIndex + 1 >= replays.rows.length ? currentIndex : currentIndex + 1;
+      currentIndex + 1 >= replays.length ? currentIndex : currentIndex + 1;
 
-    const nextReplay = replays.rows[nextIndex];
+    const nextReplay = replays[nextIndex];
     setPreviewRec(nextReplay);
   };
 
@@ -117,14 +122,14 @@ export default function ReplayList({
     if (!previewRec) {
       return null;
     }
-    const currentIndex = findIndex(replays.rows, {
+    const currentIndex = findIndex(replays, {
       ReplayIndex: previewRec.ReplayIndex,
     });
 
     const previousIndex =
       currentIndex - 1 < 0 ? currentIndex : currentIndex - 1;
 
-    const previousReplay = replays.rows[previousIndex];
+    const previousReplay = replays[previousIndex];
     setPreviewRec(previousReplay);
   };
 
@@ -144,76 +149,55 @@ export default function ReplayList({
       {!summary && (
         <>
           <StickyContainer nonsticky={nonsticky}>
-            <Filter
-              value={selectedTags}
-              onChange={(_event, newValue) => {
+            <TagFilter
+              tagOptions={tagOptions}
+              selectedTags={selectedTags}
+              onSelectedTagsChange={(_event, newValue) => {
                 setSelectedTags(newValue);
                 updatePage(0);
               }}
-              forcePopupIcon={false}
-              multiple
-              id="Tags"
-              size="small"
-              options={tagOptions.filter(tag => !excludedTags.includes(tag))}
-              getOptionLabel={option => option.Name}
-              getOptionSelected={(option, value) => option.Name === value.Name}
-              filterSelectedOptions
-              renderInput={params => (
-                <TextField {...params} placeholder="Included tags" />
-              )}
-            />
-            <Filter
-              value={excludedTags}
-              onChange={(_event, newValue) => {
+              excludedTags={excludedTags}
+              onExcludedTagsChange={(_event, newValue) => {
                 setExcludedTags(newValue);
                 updatePage(0);
               }}
-              forcePopupIcon={false}
-              multiple
-              id="Excluded tags"
-              size="small"
-              options={tagOptions.filter(tag => !selectedTags.includes(tag))}
-              getOptionLabel={option => option.Name}
-              getOptionSelected={(option, value) => option.Name === value.Name}
-              filterSelectedOptions
-              renderInput={params => (
-                <TextField {...params} placeholder="Excluded tags" />
-              )}
             />
-            <ToggleButton
-              value="check"
+            <ToggleButtonGroup
+              value={settings.sortBy}
               size="small"
-              selected={settings.sortBy === 'rating'}
-              style={{ alignSelf: 'center', marginRight: '8px' }}
-              onChange={() => {
-                setSettings({
-                  sortBy: settings.sortBy === 'rating' ? 'uploaded' : 'rating',
-                });
-              }}
+              exclusive
+              style={{ alignSelf: 'center', marginRight: '12px' }}
+              onChange={(ev, value) => setSettings({ sortBy: value })}
             >
-              {settings.sortBy === 'rating' ? (
-                <StarIcon fontSize="small" />
-              ) : (
-                <StarBorderIcon fontSize="small" />
-              )}
-            </ToggleButton>
-            <ToggleButton
-              value="check"
-              size="small"
-              selected={settings.sortBy === 'views'}
-              style={{ alignSelf: 'center', marginRight: '8px' }}
-              onChange={() => {
-                setSettings({
-                  sortBy: settings.sortBy === 'views' ? 'uploaded' : 'views',
-                });
-              }}
-            >
-              {settings.sortBy === 'views' ? (
-                <VisibilityIcon fontSize="small" />
-              ) : (
-                <VisibilityOffOutlinedIcon fontSize="small" />
-              )}
-            </ToggleButton>
+              <ToggleButton value="">
+                {settings.sortBy === '' ? (
+                  <CalendarTodayIcon fontSize="small" />
+                ) : (
+                  <CalendarTodayOutlinedIcon fontSize="small" />
+                )}
+              </ToggleButton>
+              <ToggleButton value="time">
+                {settings.sortBy === 'time' ? (
+                  <WatchLaterIcon fontSize="small" />
+                ) : (
+                  <AccessTimeIcon fontSize="small" />
+                )}
+              </ToggleButton>
+              <ToggleButton value="rating">
+                {settings.sortBy === 'rating' ? (
+                  <StarIcon fontSize="small" />
+                ) : (
+                  <StarBorderIcon fontSize="small" />
+                )}
+              </ToggleButton>
+              <ToggleButton value="views">
+                {settings.sortBy === 'views' ? (
+                  <VisibilityIcon fontSize="small" />
+                ) : (
+                  <VisibilityOffOutlinedIcon fontSize="small" />
+                )}
+              </ToggleButton>
+            </ToggleButtonGroup>
             <ToggleButtonGroup
               value={settings.grid}
               size="small"
@@ -283,7 +267,7 @@ export default function ReplayList({
       {!summary && (
         <Box p={2}>
           <TablePagination
-            style={{ width: '600px' }}
+            style={{ width: '600px; max-width: 100%;' }}
             component="div"
             count={-1}
             rowsPerPage={25}
@@ -333,18 +317,4 @@ const StickyContainer = styled.div`
   justify-content: space-between;
   top: ${p => (p.nonsticky ? '0' : '52px')};
   z-index: 10;
-`;
-
-const Filter = styled(Autocomplete)`
-  background: ${p => p.theme.pageBackground};
-  padding: 0.7rem 1rem 0.5rem 1rem;
-  flex-grow: 1;
-
-  .MuiInput-underline:before {
-    content: none;
-  }
-
-  .MuiInput-underline:after {
-    content: none;
-  }
 `;
