@@ -56,10 +56,10 @@ const targetsOptionsSeven = [
 ];
 
 const targetsOptionsThree = [
-  { type: 'Targets', title: 'Next target', id: 7, key: 'next' },
-  { type: 'Targets', title: 'Bronze', id: 6, key: 'bronze' },
-  { type: 'Targets', title: 'Silver', id: 5, key: 'silver' },
-  { type: 'Targets', title: 'Gold', id: 4, key: 'gold' },
+  { type: 'Targets', title: 'Next target', id: 3, key: 'next' },
+  { type: 'Targets', title: 'Bronze', id: 2, key: 'bronze' },
+  { type: 'Targets', title: 'Silver', id: 1, key: 'silver' },
+  { type: 'Targets', title: 'Gold', id: 0, key: 'gold' },
 ];
 
 const Personal = ({ name, player }) => {
@@ -249,11 +249,14 @@ const Personal = ({ name, player }) => {
     setCompares(values);
   };
 
+  let targetsCount = 0;
+  if (levelPackInfo?.levels?.[0]?.Targets) {
+    targetsCount = levelPackInfo.levels[0].Targets.split(',').length;
+  }
+
   const compareOptionsWithKuskis = useMemo(() => {
-    let targetsCount = 0;
     let compareOptionsWithTargets = compareOptions;
     if (levelPackInfo?.levels?.[0]?.Targets) {
-      targetsCount = levelPackInfo.levels[0].Targets.split(',').length;
       if (targetsCount === 7) {
         compareOptionsWithTargets = [...compareOptions, ...targetsOptionsSeven];
       }
@@ -385,7 +388,11 @@ const Personal = ({ name, player }) => {
                       time={r.single.Time}
                       color={
                         highlightTargets
-                          ? highlightTime(r.single.Time, r.Level)
+                          ? highlightTime(
+                              r.single.Time,
+                              r.Level,
+                              targetsCount === 3,
+                            )
                           : ''
                       }
                     />
@@ -520,7 +527,11 @@ const Personal = ({ name, player }) => {
                             time={r[compare.key].Time}
                             color={
                               highlightTargets
-                                ? highlightTime(r[compare.key].Time, r.Level)
+                                ? highlightTime(
+                                    r[compare.key].Time,
+                                    r.Level,
+                                    targetsCount === 3,
+                                  )
                                 : ''
                             }
                           />
@@ -541,7 +552,11 @@ const Personal = ({ name, player }) => {
                             time={r[compare.key].Time}
                             color={
                               highlightTargets
-                                ? highlightTime(r[compare.key].Time, r.Level)
+                                ? highlightTime(
+                                    r[compare.key].Time,
+                                    r.Level,
+                                    targetsCount === 3,
+                                  )
                                 : ''
                             }
                           />

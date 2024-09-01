@@ -100,8 +100,8 @@ export const downloadRec = (url, levName, kuski, time) => {
   });
 };
 
-export const highlightTime = (time, level) => {
-  const colors = [
+export const highlightTime = (time, level, isMedalsTargets) => {
+  let colors = [
     '#aa43dd',
     '#ff66cc',
     '#ff9c00',
@@ -111,6 +111,9 @@ export const highlightTime = (time, level) => {
     '#e2e77e',
     '',
   ];
+  if (isMedalsTargets) {
+    colors = ['#c9b037', '#b4b4b4', '#ad8a56', '', '', '', '', ''];
+  }
   if (level.Targets) {
     const targets = level.Targets.split(',');
     let color = '';
