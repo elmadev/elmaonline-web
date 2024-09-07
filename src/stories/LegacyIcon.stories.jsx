@@ -27,8 +27,20 @@ Skintatious.args = {
   show: true,
 };
 
+export const Zebrasite = Template.bind({});
+Zebrasite.args = {
+  source: 4,
+  show: true,
+};
+
+export const ZebrasiteUnverified = Template.bind({});
+ZebrasiteUnverified.args = {
+  source: 5,
+  show: true,
+};
+
 export const Stats = Template.bind({});
 Stats.args = {
-  source: 4,
+  source: 6,
   show: true,
 };
