@@ -265,7 +265,7 @@ export default function ReplayList({
         </CardGrid>
       )}
       {!summary && (
-        <Box p={2}>
+        <PaginationCon>
           <TablePagination
             style={{ width: '600px; max-width: 100%;' }}
             component="div"
@@ -281,12 +281,19 @@ export default function ReplayList({
             onChangePage={(event, newPage) => updatePage(newPage)}
             rowsPerPageOptions={[]}
           />
-        </Box>
+        </PaginationCon>
       )}
       {uploadFab ? <Fab url="/replays/upload" /> : null}
     </Container>
   );
 }
+
+const PaginationCon = styled.div`
+  padding: 16px;
+  .MuiTablePagination-spacer {
+    display: none;
+  }
+`;
 
 const Container = styled.div`
   display: block;
