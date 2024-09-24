@@ -35,19 +35,22 @@ export default function ReplayList({
   persist = '',
   uploadFab = false,
 }) {
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [excludedTags, setExcludedTags] = useState([]);
   const [previewRec, setPreviewRec] = useState(null);
   const [page, setPage] = useState(defaultPage);
   const [pageSize] = useState(defaultPageSize);
-  const { replays, tagOptions, settings, persistPage } = useStoreState(
-    state => state.ReplayList,
-  );
+  const {
+    replays,
+    tagOptions,
+    settings,
+    persistPage,
+    tags: { includedTags, excludedTags },
+  } = useStoreState(state => state.ReplayList);
   const {
     getReplays,
     getTagOptions,
     setSettings,
     setPersistPage,
+    tags: { setIncludedTags, setExcludedTags },
   } = useStoreActions(actions => actions.ReplayList);
   const { loggedIn, userid } = useStoreState(state => state.Login);
 
@@ -60,7 +63,7 @@ export default function ReplayList({
     getReplays({
       page: getPage(),
       pageSize,
-      tags: selectedTags.map(tag => tag.TagIndex),
+      tags: includedTags.map(tag => tag.TagIndex),
       excludedTags: excludedTags.map(tag => tag.TagIndex),
       sortBy: !summary ? settings.sortBy : 'uploaded',
       order: settings.sortBy === 'time' ? 'asc' : 'desc',
@@ -68,7 +71,7 @@ export default function ReplayList({
       uploadedBy,
       levelPack,
     });
-  }, [page, pageSize, selectedTags, excludedTags, settings.sortBy]);
+  }, [page, pageSize, includedTags, excludedTags, settings.sortBy]);
 
   const updatePage = pageNo => {
     setPage(pageNo);
@@ -151,9 +154,9 @@ export default function ReplayList({
           <StickyContainer nonsticky={nonsticky}>
             <TagFilter
               tagOptions={tagOptions}
-              selectedTags={selectedTags}
+              selectedTags={includedTags}
               onSelectedTagsChange={(_event, newValue) => {
-                setSelectedTags(newValue);
+                setIncludedTags(newValue);
                 updatePage(0);
               }}
               excludedTags={excludedTags}

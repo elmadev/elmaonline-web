@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortBy, filter, intersectionBy } from 'lodash';
@@ -18,21 +18,17 @@ const RecList = ({
   LevelIndex,
   mergable = false,
 }) => {
-  const { loading, replays, tagOptions } = useStoreState(
-    state => state.RecList,
-  );
-  const { getTagOptions, getReplays } = useStoreActions(
-    actions => actions.RecList,
-  );
-  const [includedTags, setIncludedTags] = useState([]);
-  const [excludedTags, setExcludedTags] = useState([]);
-
-  useEffect(() => {
-    // Autoexclude DNF and TAS
-    setExcludedTags(
-      tagOptions.filter(tag => ['DNF', 'TAS'].includes(tag.Name)),
-    );
-  }, [tagOptions]);
+  const {
+    loading,
+    replays,
+    tagOptions,
+    tags: { includedTags, excludedTags },
+  } = useStoreState(state => state.RecList);
+  const {
+    getTagOptions,
+    getReplays,
+    tags: { setIncludedTags, setExcludedTags },
+  } = useStoreActions(actions => actions.RecList);
 
   useEffect(() => {
     getReplays(LevelIndex);
