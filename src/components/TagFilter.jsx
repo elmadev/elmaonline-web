@@ -18,7 +18,9 @@ const TagFilter = ({
       multiple
       id="Tags"
       size="small"
-      options={tagOptions.filter(tag => !excludedTags.includes(tag))}
+      options={tagOptions.filter(
+        tag => !excludedTags.find(t => t.TagIndex === tag.TagIndex),
+      )}
       getOptionLabel={option => option.Name}
       getOptionSelected={(option, value) => option.Name === value.Name}
       filterSelectedOptions
@@ -34,7 +36,9 @@ const TagFilter = ({
       multiple
       id="Excluded tags"
       size="small"
-      options={tagOptions.filter(tag => !selectedTags.includes(tag))}
+      options={tagOptions.filter(
+        tag => !selectedTags.find(t => t.TagIndex === tag.TagIndex),
+      )}
       getOptionLabel={option => option.Name}
       getOptionSelected={(option, value) => option.Name === value.Name}
       filterSelectedOptions
