@@ -69,4 +69,17 @@ export default {
   setPersistPage: action((state, payload) => {
     state.persistPage[payload.key] = payload.pageNo;
   }),
+  tags: persist(
+    {
+      includedTags: [],
+      setIncludedTags: action((state, payload) => {
+        state.includedTags = payload;
+      }),
+      excludedTags: [],
+      setExcludedTags: action((state, payload) => {
+        state.excludedTags = payload;
+      }),
+    },
+    { storage: 'localStorage' },
+  ),
 };

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { action, thunk } from 'easy-peasy';
+import { action, thunk, persist } from 'easy-peasy';
 import { ReplaysByLevelIndex, GetReplayTags } from 'api';
 
 export default {
@@ -29,4 +29,17 @@ export default {
       actions.setTagOptions(get.data);
     }
   }),
+  tags: persist(
+    {
+      includedTags: [],
+      setIncludedTags: action((state, payload) => {
+        state.includedTags = payload;
+      }),
+      excludedTags: [],
+      setExcludedTags: action((state, payload) => {
+        state.excludedTags = payload;
+      }),
+    },
+    { storage: 'localStorage' },
+  ),
 };

@@ -39,6 +39,7 @@ const RecListItem = ({ replay, selected, columns, mergable = false }) => {
   const getTags = () => {
     return replay.Tags.map(tag => tag.Name);
   };
+
   return (
     <ListRow
       key={`${replay.ReplayIndex}${replay.TimeIndex}`}
@@ -64,7 +65,11 @@ const RecListItem = ({ replay, selected, columns, mergable = false }) => {
       )}
       {columns.indexOf('Time') !== -1 && (
         <ListCell right to={url}>
-          <Time thousands time={replay.ReplayTime} />
+          {replay.BattleIndex ? (
+            <Time time={replay.ReplayTime / 10} apples={replay.Apples} />
+          ) : (
+            <Time thousands time={replay.ReplayTime} />
+          )}
         </ListCell>
       )}
       {columns.indexOf('By') !== -1 && (

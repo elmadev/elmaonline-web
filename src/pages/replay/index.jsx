@@ -47,6 +47,16 @@ import { Row, Column } from 'components/Containers';
 import { pts } from 'utils/cups';
 import { mod } from 'utils/nick';
 
+const RecTime = ({ type, replay }) => {
+  if (type === 'cup') {
+    return <Time time={replay.ReplayTime / 10} apples={-1} />;
+  }
+  if (type === 'winner') {
+    return <Time time={replay.ReplayTime / 10} apples={replay.Apples} />;
+  }
+  return <Time thousands time={replay.ReplayTime} />;
+};
+
 const getLink = replay => {
   let link = '';
   let type = 'replay';
@@ -232,26 +242,11 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
                       </div>
                       <div>
                         {isWindow ? (
-                          <>
-                            <a href={dlLink}>
-                              {type === 'cup' ? (
-                                <Time
-                                  time={replay.ReplayTime / 10}
-                                  apples={-1}
-                                />
-                              ) : (
-                                <Time thousands time={replay.ReplayTime} />
-                              )}
-                            </a>{' '}
-                          </>
+                          <a href={dlLink}>
+                            <RecTime type={type} replay={replay} />
+                          </a>
                         ) : (
-                          <>
-                            {type === 'cup' ? (
-                              <Time time={replay.ReplayTime / 10} apples={-1} />
-                            ) : (
-                              <Time thousands time={replay.ReplayTime} />
-                            )}
-                          </>
+                          <RecTime type={type} replay={replay} />
                         )}{' '}
                         in{' '}
                         <Level
