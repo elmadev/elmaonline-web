@@ -349,6 +349,7 @@ export const IntBestTimes = kuskiIndex => {
 };
 export const LevelPacksByLevel = LevelIndex =>
   api.get(`levelpack/byLevel/${+LevelIndex}`);
+export const CupsByLevel = LevelIndex => api.get(`cups/byLevel/${+LevelIndex}`);
 export const LatestLevelPacks = limit => api.get(`levelpack/latest/${limit}`);
 
 export const LevelPackRecordHistory = (name, opts) =>

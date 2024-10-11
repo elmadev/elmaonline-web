@@ -74,6 +74,7 @@ const Level = ({ LevelId }) => {
     eolLoading,
     timeStats,
     levelpacks,
+    cups,
     statsLoading,
     settings: { fancyMap, showGravityApples },
     personalLeaderHistory,
@@ -272,6 +273,17 @@ const Level = ({ LevelId }) => {
                             index > 0 && ', ',
                             <Link to={`/levels/packs/${pack.LevelPackName}`}>
                               {pack.LevelPackName}
+                            </Link>,
+                          ])}
+                        </div>
+                      )}
+                      {cups && cups.length > 0 && (
+                        <div>
+                          {`Cup: `}
+                          {cups.map((cup, index) => [
+                            index > 0 && ', ',
+                            <Link to={`/cup/${cup.ShortName}/events`}>
+                              {cup.CupName}
                             </Link>,
                           ])}
                         </div>
