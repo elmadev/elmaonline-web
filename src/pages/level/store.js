@@ -8,6 +8,7 @@ import {
   LevelTimeStats,
   LeaderHistory,
   LevelPacksByLevel,
+  CupsByLevel,
   GetLevelTags,
   UpdateLevelTags,
 } from 'api';
@@ -17,6 +18,7 @@ export default {
   besttimesLoading: false,
   level: {},
   levelpacks: [],
+  cups: [],
   battlesForLevel: [],
   loading: true,
   allfinished: [],
@@ -63,6 +65,9 @@ export default {
   setLevelPacks: action((state, payload) => {
     state.levelpacks = payload;
   }),
+  setCups: action((state, payload) => {
+    state.cups = payload;
+  }),
   setBattlesForLevel: action((state, payload) => {
     state.battlesForLevel = payload;
   }),
@@ -82,6 +87,12 @@ export default {
     LevelPacksByLevel(payload).then(res => {
       if (res.ok) {
         actions.setLevelPacks(res.data);
+      }
+    });
+
+    CupsByLevel(payload).then(res => {
+      if (res.ok) {
+        actions.setCups(res.data);
       }
     });
   }),
