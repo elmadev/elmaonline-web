@@ -358,7 +358,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                 control={
                   <Checkbox
                     checked={share ? share.unlisted : false}
-                    onChange={e =>
+                    onChange={() =>
                       setShare({ ...share, unlisted: !share.unlisted })
                     }
                     value="unlisted"
@@ -375,7 +375,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                 control={
                   <Checkbox
                     checked={share ? share.hide : false}
-                    onChange={e => setShare({ ...share, hide: !share.hide })}
+                    onChange={() => setShare({ ...share, hide: !share.hide })}
                     value="hide"
                     color="primary"
                     disabled={share ? share.unlisted : false}

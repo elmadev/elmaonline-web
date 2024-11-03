@@ -18,7 +18,7 @@ import { formatPct, formatTimeSpent, formatAttempts } from 'utils/format';
 import { useNavigate } from '@reach/router';
 
 // records tab content
-const Records = ({ kuski, sort, recordCount }) => {
+const Records = ({ kuski, sort }) => {
   const KuskiIndex = kuski.KuskiIndex;
 
   const navigate = useNavigate();

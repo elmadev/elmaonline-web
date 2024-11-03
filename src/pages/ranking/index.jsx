@@ -88,7 +88,6 @@ class Ranking extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     const { tab } = this.state;
     if (tab !== prevState.tab) {
-      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ min: defaultMinPlayed[tab] });
     }
   }

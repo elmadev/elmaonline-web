@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortBy, filter, intersectionBy } from 'lodash';
-import { Chip, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Header from 'components/Header';
 import RecListItem from 'components/RecListItem';
-import styled from 'styled-components';
 import TagFilter from 'components/TagFilter';
 
 const widths = { Replay: 200, Time: 100, Level: null, By: null };
@@ -94,16 +93,6 @@ const RecList = ({
     </>
   );
 };
-
-const IncludedTagChip = styled(Chip)`
-  background-color: green !important;
-  color: white !important;
-`;
-
-const ExcludedTagChip = styled(Chip)`
-  background-color: red !important;
-  color: white !important;
-`;
 
 RecList.propTypes = {
   currentUUID: PropTypes.arrayOf(PropTypes.string),

@@ -1,6 +1,3 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable react/no-danger */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button, Checkbox, Grid } from '@material-ui/core';

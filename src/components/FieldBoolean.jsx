@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { FormControlLabel, Checkbox } from '@material-ui/core';
 import styled from 'styled-components';

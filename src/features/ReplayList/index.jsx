@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { Box } from '@material-ui/core';
 import RecListItem from 'components/RecListItem';
 import { ListContainer, ListHeader, ListCell } from 'components/List';
 import { findIndex } from 'lodash';

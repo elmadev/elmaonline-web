@@ -108,7 +108,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
   const { getTagOptions } = useStoreActions(actions => actions.Upload);
   const { tagOptions } = useStoreState(state => state.Upload);
 
-  const getReplay = async payload => {
+  const getReplay = async () => {
     if (!fingerprint.current) {
       const fp = await FingerprintJS.load();
       const { visitorId } = await fp.get();

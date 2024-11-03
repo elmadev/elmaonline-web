@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Grid, Tabs, Tab, Checkbox, Drawer } from '@material-ui/core';

@@ -495,7 +495,7 @@ export const Levels = ({
     q,
   });
 };
-export const GetLevelKuskis = data => api.get(`level/kuskis`);
+export const GetLevelKuskis = () => api.get(`level/kuskis`);
 
 // ranking
 export const PersonalRanking = KuskiIndex =>

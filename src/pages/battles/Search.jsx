@@ -109,7 +109,6 @@ const Search = () => {
 
   const [kuski, setKuski] = useState('');
   // cripple selector turned off for now (server doesn't support it yet).
-  // eslint-disable-next-line no-unused-vars
   const [cripples, setCripples] = useState([]);
   const [battleType, setBattleType] = useState('');
   // we'll consider a duration of 61 to mean above 60. (battles above 60 min may eventually be possible).

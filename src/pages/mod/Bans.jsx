@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Grid } from '@material-ui/core';

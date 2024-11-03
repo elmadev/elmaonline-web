@@ -18,7 +18,7 @@ import { Paper } from 'components/Paper';
 import { format, addDays } from 'date-fns';
 import { KuskiAutoComplete } from 'components/AutoComplete';
 
-const ChatLog = props => {
+const ChatLog = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const query = queryString.parse(location.search);

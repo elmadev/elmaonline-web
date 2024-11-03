@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import { Button, Chip, Box, Typography } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';

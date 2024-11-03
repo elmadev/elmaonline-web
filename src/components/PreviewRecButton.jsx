@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { Button } from '@material-ui/core';
 import { PlayArrow, Stop } from '@material-ui/icons';

@@ -53,7 +53,7 @@ const RecordsCard = () => {
       </CardContent>
       {countMore > 0 && (
         <CardActions>
-          <Button onClick={e => setExpanded(!expanded)} naked little>
+          <Button onClick={() => setExpanded(!expanded)} naked little>
             {expanded && <span>Show less</span>}
             {!expanded && <span>Show {countMore} more</span>}
           </Button>

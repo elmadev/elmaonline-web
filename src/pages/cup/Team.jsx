@@ -1,4 +1,3 @@
-/* eslint-disable react/no-danger */
 import React, { useEffect, Fragment, useState } from 'react';
 import styled from 'styled-components';
 import { nickId } from 'utils/nick';

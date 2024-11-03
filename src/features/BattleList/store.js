@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { action, thunk, computed } from 'easy-peasy';
 import { BattleListPeriod, LatestBattles } from 'api';
 

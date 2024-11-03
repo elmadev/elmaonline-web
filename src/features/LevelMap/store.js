@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { action, computed, thunk, memo } from 'easy-peasy';
 import { LevelData } from 'api';
 

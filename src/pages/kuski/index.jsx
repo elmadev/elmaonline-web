@@ -21,7 +21,7 @@ import Files from './Files';
 import { isEmpty } from 'lodash';
 import LevelList from '../../features/LevelList';
 
-const Kuski = ({ name, tab, recordSort, ...props }) => {
+const Kuski = ({ name, tab, recordSort }) => {
   const { getKuskiByName, setCollapse } = useStoreActions(state => state.Kuski);
   const {
     kuski,

@@ -127,12 +127,12 @@ const Levels = ({ tab, detailed }) => {
                 <Grid
                   ref={GridRef}
                   columnCount={columnCount}
-                  columnWidth={i => (listWidth - 20) / columnCount}
+                  columnWidth={() => (listWidth - 20) / columnCount}
                   height={listHeight}
                   rowCount={
                     Math.floor(levelpacksSorted.length / columnCount) + 1
                   }
-                  rowHeight={i => 100}
+                  rowHeight={() => 100}
                   width={listWidth}
                 >
                   {({ columnIndex, rowIndex, style }) => {
@@ -235,11 +235,6 @@ const StarCon = styled.div`
   position: absolute;
   top: 12px;
   right: 13px;
-`;
-
-const Container = styled.div`
-  padding-top: 10px;
-  overflow: hidden;
 `;
 
 const StyledRecentRecords = styled.div`

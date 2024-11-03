@@ -17,7 +17,7 @@ const Stepper = ({
     <Column ai="flex-end">
       {hideable && <Burger onClick={() => setHide(!hide)} />}
       {!hide && (
-        <MuiStepper activeStep={activeStep} orientation={orientation} nonLinear>
+        <MuiStepper activeStep={activeStep} orientation={orientation} nonLinear={nonLinear}>
           {steps?.length > 0 &&
             steps.map((step, index) => (
               <Step key={step}>

@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { action, thunk, actionOn } from 'easy-peasy';
 import {
   LevelPacks,
@@ -19,7 +18,7 @@ export default {
       actions.setStats,
       actions.setSort,
     ],
-    (state, target) => {
+    (state) => {
       state.levelpacksSorted = cachedSort(
         state.levelpacks,
         state.favs,

@@ -22,7 +22,6 @@ const DatInfo = () => {
 
   useEffect(() => {
     if (datInfo && datInfo.datInfo) {
-      console.log(datInfo);
       setUploadedDatInfo([...uploadedDatInfo, datInfo.datInfo]);
     }
   }, [datInfo]);
@@ -82,8 +81,8 @@ const DatInfo = () => {
                 onClick={() => {
                   setFiles([]);
                   setError('');
-                  setDuplicate(false);
-                  setDuplicateReplayIndex(0);
+                  // setDuplicate(false);
+                  // setDuplicateReplayIndex(0);
                 }}
                 style={{ float: 'right', marginRight: '8px' }}
                 variant="contained"

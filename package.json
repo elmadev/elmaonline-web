@@ -2,6 +2,7 @@
   "name": "elmaonline-web",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^3.4.0",
     "@hotjar/browser": "^1.0.9",
@@ -34,7 +35,6 @@
     "react-helmet-async": "^1.0.9",
     "react-outside-click-handler": "^1.3.0",
     "react-query": "^3.15.2",
-    "react-scripts": "4.0.3",
     "react-tiny-bbcode": "^0.1.4",
     "react-window": "^1.8.6",
     "recharts": "^2.2.0",
@@ -54,7 +54,7 @@
     "build-storybook": "build-storybook -s public",
     "prettier": "prettier --check src/**/*.js",
     "commit": "git-cz",
-    "lint-js": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" ."
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
@@ -91,30 +91,38 @@
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "@eslint/js": "^9.14.0",
     "@storybook/addon-actions": "^6.1.14",
     "@storybook/addon-essentials": "^6.1.14",
     "@storybook/addon-links": "^6.1.14",
     "@storybook/node-logger": "^6.1.14",
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/react": "^6.1.14",
-    "@vitejs/plugin-react": "^4.0.4",
+    "@vitejs/plugin-react": "^4.3.3",
     "commitizen": "^4.2.3",
     "compression-webpack-plugin": "6.0.5",
     "cz-customizable": "^6.3.0",
-    "eslint-config-prettier": "^7.1.0",
-    "eslint-plugin-prettier": "^3.3.1",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "globals": "^15.11.0",
     "husky": "^4.3.8",
     "lint-staged": "^10.5.3",
     "plop": "^2.7.4",
-    "prettier": "2.2.1",
-    "react-app-rewired": "^2.1.8",
+    "prettier": "^3.3.3",
     "rollup-plugin-polyfill-node": "^0.12.0",
     "storybook-addon-styled-component-theme": "^2.0.0",
-    "vite": "^4.4.12"
+    "vite": "^5.4.10"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./.cz-config.cjs"
     }
   },
   "husky": {
@@ -123,6 +131,6 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix"
+    "*.js": "eslint ."
   }
 }

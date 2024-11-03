@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { action, persist, thunk } from 'easy-peasy';
 import {
   LeaderHistory,
@@ -45,7 +44,7 @@ export default {
       }
     }
   }),
-  getOnGoingCups: thunk(async (actions, payload) => {
+  getOnGoingCups: thunk(async actions => {
     actions.setOnGoingCups(['loading', []]);
     const getCup = await CupsOngoing();
     if (getCup.ok) {

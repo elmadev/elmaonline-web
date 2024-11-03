@@ -13,7 +13,7 @@
 export const parseTime = (time, breakpoints = [3600, 60, 1]) => {
   let ret = [];
   let remaining = time;
-  breakpoints.forEach((b, index) => {
+  breakpoints.forEach(b => {
     let hours_min_sec_etc = Math.floor(remaining / b);
     remaining = remaining - hours_min_sec_etc * b;
     ret.push(hours_min_sec_etc);
