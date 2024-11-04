@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-module.exports = function (plop) {
+export default function (plop) {
   // screen generator
   plop.setGenerator('page', {
     description: 'add new page to app',
@@ -82,4 +81,4 @@ module.exports = function (plop) {
       },
     ],
   });
-};
+}

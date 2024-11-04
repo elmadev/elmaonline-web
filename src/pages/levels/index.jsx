@@ -4,7 +4,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Tabs, Tab } from '@material-ui/core';
 import { useNavigate, useLocation } from '@reach/router';
 import { VariableSizeGrid as Grid } from 'react-window';
-import { parse } from 'query-string';
+import queryString from 'query-string';
 import Layout from 'components/Layout';
 import GridItem from 'components/GridItem';
 import Popularity from 'components/Popularity';
@@ -62,7 +62,7 @@ const Levels = ({ tab, detailed }) => {
   } = useStoreActions(actions => actions.Levels);
 
   const location = useLocation();
-  const urlArgs = parse(location.search);
+  const urlArgs = queryString.parse(location.search);
   const sort = (urlArgs && urlArgs.sort) || '';
 
   useEffect(() => {
