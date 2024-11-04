@@ -16,18 +16,18 @@
     "@testing-library/user-event": "^12.1.10",
     "apisauce": "^3.1.0",
     "date-fns": "^4.1.0",
-    "easy-peasy": "^4.0.1",
+    "easy-peasy": "^6.0.5",
     "elma-js": "https://github.com/ville-j/elma-js",
-    "fast-memoize": "^2.5.2",
     "flag-icon-css": "^3.5.0",
     "google-map-react": "^2.1.9",
     "level-editor-gui": "https://github.com/elmadev/level-editor-gui.git",
     "lodash": "^4.17.21",
+    "memoizee": "^0.4.17",
     "nanoid": "^5.0.8",
     "query-string": "9.1.1",
-    "react": "^17.0.1",
+    "react": "^18.3.1",
     "react-beautiful-dnd": "13.1.1",
-    "react-dom": "^17.0.1",
+    "react-dom": "^18.3.1",
     "react-dropzone": "4.2.13",
     "react-google-recaptcha": "^3.1.0",
     "react-helmet-async": "^2.0.5",
@@ -37,10 +37,9 @@
     "react-window": "1.8.10",
     "recharts": "2.13.3",
     "recplayer-react": "^1.7.2",
-    "styled-components": "^5.2.3",
+    "styled-components": "^6.1.13",
     "universal-cookie": "^7.2.2",
     "use-debounce": "^10.0.4",
-    "web-vitals": "^0.2.4",
     "yup": "^1.4.0"
   },
   "scripts": {
@@ -53,26 +52,6 @@
     "prettier": "prettier --check src/**/*.js",
     "commit": "git-cz",
     "lint": "eslint ."
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "plugins": [
-      "prettier"
-    ],
-    "rules": {
-      "react-hooks/exhaustive-deps": "off",
-      "import/no-anonymous-default-export": "off",
-      "no-console": "warn",
-      "prettier/prettier": [
-        "warn",
-        {
-          "endOfLine": "auto"
-        }
-      ]
-    }
   },
   "browserslist": {
     "production": [
@@ -98,7 +77,6 @@
     "@storybook/react": "^6.1.14",
     "@vitejs/plugin-react": "^4.3.3",
     "commitizen": "^4.3.1",
-    "compression-webpack-plugin": "6.0.5",
     "cz-customizable": "^7.2.1",
     "eslint": "^9.14.0",
     "eslint-config-prettier": "^9.1.0",
@@ -111,7 +89,7 @@
     "lint-staged": "^15.2.10",
     "plop": "^4.0.1",
     "prettier": "^3.3.3",
-    "rollup-plugin-polyfill-node": "^0.12.0",
+    "rollup-plugin-polyfill-node": "^0.13.0",
     "storybook-addon-styled-component-theme": "^2.0.0",
     "vite": "^5.4.10"
   },
