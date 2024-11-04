@@ -52,7 +52,7 @@ const TimeTable = ({ data, latestBattle, loading, height }) => {
                       <ListCell width={200} right>
                         <LocalTime
                           date={t.Driven}
-                          format="D MMM YYYY"
+                          format="d MMM yyyy"
                           parse="X"
                         />
                       </ListCell>

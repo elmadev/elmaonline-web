@@ -50,7 +50,7 @@ const LatestTimes = ({ KuskiIndex }) => {
                   <ListCell>
                     <LocalTime
                       date={r.Driven}
-                      format="ddd D MMM YYYY HH:mm:ss"
+                      format="eee d MMM yyyy HH:mm:ss"
                       parse="X"
                     />
                   </ListCell>
@@ -90,7 +90,7 @@ const LatestTimes = ({ KuskiIndex }) => {
                   <ListCell>
                     <LocalTime
                       date={r.Driven}
-                      format="ddd D MMM YYYY HH:mm:ss"
+                      format="eee d MMM yyyy HH:mm:ss"
                       parse="X"
                     />
                   </ListCell>

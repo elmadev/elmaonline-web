@@ -209,7 +209,7 @@ const Search = () => {
                           <ListCell width={150}>
                             <LocalTime
                               date={r.Added}
-                              format="ddd D MMM YYYY HH:mm"
+                              format="eee d MMM yyyy HH:mm"
                               parse="X"
                             />
                           </ListCell>
@@ -376,7 +376,7 @@ const Search = () => {
                           /{' '}
                           <LocalTime
                             date={r.Uploaded}
-                            format="DD.MM.YYYY HH:mm:ss"
+                            format="dd.MM.yyyy HH:mm:ss"
                             parse="X"
                           />{' '}
                           / <Kuski noLink kuskiData={r.UploadedByData} />
@@ -435,7 +435,7 @@ const Search = () => {
                           /{' '}
                           <LocalTime
                             date={r.Uploaded}
-                            format="DD.MM.YYYY HH:mm:ss"
+                            format="dd.MM.yyyy HH:mm:ss"
                             parse="X"
                           />{' '}
                           / <Kuski noLink kuskiData={r.UploadedByData} />
@@ -494,7 +494,7 @@ const Search = () => {
                           /{' '}
                           <LocalTime
                             date={r.Uploaded}
-                            format="DD.MM.YYYY HH:mm:ss"
+                            format="dd.MM.yyyy HH:mm:ss"
                             parse="X"
                           />{' '}
                           / <Kuski noLink kuskiData={r.UploadedByData} />
@@ -554,7 +554,7 @@ const Search = () => {
                           {b.LevelIndex} /{' '}
                           <LocalTime
                             date={b.Started}
-                            format="DD.MM.YYYY HH:mm:ss"
+                            format="dd.MM.yyyy HH:mm:ss"
                             parse="X"
                           />
                         </ResultSecondaryData>
@@ -617,7 +617,7 @@ const Search = () => {
                           {b.LevelIndex} /{' '}
                           <LocalTime
                             date={b.Started}
-                            format="DD.MM.YYYY HH:mm:ss"
+                            format="dd.MM.yyyy HH:mm:ss"
                             parse="X"
                           />
                         </ResultSecondaryData>

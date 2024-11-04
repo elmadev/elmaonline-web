@@ -174,7 +174,7 @@ const BattleLeague = ({ ShortName }) => {
                         ? parseInt(b.BattleData.Started)
                         : parseInt(b.Started)
                     }
-                    format="ddd D MMM YYYY HH:mm"
+                    format="eee d MMM yyyy HH:mm"
                     parse="X"
                   />
                 }

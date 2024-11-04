@@ -210,7 +210,7 @@ const ChatLog = () => {
           limit={rowsPerPage}
           order={order ? 'DESC' : 'ASC'}
           count={false}
-          timestamp="YYYY-MM-DD HH:mm:ss"
+          timestamp="yyyy-MM-dd HH:mm:ss"
           fullHeight
         />
 

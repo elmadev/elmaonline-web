@@ -100,7 +100,7 @@ export default function Preview({
                 Driven{' '}
                 <LocalTime
                   date={previewRec.Driven}
-                  format="YYYY-MM-DD HH:mm:ss"
+                  format="yyyy-MM-dd HH:mm:ss"
                   parse="X"
                 />
               </Typography>

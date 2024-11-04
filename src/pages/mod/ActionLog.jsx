@@ -51,7 +51,7 @@ const ActionLog = () => {
                   <ListCell>
                     <LocalTime
                       date={n.Time}
-                      format="D MMM YYYY HH:mm:ss"
+                      format="d MMM yyyy HH:mm:ss"
                       parse="X"
                     />
                   </ListCell>

@@ -173,7 +173,7 @@ const Admin = ({ BattleLeagueIndex }) => {
                   <ListCell>
                     <LocalTime
                       date={e.Started}
-                      format="ddd D MMM YYYY HH:mm"
+                      format="eee d MMM yyyy HH:mm"
                       parse="X"
                     />
                   </ListCell>

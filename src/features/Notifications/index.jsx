@@ -151,7 +151,7 @@ const Notifications = ({
                 <Written>
                   <LocalTime
                     date={n.CreatedAt}
-                    format="ddd D MMM YYYY HH:mm"
+                    format="eee d MMM yyyy HH:mm"
                     parse="X"
                   />
                 </Written>

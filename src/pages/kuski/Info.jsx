@@ -223,14 +223,14 @@ const Info = ({ kuskiInfo }) => {
                     <ListCell>
                       <LocalTime
                         date={i.LogFrom}
-                        format="D MMM YYYY HH:mm:ss"
+                        format="d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>
                     <ListCell>
                       <LocalTime
                         date={i.LogTo}
-                        format="D MMM YYYY HH:mm:ss"
+                        format="d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>
@@ -264,7 +264,7 @@ const Info = ({ kuskiInfo }) => {
                     <ListCell width={150}>
                       <LocalTime
                         date={i.Expires}
-                        format="D MMM YYYY HH:mm:ss"
+                        format="d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>
@@ -288,7 +288,7 @@ const Info = ({ kuskiInfo }) => {
                     <ListCell width={150}>
                       <LocalTime
                         date={i.ExpireDate}
-                        format="D MMM YYYY HH:mm:ss"
+                        format="d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>

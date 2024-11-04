@@ -105,7 +105,7 @@ const StatsTable = ({ data, loading }) => {
         First played:{' '}
         <LocalTime
           date={firstPlayed()}
-          format="ddd D MMM YYYY HH:mm:ss"
+          format="eee d MMM yyyy HH:mm:ss"
           parse="YYYY-MM-DDTHH:mm:ss.SSSZ"
         />
       </FirstLast>
@@ -113,7 +113,7 @@ const StatsTable = ({ data, loading }) => {
         Last played:{' '}
         <LocalTime
           date={lastPlayed()}
-          format="ddd D MMM YYYY HH:mm:ss"
+          format="eee d MMM yyyy HH:mm:ss"
           parse="YYYY-MM-DDTHH:mm:ss.SSSZ"
         />
       </FirstLast>

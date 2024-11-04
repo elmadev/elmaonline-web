@@ -79,8 +79,8 @@ const News = () => {
               {headline}{' '}
               <Written>
                 <LocalTime
-                  date={new Date().getTime() / 1000}
-                  format="ddd D MMM YYYY"
+                  date={Math.round(new Date().getTime() / 1000)}
+                  format="eee d MMM yyyy"
                   parse="X"
                 />
               </Written>

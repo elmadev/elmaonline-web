@@ -359,7 +359,7 @@ const Level = ({ LevelId }) => {
                               <Link to={`/battles/${i.BattleIndex}`}>
                                 <LocalTime
                                   date={i.Started}
-                                  format="DD MMM YYYY HH:mm:ss"
+                                  format="Dd MMM yyyy HH:mm:ss"
                                   parse="X"
                                 />
                               </Link>

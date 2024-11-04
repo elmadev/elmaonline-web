@@ -84,7 +84,7 @@ export default function Preview({
                   : 'Unknown'}{' '}
                 <LocalTime
                   date={previewRec.Uploaded}
-                  format="YYYY-MM-DD HH:mm:ss"
+                  format="yyyy-MM-dd HH:mm:ss"
                   parse="X"
                 />
               </Typography>

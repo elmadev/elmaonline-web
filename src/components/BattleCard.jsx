@@ -8,7 +8,7 @@ import LocalTime from 'components/LocalTime';
 import LevelMap from 'features/LevelMap';
 import styled from 'styled-components';
 import { toLocalTime } from 'utils/time';
-import m from 'moment';
+import { format, addMinutes } from 'date-fns';
 import { useInterval } from 'utils/useInterval';
 import LinearProgressWithLabel from 'components/LinearProgressWithLabel';
 
@@ -18,15 +18,15 @@ const BattleCard = props => {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
 
   const getStart = started => {
-    return toLocalTime(started, 'X').format('X');
+    return format(toLocalTime(started, 't'), 't');
   };
 
   const getEnd = (started, duration) => {
-    return toLocalTime(started, 'X').add(duration, 'minutes').format('X');
+    return format(addMinutes(toLocalTime(started, 't'), duration), 't');
   };
 
   const getNow = () => {
-    return m().format('X');
+    return format(new Date(), 't');
   };
 
   const getRemainingPercent = (started, duration, countdown) => {
@@ -110,7 +110,7 @@ const BattleCard = props => {
                   <LocalTime
                     date={battle.Started}
                     format="HH:mm:ss"
-                    parse="X"
+                    parse="t"
                   />
                 </strong>
               </Text>

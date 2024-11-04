@@ -48,7 +48,7 @@ const Comments = props => {
       {comments.sort(sortByEntered).map(c => (
         <Row key={c.ReplayCommentIndex}>
           <Timestamp>
-            <LocalTime date={c.Entered} format="D MMM YYYY" parse="X" />
+            <LocalTime date={c.Entered} format="d MMM yyyy" parse="X" />
           </Timestamp>{' '}
           <Kuski>
             &lt;

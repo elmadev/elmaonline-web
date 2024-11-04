@@ -287,7 +287,7 @@ export default function LevelList({
                   <ListCell width={170}>
                     <LocalTime
                       date={level.Added}
-                      format="ddd D MMM YYYY HH:mm"
+                      format="eee d MMM yyyy HH:mm"
                       parse="X"
                     />
                   </ListCell>

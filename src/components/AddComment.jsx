@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import { useStoreActions } from 'easy-peasy';
-import moment from 'moment';
+import { format } from 'date-fns';
 import Button from 'components/Buttons';
 import { nick } from 'utils/nick';
 
@@ -21,7 +21,7 @@ const AddComment = ({ type, index, add }) => {
     if (type === 'replay') {
       addComment({
         ReplayIndex: index,
-        Entered: moment().format('X'),
+        Entered: format(new Date(), 't'),
         Text: text,
       });
     }

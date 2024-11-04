@@ -40,7 +40,7 @@ const Bans = () => {
                   <ListCell>
                     <LocalTime
                       date={n.Expires}
-                      format="D MMM YYYY HH:mm:ss"
+                      format="d MMM yyyy HH:mm:ss"
                       parse="X"
                     />
                   </ListCell>
@@ -68,7 +68,7 @@ const Bans = () => {
                   <ListCell>
                     <LocalTime
                       date={n.ExpireDate}
-                      format="D MMM YYYY HH:mm:ss"
+                      format="d MMM yyyy HH:mm:ss"
                       parse="X"
                     />
                   </ListCell>

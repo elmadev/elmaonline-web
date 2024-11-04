@@ -142,7 +142,7 @@ const Record = ({ record }) => {
       <ListCell>
         <LocalTime
           date={record.Driven}
-          format="ddd D MMM YYYY HH:mm"
+          format="eee d MMM yyyy HH:mm"
           parse="X"
         />
       </ListCell>

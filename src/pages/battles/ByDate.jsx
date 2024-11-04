@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
+import { parse, format, startOfDay, addDays, subDays } from 'date-fns';
 import styled from 'styled-components';
 import Loading from 'components/Loading';
 import BattleList from 'features/BattleList';
@@ -15,20 +15,20 @@ const ByDate = () => {
   const [end, setEnd] = useState();
 
   const parseDate = d =>
-    d ? moment(d, 'YYYY-MM-DD').startOf('day') : moment().startOf('day');
+    d ? startOfDay(parse(d, 'yyyy-MM-dd', new Date())) : startOfDay(new Date());
 
   useEffect(() => {
     const parsedDate = parseDate(date);
     setStart(parsedDate);
-    setEnd(parsedDate.clone().add(1, 'days'));
+    setEnd(addDays(parsedDate, 1));
   }, [date]);
 
   const next = () => {
-    navigate(`/battles?date=${start.add(1, 'days').format('YYYY-MM-DD')}`);
+    navigate(`/battles?date=${format(addDays(start, 1), 'yyyy-MM-dd')}`);
   };
 
   const previous = () => {
-    navigate(`/battles?date=${start.subtract(1, 'days').format('YYYY-MM-DD')}`);
+    navigate(`/battles?date=${format(subDays(start, 1), 'yyyy-MM-dd')}`);
   };
 
   return (
@@ -41,12 +41,12 @@ const ByDate = () => {
             <button onClick={previous} type="button">
               &lt;
             </button>
-            <SelectedDate>{start.format('ddd DD.MM.YYYY')}</SelectedDate>
+            <SelectedDate>{format(start, 'eee, dd.MM.yyyy')}</SelectedDate>
             <button onClick={next} type="button">
               &gt;
             </button>
           </Datepicker>
-          <BattleList start={start.clone()} end={end.clone()} />
+          <BattleList start={start} end={end} />
         </Container>
       )}
     </>

@@ -173,7 +173,7 @@ const FileList = ({ collapse }) => {
                     <ListCell width={295}>
                       <LocalTime
                         date={file.UploadedOn}
-                        format="ddd D MMM YYYY HH:mm:ss"
+                        format="eee d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>

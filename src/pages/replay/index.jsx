@@ -269,7 +269,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
                     : 'Unknown'}{' '}
                   <LocalTime
                     date={replay.Uploaded}
-                    format="YYYY-MM-DD HH:mm:ss"
+                    format="yyyy-MM-dd HH:mm:ss"
                     parse="X"
                   />
                   {replay.Unlisted ? ' (Unlisted)' : null}

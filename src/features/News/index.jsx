@@ -43,7 +43,7 @@ const News = ({ amount, height = 0, onCross = null }) => {
                     <Written>
                       <LocalTime
                         date={n.Written}
-                        format="ddd D MMM YYYY"
+                        format="eee d MMM yyyy"
                         parse="X"
                       />
                     </Written>

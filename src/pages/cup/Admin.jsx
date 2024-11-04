@@ -220,14 +220,14 @@ const Admin = () => {
               <ListCell>
                 <LocalTime
                   date={e.StartTime}
-                  format="ddd D MMM YYYY HH:mm"
+                  format="eee d MMM yyyy HH:mm"
                   parse="X"
                 />
               </ListCell>
               <ListCell>
                 <LocalTime
                   date={e.EndTime}
-                  format="ddd D MMM YYYY HH:mm"
+                  format="eee d MMM yyyy HH:mm"
                   parse="X"
                 />
               </ListCell>

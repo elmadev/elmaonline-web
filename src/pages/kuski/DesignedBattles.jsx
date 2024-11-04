@@ -63,7 +63,7 @@ function DesignedBattles({ KuskiIndex }) {
               <ListCell to={`/battles/${b.BattleIndex}`}>
                 <LocalTime
                   date={b.Started}
-                  format="DD.MM.YYYY HH:mm"
+                  format="dd.MM.yyyy HH:mm"
                   parse="X"
                 />
               </ListCell>

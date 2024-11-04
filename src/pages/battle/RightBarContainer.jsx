@@ -83,7 +83,7 @@ const RightBarContainer = props => {
               Started{' '}
               <LocalTime
                 date={battle.Started}
-                format="DD.MM.YYYY HH:mm:ss"
+                format="dd.MM.yyyy HH:mm:ss"
                 parse="X"
               />
             </div>

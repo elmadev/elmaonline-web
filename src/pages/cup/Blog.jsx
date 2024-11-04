@@ -72,7 +72,7 @@ const Standings = props => {
               by <Kuski kuskiData={i.KuskiData} /> at{' '}
               <LocalTime
                 date={i.Written}
-                format="ddd D MMM YYYY HH:mm"
+                format="eee d MMM yyyy HH:mm"
                 parse="X"
               />
             </SubHeadline>

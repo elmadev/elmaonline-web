@@ -84,13 +84,13 @@ const Cups = props => {
               <>
                 <LocalTime
                   date={e.StartTime}
-                  format="ddd D MMM HH:mm"
+                  format="ddd d MMM HH:mm"
                   parse="X"
                 />{' '}
                 -{' '}
                 <LocalTime
                   date={e.EndTime}
-                  format="ddd D MMM YYYY HH:mm"
+                  format="eee d MMM yyyy HH:mm"
                   parse="X"
                 />
               </>

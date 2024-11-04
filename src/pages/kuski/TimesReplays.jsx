@@ -260,7 +260,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                     <ListCell width={200}>
                       <LocalTime
                         date={time.Driven}
-                        format="ddd D MMM YYYY HH:mm:ss"
+                        format="eee d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>
@@ -337,7 +337,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                 driven at{' '}
                 <LocalTime
                   date={share.time.Driven}
-                  format="ddd D MMM YYYY HH:mm:ss"
+                  format="eee d MMM yyyy HH:mm:ss"
                   parse="X"
                 />
               </div>
