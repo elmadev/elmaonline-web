@@ -13,15 +13,16 @@ import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';
 import { formatDistanceStrict } from 'date-fns';
 import config from 'config';
-import { navigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 export default function ReplayCard({ replay, onPreviewClick }) {
   const [picExists, setPicExists] = useState(true);
   const [raised, setRaised] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpenReplay = () => {
-    navigate(`/r/${replay.UUID}`);
+    navigate({ to: `/r/${replay.UUID}` });
   };
 
   const handlePreviewClick = event => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as ReachLink } from '@reach/router';
+import { Link as RouterLink } from '@tanstack/react-router';
 
 const Link = ({ to, children, ...props }) => {
   if (to.substring(0, 4) === 'http') {
@@ -10,9 +10,9 @@ const Link = ({ to, children, ...props }) => {
     );
   }
   return (
-    <ReachLink to={to} {...props}>
+    <RouterLink to={to} {...props}>
       {children}
-    </ReachLink>
+    </RouterLink>
   );
 };
 

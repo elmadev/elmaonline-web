@@ -15,7 +15,7 @@ import Time from 'components/Time';
 import Link from 'components/Link';
 import LocalTime from 'components/LocalTime';
 import { formatPct, formatTimeSpent, formatAttempts } from 'utils/format';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 
 // records tab content
 const Records = ({ kuski, sort }) => {
@@ -74,7 +74,7 @@ const Records = ({ kuski, sort }) => {
             id="records-sort"
             value={sort}
             onChange={e => {
-              navigate(`/kuskis/${kuski.Kuski}/records/${e.target.value}`);
+              navigate({ to: `/kuskis/${kuski.Kuski}/records/${e.target.value}` });
             }}
           >
             <MenuItem value="TimeAll">Playtime (All kuskis)</MenuItem>

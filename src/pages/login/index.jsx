@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { useStoreActions } from 'easy-peasy';
 import { Button, Container, Box } from '@material-ui/core';
 import Field from 'components/Field';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import MuiAlert from '@material-ui/lab/Alert';
 import Link from 'components/Link';
 import Layout from 'components/Layout';
@@ -25,7 +25,7 @@ export default function Login() {
     values =>
       login({ ...values }).then(
         () => {
-          navigate('/');
+          navigate({ to: '/' });
         },
         errorMsg => {
           setError(errorMsg);

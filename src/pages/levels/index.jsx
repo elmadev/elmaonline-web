@@ -2,9 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Tabs, Tab } from '@material-ui/core';
-import { useNavigate, useLocation } from '@reach/router';
+import { useNavigate, useLocation } from '@tanstack/react-router';
 import { VariableSizeGrid as Grid } from 'react-window';
-import queryString from 'query-string';
 import Layout from 'components/Layout';
 import GridItem from 'components/GridItem';
 import Popularity from 'components/Popularity';
@@ -62,7 +61,7 @@ const Levels = ({ tab, detailed }) => {
   } = useStoreActions(actions => actions.Levels);
 
   const location = useLocation();
-  const urlArgs = queryString.parse(location.search);
+  const urlArgs = location.search;
   const sort = (urlArgs && urlArgs.sort) || '';
 
   useEffect(() => {
@@ -99,9 +98,9 @@ const Levels = ({ tab, detailed }) => {
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
-        value={tab}
+        value={tab || ''}
         onChange={(e, value) =>
-          navigate(['/levels', value].filter(Boolean).join('/'))
+          navigate({ to: ['/levels', value].filter(Boolean).join('/') })
         }
       >
         <Tab label="Packs" value="" />

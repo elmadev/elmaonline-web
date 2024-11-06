@@ -12,7 +12,7 @@ import {
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import styled from 'styled-components';
 import Badge from '@material-ui/core/Badge';
@@ -99,24 +99,27 @@ export default function TopBarActions() {
   const handleClose = to => {
     setAnchorEl(null);
     if (to) {
-      navigate(to);
+      navigate({ to: to });
     }
   };
 
   const performLogout = () => {
     handleClose();
     logout();
-    navigate('/');
+    navigate({ to: '/' });
   };
 
   const handleNotificationsClick = () => {
-    navigate(`/kuskis/${username}/notifications`);
+    navigate({ to: `/kuskis/${username}/notifications` });
   };
 
   return (
     <>
       {!loggedIn && (
-        <StyledButton color="inherit" onClick={() => navigate('/login')}>
+        <StyledButton
+          color="inherit"
+          onClick={() => navigate({ to: '/login' })}
+        >
           Login
         </StyledButton>
       )}

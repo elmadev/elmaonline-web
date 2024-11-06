@@ -3,13 +3,12 @@ import { parse, format, startOfDay, addDays, subDays } from 'date-fns';
 import styled from 'styled-components';
 import Loading from 'components/Loading';
 import BattleList from 'features/BattleList';
-import queryString from 'query-string';
-import { useNavigate, useLocation } from '@reach/router';
+import { useNavigate, useLocation } from '@tanstack/react-router';
 
 const ByDate = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { date } = queryString.parse(location.search);
+  const { date } = location.search;
 
   const [start, setStart] = useState();
   const [end, setEnd] = useState();
@@ -24,11 +23,15 @@ const ByDate = () => {
   }, [date]);
 
   const next = () => {
-    navigate(`/battles?date=${format(addDays(start, 1), 'yyyy-MM-dd')}`);
+    navigate({
+      to: `/battles?date=${format(addDays(start, 1), 'yyyy-MM-dd')}`,
+    });
   };
 
   const previous = () => {
-    navigate(`/battles?date=${format(subDays(start, 1), 'yyyy-MM-dd')}`);
+    navigate({
+      to: `/battles?date=${format(subDays(start, 1), 'yyyy-MM-dd')}`,
+    });
   };
 
   return (

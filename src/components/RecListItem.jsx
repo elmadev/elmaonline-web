@@ -7,16 +7,15 @@ import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import Link from 'components/Link';
 import Tags from 'components/Tags';
-import queryString from 'query-string';
 import { AddBox, IndeterminateCheckBox } from '@material-ui/icons';
-import { useLocation } from '@reach/router';
+import { useLocation } from '@tanstack/react-router';
 import { formatDistanceStrict } from 'date-fns';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const RecListItem = ({ replay, selected, columns, mergable = false }) => {
   const [isHover, setHover] = useState(false);
   const location = useLocation();
-  const { merge } = queryString.parse(location.search);
+  const { merge } = location.search;
 
   const url = `/r/${replay.UUID}/${replay.RecFileName.replace('.rec', '')}`;
 

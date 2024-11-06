@@ -13,6 +13,7 @@ import RecView from './RecView';
 import RightBarContainer from './RightBarContainer';
 import LevelStatsContainer from './LevelStatsContainer';
 import { downloadRec } from 'utils/misc';
+import { useParams } from '@tanstack/react-router';
 
 const runData = runs => {
   if (runs.count === 0) {
@@ -58,7 +59,8 @@ const getWinnerData = battle => {
   return null;
 };
 
-const Battle = ({ BattleId }) => {
+const Battle = () => {
+  const { BattleId } = useParams({ strict: false });
   const BattleIndex = parseInt(BattleId, 10);
   const [replayUrl, setReplayUrl] = useState('');
   const [winner, setWinner] = useState(null);

@@ -4,7 +4,7 @@ import Header from 'components/Header';
 import { CardContent, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import { isEmpty } from 'lodash';
 import { Card, Cross } from 'pages/home';
 
@@ -37,7 +37,10 @@ const CupWidget = ({ onCross = null }) => {
             const events = cup.SiteCupData;
             return (
               <CupRoot key={cup.CupGroupIndex}>
-                <Header onClick={() => navigate(`/cup/${cup.ShortName}`)} h2>
+                <Header
+                  onClick={() => navigate({ to: `/cup/${cup.ShortName}` })}
+                  h2
+                >
                   {cup.CupName}
                 </Header>
                 <CupCurrent events={events} ShortName={cup.ShortName} />

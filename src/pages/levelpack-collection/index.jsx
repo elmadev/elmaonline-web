@@ -10,8 +10,10 @@ import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import Link from 'components/Link';
 import styled from 'styled-components';
 import { nickId, mod } from 'utils/nick';
+import { useParams } from '@tanstack/react-router';
 
-const LevelpackCollection = ({ name }) => {
+const LevelpackCollection = () => {
+  const { name } = useParams({ strict: false });
   const [tab, setTab] = useState(0);
   const [search, setSearch] = useState('');
   const { packs, collection, packsFound } = useStoreState(

@@ -6,7 +6,7 @@ import SideBarSubItem from 'components/SideBarSubItem';
 import { useMediaQuery } from '@material-ui/core';
 import Link from 'components/Link';
 import banner from 'images/banner.png';
-import { useLocation } from '@reach/router';
+import { useLocation } from '@tanstack/react-router';
 
 const items = {
   Playing: [

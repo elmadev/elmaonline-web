@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Tab, Tabs } from '@material-ui/core';
 import ReplayList from 'features/ReplayList';
 import ReplayListBattle from 'features/ReplayListBattle';
@@ -6,25 +6,22 @@ import ReplayCommentArchive from 'features/ReplayCommentArchive';
 import Upload from 'features/Upload';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
-import { Router, navigate } from '@reach/router';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import Mod from './Mod';
 import { mod } from 'utils/nick';
 
-export default function Replays(props) {
-  const [tab, setTab] = useState('');
-
-  useEffect(() => {
-    setTab(props['*']);
-  }, [props]);
+export default function Replays() {
+  const navigate = useNavigate();
+  const { tab } = useParams({ strict: false });
 
   return (
     <Layout edge t="Replays">
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
-        value={tab}
+        value={tab || ''}
         onChange={(_e, value) =>
-          navigate(['/replays', value].filter(Boolean).join('/'))
+          navigate({ to: ['/replays', value].filter(Boolean).join('/') })
         }
       >
         <Tab label="Recently uploaded" value="" />
@@ -34,13 +31,11 @@ export default function Replays(props) {
         {mod() > 0 && <Tab label="Mod" value="mod" />}
       </Tabs>
       <Container>
-        <Router primary={false}>
-          <ReplayList persist="recentlyUploaded" default uploadFab />
-          <ReplayListBattle path="battle" showPagination />
-          <Upload path="upload" filetype=".rec" />
-          <ReplayCommentArchive path="comments" />
-          <Mod path="mod" />
-        </Router>
+        {!tab ? <ReplayList persist="recentlyUploaded" uploadFab /> : null}
+        {tab === 'battle' ? <ReplayListBattle showPagination /> : null}
+        {tab === 'upload' ? <Upload filetype=".rec" /> : null}
+        {tab === 'comments' ? <ReplayCommentArchive /> : null}
+        {tab === 'mod' ? <Mod /> : null}
       </Container>
     </Layout>
   );

@@ -1,4 +1,4 @@
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import {
   FormControl,
   Grid,
@@ -34,8 +34,8 @@ const Controls = ({ detailed, sort }) => {
             id="levelpack-sort"
             value={sort || 'default'}
             onChange={e => {
-              navigate(
-                [
+              navigate({
+                to: [
                   '/levels',
                   detailed && 'detailed',
                   e.target.value &&
@@ -44,7 +44,7 @@ const Controls = ({ detailed, sort }) => {
                 ]
                   .filter(Boolean)
                   .join('/'),
-              );
+              });
             }}
           >
             <MenuItem value="default">Default</MenuItem>
@@ -74,15 +74,15 @@ const Controls = ({ detailed, sort }) => {
         <Switch
           checked={!!detailed}
           onChange={checked => {
-            navigate(
-              [
+            navigate({
+              to: [
                 '/levels',
                 checked && 'detailed',
                 sort && sort !== 'default' && `?sort=${sort}`,
               ]
                 .filter(Boolean)
                 .join('/'),
-            );
+            });
           }}
         >
           Detailed View

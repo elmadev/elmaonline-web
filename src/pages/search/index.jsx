@@ -6,8 +6,7 @@ import LocalTime from 'components/LocalTime';
 import Link from 'components/Link';
 import SearchBar from 'components/SearchBar';
 import Kuski from 'components/Kuski';
-import queryString from 'query-string';
-import { useLocation } from '@reach/router';
+import { useLocation } from '@tanstack/react-router';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import { mod } from 'utils/nick';
 import { forEach } from 'lodash';
@@ -19,7 +18,7 @@ import { BattleType } from 'components/Names';
 
 const Search = () => {
   const location = useLocation();
-  const { q, t } = queryString.parse(location.search);
+  const { q, t } = location.search;
   const [updated, setUpdated] = useState({});
   const {
     levelPacks,

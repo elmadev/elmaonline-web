@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import { format } from 'date-fns';
 import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
@@ -62,11 +62,11 @@ const Cups = props => {
             selected={eventIndex}
             onClick={() =>
               // persist selected eventTab when changing events.
-              navigate(
-                ['/cup', cup.ShortName, 'events', i + 1, eventTab]
+              navigate({
+                to: ['/cup', cup.ShortName, 'events', i + 1, eventTab]
                   .filter(Boolean)
                   .join('/'),
-              )
+              })
             }
             level={
               e.Level ? (
@@ -111,11 +111,11 @@ const Cups = props => {
               scrollButtons="auto"
               value={eventTab}
               onChange={(e, value) => {
-                navigate(
-                  ['/cup', cup.ShortName, 'events', eventNumber, value]
+                navigate({
+                  to: ['/cup', cup.ShortName, 'events', eventNumber, value]
                     .filter(Boolean)
                     .join('/'),
-                );
+                });
               }}
             >
               <Tab label="Results" value="results" />

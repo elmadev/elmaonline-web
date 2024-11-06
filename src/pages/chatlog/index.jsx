@@ -11,7 +11,7 @@ import {
   Switch,
 } from '@material-ui/core';
 import styled from 'styled-components';
-import { useLocation, useNavigate } from '@reach/router';
+import { useLocation, useNavigate } from '@tanstack/react-router';
 import ChatView from 'features/ChatView';
 import Header from 'components/Header';
 import { Paper } from 'components/Paper';
@@ -21,10 +21,12 @@ import { KuskiAutoComplete } from 'components/AutoComplete';
 const ChatLog = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const query = queryString.parse(location.search);
+  const query = location.search;
 
   const queryIds = query.KuskiIds
-    ? query.KuskiIds.split(',').map(id => +id)
+    ? query.KuskiIds.toString()
+        .split(',')
+        .map(id => +id)
     : [];
 
   // Store state
@@ -84,8 +86,8 @@ const ChatLog = () => {
       'rpp',
       'page',
     ];
-    navigate(
-      `/chatlog?${queryString.stringify(
+    navigate({
+      to: `/chatlog?${queryString.stringify(
         {
           ...query,
           ...keys,
@@ -96,8 +98,7 @@ const ChatLog = () => {
           sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
         },
       )}`,
-      { replace: true },
-    );
+    });
   };
 
   const handleChangePage = (event, newPage) => {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { useNavigate } from '@reach/router';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import PropTypes from 'prop-types';
 import { Tabs, Tab } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
@@ -21,7 +21,8 @@ import Files from './Files';
 import { isEmpty } from 'lodash';
 import LevelList from '../../features/LevelList';
 
-const Kuski = ({ name, tab, recordSort }) => {
+const Kuski = () => {
+  const { name, tab, recordSort } = useParams({ strict: false });
   const { getKuskiByName, setCollapse } = useStoreActions(state => state.Kuski);
   const {
     kuski,
@@ -64,9 +65,9 @@ const Kuski = ({ name, tab, recordSort }) => {
           <Tabs
             variant="scrollable"
             scrollButtons="auto"
-            value={tab}
+            value={tab || ''}
             onChange={(e, t) =>
-              navigate(['/kuskis', name, t].filter(Boolean).join('/'))
+              navigate({ to: ['/kuskis', name, t].filter(Boolean).join('/') })
             }
           >
             <Tab label="Played Battles" value="" />

@@ -36,7 +36,7 @@ import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
 import UpdateForm from 'pages/level/UpdateForm';
 import LocalTime from 'components/LocalTime';
-import { useNavigate } from '@reach/router';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import config from 'config';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
@@ -53,7 +53,8 @@ import {
 } from 'api';
 import Button from 'components/Buttons';
 
-const Level = ({ LevelId }) => {
+const Level = () => {
+  const { LevelId } = useParams({ strict: false });
   const theme = useContext(ThemeContext);
   const LevelIndex = parseInt(LevelId, 10);
   const navigate = useNavigate();
@@ -105,14 +106,12 @@ const Level = ({ LevelId }) => {
   const kuskiIndex = nickId();
 
   // crippled best times, all times, leader history
-  const {
-    data: crippledTimesData,
-    isLoading: crippledTimesDataLoading,
-  } = useQueryAlt(
-    ['CrippledTimes', LevelId, cripple],
-    async () => CrippledTimes(LevelId, cripple, 1000, 1, 10000),
-    { enabled: cripple !== '' && tab !== 2, retry: 0 },
-  );
+  const { data: crippledTimesData, isLoading: crippledTimesDataLoading } =
+    useQueryAlt(
+      ['CrippledTimes', LevelId, cripple],
+      async () => CrippledTimes(LevelId, cripple, 1000, 1, 10000),
+      { enabled: cripple !== '' && tab !== 2, retry: 0 },
+    );
 
   const {
     allTimes: crippledAllTimes,
@@ -121,14 +120,12 @@ const Level = ({ LevelId }) => {
   } = crippledTimesData || {};
 
   // crippled personal times and record history
-  const {
-    data: crippledPersonalData,
-    isLoading: crippledPersonalDataLoading,
-  } = useQueryAlt(
-    ['CrippledPersonal', LevelId, kuskiIndex, cripple],
-    async () => CrippledPersonal(LevelId, kuskiIndex, cripple, 1000),
-    { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2, retry: 0 },
-  );
+  const { data: crippledPersonalData, isLoading: crippledPersonalDataLoading } =
+    useQueryAlt(
+      ['CrippledPersonal', LevelId, kuskiIndex, cripple],
+      async () => CrippledPersonal(LevelId, kuskiIndex, cripple, 1000),
+      { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2, retry: 0 },
+    );
 
   const {
     kuskiTimes: crippledKuskiTimes,
@@ -184,7 +181,7 @@ const Level = ({ LevelId }) => {
 
   const goToBattle = battleIndex => {
     if (!Number.isNaN(battleIndex)) {
-      navigate(`/battles/${battleIndex}`);
+      navigate({ to: `/battles/${battleIndex}` });
     }
   };
 
@@ -359,7 +356,7 @@ const Level = ({ LevelId }) => {
                               <Link to={`/battles/${i.BattleIndex}`}>
                                 <LocalTime
                                   date={i.Started}
-                                  format="Dd MMM yyyy HH:mm:ss"
+                                  format="dd MMM yyyy HH:mm:ss"
                                   parse="X"
                                 />
                               </Link>

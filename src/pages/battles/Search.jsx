@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Loading from 'components/Loading';
 import queryString from 'query-string';
 import { Dropdown, TextField } from 'components/Inputs';
-import { useNavigate, useLocation } from '@reach/router';
+import { useNavigate, useLocation } from '@tanstack/react-router';
 import { getBattleTypes } from 'utils/eol';
 import { forceInt } from 'utils/calcs';
 import Slider from '@material-ui/core/Slider';
@@ -105,7 +105,7 @@ const buildArgs = query => {
 const Search = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const query = queryString.parse(location.search);
+  const query = location.search;
 
   const [kuski, setKuski] = useState('');
   // cripple selector turned off for now (server doesn't support it yet).
@@ -202,7 +202,7 @@ const Search = () => {
       },
     );
 
-    navigate('/battles/search?' + query);
+    navigate({ to: '/battles/search?' + query });
   };
 
   // const crippleOpts = [['', 'None']].concat(getCripples()[0]);
@@ -370,7 +370,7 @@ const Search = () => {
           <BattleListTableMemo
             battles={Array.isArray(battles) ? battles : []}
             condensed={false}
-            startedFormat="MMM D, Y HH:mm"
+            startedFormat="MMM d, y HH:mm"
             wideStartedCol={true}
           />
         </Paper>

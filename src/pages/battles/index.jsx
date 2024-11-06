@@ -1,12 +1,12 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import { Tabs, Tab } from '@material-ui/core';
 import ByDate from './ByDate';
 import Search from './Search';
 import Paper from '@material-ui/core/Paper';
 
-const Battles = ({ tab }) => {
+const Battles = ({ tab = '' }) => {
   const navigate = useNavigate();
 
   return (
@@ -16,7 +16,7 @@ const Battles = ({ tab }) => {
         scrollButtons="auto"
         value={tab}
         onChange={(e, value) => {
-          navigate(['/battles', value].filter(Boolean).join('/'));
+          navigate({ to: ['/battles', value].filter(Boolean).join('/') });
         }}
       >
         <Tab label="By Date" value="" />

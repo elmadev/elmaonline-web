@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Tabs, Tab } from '@material-ui/core';
-import { Router, useNavigate } from '@reach/router';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import styled, { ThemeContext } from 'styled-components';
 import Header from 'components/Header';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -18,18 +18,12 @@ import Personal from './Personal';
 import Team from './Team';
 import PlayStats from './PlayStats';
 
-const Cups = props => {
-  const { ShortName } = props;
+const Cups = () => {
+  const { ShortName, tab, eventNumber, eventTab } = useParams({
+    strict: false,
+  });
 
-  const cupTab = (() => {
-    let c = props['*'];
-
-    if (c && c.indexOf('/') !== 0) {
-      return c.split('/')[0];
-    }
-
-    return c;
-  })();
+  const cupTab = tab || '';
 
   const { cup, lastCupShortName, events } = useStoreState(state => state.Cup);
   const { getCup, update, addNewBlog } = useStoreActions(
@@ -62,7 +56,9 @@ const Cups = props => {
             value={cupTab}
             onChange={(e, value) =>
               // value can be empty string
-              navigate(['/cup', ShortName, value].filter(Boolean).join('/'))
+              navigate({
+                to: ['/cup', ShortName, value].filter(Boolean).join('/'),
+              })
             }
           >
             <Tab label="Dashboard" value="" />
@@ -76,27 +72,38 @@ const Cups = props => {
             {isCupAdmin && <Tab label="Admin" value="admin" />}
           </Tabs>
           <CupCover cup={cup} />
-          <Router primary={false}>
-            <Dashboard default cup={cup} events={events} />
-            <div path="events">
-              <Events
-                default
-                eventNumber={1}
-                eventTab="results"
-                cup={cup}
-                events={events}
-              />
-              <Events
-                path=":eventNumber"
-                eventTab="results"
-                cup={cup}
-                events={events}
-              />
-              <Events path=":eventNumber/:eventTab" cup={cup} events={events} />
+          {!tab ? <Dashboard cup={cup} events={events} /> : null}
+          {tab === 'events' ? (
+            <div>
+              {!eventNumber ? (
+                <Events
+                  eventNumber={1}
+                  eventTab="results"
+                  cup={cup}
+                  events={events}
+                />
+              ) : null}
+              {eventNumber && !eventTab ? (
+                <Events
+                  eventTab="results"
+                  cup={cup}
+                  events={events}
+                  eventNumber={eventNumber}
+                />
+              ) : null}
+              {eventNumber && eventTab ? (
+                <Events
+                  cup={cup}
+                  events={events}
+                  eventNumber={eventNumber}
+                  eventTab={eventTab}
+                />
+              ) : null}
             </div>
-            <Standings path="standings" cup={cup} events={events} />
+          ) : null}
+          {tab === 'standings' ? <Standings cup={cup} events={events} /> : null}
+          {tab === 'rules' ? (
             <RulesInfo
-              path="rules"
               description={cup.Description}
               owner={admins(cup)}
               cup={cup}
@@ -108,8 +115,9 @@ const Cups = props => {
                 });
               }}
             />
+          ) : null}
+          {tab === 'blog' ? (
             <Blog
-              path="blog"
               cup={cup}
               owner={admins(cup)}
               items={cup.CupBlog}
@@ -117,11 +125,13 @@ const Cups = props => {
                 addNewBlog({ data: newBlog, shortName: cup.ShortName });
               }}
             />
-            <Personal path="personal" />
-            <Team path="team" />
-            {isCupAdmin && <Admin path="admin" />}
+          ) : null}
+          {tab === 'personal' ? <Personal /> : null}
+          {tab === 'team' ? <Team /> : null}
+          {tab === 'admin' && isCupAdmin ? <Admin /> : null}
+          {tab === 'play-stats' ? (
             <PlayStats path="play-stats" cup={cup} events={events} />
-          </Router>
+          ) : null}
         </>
       )}
     </Layout>

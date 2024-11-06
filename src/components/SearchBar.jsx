@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { Button, Drawer, IconButton } from '@material-ui/core';
 import { Info, Cancel } from '@material-ui/icons';
@@ -34,11 +34,11 @@ const SearchBar = props => {
                 if (e.target.value === '') {
                   setType('');
                 } else {
-                  navigate(
-                    `/search?q=${encodeURIComponent(
+                  navigate({
+                    to: `/search?q=${encodeURIComponent(
                       e.target.value,
                     )}&t=${searchType}`,
-                  );
+                  });
                 }
               }
               if (e.key === 'Escape') {
