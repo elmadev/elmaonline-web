@@ -3,7 +3,7 @@ import config from 'config';
 import { authToken } from 'utils/nick';
 import assert from 'assert';
 import { isObjectLike, isArray, mapValues, meanBy } from 'lodash';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 let baseURL = config.api;
 const api = create({
@@ -49,9 +49,9 @@ export const useQueryAlt = (
     queryOpts.staleTime = 300000;
   }
 
-  return useQuery(
+  return useQuery({
     queryKey,
-    async (...args) => {
+    queryFn: async (...args) => {
       const res = await queryFn(...args);
 
       if (arrayFormat) {
@@ -82,8 +82,8 @@ export const useQueryAlt = (
         throw new Error('Status not OK');
       }
     },
-    queryOpts,
-  );
+    ...queryOpts,
+  });
 };
 
 // replays
