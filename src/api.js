@@ -22,6 +22,7 @@ const apiUpload = create({
     Accept: '*/*',
     'Cache-Control': 'no-cache',
     Authorization: authToken(),
+    'Content-Type': 'multipart/form-data',
   },
   timeout: 60000,
 });
@@ -539,7 +540,7 @@ export const DeleteFile = data =>
   api.delete(`upload/${data.index}/${data.uuid}/${data.filename}`);
 
 // taswr
-export const GetDatInfo = data => api.post(`taswr/getdatinfo`, data);
+export const GetDatInfo = data => apiUpload.post(`api/taswr/getdatinfo`, data);
 
 // tags
 export const GetReplayTags = () => api.get(`tag?type=replay`);
