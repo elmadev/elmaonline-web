@@ -11,9 +11,9 @@ import TagFilter from 'components/TagFilter';
 const widths = { Replay: 200, Time: 100, Level: null, By: null };
 
 const RecList = ({
-  currentUUID,
-  columns,
-  horizontalMargin,
+  currentUUID = null,
+  columns = ['Replay', 'Level', 'Time', 'By'],
+  horizontalMargin = 0,
   LevelIndex,
   mergable = false,
 }) => {
@@ -99,12 +99,6 @@ RecList.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
   horizontalMargin: PropTypes.number,
   LevelIndex: PropTypes.number.isRequired,
-};
-
-RecList.defaultProps = {
-  currentUUID: null,
-  columns: ['Replay', 'Level', 'Time', 'By'],
-  horizontalMargin: 0,
 };
 
 export default RecList;

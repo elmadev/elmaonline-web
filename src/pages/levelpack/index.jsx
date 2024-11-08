@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from '@tanstack/react-router';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { Tabs, Tab } from '@material-ui/core';
@@ -187,14 +186,6 @@ const LevelPack = () => {
       </RootStyle>
     </Layout>
   );
-};
-
-LevelPack.propTypes = {
-  name: PropTypes.string,
-};
-
-LevelPack.defaultProps = {
-  name: '',
 };
 
 const RootStyle = styled.div`

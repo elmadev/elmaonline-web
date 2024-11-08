@@ -23,7 +23,12 @@ const LevelNameFormatted = ({ long, LevelData }) => {
   );
 };
 
-const Level = ({ LevelIndex, long, LevelData, noLink }) => {
+const Level = ({
+  LevelIndex = null,
+  long = false,
+  LevelData = null,
+  noLink = false,
+}) => {
   return (
     <>
       {noLink ? (
@@ -47,25 +52,12 @@ Level.propTypes = {
   noLink: PropTypes.bool,
 };
 
-Level.defaultProps = {
-  LevelIndex: null,
-  long: false,
-  LevelData: null,
-  noLink: false,
-};
-
 class BattleType extends React.Component {
   static propTypes = {
     type: PropTypes.string.isRequired,
     lower: PropTypes.bool,
     small: PropTypes.bool,
     upper: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    lower: false,
-    small: false,
-    upper: false,
   };
 
   render() {
@@ -83,7 +75,7 @@ class BattleType extends React.Component {
       HT: '1 Hour TT',
     };
 
-    const { type, lower, small, upper } = this.props;
+    const { type, lower = false, small = false, upper = false } = this.props;
     return (
       <TypeSpan small={small} lower={lower} upper={upper}>
         {types[type]}

@@ -9,9 +9,9 @@ import Time from 'components/Time';
 import { levToSvg } from 'elma-js';
 
 const LevelMap = ({
-  LevelIndex,
-  width,
-  height,
+  LevelIndex = null,
+  width = '100%',
+  height = '100%',
   interaction = true,
   time,
   rating,
@@ -203,12 +203,6 @@ LevelMap.propTypes = {
   LevelIndex: PropTypes.number.isRequired,
   width: PropTypes.string,
   height: PropTypes.string,
-};
-
-LevelMap.defaultProps = {
-  LevelIndex: null,
-  width: '100%',
-  height: '100%',
 };
 
 export default LevelMap;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
 import {
   Table,
   TableBody,
@@ -707,13 +706,5 @@ const LevelStatsAccordion = styled(AccordionDetails)`
 const RangeField = styled(TextField)`
   margin-right: 16px !important;
 `;
-
-Level.propTypes = {
-  LevelId: PropTypes.string,
-};
-
-Level.defaultProps = {
-  LevelId: '0',
-};
 
 export default Level;

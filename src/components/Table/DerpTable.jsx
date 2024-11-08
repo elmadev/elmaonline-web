@@ -31,15 +31,6 @@ class DerpTable extends React.Component {
     width: PropTypes.string,
   };
 
-  static defaultProps = {
-    loading: false,
-    length: 0,
-    pagination: false,
-    onChangePage: null,
-    onChangeRowsPerPage: null,
-    width: 'auto',
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -51,13 +42,13 @@ class DerpTable extends React.Component {
   render() {
     const {
       headers,
-      loading,
+      loading = false,
       children,
-      length,
-      pagination,
-      onChangePage,
-      onChangeRowsPerPage,
-      width,
+      length = 0,
+      pagination = false,
+      onChangePage = null,
+      onChangeRowsPerPage = null,
+      width = 'auto',
     } = this.props;
     const { page, rowsPerPage } = this.state;
     return (

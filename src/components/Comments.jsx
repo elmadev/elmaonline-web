@@ -40,8 +40,7 @@ const getColor = kuski => {
 
 const sortByEntered = (a, b) => b.Entered - a.Entered;
 
-const Comments = props => {
-  const { comments, loading } = props;
+const Comments = ({ comments = [], loading = false }) => {
   if (loading) return null;
   return (
     <Column>
@@ -92,11 +91,6 @@ Comments.propTypes = {
     }),
   ),
   loading: PropTypes.bool,
-};
-
-Comments.defaultProps = {
-  comments: [],
-  loading: false,
 };
 
 export default Comments;

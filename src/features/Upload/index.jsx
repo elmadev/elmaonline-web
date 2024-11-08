@@ -24,7 +24,7 @@ import { xor } from 'lodash';
 import { renameFile } from 'utils/misc';
 import Feedback from 'components/Feedback';
 
-const Upload = ({ onUpload, filetype }) => {
+const Upload = ({ onUpload = null, filetype }) => {
   const {
     insertReplay,
     updateReplay,
@@ -472,10 +472,6 @@ const UploadButtonContainer = styled(Grid)`
 Upload.propTypes = {
   onUpload: PropTypes.func,
   filetype: PropTypes.string.isRequired,
-};
-
-Upload.defaultProps = {
-  onUpload: null,
 };
 
 export default Upload;

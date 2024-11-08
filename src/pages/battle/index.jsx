@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import PropTypes from 'prop-types';
 import { groupBy, mapValues, sumBy, filter } from 'lodash';
 import Layout from 'components/Layout';
 import styled from 'styled-components';
@@ -65,13 +64,8 @@ const Battle = () => {
   const [replayUrl, setReplayUrl] = useState('');
   const [winner, setWinner] = useState(null);
   let runStats = null;
-  const {
-    allBattleTimes,
-    battle,
-    rankingHistory,
-    allBattleRuns,
-    replays,
-  } = useStoreState(state => state.Battle);
+  const { allBattleTimes, battle, rankingHistory, allBattleRuns, replays } =
+    useStoreState(state => state.Battle);
   const {
     getAllBattleTimes,
     getBattle,
@@ -186,14 +180,6 @@ const Battle = () => {
       </MainContainer>
     </Layout>
   );
-};
-
-Battle.propTypes = {
-  BattleId: PropTypes.string,
-};
-
-Battle.defaultProps = {
-  BattleId: '0',
 };
 
 const MainContainer = styled.div`

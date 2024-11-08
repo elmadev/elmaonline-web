@@ -12,7 +12,12 @@ import { useLocation } from '@tanstack/react-router';
 import { formatDistanceStrict } from 'date-fns';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const RecListItem = ({ replay, selected, columns, mergable = false }) => {
+const RecListItem = ({
+  replay,
+  selected = false,
+  columns = ['Replay', 'Level', 'Time', 'By'],
+  mergable = false,
+}) => {
   const [isHover, setHover] = useState(false);
   const location = useLocation();
   const { merge } = location.search;
@@ -139,12 +144,6 @@ RecListItem.propTypes = {
   selected: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.string),
   mergable: PropTypes.bool,
-};
-
-RecListItem.defaultProps = {
-  selected: false,
-  columns: ['Replay', 'Level', 'Time', 'By'],
-  mergable: false,
 };
 
 export default RecListItem;

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useNavigate, useParams } from '@tanstack/react-router';
-import PropTypes from 'prop-types';
 import { Tabs, Tab } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import styled from 'styled-components';
@@ -131,14 +130,6 @@ const Kuski = () => {
       )}
     </Layout>
   );
-};
-
-Kuski.propTypes = {
-  name: PropTypes.string,
-};
-
-Kuski.defaultProps = {
-  name: '',
 };
 
 const Width100 = styled.div`

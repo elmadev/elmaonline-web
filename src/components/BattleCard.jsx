@@ -12,8 +12,7 @@ import { format, addMinutes } from 'date-fns';
 import { useInterval } from 'utils/useInterval';
 import LinearProgressWithLabel from 'components/LinearProgressWithLabel';
 
-const BattleCard = props => {
-  const { battle } = props;
+const BattleCard = ({ battle = null }) => {
   const [remainingPercent, setRemainingPercent] = useState(0);
   const [remainingSeconds, setRemainingSeconds] = useState(0);
 
@@ -142,10 +141,6 @@ const Text = styled.div`
 
 BattleCard.propTypes = {
   battle: PropTypes.shape(),
-};
-
-BattleCard.defaultProps = {
-  battle: null,
 };
 
 export default BattleCard;

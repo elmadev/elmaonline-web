@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 import {
   Accordion,
   AccordionSummary,
@@ -566,13 +565,5 @@ const BattleTimestamp = styled.div`
 const ChatContainer = styled.div`
   clear: both;
 `;
-
-Replay.propTypes = {
-  ReplayUuid: PropTypes.string,
-};
-
-Replay.defaultProps = {
-  ReplayUuid: '',
-};
 
 export default Replay;

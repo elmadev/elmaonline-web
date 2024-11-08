@@ -6,16 +6,16 @@ import RecPlayerReact from 'recplayer-react';
 
 const Recplayer = props => {
   const {
-    rec,
+    rec = null,
     lev,
     shirt,
-    width,
-    height,
-    controls,
-    imageUrl,
-    autoPlay,
-    merge,
-    forceRefresh,
+    width = 'auto',
+    height = 'auto',
+    controls = true,
+    imageUrl = 'https://api.elma.online/recplayer',
+    autoPlay = 'if-visible',
+    merge = false,
+    forceRefresh = false,
   } = props;
   const {
     settings: { grass, pictures, customSkyGround, zoomScale, arrows },
@@ -99,18 +99,6 @@ Recplayer.propTypes = {
   autoPlay: PropTypes.oneOf(['if-visible', 'yes', 'no']),
   merge: PropTypes.bool,
   forceRefresh: PropTypes.bool,
-};
-
-Recplayer.defaultProps = {
-  rec: null,
-  width: 'auto',
-  height: 'auto',
-  zoom: undefined,
-  controls: true,
-  imageUrl: 'https://api.elma.online/recplayer',
-  autoPlay: 'if-visible',
-  merge: false,
-  forceRefresh: false,
 };
 
 export default Recplayer;

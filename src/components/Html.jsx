@@ -27,13 +27,15 @@ class Html extends React.Component {
     children: PropTypes.string.isRequired,
   };
 
-  static defaultProps = {
-    styles: [],
-    scripts: [],
-  };
-
   render() {
-    const { title, description, styles, scripts, app, children } = this.props;
+    const {
+      title,
+      description,
+      styles = [],
+      scripts = [],
+      app,
+      children,
+    } = this.props;
     return (
       <html className="no-js" lang="en">
         <head>

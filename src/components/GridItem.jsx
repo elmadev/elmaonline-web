@@ -5,13 +5,13 @@ import Link from 'components/Link';
 
 const GridItem = ({
   className,
-  name,
-  longname,
+  name = '',
+  longname = '',
   afterName,
   afterLongname,
-  to,
-  children,
-  promote,
+  to = '',
+  children = null,
+  promote = false,
 }) => {
   const inner = (
     <>
@@ -89,14 +89,6 @@ GridItem.propTypes = {
   to: PropTypes.string,
   children: PropTypes.node,
   promote: PropTypes.bool,
-};
-
-GridItem.defaultProps = {
-  name: '',
-  longname: '',
-  to: '',
-  children: null,
-  promote: false,
 };
 
 export default GridItem;

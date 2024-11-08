@@ -11,12 +11,8 @@ class ErrorPage extends React.Component {
     }),
   };
 
-  static defaultProps = {
-    error: null,
-  };
-
   render() {
-    const { error } = this.props;
+    const { error = null } = this.props;
     if (error) {
       return (
         <div>
