@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Layout from 'components/Layout';
 import { Grid, Tabs, Tab } from '@material-ui/core';
 import Header from 'components/Header';

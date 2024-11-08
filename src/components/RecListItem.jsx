@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { ListCell, ListRow } from 'components/List';
 import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';

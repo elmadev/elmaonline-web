@@ -8,7 +8,7 @@ import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
 import TrendingDownIcon from '@material-ui/icons/TrendingDown';
 import LooksOneIcon from '@material-ui/icons/LooksOne';
 import Badge from '@material-ui/core/Badge';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Link from 'components/Link';
 import { useState } from 'react';
 import { Paper, TablePagination } from '@material-ui/core';
@@ -142,6 +142,7 @@ const Notifications = ({
               <ListCell width={60} verticalAlign="middle" textAlign="center">
                 <Badge
                   color="secondary"
+                  overlap="rectangular"
                   badgeContent={!n.SeenAt ? 'new' : null}
                 >
                   {getIcon(n.Type)}
@@ -174,8 +175,8 @@ const Notifications = ({
           nextIconButtonProps={{
             'aria-label': 'Next Page',
           }}
-          onChangePage={(e, newPage) => setPage(newPage)}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={(e, newPage) => setPage(newPage)}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       )}
     </Paper>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from 'components/Layout';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { nick, nickId } from 'utils/nick';
 import Loading from 'components/Loading';
@@ -296,9 +296,10 @@ const Recap = () => {
               ) : (
                 <>
                   <V>
-                    {(
-                      int(data.Runs) / int(data.Apples)
-                    ).toLocaleString(undefined, { maximumFractionDigits: 3 })}
+                    {(int(data.Runs) / int(data.Apples)).toLocaleString(
+                      undefined,
+                      { maximumFractionDigits: 3 },
+                    )}
                   </V>{' '}
                 </>
               )}
@@ -441,10 +442,10 @@ const Recap = () => {
                 <TextSmall white>
                   that's a{' '}
                   <V>
-                    {(
-                      (ranking.Wins * 100) /
-                      ranking.Played5
-                    ).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                    {((ranking.Wins * 100) / ranking.Played5).toLocaleString(
+                      undefined,
+                      { maximumFractionDigits: 2 },
+                    )}
                   </V>
                   % win rate
                 </TextSmall>
@@ -474,9 +475,10 @@ const Recap = () => {
                 <TextSmall top>
                   these had a combined duration of{' '}
                   <V>
-                    {(
-                      parseInt(data.TotalDuration) / 60
-                    ).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                    {(parseInt(data.TotalDuration) / 60).toLocaleString(
+                      undefined,
+                      { maximumFractionDigits: 2 },
+                    )}
                   </V>{' '}
                   hours plus{' '}
                   <V>

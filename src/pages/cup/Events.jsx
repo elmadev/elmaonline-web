@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useNavigate } from '@tanstack/react-router';
 import { format } from 'date-fns';
 import LocalTime from 'components/LocalTime';

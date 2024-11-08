@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Pagination from '@material-ui/lab/Pagination';
 import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';

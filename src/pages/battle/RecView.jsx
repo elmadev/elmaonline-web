@@ -3,7 +3,7 @@ import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { Checkbox, FormControlLabel, useMediaQuery } from '@material-ui/core';
 import Recplayer from 'components/Recplayer';
 import Play from 'components/Play';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import config from 'config';
 import { Row } from 'components/Containers';
 import Time from 'components/Time';

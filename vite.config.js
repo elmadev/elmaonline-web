@@ -19,7 +19,14 @@ export default defineConfig(() => {
         plugins: [rollupNodePolyFill()],
       },
     },
-    plugins: [react()],
+    plugins: [
+      react({
+        jsxImportSource: '@emotion/react',
+        babel: {
+          plugins: ['@emotion/babel-plugin'],
+        },
+      }),
+    ],
     resolve: {
       alias: {
         components: '/src/components',

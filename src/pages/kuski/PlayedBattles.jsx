@@ -103,8 +103,8 @@ const PlayedBattles = ({ KuskiIndex }) => {
         nextIconButtonProps={{
           'aria-label': 'Next Page',
         }}
-        onChangePage={(e, pg) => setPage(pg)}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={(e, pg) => setPage(pg)}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </>
   );

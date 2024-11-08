@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import Header from 'components/Header';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Layout from 'components/Layout';
 import { Button } from '@material-ui/core';
 import GettingStarted from './tabs/GettingStarted';

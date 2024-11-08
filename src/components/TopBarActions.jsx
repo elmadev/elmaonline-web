@@ -14,7 +14,7 @@ import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
 import { useNavigate } from '@tanstack/react-router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Badge from '@material-ui/core/Badge';
 
 const StyledButton = styled(Button)`
@@ -132,7 +132,11 @@ export default function TopBarActions() {
             onClick={handleNotificationsClick}
             color="inherit"
           >
-            <Badge badgeContent={notificationsCount} color="error">
+            <Badge
+              badgeContent={notificationsCount}
+              color="error"
+              overlap="rectangular"
+            >
               <Notifications />
             </Badge>
           </IconButton>

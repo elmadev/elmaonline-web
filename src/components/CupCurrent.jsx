@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { format, formatDistance } from 'date-fns';
 import LocalTime from 'components/LocalTime';
 import Kuski from 'components/Kuski';
@@ -25,9 +25,9 @@ const CupResults = props => {
     return index + 1;
   };
 
-  const pastEvents = events.sort(eventSort).filter(
-    e => e.EndTime < format(new Date(), 't')
-  );
+  const pastEvents = events
+    .sort(eventSort)
+    .filter(e => e.EndTime < format(new Date(), 't'));
 
   const lastEvent = pastEvents[pastEvents.length - 1];
   const lastEventNumber = lastEvent && getEventNumber(lastEvent);
@@ -88,7 +88,9 @@ const CupResults = props => {
       })}
       {lastEvent && (
         <LastResultsLink>
-            <Link to={`/cup/${ShortName}/events/${lastEventNumber}/results`}>Event {lastEventNumber} Results/Replays</Link>
+          <Link to={`/cup/${ShortName}/events/${lastEventNumber}/results`}>
+            Event {lastEventNumber} Results/Replays
+          </Link>
         </LastResultsLink>
       )}
     </Container>

@@ -5,7 +5,7 @@ import ReplayListBattle from 'features/ReplayListBattle';
 import ReplayCommentArchive from 'features/ReplayCommentArchive';
 import Upload from 'features/Upload';
 import Layout from 'components/Layout';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import Mod from './Mod';
 import { mod } from 'utils/nick';

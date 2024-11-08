@@ -5,7 +5,7 @@ import Time from 'components/Time';
 import Loading from 'components/Loading';
 import { sumBy, round, maxBy, minBy } from 'lodash';
 import LocalTime from 'components/LocalTime';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const finishedTypes = {
   B: 'Finished (Apple Bug)',

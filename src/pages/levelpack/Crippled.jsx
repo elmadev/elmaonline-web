@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStoreState } from 'easy-peasy';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useNavigate } from '@tanstack/react-router';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';

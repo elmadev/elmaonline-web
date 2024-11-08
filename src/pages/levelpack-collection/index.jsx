@@ -8,7 +8,7 @@ import { Delete as DeleteIcon, PlaylistAdd } from '@material-ui/icons';
 import { Grid, TextField } from '@material-ui/core';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import Link from 'components/Link';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { nickId, mod } from 'utils/nick';
 import { useParams } from '@tanstack/react-router';
 

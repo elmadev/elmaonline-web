@@ -1,7 +1,8 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { Tabs, Tab } from '@material-ui/core';
 import { useNavigate, useParams } from '@tanstack/react-router';
-import styled, { ThemeContext } from 'styled-components';
+import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
 import Header from 'components/Header';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { nickId } from 'utils/nick';
@@ -139,7 +140,7 @@ const Cups = () => {
 };
 
 export const CupCover = ({ cup, noBottomMargin = false }) => {
-  const theme = useContext(ThemeContext);
+  const theme = useTheme();
   const cover = cup.Cover ? cup.Cover : null;
   let bgColor = null;
   let textColor = null;

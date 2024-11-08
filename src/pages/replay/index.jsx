@@ -15,7 +15,7 @@ import {
 } from '@material-ui/icons';
 import { xor } from 'lodash';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Avatar from 'components/Avatar';
 import Layout from 'components/Layout';
 import Recplayer from 'components/Recplayer';

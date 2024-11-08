@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Tabs, Tab } from '@material-ui/core';
 import { useNavigate, useLocation } from '@tanstack/react-router';

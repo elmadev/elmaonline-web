@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { TextField, Button, Container, Box } from '@material-ui/core';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import Link from 'components/Link';

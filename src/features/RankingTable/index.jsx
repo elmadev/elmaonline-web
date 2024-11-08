@@ -5,7 +5,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import Kuski from 'components/Kuski';
 import SortableList from 'components/SortableList';
 import Loading from 'components/Loading';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { FixedSizeList as List } from 'react-window';
 import useElementSize from 'utils/useWindowSize';
 

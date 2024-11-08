@@ -3,7 +3,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { themes, previews } from 'theme';
 import Header from 'components/Header';
 import { Column, Row } from 'components/Containers';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Radio, Grid } from '@material-ui/core';
 import { alphaNumeric } from 'utils/misc';
 import { Paper } from 'components/Paper';

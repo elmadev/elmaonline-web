@@ -10,7 +10,7 @@ import {
   Grid,
   Switch,
 } from '@material-ui/core';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useLocation, useNavigate } from '@tanstack/react-router';
 import ChatView from 'features/ChatView';
 import Header from 'components/Header';
@@ -220,10 +220,10 @@ const ChatLog = () => {
             component="div"
             count={chatLineCount}
             page={chatPage}
-            onChangePage={handleChangePage}
+            onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
             rowsPerPageOptions={[10, 25, 50, 100, 250, 1000]}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         )}
       </Paper>

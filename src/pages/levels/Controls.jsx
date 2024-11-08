@@ -8,14 +8,19 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import Popularity from 'components/Popularity';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Switch from 'components/Switch';
 
 const Controls = ({ detailed, sort }) => {
   const navigate = useNavigate();
 
   return (
-    <Grid2 container justify="flex-end" alignItems="center" detailed={detailed}>
+    <Grid2
+      container
+      justifyContent="flex-end"
+      alignItems="center"
+      detailed={detailed}
+    >
       {!detailed && (
         <div
           style={{ marginBottom: -19 }}

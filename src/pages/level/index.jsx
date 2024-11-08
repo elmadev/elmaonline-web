@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -19,7 +19,8 @@ import {
   Box,
   TextField,
 } from '@material-ui/core';
-import styled, { ThemeContext } from 'styled-components';
+import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
 import Layout from 'components/Layout';
 import { ExpandMore } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
@@ -54,7 +55,7 @@ import Button from 'components/Buttons';
 
 const Level = () => {
   const { LevelId } = useParams({ strict: false });
-  const theme = useContext(ThemeContext);
+  const theme = useTheme();
   const LevelIndex = parseInt(LevelId, 10);
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);

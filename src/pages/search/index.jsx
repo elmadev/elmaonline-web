@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useMediaQuery, Grid, Switch } from '@material-ui/core';
 import LocalTime from 'components/LocalTime';

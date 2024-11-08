@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import Kuski from 'components/Kuski';
@@ -31,11 +31,8 @@ const LevelPopup = ({
     team,
     country,
   } = useStoreState(state => state.LevelPack);
-  const {
-    getPersonalAllFinished,
-    getLevelBesttimes,
-    getLevelMultiBesttimes,
-  } = useStoreActions(actions => actions.LevelPack);
+  const { getPersonalAllFinished, getLevelBesttimes, getLevelMultiBesttimes } =
+    useStoreActions(actions => actions.LevelPack);
   const [timesLimit, setTimesLimit] = useState(10);
 
   // calculate height for react-window

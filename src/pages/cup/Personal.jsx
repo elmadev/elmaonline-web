@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { nickId } from 'utils/nick';
 import { forEach } from 'lodash';
 import { format } from 'date-fns';
@@ -40,12 +40,8 @@ const Personal = () => {
   const { myReplays, cup, events, myTimes, myTimesOptions } = useStoreState(
     state => state.Cup,
   );
-  const {
-    getMyReplays,
-    updateReplay,
-    getMyTimes,
-    setMyTimesOptions,
-  } = useStoreActions(actions => actions.Cup);
+  const { getMyReplays, updateReplay, getMyTimes, setMyTimesOptions } =
+    useStoreActions(actions => actions.Cup);
 
   const [previewRecIndex, setPreviewRecIndex] = useState(null);
 

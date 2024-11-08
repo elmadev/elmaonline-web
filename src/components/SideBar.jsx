@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { mod } from 'utils/nick';
 import SideBarSubItem from 'components/SideBarSubItem';

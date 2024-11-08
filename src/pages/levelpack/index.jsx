@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from '@tanstack/react-router';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { Tabs, Tab } from '@material-ui/core';
 import Layout from 'components/Layout';

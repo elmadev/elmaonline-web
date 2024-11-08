@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { groupBy, mapValues, sumBy, filter } from 'lodash';
 import Layout from 'components/Layout';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import config from 'config';
 import Time from '../../components/Time';
 import Kuski from '../../components/Kuski';

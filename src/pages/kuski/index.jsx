@@ -3,7 +3,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { Tabs, Tab } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Layout from 'components/Layout';
 import Loading from 'components/Loading';
 import Flag from 'components/Flag';

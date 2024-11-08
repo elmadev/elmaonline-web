@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LocalTime from 'components/LocalTime';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { CardContent } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListRow, ListCell, ListContainer } from 'components/List';

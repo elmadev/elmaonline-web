@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { nickId } from 'utils/nick';
 import { Paper } from 'components/Paper';
 import { Button, Grid } from '@material-ui/core';

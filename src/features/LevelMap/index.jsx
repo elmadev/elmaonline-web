@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import Loading from 'components/Loading';
 import Portal from 'components/Portal';
 import Time from 'components/Time';

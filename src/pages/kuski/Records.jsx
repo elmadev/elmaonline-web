@@ -9,7 +9,7 @@ import {
   Select,
   TablePagination,
 } from '@material-ui/core';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Loading from 'components/Loading';
 import Time from 'components/Time';
 import Link from 'components/Link';
@@ -59,8 +59,8 @@ const Records = ({ kuski, sort }) => {
                 rowsPerPageOptions={[25, 50, 100, 200, 500]}
                 rowsPerPage={pageSize}
                 page={page}
-                onChangePage={(e, value) => setPage(value)}
-                onChangeRowsPerPage={e => {
+                onPageChange={(e, value) => setPage(value)}
+                onRowsPerPageChange={e => {
                   setPage(0);
                   setPageSize(e.target.value);
                 }}
@@ -74,7 +74,9 @@ const Records = ({ kuski, sort }) => {
             id="records-sort"
             value={sort}
             onChange={e => {
-              navigate({ to: `/kuskis/${kuski.Kuski}/records/${e.target.value}` });
+              navigate({
+                to: `/kuskis/${kuski.Kuski}/records/${e.target.value}`,
+              });
             }}
           >
             <MenuItem value="TimeAll">Playtime (All kuskis)</MenuItem>

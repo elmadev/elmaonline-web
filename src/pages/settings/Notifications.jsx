@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Header from 'components/Header';
 import { Row, Text } from 'components/Containers';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import Button from 'components/Buttons';

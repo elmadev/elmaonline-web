@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Box from '@material-ui/core/Box';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Text } from 'components/Containers';
 import { addSeconds, format } from 'date-fns';
 

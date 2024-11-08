@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import DerpTable from 'components/Table/DerpTable';

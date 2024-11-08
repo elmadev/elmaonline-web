@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Header from 'components/Header';
 import Kuski from 'components/Kuski';
 import { useStoreState, useStoreActions } from 'easy-peasy';

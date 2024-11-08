@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { CropLandscape, Settings, Crop75, Close } from '@material-ui/icons';
 import { Row, Text } from 'components/Containers';
 import FieldBoolean from 'components/FieldBoolean';

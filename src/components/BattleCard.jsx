@@ -6,7 +6,7 @@ import Kuski from 'components/Kuski';
 import Header from 'components/Header';
 import LocalTime from 'components/LocalTime';
 import LevelMap from 'features/LevelMap';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { toLocalTime } from 'utils/time';
 import { format, addMinutes } from 'date-fns';
 import { useInterval } from 'utils/useInterval';

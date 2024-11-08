@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Loading from 'components/Loading';
 import queryString from 'query-string';
 import { Dropdown, TextField } from 'components/Inputs';
@@ -343,8 +343,8 @@ const Search = () => {
                     rowsPerPageOptions={[25, 50, 100, 200]}
                     rowsPerPage={pageSize}
                     page={page}
-                    onChangePage={(e, value) => setUrl(value, pageSize, sort)}
-                    onChangeRowsPerPage={e => setUrl(0, e.target.value, sort)}
+                    onPageChange={(e, value) => setUrl(value, pageSize, sort)}
+                    onRowsPerPageChange={e => setUrl(0, e.target.value, sort)}
                   />
                   <td>
                     <Switch

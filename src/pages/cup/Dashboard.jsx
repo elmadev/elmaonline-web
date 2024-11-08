@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { forEach } from 'lodash';
 import { format } from 'date-fns';
 import Link from 'components/Link';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid, Checkbox, Button, TextField } from '@material-ui/core';
 import Header from 'components/Header';
 import DerpTable from 'components/Table/DerpTable';

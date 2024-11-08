@@ -10,7 +10,7 @@ import LocalTime from 'components/LocalTime';
 import CloseIcon from '@material-ui/icons/HighlightOffOutlined';
 import { Grid, Box, Typography, Backdrop } from '@material-ui/core';
 import config from 'config';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 

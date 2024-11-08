@@ -14,7 +14,7 @@ import Kuski from 'components/Kuski';
 import { formatDistanceStrict } from 'date-fns';
 import config from 'config';
 import { useNavigate } from '@tanstack/react-router';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export default function ReplayCard({ replay, onPreviewClick }) {
   const [picExists, setPicExists] = useState(true);

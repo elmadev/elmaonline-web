@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { ListContainer, ListHeader, ListRow, ListCell } from 'components/List';
 import Link from 'components/Link';
 import Time from 'components/Time';

@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useStoreRehydrated, useStoreActions, useStoreState } from 'easy-peasy';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Time from 'components/Time';
 import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';

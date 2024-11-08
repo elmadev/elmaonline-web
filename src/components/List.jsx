@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { InputBase } from '@material-ui/core';
 import Link from 'components/Link';
 import Loading from 'components/Loading';
@@ -101,8 +101,8 @@ const Row = styled.div`
     p.selected
       ? p.theme.selectedColor
       : p.highlight
-      ? p.theme.highlightColor
-      : p.bg};
+        ? p.theme.highlightColor
+        : p.bg};
   cursor: ${p => (p.pointer ? 'pointer' : 'auto')};
   :hover {
     background: ${p => p.theme.hoverColor};

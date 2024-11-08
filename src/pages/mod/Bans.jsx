@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import { ListRow, ListCell, ListHeader } from 'components/List';

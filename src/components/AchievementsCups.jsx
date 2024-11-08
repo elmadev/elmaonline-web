@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { has } from 'lodash';
 import Header from 'components/Header';
 import wc61st from 'images/wc6/1st.png';

@@ -4,7 +4,7 @@ import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Header from 'components/Header';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Field from 'components/Field';
 import FieldBoolean from 'components/FieldBoolean';
 import { Button } from '@material-ui/core';

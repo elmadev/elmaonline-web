@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import SearchIcon from '@material-ui/icons/Search';
 import Link from 'components/Link';
 import SearchBar from 'components/SearchBar';

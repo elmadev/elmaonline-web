@@ -2,7 +2,7 @@ import React from 'react';
 import Time from 'components/Time';
 import LocalTime from 'components/LocalTime';
 import { PlayArrow } from '@material-ui/icons';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Loading from 'components/Loading';
 import { formatDistanceStrict } from 'date-fns';
 

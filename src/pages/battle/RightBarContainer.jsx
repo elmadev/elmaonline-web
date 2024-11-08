@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import {
   Accordion,
   AccordionSummary,
@@ -117,14 +117,18 @@ const RightBarContainer = props => {
               <StyledButton
                 size="small"
                 color="primary"
-                onClick={() => navigate({ to: `/battles/${battle.BattleIndex - 1}` })}
+                onClick={() =>
+                  navigate({ to: `/battles/${battle.BattleIndex - 1}` })
+                }
               >
                 Previous Battle{' '}
               </StyledButton>
               <StyledButton
                 size="small"
                 color="primary"
-                onClick={() => navigate({ to: `/battles/${battle.BattleIndex + 1}` })}
+                onClick={() =>
+                  navigate({ to: `/battles/${battle.BattleIndex + 1}` })
+                }
                 disabled={nextBattleFound ? false : true}
               >
                 Next Battle{' '}

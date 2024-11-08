@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import ReplayCard from 'components/ReplayCard';
 import Preview from 'components/Preview';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Pagination from '@material-ui/lab/Pagination';
 import { Box } from '@material-ui/core';
 import { findIndex } from 'lodash';

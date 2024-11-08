@@ -87,8 +87,8 @@ function DesignedBattles({ KuskiIndex }) {
         nextIconButtonProps={{
           'aria-label': 'Next Page',
         }}
-        onChangePage={(e, newPage) => setPage(newPage)}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={(e, newPage) => setPage(newPage)}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </>
   );

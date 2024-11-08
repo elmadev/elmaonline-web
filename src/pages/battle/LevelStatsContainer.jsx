@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Select, MenuItem } from '@material-ui/core';
 import { PlayArrow, GetApp } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
@@ -75,14 +75,8 @@ const LevelStatsContainer = props => {
                 // it appears this happens if kuski joins for countdown but not for battle.
                 const runStatsForKuski = runStats && runStats[r.KuskiIndex];
 
-                const [
-                  kuskiRankingAll,
-                  kuskiRankingType,
-                ] = getKuskiRankingHistory(
-                  rankingHistory,
-                  r.KuskiIndex,
-                  battle,
-                );
+                const [kuskiRankingAll, kuskiRankingType] =
+                  getKuskiRankingHistory(rankingHistory, r.KuskiIndex, battle);
 
                 return (
                   <Fragment key={r.KuskiIndex}>

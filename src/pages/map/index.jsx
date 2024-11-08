@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 import GoogleMapReact from 'google-map-react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { format } from 'date-fns';
 import { nickId } from 'utils/nick';
 import config from 'config';

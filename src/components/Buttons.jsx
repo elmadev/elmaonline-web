@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button as MuiButton } from '@material-ui/core';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Link } from '@tanstack/react-router';
 import {
   Map,

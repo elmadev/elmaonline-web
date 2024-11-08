@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Paper } from 'components/Paper';
 import Header from 'components/Header';
 import { Grid, Button } from '@material-ui/core';

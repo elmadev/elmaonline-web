@@ -20,7 +20,7 @@ import {
   Share,
   HighlightOffOutlined as CloseIcon,
 } from '@material-ui/icons';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import config from 'config';
 import { FixedSizeList as List } from 'react-window';
 import {

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import CupCurrent from 'components/CupCurrent';
 import Header from 'components/Header';
 import { CardContent, Grid } from '@material-ui/core';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useNavigate } from '@tanstack/react-router';
 import { isEmpty } from 'lodash';

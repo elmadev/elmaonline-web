@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Header from 'components/Header';
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import config from 'config';

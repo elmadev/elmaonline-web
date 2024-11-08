@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Loading from 'components/Loading';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import { LevelPackRecordHistory, useQueryAlt } from '../../api';

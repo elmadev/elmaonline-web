@@ -1,9 +1,10 @@
-import React, { useEffect, useContext, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import LocalTime from 'components/LocalTime';
 import { BattleTime } from 'components/Time';
 import Kuski from 'components/Kuski';
-import styled, { ThemeContext } from 'styled-components';
+import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
 import { formatISO } from 'date-fns';
 import { Level, BattleType } from 'components/Names';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -90,7 +91,7 @@ export const BattleListTable = ({
   wideStartedCol = false,
   height = 0,
 }) => {
-  const theme = useContext(ThemeContext);
+  const theme = useTheme();
   const startedWidth = wideStartedCol ? 160 : 80;
 
   return (

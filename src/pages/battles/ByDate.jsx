@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { parse, format, startOfDay, addDays, subDays } from 'date-fns';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Loading from 'components/Loading';
 import BattleList from 'features/BattleList';
 import { useNavigate, useLocation } from '@tanstack/react-router';

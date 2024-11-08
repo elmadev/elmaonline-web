@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import config from 'config';
 import { nickId } from 'utils/nick';
 

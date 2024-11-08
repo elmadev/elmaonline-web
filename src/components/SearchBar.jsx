@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Button, Drawer, IconButton } from '@material-ui/core';
 import { Info, Cancel } from '@material-ui/icons';
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid, Tabs, Tab, Checkbox, Drawer } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import { RemoveCircle, Info } from '@material-ui/icons';
