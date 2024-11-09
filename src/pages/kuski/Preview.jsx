@@ -32,17 +32,19 @@ export default function Preview({
     <Backdrop open={true} style={{ zIndex: 100 }}>
       <Container container>
         <Grid item sm={8} xs={12}>
-          <Recplayer
-            rec={`${config.s3Url}time/${previewRec.TimeFileData.UUID}-${previewRec.TimeFileData.MD5}/${previewRec.TimeIndex}.rec`}
-            lev={`${config.dlUrl}level/${previewRec.LevelIndex}?UUID=${previewRec.TimeFileData.UUID}`}
-            shirt={[`${config.dlUrl}shirt/${previewRec.KuskiIndex}`]}
-            controls
-            autoPlay="yes"
-          />
+          <Player>
+            <Recplayer
+              rec={`${config.s3Url}time/${previewRec.TimeFileData.UUID}-${previewRec.TimeFileData.MD5}/${previewRec.TimeIndex}.rec`}
+              lev={`${config.dlUrl}level/${previewRec.LevelIndex}?UUID=${previewRec.TimeFileData.UUID}`}
+              shirt={[`${config.dlUrl}shirt/${previewRec.KuskiIndex}`]}
+              controls
+              autoPlay="yes"
+            />
+          </Player>
         </Grid>
-        <Grid item sm>
+        <Grid item sm={4}>
           <Column height="100%">
-            <PadY>
+            <Pad>
               <Row>
                 <Header h2>
                   <Previous onClick={previousReplay} />
@@ -94,9 +96,9 @@ export default function Preview({
                   {previewRec.Drunk === 1 && <>Drunk</>}
                 </Comment>
               )}
-            </PadY>
+            </Pad>
 
-            <PadY>
+            <Pad>
               <Typography variant="caption" display="block">
                 Driven{' '}
                 <LocalTime
@@ -105,7 +107,7 @@ export default function Preview({
                   parse="X"
                 />
               </Typography>
-            </PadY>
+            </Pad>
           </Column>
         </Grid>
       </Container>
@@ -113,9 +115,16 @@ export default function Preview({
   );
 }
 
-const PadY = styled.div`
-  padding-top: 16px;
-  padding-bottom: 16px;
+const Player = styled.div`
+  background: ${p => p.theme.pageBackground};
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Pad = styled.div`
+  padding: 16px;
 `;
 
 const Container = styled(Grid)`

@@ -34,17 +34,19 @@ export default function Preview({
     <Backdrop open={true} style={{ zIndex: 100 }}>
       <Container container>
         <Grid item sm={8} xs={12}>
-          <Recplayer
-            rec={getRecUri()}
-            lev={`${config.dlUrl}level/${previewRec.LevelIndex}?UUID=${previewRec.UUID}`}
-            shirt={[
-              `${config.dlUrl}shirt/${previewRec.DrivenByData?.KuskiIndex}`,
-            ]}
-            controls
-            autoPlay="yes"
-          />
+          <Player>
+            <Recplayer
+              rec={getRecUri()}
+              lev={`${config.dlUrl}level/${previewRec.LevelIndex}?UUID=${previewRec.UUID}`}
+              shirt={[
+                `${config.dlUrl}shirt/${previewRec.DrivenByData?.KuskiIndex}`,
+              ]}
+              controls
+              autoPlay="yes"
+            />
+          </Player>
         </Grid>
-        <Grid item sm>
+        <Grid item sm={4}>
           <Column height="100%">
             <div style={{ padding: '16px' }}>
               <Row>
@@ -96,6 +98,14 @@ export default function Preview({
     </Backdrop>
   );
 }
+
+const Player = styled.div`
+  background: ${p => p.theme.pageBackground};
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Container = styled(Grid)`
   background: ${p => p.theme.paperBackground};
