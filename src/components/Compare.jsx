@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import React from 'react';
+import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
 import Time from 'components/Time';
 import Crown from 'images/crown.svg';
 import CrownWhite from 'images/crown-white.svg';
@@ -10,7 +11,7 @@ const Compare = ({
   hideCrown = false,
   relative = false,
 }) => {
-  const theme = useContext(ThemeContext);
+  const theme = useTheme();
   if (!time || !compareTime) {
     return null;
   }

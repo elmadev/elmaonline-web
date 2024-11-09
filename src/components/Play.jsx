@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Paper } from 'components/Paper';
 import { PlayArrow } from '@material-ui/icons';
 import Sky from '../images/sky.png';

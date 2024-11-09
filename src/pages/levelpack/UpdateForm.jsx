@@ -1,6 +1,5 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
-import { Button, Chip, Box, Typography } from '@material-ui/core';
+import { Button, Chip, Typography } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import FormResponse from 'components/FormResponse';
 import Field from 'components/Field';
@@ -73,7 +72,7 @@ const UpdateForm = () => {
         value={LevelPackDesc}
         onChange={e => setDesc(e.target.value)}
       />
-      <Box padding={2}>
+      <div style={{ padding: '16px' }}>
         <Typography color="textSecondary">Tags</Typography>
         {tagOptions.map(option => {
           if (Tags.includes(option.TagIndex)) {
@@ -97,7 +96,7 @@ const UpdateForm = () => {
             );
           }
         })}
-      </Box>
+      </div>
 
       <Button type="submit" variant="contained" style={{ margin: '10px 0' }}>
         Update

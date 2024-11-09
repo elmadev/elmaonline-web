@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Today, CheckBox, Timer } from '@material-ui/icons';
 import { formatDistance, format } from 'date-fns';
 
@@ -29,22 +29,24 @@ const EventItem = ({
         </div>
         {end !== 0 && (
           <div>
-            {end > format(new Date(), 't') && start < format(new Date(), 't') && (
-              <>
-                <Timer /> Deadline{' '}
-                {formatDistance(new Date(end * 1000), new Date(), {
-                  addSuffix: true,
-                })}
-              </>
-            )}
-            {end > format(new Date(), 't') && start > format(new Date(), 't') && (
-              <>
-                <Timer /> Starts{' '}
-                {formatDistance(new Date(start * 1000), new Date(), {
-                  addSuffix: true,
-                })}
-              </>
-            )}
+            {end > format(new Date(), 't') &&
+              start < format(new Date(), 't') && (
+                <>
+                  <Timer /> Deadline{' '}
+                  {formatDistance(new Date(end * 1000), new Date(), {
+                    addSuffix: true,
+                  })}
+                </>
+              )}
+            {end > format(new Date(), 't') &&
+              start > format(new Date(), 't') && (
+                <>
+                  <Timer /> Starts{' '}
+                  {formatDistance(new Date(start * 1000), new Date(), {
+                    addSuffix: true,
+                  })}
+                </>
+              )}
             {end < format(new Date(), 't') && (
               <>
                 <CheckBox />

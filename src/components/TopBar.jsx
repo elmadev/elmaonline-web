@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import SearchIcon from '@material-ui/icons/Search';
 import Link from 'components/Link';
 import SearchBar from 'components/SearchBar';
 import { useMediaQuery, Chip } from '@material-ui/core';
 import { Error } from '@material-ui/icons';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import TopBarActions from 'components/TopBarActions';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { isBefore, addHours } from 'date-fns';
@@ -53,7 +53,7 @@ const TopBar = () => {
         )}
         <RightSideFlex>
           {mobileSearch && (
-            <MobileSearchButton onClick={() => navigate('/search')}>
+            <MobileSearchButton onClick={() => navigate({ to: '/search' })}>
               <Link to="/search" style={{ color: 'inherit', padding: '5px' }}>
                 <SearchIcon />
               </Link>

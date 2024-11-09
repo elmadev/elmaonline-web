@@ -1,8 +1,5 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable react/no-danger */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Button, Checkbox, Grid } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Paper } from 'components/Paper';
@@ -223,14 +220,14 @@ const Admin = () => {
               <ListCell>
                 <LocalTime
                   date={e.StartTime}
-                  format="ddd D MMM YYYY HH:mm"
+                  format="eee d MMM yyyy HH:mm"
                   parse="X"
                 />
               </ListCell>
               <ListCell>
                 <LocalTime
                   date={e.EndTime}
-                  format="ddd D MMM YYYY HH:mm"
+                  format="eee d MMM yyyy HH:mm"
                   parse="X"
                 />
               </ListCell>

@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import DerpTable from 'components/Table/DerpTable';
 import { zeroPad } from 'utils/time';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import { ListRow, ListCell } from 'components/List';
 import { PlayArrow } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
@@ -17,7 +17,7 @@ const CupResults = props => {
   const { results, cup, eventNo, CupIndex, pasteFriendly } = props;
 
   const goToReplay = (index, filename) => {
-    navigate(`/r/c-${index}/${filename}`);
+    navigate({ to: `/r/c-${index}/${filename}` });
   };
 
   if (pasteFriendly) {

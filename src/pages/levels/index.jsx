@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Tabs, Tab } from '@material-ui/core';
-import { useNavigate, useLocation } from '@reach/router';
+import { useNavigate, useLocation } from '@tanstack/react-router';
 import { VariableSizeGrid as Grid } from 'react-window';
-import { parse } from 'query-string';
 import Layout from 'components/Layout';
 import GridItem from 'components/GridItem';
 import Popularity from 'components/Popularity';
@@ -62,7 +61,7 @@ const Levels = ({ tab, detailed }) => {
   } = useStoreActions(actions => actions.Levels);
 
   const location = useLocation();
-  const urlArgs = parse(location.search);
+  const urlArgs = location.search;
   const sort = (urlArgs && urlArgs.sort) || '';
 
   useEffect(() => {
@@ -99,9 +98,9 @@ const Levels = ({ tab, detailed }) => {
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
-        value={tab}
+        value={tab || ''}
         onChange={(e, value) =>
-          navigate(['/levels', value].filter(Boolean).join('/'))
+          navigate({ to: ['/levels', value].filter(Boolean).join('/') })
         }
       >
         <Tab label="Packs" value="" />
@@ -127,12 +126,12 @@ const Levels = ({ tab, detailed }) => {
                 <Grid
                   ref={GridRef}
                   columnCount={columnCount}
-                  columnWidth={i => (listWidth - 20) / columnCount}
+                  columnWidth={() => (listWidth - 20) / columnCount}
                   height={listHeight}
                   rowCount={
                     Math.floor(levelpacksSorted.length / columnCount) + 1
                   }
-                  rowHeight={i => 100}
+                  rowHeight={() => 100}
                   width={listWidth}
                 >
                   {({ columnIndex, rowIndex, style }) => {
@@ -235,11 +234,6 @@ const StarCon = styled.div`
   position: absolute;
   top: 12px;
   right: 13px;
-`;
-
-const Container = styled.div`
-  padding-top: 10px;
-  overflow: hidden;
 `;
 
 const StyledRecentRecords = styled.div`

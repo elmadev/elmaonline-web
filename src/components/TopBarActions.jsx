@@ -12,9 +12,9 @@ import {
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Badge from '@material-ui/core/Badge';
 
 const StyledButton = styled(Button)`
@@ -99,24 +99,27 @@ export default function TopBarActions() {
   const handleClose = to => {
     setAnchorEl(null);
     if (to) {
-      navigate(to);
+      navigate({ to: to });
     }
   };
 
   const performLogout = () => {
     handleClose();
     logout();
-    navigate('/');
+    navigate({ to: '/' });
   };
 
   const handleNotificationsClick = () => {
-    navigate(`/kuskis/${username}/notifications`);
+    navigate({ to: `/kuskis/${username}/notifications` });
   };
 
   return (
     <>
       {!loggedIn && (
-        <StyledButton color="inherit" onClick={() => navigate('/login')}>
+        <StyledButton
+          color="inherit"
+          onClick={() => navigate({ to: '/login' })}
+        >
           Login
         </StyledButton>
       )}
@@ -129,7 +132,11 @@ export default function TopBarActions() {
             onClick={handleNotificationsClick}
             color="inherit"
           >
-            <Badge badgeContent={notificationsCount} color="error">
+            <Badge
+              badgeContent={notificationsCount}
+              color="error"
+              overlap="rectangular"
+            >
               <Notifications />
             </Badge>
           </IconButton>

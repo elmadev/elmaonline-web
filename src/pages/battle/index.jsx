@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import PropTypes from 'prop-types';
 import { groupBy, mapValues, sumBy, filter } from 'lodash';
 import Layout from 'components/Layout';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import config from 'config';
 import Time from '../../components/Time';
 import Kuski from '../../components/Kuski';
@@ -13,6 +12,7 @@ import RecView from './RecView';
 import RightBarContainer from './RightBarContainer';
 import LevelStatsContainer from './LevelStatsContainer';
 import { downloadRec } from 'utils/misc';
+import { useParams } from '@tanstack/react-router';
 
 const runData = runs => {
   if (runs.count === 0) {
@@ -58,18 +58,14 @@ const getWinnerData = battle => {
   return null;
 };
 
-const Battle = ({ BattleId }) => {
+const Battle = () => {
+  const { BattleId } = useParams({ strict: false });
   const BattleIndex = parseInt(BattleId, 10);
   const [replayUrl, setReplayUrl] = useState('');
   const [winner, setWinner] = useState(null);
   let runStats = null;
-  const {
-    allBattleTimes,
-    battle,
-    rankingHistory,
-    allBattleRuns,
-    replays,
-  } = useStoreState(state => state.Battle);
+  const { allBattleTimes, battle, rankingHistory, allBattleRuns, replays } =
+    useStoreState(state => state.Battle);
   const {
     getAllBattleTimes,
     getBattle,
@@ -184,14 +180,6 @@ const Battle = ({ BattleId }) => {
       </MainContainer>
     </Layout>
   );
-};
-
-Battle.propTypes = {
-  BattleId: PropTypes.string,
-};
-
-Battle.defaultProps = {
-  BattleId: '0',
 };
 
 const MainContainer = styled.div`

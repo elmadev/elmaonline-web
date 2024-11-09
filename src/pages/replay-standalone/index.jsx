@@ -1,11 +1,10 @@
 import React from 'react';
 import Recplayer from 'components/Recplayer';
-import { useLocation } from '@reach/router';
-import queryString from 'query-string';
+import { useLocation } from '@tanstack/react-router';
 
 const ReplayStandalone = () => {
   const location = useLocation();
-  const { levUrl, recUrl } = queryString.parse(location.search);
+  const { levUrl, recUrl } = location.search;
 
   if (!levUrl || !recUrl) {
     return <>Missing required query parameters.</>;

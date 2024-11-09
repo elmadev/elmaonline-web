@@ -1,7 +1,7 @@
 import React from 'react';
-import { Router, useNavigate, useMatch } from '@reach/router';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import Header from 'components/Header';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Layout from 'components/Layout';
 import { Button } from '@material-ui/core';
 import GettingStarted from './tabs/GettingStarted';
@@ -24,8 +24,8 @@ import MoreLevels from './tabs/MoreLevels';
 import Programs from './tabs/Programs';
 
 const Help = () => {
+  const { section, subsection } = useParams({ strict: false });
   const navigate = useNavigate();
-  const { section } = useMatch('/help/*section');
   let highlightedButton = section || 'howtoinstall';
   if (highlightedButton.indexOf('/') !== -1) {
     highlightedButton = highlightedButton.substr(
@@ -41,7 +41,7 @@ const Help = () => {
           highlight={highlightedButton === infoText ? 'true' : null}
           onClick={() => {
             window.scrollTo(0, 0);
-            navigate('/help/' + infoText);
+            navigate({ to: '/help/' + infoText });
           }}
           color="primary"
         >
@@ -93,27 +93,24 @@ const Help = () => {
           </ButtonContainer>
         </LeftContainer>
         <RightContainer>
-          <Router primary={false}>
-            <HowToInstall path="howtoinstall" default />
-            <GettingStarted path="usefulinformation" />
-            <RegisterAndConnect path="registerandconnect" />
-            <KeyBindings path="eolkeybindings" />
-            <Rules path="rules" />
-            <Glossary path="glossary" />
-            <ConfiguringEol path="eolconfiguration" />
-            <PlayingBattles path="playingbattles" />
-            <MoreLevels path="morelevels" />
-            <GameUpdates path="updates" />
-            <Etiquette path="etiquette" />
-            <Faq path="faq" />
-            <Donate path="donate" />
-            <DeveloperApi path="api" />
-            <Programs path="programs" />
-            <Links path="links" />
-            <Crew path="crew" />
-            <EolFolder path="eolfiles" />
-            <EolFolder path="eolfiles/:section" />
-          </Router>
+          {section === 'howtoinstall' || !section ? <HowToInstall /> : null}
+          {section === 'usefulinformation' ? <GettingStarted /> : null}
+          {section === 'registerandconnect' ? <RegisterAndConnect /> : null}
+          {section === 'eolkeybindings' ? <KeyBindings /> : null}
+          {section === 'rules' ? <Rules /> : null}
+          {section === 'glossary' ? <Glossary /> : null}
+          {section === 'eolconfiguration' ? <ConfiguringEol /> : null}
+          {section === 'playingbattles' ? <PlayingBattles /> : null}
+          {section === 'morelevels' ? <MoreLevels /> : null}
+          {section === 'updates' ? <GameUpdates /> : null}
+          {section === 'etiquette' ? <Etiquette /> : null}
+          {section === 'faq' ? <Faq /> : null}
+          {section === 'donate' ? <Donate /> : null}
+          {section === 'api' ? <DeveloperApi /> : null}
+          {section === 'programs' ? <Programs /> : null}
+          {section === 'links' ? <Links /> : null}
+          {section === 'crew' ? <Crew /> : null}
+          {section === 'eolfiles' ? <EolFolder section={subsection} /> : null}
         </RightContainer>
       </MainContainer>
     </Layout>

@@ -1,9 +1,9 @@
 import React from 'react';
-import 'flag-icon-css/css/flag-icon.css';
+import '/node_modules/flag-icons/css/flag-icons.min.css';
 import PropTypes from 'prop-types';
 
 const Flag = ({ nationality }) => (
-  <span className={`flag-icon flag-icon-${nationality.toLowerCase()}`} />
+  <span className={`fi fi-${nationality.toLowerCase()}`} />
 );
 
 Flag.propTypes = {

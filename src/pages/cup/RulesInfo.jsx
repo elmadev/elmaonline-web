@@ -1,6 +1,5 @@
-/* eslint-disable react/no-danger */
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { nickId } from 'utils/nick';
 import { TextField, Button, Grid } from '@material-ui/core';
 import { Paper } from 'components/Paper';

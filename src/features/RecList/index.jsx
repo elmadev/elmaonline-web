@@ -2,19 +2,18 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortBy, filter, intersectionBy } from 'lodash';
-import { Chip, Box } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Header from 'components/Header';
 import RecListItem from 'components/RecListItem';
-import styled from 'styled-components';
 import TagFilter from 'components/TagFilter';
+import { Row } from 'components/Containers';
 
 const widths = { Replay: 200, Time: 100, Level: null, By: null };
 
 const RecList = ({
-  currentUUID,
-  columns,
-  horizontalMargin,
+  currentUUID = null,
+  columns = ['Replay', 'Level', 'Time', 'By'],
+  horizontalMargin = 0,
   LevelIndex,
   mergable = false,
 }) => {
@@ -55,7 +54,7 @@ const RecList = ({
   return (
     <>
       <Header h3>Filter</Header>
-      <Box display="flex">
+      <Row>
         <TagFilter
           tagOptions={tagOptions}
           selectedTags={includedTags}
@@ -63,7 +62,7 @@ const RecList = ({
           excludedTags={excludedTags}
           onExcludedTagsChange={(_event, newValue) => setExcludedTags(newValue)}
         />
-      </Box>
+      </Row>
       <ListContainer
         horizontalMargin={`${horizontalMargin}px`}
         width={`calc(100% - ${horizontalMargin * 2}px)`}
@@ -95,27 +94,11 @@ const RecList = ({
   );
 };
 
-const IncludedTagChip = styled(Chip)`
-  background-color: green !important;
-  color: white !important;
-`;
-
-const ExcludedTagChip = styled(Chip)`
-  background-color: red !important;
-  color: white !important;
-`;
-
 RecList.propTypes = {
   currentUUID: PropTypes.arrayOf(PropTypes.string),
   columns: PropTypes.arrayOf(PropTypes.string),
   horizontalMargin: PropTypes.number,
   LevelIndex: PropTypes.number.isRequired,
-};
-
-RecList.defaultProps = {
-  currentUUID: null,
-  columns: ['Replay', 'Level', 'Time', 'By'],
-  horizontalMargin: 0,
 };
 
 export default RecList;

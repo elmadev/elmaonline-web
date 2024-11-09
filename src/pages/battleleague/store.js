@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { action, thunk } from 'easy-peasy';
 import { forEach } from 'lodash';
 import { model } from 'utils/easy-peasy';

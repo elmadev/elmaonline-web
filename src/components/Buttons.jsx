@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button as MuiButton } from '@material-ui/core';
-import styled from 'styled-components';
-import { Link as ReachLink } from '@reach/router';
+import styled from '@emotion/styled';
+import { Link } from '@tanstack/react-router';
 import {
   Map,
   PlayArrow,
@@ -81,7 +81,7 @@ const Button = ({
       to={to}
     >
       {to ? (
-        <ReachLink to={to}>{children}</ReachLink>
+        <Link to={to}>{children}</Link>
       ) : (
         <>
           {Icon && <Icon />}

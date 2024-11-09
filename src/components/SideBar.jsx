@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { mod } from 'utils/nick';
 import SideBarSubItem from 'components/SideBarSubItem';
 import { useMediaQuery } from '@material-ui/core';
 import Link from 'components/Link';
 import banner from 'images/banner.png';
-import { useLocation } from '@reach/router';
+import { useLocation } from '@tanstack/react-router';
 
 const items = {
   Playing: [

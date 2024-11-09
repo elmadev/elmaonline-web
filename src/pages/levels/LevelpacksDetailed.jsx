@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';

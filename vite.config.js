@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
 
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
@@ -20,7 +19,14 @@ export default defineConfig(() => {
         plugins: [rollupNodePolyFill()],
       },
     },
-    plugins: [react()],
+    plugins: [
+      react({
+        jsxImportSource: '@emotion/react',
+        babel: {
+          plugins: ['@emotion/babel-plugin'],
+        },
+      }),
+    ],
     resolve: {
       alias: {
         components: '/src/components',

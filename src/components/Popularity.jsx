@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 const Popularity = ({ before, after, ...props }) => {
   const pct = Number(props.widthPct || 0).toFixed(2);
@@ -32,19 +33,21 @@ const Root = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    ${p => p.bordered && css`
-      &::after {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: ${p => p.theme.linkColor};
-        opacity: 0.1;
-      }
-    `}
+    ${p =>
+      p.bordered &&
+      css`
+        &::after {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: ${p => p.theme.linkColor};
+          opacity: 0.1;
+        }
+      `}
     &:hover {
       ${BarWrapper} {
         background: ${p => p.pageBackgroundDark};

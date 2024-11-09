@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid, Card as MuiCard } from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { useStoreActions, useStoreState } from 'easy-peasy';

@@ -1,5 +1,5 @@
 import { isEmpty, orderBy, partition } from 'lodash';
-import memoize from 'fast-memoize';
+import memoize from 'memoizee';
 
 /**
  *

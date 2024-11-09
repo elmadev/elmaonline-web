@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import Link from 'components/Link';
 import Flag from 'components/Flag';

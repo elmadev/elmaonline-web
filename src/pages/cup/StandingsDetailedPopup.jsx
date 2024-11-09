@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Link from 'components/Link';
 import Header from 'components/Header';
 import { pts } from 'utils/cups';

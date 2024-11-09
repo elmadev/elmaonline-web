@@ -75,7 +75,6 @@ export const KuskiAutoComplete = ({
           }}
           renderInput={params => (
             <TextField
-              // eslint-disable-next-line react/jsx-props-no-spreading
               {...params}
               label={label}
               placeholder="Name(s)"
@@ -110,9 +109,9 @@ function renderRow(props) {
 
 const OuterElementContext = React.createContext({});
 
+// eslint-disable-next-line react/display-name
 const OuterElementType = React.forwardRef((props, ref) => {
   const outerProps = React.useContext(OuterElementContext);
-  // eslint-disable-next-line react/jsx-props-no-spreading
   return <div ref={ref} {...props} {...outerProps} />;
 });
 

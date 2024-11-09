@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -13,15 +12,17 @@ import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';
 import { formatDistanceStrict } from 'date-fns';
 import config from 'config';
-import { navigate } from '@reach/router';
-import styled from 'styled-components';
+import { useNavigate } from '@tanstack/react-router';
+import styled from '@emotion/styled';
+import { Row } from 'components/Containers';
 
 export default function ReplayCard({ replay, onPreviewClick }) {
   const [picExists, setPicExists] = useState(true);
   const [raised, setRaised] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpenReplay = () => {
-    navigate(`/r/${replay.UUID}`);
+    navigate({ to: `/r/${replay.UUID}` });
   };
 
   const handlePreviewClick = event => {
@@ -78,10 +79,10 @@ export default function ReplayCard({ replay, onPreviewClick }) {
       </ReplayCardMedia>
       <CardContent title={replay.Comment}>
         <Typography variant="body2" color="textSecondary" component="p">
-          <Box display="flex" justifyContent="space-between">
+          <Row jc="space-between">
             <Level LevelData={replay.LevelData} noLink />
             <div>{replay.RecFileName}</div>
-          </Box>
+          </Row>
         </Typography>
       </CardContent>
     </RecCard>

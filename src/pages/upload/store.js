@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { action, thunk } from 'easy-peasy';
 import { UploadFile, UpdateFile } from 'api';
 

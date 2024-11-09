@@ -5,7 +5,7 @@ import Time from 'components/Time';
 import Loading from 'components/Loading';
 import { sumBy, round, maxBy, minBy } from 'lodash';
 import LocalTime from 'components/LocalTime';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const finishedTypes = {
   B: 'Finished (Apple Bug)',
@@ -105,16 +105,16 @@ const StatsTable = ({ data, loading }) => {
         First played:{' '}
         <LocalTime
           date={firstPlayed()}
-          format="ddd D MMM YYYY HH:mm:ss"
-          parse="YYYY-MM-DDTHH:mm:ss.SSSZ"
+          format="eee d MMM yyyy HH:mm:ss"
+          parse="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         />
       </FirstLast>
       <FirstLast>
         Last played:{' '}
         <LocalTime
           date={lastPlayed()}
-          format="ddd D MMM YYYY HH:mm:ss"
-          parse="YYYY-MM-DDTHH:mm:ss.SSSZ"
+          format="eee d MMM yyyy HH:mm:ss"
+          parse="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         />
       </FirstLast>
     </>

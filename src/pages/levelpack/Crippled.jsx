@@ -1,11 +1,12 @@
 import React from 'react';
 import { useStoreState } from 'easy-peasy';
-import styled from 'styled-components';
-import { useNavigate } from '@reach/router';
+import styled from '@emotion/styled';
+import { useNavigate } from '@tanstack/react-router';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
+import { format } from 'date-fns';
 import { Level } from 'components/Names';
 import Loading from 'components/Loading';
 import { parsedTimeToString, parseTimeHundreds } from 'utils/recTime';
@@ -42,7 +43,7 @@ const shouldHighlight = (record, highlightUnix) => {
 
 const recordDate = record => {
   if (record && record.Driven) {
-    return toLocalTime(record.Driven, 'X').format('ddd D MMM YYYY HH:mm');
+    return format(toLocalTime(record.Driven, 't'), 'eee d MMM yyyy HH:mm');
   }
 
   return '';
@@ -216,8 +217,8 @@ const Crippled = ({ LevelPack, crippleType, highlightWeeks }) => {
             id="cripple"
             value={crippleType}
             onChange={e => {
-              navigate(
-                [
+              navigate({
+                to: [
                   '/levels/packs',
                   LevelPack.LevelPackName,
                   'crippled',
@@ -225,7 +226,7 @@ const Crippled = ({ LevelPack, crippleType, highlightWeeks }) => {
                 ]
                   .filter(Boolean)
                   .join('/'),
-              );
+              });
             }}
           >
             <MenuItem value="noVolt">No Volt</MenuItem>

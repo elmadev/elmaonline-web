@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Grid } from '@material-ui/core';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Link from 'components/Link';
 
 const LevelPackList = ({ amount = 4, height = 0 }) => {

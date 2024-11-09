@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { has } from 'lodash';
 import Header from 'components/Header';
 import code19 from 'images/hacktober/code19.png';

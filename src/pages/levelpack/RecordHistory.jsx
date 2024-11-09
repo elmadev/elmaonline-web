@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Loading from 'components/Loading';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import { LevelPackRecordHistory, useQueryAlt } from '../../api';
@@ -13,7 +13,7 @@ import { SportsMotorsports } from '@material-ui/icons';
 import Link from 'components/Link';
 
 const Date = ({ driven }) => {
-  return <LocalTime date={driven} format="MMM D YYYY" parse="X" />;
+  return <LocalTime date={driven} format="MMM d yyyy" parse="X" />;
 };
 
 const RecordHistory = ({ levelPackInfo }) => {

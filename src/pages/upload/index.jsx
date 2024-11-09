@@ -6,7 +6,7 @@ import Button from 'components/Buttons';
 import Header from 'components/Header';
 import config from 'config';
 import { Paper } from 'components/Paper';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Loading from 'components/Loading';
 import { Dropdown, TextField } from 'components/Inputs';
 import { Row, Text } from 'components/Containers';

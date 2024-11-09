@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import { Grid, IconButton } from '@material-ui/core';
 import Header from 'components/Header';

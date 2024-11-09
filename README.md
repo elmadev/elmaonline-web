@@ -3,7 +3,7 @@
 React based frontend for the [elmaonline site](https://elma.online). The backend is found in the [elmaonline-site repo](https://github.com/elmadev/elmaonline-site).
 
 - [test.elma.online](http://test.elma.online) New features will be tested here first, this site uses a secondary copy of the database, so you can mess up as much as you want here, and nothing you do here will be saved on the real site.
-- [elma.online](http://elma.online) This site will be using the live database.
+- [elma.online](http://elma.online) This site is using the live database.
 
 - [storybook.elma.online](https://storybook.elma.online) UI library of the components that exists in the code
 
@@ -16,7 +16,7 @@ React based frontend for the [elmaonline site](https://elma.online). The backend
 
 ## Get started
 
-1. Install if needed nodejs and yarn
+1. Install if needed nodejs (18+) and yarn (1.x)
 2. Clone this repo
 3. Run `yarn` in terminal to install depedencies
 4. Run `yarn start` in terminal to start development server
@@ -29,16 +29,16 @@ React based frontend for the [elmaonline site](https://elma.online). The backend
 
 ## Tech stack
 
-- React 17 using [vitejs](https://vitejs.dev/)
+- React 18 using [vitejs](https://vitejs.dev/)
 - Styling with [styled-components](https://styled-components.com/) and [Material-UI](https://material-ui.com/)
-- Navigation using [@reach-router](https://reach.tech/router/)
-- Simplified redux using [easy-peasy](https://easy-peasy.now.sh/)
-- API calls using [apisauce](https://github.com/infinitered/apisauce) built on axios
+- Navigation using [@tanstack-router](https://tanstack.com/router/)
+- Simplified redux using [easy-peasy](https://easy-peasy.vercel.app/)
+- API calls using [apisauce](https://github.com/infinitered/apisauce) built on axios and [tanstack query](https://tanstack.com/query/)
 - Forms powered by [formal-web](https://www.npmjs.com/package/@kevinwolf/formal-web)
 - Basic helper tools such as lodash, date-fns, nanoid
 - Page and component generation from templates using plop (`yarn g`)
 
-If you don't know react it's worth checking out the official [tutorial](https://reactjs.org/tutorial/tutorial.html). Rest of the stack should be pretty easy to learn. If you are new to any of them, check out these quick introductions to the most important ones: [easy-peasy](https://easy-peasy.now.sh/docs/tutorials/quick-start.html), [styled-components](https://styled-components.com/docs/basics#getting-started), [reach-router](https://reach.tech/router/) and [formal-web](https://www.npmjs.com/package/@kevinwolf/formal-web#usage).
+If you don't know react it's worth checking out the official [tutorial](https://react.dev/learn). Rest of the stack should be pretty easy to learn. If you are new to any of them, check out these quick introductions to the most important ones: [easy-peasy](https://easy-peasy.vercel.app/docs/tutorials/quick-start.html), [styled-components](https://styled-components.com/docs/basics#getting-started), [tanstack router](https://tanstack.com/router/latest/docs/framework/react/quick-start#using-code-based-route-configuration), [tanstack query](https://tanstack.com/query/latest/docs/framework/react/quick-start) and [formal-web](https://www.npmjs.com/package/@kevinwolf/formal-web#usage).
 
 ## Folder structure
 
@@ -81,7 +81,7 @@ Use `yarn commit` or follow [guidelines](https://github.com/elmadev/elmaonline-s
 - Run `yarn g page` in terminal
 - Type name of page in CamelCase
 - Add import in src/router.js
-- Add the component inside `<Router>` in src/router.js with a path param
+- Add a `createRoute` in src/router.js and add it to the `routeTree` array
 - Add store import at the top of src/easypeasy.js
 - Add store inside `export default {` in src/easypeasy.js
 

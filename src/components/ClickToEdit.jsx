@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField } from '@material-ui/core';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import OutsideClickHandler from 'react-outside-click-handler';
 
 const ClickToEdit = props => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid } from '@material-ui/core';
 import Kuski from 'components/Kuski';
 import Loading from 'components/Loading';
@@ -138,7 +138,7 @@ const ByCountry = ({ playersByCountry }) => {
 
   return (
     <Root>
-      <Grid container justify="flex-end" className="controls">
+      <Grid container justifyContent="flex-end" className="controls">
         <FormControl style={{ minWidth: 175 }}>
           <InputLabel id="country-sort">Sort Countries</InputLabel>
           <Select

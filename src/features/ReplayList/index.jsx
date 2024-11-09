@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { Box } from '@material-ui/core';
 import RecListItem from 'components/RecListItem';
 import { ListContainer, ListHeader, ListCell } from 'components/List';
 import { findIndex } from 'lodash';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Preview from 'components/Preview';
 import ReplayCard from 'components/ReplayCard';
 import ToggleButton from '@material-ui/lab/ToggleButton';
@@ -281,7 +280,7 @@ export default function ReplayList({
             nextIconButtonProps={{
               'aria-label': 'Next Page',
             }}
-            onChangePage={(event, newPage) => updatePage(newPage)}
+            onPageChange={(event, newPage) => updatePage(newPage)}
             rowsPerPageOptions={[]}
           />
         </PaginationCon>

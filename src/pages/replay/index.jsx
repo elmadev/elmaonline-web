@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Chip,
-  Box,
   Typography,
 } from '@material-ui/core';
 import {
@@ -16,7 +14,7 @@ import {
 } from '@material-ui/icons';
 import { xor } from 'lodash';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Avatar from 'components/Avatar';
 import Layout from 'components/Layout';
 import Recplayer from 'components/Recplayer';
@@ -27,8 +25,7 @@ import Time from 'components/Time';
 import Link from 'components/Link';
 import Header from 'components/Header';
 import RecList from 'features/RecList';
-import { useLocation } from '@reach/router';
-import queryString from 'query-string';
+import { useLocation, useParams, useNavigate } from '@tanstack/react-router';
 import ReplayComments from 'features/ReplayComments';
 import ReplayRating from 'features/ReplayRating';
 import AddComment from 'components/AddComment';
@@ -80,7 +77,9 @@ const getLink = replay => {
   return { link, type };
 };
 
-const Replay = ({ ReplayUuid, RecFileName }) => {
+const Replay = () => {
+  const { ReplayUuid, RecFileName } = useParams({ strict: false });
+  const navigate = useNavigate();
   const [isHover, setHover] = useState(-1);
   const fingerprint = useRef('');
   const isWindow = typeof window !== 'undefined';
@@ -89,15 +88,10 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
   let linkArray = [];
   let uuidarray = [];
   const location = useLocation();
-  const { merge } = queryString.parse(location.search);
+  const { merge } = location.search;
 
-  const {
-    getReplayByUUID,
-    setEdit,
-    submitEdit,
-    getCupEvent,
-    setCupEvent,
-  } = useStoreActions(state => state.ReplayByUUID);
+  const { getReplayByUUID, setEdit, submitEdit, getCupEvent, setCupEvent } =
+    useStoreActions(state => state.ReplayByUUID);
   const { userid } = useStoreState(state => state.Login);
   const { replay, loading, replays, edit, cupEvent } = useStoreState(
     state => state.ReplayByUUID,
@@ -108,7 +102,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
   const { getTagOptions } = useStoreActions(actions => actions.Upload);
   const { tagOptions } = useStoreState(state => state.Upload);
 
-  const getReplay = async payload => {
+  const getReplay = async () => {
     if (!fingerprint.current) {
       const fp = await FingerprintJS.load();
       const { visitorId } = await fp.get();
@@ -134,11 +128,9 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
   }, [ReplayUuid, merge]);
 
   if (!RecFileName && replay && replay.UUID === ReplayUuid) {
-    window.history.replaceState(
-      '',
-      '',
-      `${location.href}/${replay.RecFileName.replace('.rec', '')}`,
-    );
+    navigate({
+      to: `/r/${ReplayUuid}/${replay.RecFileName.replace('.rec', '')}`,
+    });
   }
 
   const isMobile = useMediaQuery('(max-width: 1024px)');
@@ -210,7 +202,9 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
             <Recplayer
               rec={link}
               lev={`${config.dlUrl}level/${replay.LevelIndex}`}
-              shirt={[`${config.dlUrl}shirt/${replay.DrivenByData?.KuskiIndex}`]}
+              shirt={[
+                `${config.dlUrl}shirt/${replay.DrivenByData?.KuskiIndex}`,
+              ]}
               controls
             />
           )}
@@ -269,7 +263,7 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
                     : 'Unknown'}{' '}
                   <LocalTime
                     date={replay.Uploaded}
-                    format="YYYY-MM-DD HH:mm:ss"
+                    format="yyyy-MM-dd HH:mm:ss"
                     parse="X"
                   />
                   {replay.Unlisted ? ' (Unlisted)' : null}
@@ -300,86 +294,87 @@ const Replay = ({ ReplayUuid, RecFileName }) => {
               />
             </AccordionDetails>
           </Accordion>
-          {(userid === `${replay.UploadedBy}` || mod() === 1) && type === 'replay' && (
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Header h3>Edit replay</Header>
-              </AccordionSummary>
-              <AccordionDetails style={{ flexDirection: 'column' }}>
-                {userid === `${replay.UploadedBy}` && (
+          {(userid === `${replay.UploadedBy}` || mod() === 1) &&
+            type === 'replay' && (
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMore />}>
+                  <Header h3>Edit replay</Header>
+                </AccordionSummary>
+                <AccordionDetails style={{ flexDirection: 'column' }}>
+                  {userid === `${replay.UploadedBy}` && (
+                    <TextField
+                      name="Comment"
+                      value={edit.Comment}
+                      onChange={value => setEdit({ field: 'Comment', value })}
+                    />
+                  )}
                   <TextField
-                    name="Comment"
-                    value={edit.Comment}
-                    onChange={value => setEdit({ field: 'Comment', value })}
+                    name="Driven by"
+                    value={edit.DrivenBy}
+                    onChange={value => setEdit({ field: 'DrivenBy', value })}
                   />
-                )}
-                <TextField
-                  name="Driven by"
-                  value={edit.DrivenBy}
-                  onChange={value => setEdit({ field: 'DrivenBy', value })}
-                />
-                {userid === `${replay.UploadedBy}` && (
-                  <FieldBoolean
-                    label="Unlisted"
-                    value={edit.Unlisted}
-                    onChange={() =>
-                      setEdit({ field: 'Unlisted', value: 1 - edit.Unlisted })
+                  {userid === `${replay.UploadedBy}` && (
+                    <FieldBoolean
+                      label="Unlisted"
+                      value={edit.Unlisted}
+                      onChange={() =>
+                        setEdit({ field: 'Unlisted', value: 1 - edit.Unlisted })
+                      }
+                    />
+                  )}
+                  <div style={{ padding: '16px' }}>
+                    <Typography color="textSecondary">Tags</Typography>
+                    {tagOptions.map(option => {
+                      if (edit.Tags.includes(option.TagIndex)) {
+                        return (
+                          <Chip
+                            label={option.Name}
+                            onDelete={() =>
+                              setEdit({
+                                field: 'Tags',
+                                value: xor(edit.Tags, [option.TagIndex]),
+                              })
+                            }
+                            color="primary"
+                            style={{ margin: 4 }}
+                          />
+                        );
+                      } else {
+                        return (
+                          <Chip
+                            label={option.Name}
+                            onClick={() =>
+                              setEdit({
+                                field: 'Tags',
+                                value: xor(edit.Tags, [option.TagIndex]),
+                              })
+                            }
+                            style={{ margin: 4 }}
+                          />
+                        );
+                      }
+                    })}
+                  </div>
+                  <Button
+                    onClick={() =>
+                      submitEdit({
+                        edit: {
+                          ...edit,
+                          Tags: tagOptions.filter(option =>
+                            edit.Tags.includes(option.TagIndex),
+                          ),
+                        },
+                        ReplayUuid,
+                        merge,
+                        RecFileName,
+                      })
                     }
-                  />
-                )}
-                <Box padding={2}>
-                  <Typography color="textSecondary">Tags</Typography>
-                  {tagOptions.map(option => {
-                    if (edit.Tags.includes(option.TagIndex)) {
-                      return (
-                        <Chip
-                          label={option.Name}
-                          onDelete={() =>
-                            setEdit({
-                              field: 'Tags',
-                              value: xor(edit.Tags, [option.TagIndex]),
-                            })
-                          }
-                          color="primary"
-                          style={{ margin: 4 }}
-                        />
-                      );
-                    } else {
-                      return (
-                        <Chip
-                          label={option.Name}
-                          onClick={() =>
-                            setEdit({
-                              field: 'Tags',
-                              value: xor(edit.Tags, [option.TagIndex]),
-                            })
-                          }
-                          style={{ margin: 4 }}
-                        />
-                      );
-                    }
-                  })}
-                </Box>
-                <Button
-                  onClick={() =>
-                    submitEdit({
-                      edit: {
-                        ...edit,
-                        Tags: tagOptions.filter(option =>
-                          edit.Tags.includes(option.TagIndex),
-                        ),
-                      },
-                      ReplayUuid,
-                      merge,
-                      RecFileName,
-                    })
-                  }
-                >
-                  Edit
-                </Button>
-              </AccordionDetails>
-            </Accordion>
-          )}
+                  >
+                    Edit
+                  </Button>
+                </AccordionDetails>
+              </Accordion>
+            )}
         </ChatContainer>
       </RightBarContainer>
       {eventRecs ? (
@@ -569,13 +564,5 @@ const BattleTimestamp = styled.div`
 const ChatContainer = styled.div`
   clear: both;
 `;
-
-Replay.propTypes = {
-  ReplayUuid: PropTypes.string,
-};
-
-Replay.defaultProps = {
-  ReplayUuid: '',
-};
 
 export default Replay;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import {
   TextField,
   FormControl,
@@ -8,7 +8,6 @@ import {
   InputLabel,
   Button,
   Container,
-  Box,
 } from '@material-ui/core';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -192,7 +191,7 @@ const Register = () => {
             {registerMessage !== '' && (
               <ErrorMessage>{registerMessage}</ErrorMessage>
             )}
-            <Box py={2}>
+            <PadY>
               <Button
                 onClick={() => clickRegister()}
                 variant="contained"
@@ -200,16 +199,21 @@ const Register = () => {
               >
                 Register
               </Button>
-            </Box>
-            <Box py={2}>
+            </PadY>
+            <PadY>
               <Link to="/login">Back to login view</Link>
-            </Box>
+            </PadY>
           </>
         )}
       </Container>
     </Layout>
   );
 };
+
+const PadY = styled.div`
+  padding-top: 16px;
+  padding-bottom: 16px;
+`;
 
 const TextBox = styled.div`
   margin-left: 4px;

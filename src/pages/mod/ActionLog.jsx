@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid, TextField, Button } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import { ListRow, ListCell, ListHeader } from 'components/List';
@@ -51,7 +51,7 @@ const ActionLog = () => {
                   <ListCell>
                     <LocalTime
                       date={n.Time}
-                      format="D MMM YYYY HH:mm:ss"
+                      format="d MMM yyyy HH:mm:ss"
                       parse="X"
                     />
                   </ListCell>

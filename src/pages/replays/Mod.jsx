@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Header from 'components/Header';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Field from 'components/Field';
 import FieldBoolean from 'components/FieldBoolean';
 import { Button } from '@material-ui/core';
@@ -42,7 +42,7 @@ export default function Mod() {
   return (
     <Grid container spacing={0}>
       <Grid item xs={12} sm={6}>
-        <Box p={2} maxHeight={500} overflow="auto">
+        <Overflow>
           <Header h3>Tags</Header>
           <ListContainer>
             <ListHeader>
@@ -68,10 +68,10 @@ export default function Mod() {
               </ListRow>
             ))}
           </ListContainer>
-        </Box>
+        </Overflow>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Box p={2}>
+        <div style={{ padding: '16px' }}>
           <Header h3>{form.TagIndex ? 'Update ' : 'Add '}tag</Header>
           <form>
             <Field
@@ -107,11 +107,17 @@ export default function Mod() {
               </Alert>
             )}
           </form>
-        </Box>
+        </div>
       </Grid>
     </Grid>
   );
 }
+
+const Overflow = styled.div`
+  padding: 16px;
+  overflow: auto;
+  max-height: 500px;
+`;
 
 const Delete = styled(DeleteIcon)`
   cursor: pointer;

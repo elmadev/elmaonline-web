@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import {
   Accordion,
   AccordionSummary,
@@ -16,7 +16,7 @@ import LocalTime from 'components/LocalTime';
 import LeaderHistory from 'components/LeaderHistory';
 import { battleStatus } from 'utils/battle';
 import { pluralize } from 'utils/misc';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
 const crippleOptions = battle => {
@@ -83,7 +83,7 @@ const RightBarContainer = props => {
               Started{' '}
               <LocalTime
                 date={battle.Started}
-                format="DD.MM.YYYY HH:mm:ss"
+                format="dd.MM.yyyy HH:mm:ss"
                 parse="X"
               />
             </div>
@@ -117,14 +117,18 @@ const RightBarContainer = props => {
               <StyledButton
                 size="small"
                 color="primary"
-                onClick={() => navigate(`/battles/${battle.BattleIndex - 1}`)}
+                onClick={() =>
+                  navigate({ to: `/battles/${battle.BattleIndex - 1}` })
+                }
               >
                 Previous Battle{' '}
               </StyledButton>
               <StyledButton
                 size="small"
                 color="primary"
-                onClick={() => navigate(`/battles/${battle.BattleIndex + 1}`)}
+                onClick={() =>
+                  navigate({ to: `/battles/${battle.BattleIndex + 1}` })
+                }
                 disabled={nextBattleFound ? false : true}
               >
                 Next Battle{' '}

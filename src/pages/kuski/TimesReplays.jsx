@@ -20,7 +20,7 @@ import {
   Share,
   HighlightOffOutlined as CloseIcon,
 } from '@material-ui/icons';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import config from 'config';
 import { FixedSizeList as List } from 'react-window';
 import {
@@ -260,7 +260,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                     <ListCell width={200}>
                       <LocalTime
                         date={time.Driven}
-                        format="ddd D MMM YYYY HH:mm:ss"
+                        format="eee d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>
@@ -337,7 +337,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                 driven at{' '}
                 <LocalTime
                   date={share.time.Driven}
-                  format="ddd D MMM YYYY HH:mm:ss"
+                  format="eee d MMM yyyy HH:mm:ss"
                   parse="X"
                 />
               </div>
@@ -358,7 +358,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                 control={
                   <Checkbox
                     checked={share ? share.unlisted : false}
-                    onChange={e =>
+                    onChange={() =>
                       setShare({ ...share, unlisted: !share.unlisted })
                     }
                     value="unlisted"
@@ -375,7 +375,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                 control={
                   <Checkbox
                     checked={share ? share.hide : false}
-                    onChange={e => setShare({ ...share, hide: !share.hide })}
+                    onChange={() => setShare({ ...share, hide: !share.hide })}
                     value="hide"
                     color="primary"
                     disabled={share ? share.unlisted : false}

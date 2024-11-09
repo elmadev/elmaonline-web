@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { action, persist } from 'easy-peasy';
 import ReplayComments from 'features/ReplayComments/store';
 import ReplayRating from 'features/ReplayRating/store';

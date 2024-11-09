@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Layout from 'components/Layout';
 import { Grid, Tabs, Tab } from '@material-ui/core';
 import Header from 'components/Header';
@@ -9,16 +9,18 @@ import { ListContainer, ListHeader, ListRow, ListCell } from 'components/List';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import EventItem, { SeasonItem } from 'components/EventItem';
 import Kuski from 'components/Kuski';
+import { useParams } from '@tanstack/react-router';
 import Loading from 'components/Loading';
 import { Paper } from 'components/Paper';
 import { points, mopoPoints, top20points } from 'utils/cups';
 import { BATTLETYPES_LONG } from 'constants/ranking';
-import { Link } from '@reach/router';
+import { Link } from '@tanstack/react-router';
 import { sortResults } from 'utils/battle';
 import { nickId } from 'utils/nick';
 import Admin from './Admin';
 
-const BattleLeague = ({ ShortName }) => {
+const BattleLeague = () => {
+  const { ShortName } = useParams({ strict: false });
   const [selected, setSelected] = useState(-1);
   const [selectedId, setSelectedId] = useState(-1);
   const [selectedSeason, setSelectedSeason] = useState('Overall');
@@ -174,7 +176,7 @@ const BattleLeague = ({ ShortName }) => {
                         ? parseInt(b.BattleData.Started)
                         : parseInt(b.Started)
                     }
-                    format="ddd D MMM YYYY HH:mm"
+                    format="eee d MMM yyyy HH:mm"
                     parse="X"
                   />
                 }

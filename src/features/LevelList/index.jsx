@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import {
   TextField,
-  Box,
   Select,
   MenuItem,
   InputLabel,
@@ -10,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Pagination from '@material-ui/lab/Pagination';
 import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';
@@ -287,7 +286,7 @@ export default function LevelList({
                   <ListCell width={170}>
                     <LocalTime
                       date={level.Added}
-                      format="ddd D MMM YYYY HH:mm"
+                      format="eee d MMM yyyy HH:mm"
                       parse="X"
                     />
                   </ListCell>
@@ -340,7 +339,7 @@ export default function LevelList({
       </ListContainerScrollable>
 
       {!summary && (
-        <Box p={2}>
+        <div style={{ padding: '16px' }}>
           <Pagination
             count={Math.ceil(levels.count.length / pageSize)}
             onChange={(event, value) => updatePage(value - 1)}
@@ -348,7 +347,7 @@ export default function LevelList({
             showFirstButton
             showLastButton
           />
-        </Box>
+        </div>
       )}
     </Container>
   );
