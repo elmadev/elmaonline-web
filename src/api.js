@@ -455,7 +455,8 @@ export const Teams = () => api.get('teams');
 export const TeamMembers = Team => api.get(`teams/${Team}`);
 
 // chat
-export const SearchChat = data => api.get('chatlog', { params: data });
+export const SearchChat = data =>
+  api.get('chatlog', { params: JSON.stringify(data) });
 
 // level
 export const Level = (LevelIndex, withLevelStats = false) =>
