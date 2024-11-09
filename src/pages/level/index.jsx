@@ -16,10 +16,10 @@ import {
   Select,
   MenuItem,
   FormControl,
-  Box,
   TextField,
 } from '@material-ui/core';
 import styled from '@emotion/styled';
+import { Row } from 'components/Containers';
 import { useTheme } from '@emotion/react';
 import Layout from 'components/Layout';
 import { ExpandMore } from '@material-ui/icons';
@@ -467,12 +467,7 @@ const Level = () => {
 
                   {tab === 2 && loggedIn && (
                     <>
-                      <Box
-                        m={4}
-                        display="flex"
-                        alignItems="self-end"
-                        flexDirection="row"
-                      >
+                      <Row ai="self-end" m="Large">
                         <RangeField
                           id="date-from"
                           label="From"
@@ -501,7 +496,7 @@ const Level = () => {
                         >
                           Submit
                         </Button>
-                      </Box>
+                      </Row>
                       <StatsTable
                         data={timeStats}
                         loading={statsLoading !== LevelIndex}

@@ -6,11 +6,12 @@ import { has } from 'lodash';
 import Header from 'components/Header';
 import LocalTime from 'components/LocalTime';
 import CloseIcon from '@material-ui/icons/HighlightOffOutlined';
-import { Grid, Box, Typography, Backdrop } from '@material-ui/core';
+import { Grid, Typography, Backdrop } from '@material-ui/core';
 import config from 'config';
 import styled from '@emotion/styled';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import { Column, Row } from 'components/Containers';
 
 const finishedTypes = {
   B: 'Finished (Apple Bug)',
@@ -40,9 +41,9 @@ export default function Preview({
           />
         </Grid>
         <Grid item sm>
-          <Box display="flex" flexDirection="column" height="100%">
-            <Box p={2}>
-              <Box display="flex">
+          <Column height="100%">
+            <PadY>
+              <Row>
                 <Header h2>
                   <Previous onClick={previousReplay} />
                   <a
@@ -56,7 +57,7 @@ export default function Preview({
                   onClick={() => setPreviewRec(null)}
                   style={{ marginLeft: 'auto' }}
                 />
-              </Box>
+              </Row>
               <p>
                 <Time time={previewRec.Time} /> in{' '}
                 <Level
@@ -93,9 +94,9 @@ export default function Preview({
                   {previewRec.Drunk === 1 && <>Drunk</>}
                 </Comment>
               )}
-            </Box>
+            </PadY>
 
-            <Box p={2}>
+            <PadY>
               <Typography variant="caption" display="block">
                 Driven{' '}
                 <LocalTime
@@ -104,13 +105,18 @@ export default function Preview({
                   parse="X"
                 />
               </Typography>
-            </Box>
-          </Box>
+            </PadY>
+          </Column>
         </Grid>
       </Container>
     </Backdrop>
   );
 }
+
+const PadY = styled.div`
+  padding-top: 16px;
+  padding-bottom: 16px;
+`;
 
 const Container = styled(Grid)`
   background: ${p => p.theme.paperBackground};

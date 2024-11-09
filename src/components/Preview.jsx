@@ -8,11 +8,12 @@ import Link from 'components/Link';
 import Tags from 'components/Tags';
 import LocalTime from 'components/LocalTime';
 import CloseIcon from '@material-ui/icons/HighlightOffOutlined';
-import { Grid, Box, Typography, Backdrop } from '@material-ui/core';
+import { Grid, Typography, Backdrop } from '@material-ui/core';
 import config from 'config';
 import styled from '@emotion/styled';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import { Column, Row } from 'components/Containers';
 
 export default function Preview({
   previewRec,
@@ -44,9 +45,9 @@ export default function Preview({
           />
         </Grid>
         <Grid item sm>
-          <Box display="flex" flexDirection="column" height="100%">
-            <Box p={2}>
-              <Box display="flex">
+          <Column height="100%">
+            <div style={{ padding: '16px' }}>
+              <Row>
                 <Header h2>
                   <Previous onClick={previousReplay} />
                   <Link to={`/r/${previewRec.UUID}`}>
@@ -58,7 +59,7 @@ export default function Preview({
                   onClick={() => setPreviewRec(null)}
                   style={{ marginLeft: 'auto' }}
                 />
-              </Box>
+              </Row>
               <p>
                 <Time thousands time={previewRec.ReplayTime} /> by{' '}
                 {previewRec.DrivenByData ? (
@@ -74,9 +75,9 @@ export default function Preview({
               </p>
               <Tags tags={previewRec.Tags.map(tag => tag.Name)} />
               {previewRec.Comment && <Comment>{previewRec.Comment}</Comment>}
-            </Box>
+            </div>
 
-            <Box p={2}>
+            <div style={{ padding: '16px' }}>
               <Typography variant="caption" display="block">
                 Uploaded by{' '}
                 {previewRec.UploadedByData
@@ -88,8 +89,8 @@ export default function Preview({
                   parse="X"
                 />
               </Typography>
-            </Box>
-          </Box>
+            </div>
+          </Column>
         </Grid>
       </Container>
     </Backdrop>

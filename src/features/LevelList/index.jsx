@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import {
   TextField,
-  Box,
   Select,
   MenuItem,
   InputLabel,
@@ -340,7 +339,7 @@ export default function LevelList({
       </ListContainerScrollable>
 
       {!summary && (
-        <Box p={2}>
+        <div style={{ padding: '16px' }}>
           <Pagination
             count={Math.ceil(levels.count.length / pageSize)}
             onChange={(event, value) => updatePage(value - 1)}
@@ -348,7 +347,7 @@ export default function LevelList({
             showFirstButton
             showLastButton
           />
-        </Box>
+        </div>
       )}
     </Container>
   );

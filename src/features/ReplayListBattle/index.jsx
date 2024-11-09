@@ -4,7 +4,6 @@ import ReplayCard from 'components/ReplayCard';
 import Preview from 'components/Preview';
 import styled from '@emotion/styled';
 import Pagination from '@material-ui/lab/Pagination';
-import { Box } from '@material-ui/core';
 import { findIndex } from 'lodash';
 
 export default function ReplayListBattle({
@@ -76,7 +75,7 @@ export default function ReplayListBattle({
             );
           })}
       </CardGrid>
-      <Box p={2}>
+      <div style={{ padding: '16px' }}>
         <Pagination
           count={Math.ceil(battles.length / pageSize)}
           onChange={(event, value) => setPage(value - 1)}
@@ -84,7 +83,7 @@ export default function ReplayListBattle({
           showFirstButton
           showLastButton
         />
-      </Box>
+      </div>
       {previewRec && (
         <Preview
           previewRec={previewRec}

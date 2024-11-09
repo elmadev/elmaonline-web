@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import useFormal from '@kevinwolf/formal-web';
 import * as yup from 'yup';
+import styled from '@emotion/styled';
 import { useStoreActions } from 'easy-peasy';
-import { Button, Container, Box } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
 import Field from 'components/Field';
 import { useNavigate } from '@tanstack/react-router';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -52,11 +53,11 @@ export default function Login() {
     <Layout t="Log in">
       <Container maxWidth="sm">
         {error && (
-          <Box py={2}>
+          <PadY>
             <MuiAlert elevation={6} variant="filled" severity="error">
               {error}
             </MuiAlert>
-          </Box>
+          </PadY>
         )}
         <form {...formal.getFormProps()}>
           <Field
@@ -70,17 +71,27 @@ export default function Login() {
             onKeyPress={e => onEnter(e)}
             {...formal.getFieldProps('password')}
           />
-          <Box py={2}>
+          <PadY>
             <Link to="/forgot">Forgot password?</Link>
-          </Box>
+          </PadY>
           <Button variant="contained" fullWidth onClick={() => formal.submit()}>
             Login
           </Button>
         </form>
-        <Box py={3}>
+        <BiggerPadY>
           Don&apos;t have an account? <Link to="/register">Register</Link>
-        </Box>
+        </BiggerPadY>
       </Container>
     </Layout>
   );
 }
+
+const PadY = styled.div`
+  padding-top: 16px;
+  padding-bottom: 16px;
+`;
+
+const BiggerPadY = styled.div`
+  padding-top: 24px;
+  padding-bottom: 24px;
+`;

@@ -4,7 +4,6 @@ import {
   AccordionSummary,
   AccordionDetails,
   Chip,
-  Box,
   Typography,
 } from '@material-ui/core';
 import {
@@ -323,7 +322,7 @@ const Replay = () => {
                       }
                     />
                   )}
-                  <Box padding={2}>
+                  <div style={{ padding: '16px' }}>
                     <Typography color="textSecondary">Tags</Typography>
                     {tagOptions.map(option => {
                       if (edit.Tags.includes(option.TagIndex)) {
@@ -355,7 +354,7 @@ const Replay = () => {
                         );
                       }
                     })}
-                  </Box>
+                  </div>
                   <Button
                     onClick={() =>
                       submitEdit({
