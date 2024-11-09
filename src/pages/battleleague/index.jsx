@@ -153,7 +153,7 @@ const BattleLeague = () => {
                   }
                 }}
                 level={
-                  b.BattleIndex ? (
+                  b.BattleIndex && b.BattleData ? (
                     <Link to={`/battles/${b.BattleIndex}`}>
                       {b.BattleData.LevelData.LevelName}{' '}
                       {BATTLETYPES_LONG[b.BattleData.BattleType]}

@@ -209,7 +209,7 @@ const Levels = ({ tab, detailed }) => {
 };
 
 const GridItem2 = styled(GridItem)`
-  width: 100%;
+  width: 100% !important;
   &:hover {
     .pop-bar-1 {
       background: ${p => p.theme.paperBackground};
