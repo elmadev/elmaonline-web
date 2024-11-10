@@ -46,11 +46,11 @@ const TableRow = ({
 
   const finishPct = formatPct(stats.KuskiCountF, stats.KuskiCountAll, 0);
 
-  const lastDriven = formatDistance(
-    new Date((stats.LastDrivenAll || 0) * 1000),
-    new Date(),
-    { addSuffix: true },
-  );
+  const lastDriven = stats.LastDrivenAll
+    ? formatDistance(new Date((stats.LastDrivenAll || 0) * 1000), new Date(), {
+        addSuffix: true,
+      })
+    : 'Never';
 
   return (
     <TimeRow
