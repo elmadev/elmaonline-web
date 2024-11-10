@@ -46,16 +46,22 @@ const RecordHistory = ({ levelPackInfo }) => {
       <div>
         {countAll !== undefined && (
           <TextDiv>
-            {countAll} record(s) in total were driven between
-            {` `}
-            <Strong>
-              <Date driven={minDriven} />
-            </Strong>
-            {` and `}
-            <Strong>
-              <Date driven={maxDriven} />
-            </Strong>
-            .
+            {minDriven ? (
+              <>
+                {countAll} record(s) in total were driven between
+                {` `}
+                <Strong>
+                  <Date driven={minDriven} />
+                </Strong>
+                {` and `}
+                <Strong>
+                  <Date driven={maxDriven} />
+                </Strong>
+                .
+              </>
+            ) : (
+              '0 records in total.'
+            )}
           </TextDiv>
         )}
         {!!levelPackInfo?.Legacy && (
