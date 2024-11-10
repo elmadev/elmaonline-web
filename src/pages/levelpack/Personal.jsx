@@ -168,7 +168,7 @@ const Personal = ({ name, player }) => {
                 const targets = r.Targets.split(',');
                 if (compare.key === 'next') {
                   targets.every((target, index) => {
-                    if (target > obj.single.Time) {
+                    if (target >= obj.single.Time) {
                       return false;
                     }
                     obj[compare.key] = {
@@ -424,6 +424,7 @@ const Personal = ({ name, player }) => {
                                 time={r.single.Time}
                                 compareTime={r.multi.Time}
                                 relative={relative}
+                                hideCrown
                               />
                             </>
                           )}
@@ -540,6 +541,7 @@ const Personal = ({ name, player }) => {
                           time={r.single.Time}
                           compareTime={r[compare.key].Time}
                           relative={relative}
+                          hideCrown
                         />
                       </ListCell>
                     );
@@ -563,8 +565,9 @@ const Personal = ({ name, player }) => {
                         )}{' '}
                         <Compare
                           time={r.single.Time}
-                          compareTime={r[compare.key].Time}
+                          compareTime={parseInt(r[compare.key].Time)}
                           relative={relative}
+                          hideCrown
                         />
                       </ListCell>
                     );
@@ -638,6 +641,7 @@ const Personal = ({ name, player }) => {
                           time={tts.single.tt}
                           compareTime={tts[compare.key].tt}
                           relative={relative}
+                          hideCrown
                         />
                       )}
                     </ListCell>
