@@ -149,7 +149,7 @@ const Level = () => {
         LevelIndex,
         KuskiIndex: nickId(),
         from: from ? new Date(from).getTime() / 1000 : '',
-        to: to ? new Date(to).getTime() / 1000 : '',
+        to: to ? new Date(to).getTime() / 1000 + 86400 : '',
       });
     }
   };
@@ -477,6 +477,9 @@ const Level = () => {
                           InputLabelProps={{
                             shrink: true,
                           }}
+                          inputProps={{
+                            max: new Date().toISOString().split('T')[0],
+                          }}
                         />
 
                         <RangeField
@@ -487,6 +490,9 @@ const Level = () => {
                           onChange={event => setTo(event.target?.value)}
                           InputLabelProps={{
                             shrink: true,
+                          }}
+                          inputProps={{
+                            max: new Date().toISOString().split('T')[0],
                           }}
                         />
                         <Button
