@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Box from '@material-ui/core/Box';
-import styled from 'styled-components';
+import { Column } from 'components/Containers';
+import styled from '@emotion/styled';
 import { Text } from 'components/Containers';
 import { addSeconds, format } from 'date-fns';
 
@@ -46,17 +46,17 @@ export default function LinearProgressWithLabel({ value, remainingSeconds }) {
   }, [value]);
 
   return (
-    <Box width="100%">
-      <Box display="flex" alignItems="center" flexDirection="column">
-        <Box width="100%" py={1}>
+    <div style={{ width: '100%' }}>
+      <Column ai="center">
+        <div style={{ width: '100%', paddingBottom: '8px', paddingTop: '8px' }}>
           <StyledLinearProgress
             value={value}
             variant="determinate"
             linecolor={lineColor}
           />
-        </Box>
+        </div>
         <Text light>{formattedTime(remainingSeconds)} left</Text>
-      </Box>
-    </Box>
+      </Column>
+    </div>
   );
 }

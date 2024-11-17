@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import pedestal from 'images/recap/pedestal-long.jpg';
 import tracks from 'images/recap/tracks.jpg';
 import { Row, Column } from 'components/Containers';
@@ -95,8 +95,7 @@ const Awards = ({ overall, year }) => {
       unit: '',
       data: wins,
       type: 'kuski',
-      desc:
-        'Amount of battles won, all battle types with at least five participants',
+      desc: 'Amount of battles won, all battle types with at least five participants',
     },
     {
       title: 'Battle win ratio',
@@ -104,8 +103,7 @@ const Awards = ({ overall, year }) => {
       unit: '%',
       data: ratio,
       type: 'kuski',
-      desc:
-        'Amount of battles won in relation to battles played for all types with at least five participants.',
+      desc: 'Amount of battles won in relation to battles played for all types with at least five participants.',
     },
     {
       title: 'Battles played',
@@ -201,8 +199,7 @@ const Awards = ({ overall, year }) => {
       unit: '',
       data: data?.UniqueLevelNames,
       type: 'kuski',
-      desc:
-        'Total amount of levels added to the database, not including duplicates with same level name.',
+      desc: 'Total amount of levels added to the database, not including duplicates with same level name.',
     },
   ];
 

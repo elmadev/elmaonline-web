@@ -1,4 +1,3 @@
-/* eslint-disable no-unreachable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ListRow, ListCell, ListContainer } from 'components/List';
@@ -6,13 +5,13 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import Kuski from 'components/Kuski';
 import SortableList from 'components/SortableList';
 import Loading from 'components/Loading';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { FixedSizeList as List } from 'react-window';
 import useElementSize from 'utils/useWindowSize';
 
 const RankingTable = ({
   battleType,
-  minPlayed,
+  minPlayed = 10,
   period,
   tableIndex,
   periodType,
@@ -37,8 +36,8 @@ const RankingTable = ({
   const listHeight = fixedHeight
     ? fixedHeight
     : windowSize.height
-    ? windowSize.height - 332
-    : 0;
+      ? windowSize.height - 332
+      : 0;
   const Points = `Points${battleType}`;
   const Ranking = `Ranking${battleType}`;
   const Wins = `Wins${battleType}`;
@@ -111,7 +110,9 @@ const RankingTable = ({
                         <ListCell right width={48}>
                           {i[Played5] === 0
                             ? 'N/A'
-                            : parseFloat((i[Wins] * 100) / i[Played5]).toFixed(2)}
+                            : parseFloat((i[Wins] * 100) / i[Played5]).toFixed(
+                                2,
+                              )}
                         </ListCell>
                         <ListCell right width={65}>
                           {i[Designed]}
@@ -137,11 +138,11 @@ const RankingTable = ({
 
 const Root = styled.div`
   overflow-x: auto;
-`
+`;
 
 const Inner = styled.div`
   min-width: 630px;
-`
+`;
 
 const Amount = styled.div`
   padding: ${p => p.theme.padSmall};
@@ -155,10 +156,6 @@ RankingTable.propTypes = {
   period: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   tableIndex: PropTypes.string.isRequired,
   periodType: PropTypes.string.isRequired,
-};
-
-RankingTable.defaultProps = {
-  minPlayed: 10,
 };
 
 export default RankingTable;

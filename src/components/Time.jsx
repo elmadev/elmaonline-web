@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import {
   parseTimeHundreds,
@@ -32,12 +32,6 @@ class Time extends React.Component {
     color: PropTypes.string,
   };
 
-  static defaultProps = {
-    thousands: false,
-    apples: 0,
-    color: '',
-  };
-
   static formatTime = (time, apples, thousands) => {
     // for cup results
     if (apples === -1) {
@@ -63,7 +57,7 @@ class Time extends React.Component {
   };
 
   render() {
-    const { time, apples, thousands, color } = this.props;
+    const { time, apples = 0, thousands = false, color = '' } = this.props;
     if (!time && !Number.isInteger(apples)) {
       return <span />;
     }

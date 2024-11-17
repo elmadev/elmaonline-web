@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import LevelEditorGui from 'level-editor-gui';
 
 const EditorContainer = styled.div`

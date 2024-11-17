@@ -1,6 +1,6 @@
 import React from 'react';
-import { useNavigate } from '@reach/router';
-import styled from 'styled-components';
+import { useNavigate } from '@tanstack/react-router';
+import styled from '@emotion/styled';
 import Header from 'components/Header';
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import config from 'config';
@@ -205,7 +205,7 @@ const EolFolder = ({ section }) => {
         >
           <Clickable
             color="primary"
-            onClick={() => navigate('/help/eolfiles/' + expName)}
+            onClick={() => navigate({ to: '/help/eolfiles/' + expName })}
           >
             {linkName}
           </Clickable>{' '}

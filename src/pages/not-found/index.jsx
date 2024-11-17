@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Header from 'components/Header';
 import Layout from 'components/Layout';
 import FourOFour0 from '../../images/404_0.png';

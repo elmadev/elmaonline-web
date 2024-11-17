@@ -11,15 +11,13 @@ class DerpTableCell extends React.Component {
     highlight: PropTypes.bool,
   };
 
-  static defaultProps = {
-    children: null,
-    right: false,
-    width: 'auto',
-    highlight: false,
-  };
-
   render() {
-    const { children, right, width, highlight } = this.props;
+    const {
+      children = null,
+      right = false,
+      width = 'auto',
+      highlight = false,
+    } = this.props;
     return (
       <TableCell
         style={{

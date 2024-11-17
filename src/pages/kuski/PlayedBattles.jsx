@@ -83,7 +83,7 @@ const PlayedBattles = ({ KuskiIndex }) => {
               <ListCell to={`/battles/${b.BattleIndex}`}>
                 <LocalTime
                   date={b.Started}
-                  format="DD.MM.YYYY HH:mm"
+                  format="dd.MM.yyyy HH:mm"
                   parse="X"
                 />
               </ListCell>
@@ -103,8 +103,8 @@ const PlayedBattles = ({ KuskiIndex }) => {
         nextIconButtonProps={{
           'aria-label': 'Next Page',
         }}
-        onChangePage={(e, pg) => setPage(pg)}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={(e, pg) => setPage(pg)}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </>
   );

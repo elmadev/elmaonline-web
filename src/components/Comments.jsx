@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import LocalTime from 'components/LocalTime';
 import { Column, Row } from 'components/Containers';
@@ -40,15 +40,14 @@ const getColor = kuski => {
 
 const sortByEntered = (a, b) => b.Entered - a.Entered;
 
-const Comments = props => {
-  const { comments, loading } = props;
+const Comments = ({ comments = [], loading = false }) => {
   if (loading) return null;
   return (
     <Column>
       {comments.sort(sortByEntered).map(c => (
         <Row key={c.ReplayCommentIndex}>
           <Timestamp>
-            <LocalTime date={c.Entered} format="D MMM YYYY" parse="X" />
+            <LocalTime date={c.Entered} format="d MMM yyyy" parse="X" />
           </Timestamp>{' '}
           <Kuski>
             &lt;
@@ -92,11 +91,6 @@ Comments.propTypes = {
     }),
   ),
   loading: PropTypes.bool,
-};
-
-Comments.defaultProps = {
-  comments: [],
-  loading: false,
 };
 
 export default Comments;

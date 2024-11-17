@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import CardContent from '@material-ui/core/CardContent';
 import { Tabs, Tab } from '@material-ui/core';
 import { Install } from 'components/Welcome';

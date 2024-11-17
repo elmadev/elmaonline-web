@@ -9,7 +9,7 @@ export default {
     state.comments[0] = Array.isArray(rows) ? rows : [];
     state.comments[1] = +(count || 0) || 0;
   }),
-  fetchComments: thunk(async (actions, payload, helpers) => {
+  fetchComments: thunk(async (actions, payload) => {
     // passing limit, offset
     const response = await AllReplayComments(payload[0], payload[1]);
 

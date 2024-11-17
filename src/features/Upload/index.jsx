@@ -1,7 +1,6 @@
-/* eslint-disable no-restricted-globals */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import {
   TextField,
   Card,
@@ -25,7 +24,7 @@ import { xor } from 'lodash';
 import { renameFile } from 'utils/misc';
 import Feedback from 'components/Feedback';
 
-const Upload = ({ onUpload, filetype }) => {
+const Upload = ({ onUpload = null, filetype }) => {
   const {
     insertReplay,
     updateReplay,
@@ -473,10 +472,6 @@ const UploadButtonContainer = styled(Grid)`
 Upload.propTypes = {
   onUpload: PropTypes.func,
   filetype: PropTypes.string.isRequired,
-};
-
-Upload.defaultProps = {
-  onUpload: null,
 };
 
 export default Upload;

@@ -1,6 +1,5 @@
-/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid, Tabs, Tab } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import { ListRow, ListCell, ListHeader } from 'components/List';

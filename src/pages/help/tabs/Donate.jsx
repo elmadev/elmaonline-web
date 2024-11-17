@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { groupBy, mapValues, sumBy, sortBy, filter } from 'lodash';
 import Link from 'components/Link';
 import Flag from 'components/Flag';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Header from 'components/Header';
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import DonationsQR from './DonationsQR.png';

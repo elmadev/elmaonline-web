@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DerpTable from 'components/Table/DerpTable';
 import { ListRow, ListCell } from 'components/List';
 import { Grid } from '@material-ui/core';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
 import { Level } from 'components/Names';
@@ -50,7 +50,7 @@ const LatestTimes = ({ KuskiIndex }) => {
                   <ListCell>
                     <LocalTime
                       date={r.Driven}
-                      format="ddd D MMM YYYY HH:mm:ss"
+                      format="eee d MMM yyyy HH:mm:ss"
                       parse="X"
                     />
                   </ListCell>
@@ -90,7 +90,7 @@ const LatestTimes = ({ KuskiIndex }) => {
                   <ListCell>
                     <LocalTime
                       date={r.Driven}
-                      format="ddd D MMM YYYY HH:mm:ss"
+                      format="eee d MMM yyyy HH:mm:ss"
                       parse="X"
                     />
                   </ListCell>

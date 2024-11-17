@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Time from 'components/Time';
 import Loading from 'components/Loading';
 import Link from 'components/Link';

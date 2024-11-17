@@ -1,9 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
-const Header = props => {
-  const { h1, h2, h3, children, nomargin, right, top, onClick, mLeft } = props;
+const Header = ({
+  h1 = true,
+  h2 = false,
+  h3 = false,
+  children = null,
+  nomargin = false,
+  right = false,
+  top = false,
+  onClick = null,
+  mLeft = false,
+}) => {
   return (
     <>
       {h1 && !h2 && !h3 && (
@@ -98,18 +107,6 @@ Header.propTypes = {
   onClick: PropTypes.func,
   right: PropTypes.bool,
   mLeft: PropTypes.bool,
-};
-
-Header.defaultProps = {
-  h1: true,
-  h2: false,
-  h3: false,
-  children: null,
-  nomargin: false,
-  top: false,
-  onClick: null,
-  right: false,
-  mLeft: false,
 };
 
 export default Header;

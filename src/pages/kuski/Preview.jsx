@@ -6,11 +6,12 @@ import { has } from 'lodash';
 import Header from 'components/Header';
 import LocalTime from 'components/LocalTime';
 import CloseIcon from '@material-ui/icons/HighlightOffOutlined';
-import { Grid, Box, Typography, Backdrop } from '@material-ui/core';
+import { Grid, Typography, Backdrop } from '@material-ui/core';
 import config from 'config';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import { Column, Row } from 'components/Containers';
 
 const finishedTypes = {
   B: 'Finished (Apple Bug)',
@@ -31,18 +32,20 @@ export default function Preview({
     <Backdrop open={true} style={{ zIndex: 100 }}>
       <Container container>
         <Grid item sm={8} xs={12}>
-          <Recplayer
-            rec={`${config.s3Url}time/${previewRec.TimeFileData.UUID}-${previewRec.TimeFileData.MD5}/${previewRec.TimeIndex}.rec`}
-            lev={`${config.dlUrl}level/${previewRec.LevelIndex}?UUID=${previewRec.TimeFileData.UUID}`}
-            shirt={[`${config.dlUrl}shirt/${previewRec.KuskiIndex}`]}
-            controls
-            autoPlay="yes"
-          />
+          <Player>
+            <Recplayer
+              rec={`${config.s3Url}time/${previewRec.TimeFileData.UUID}-${previewRec.TimeFileData.MD5}/${previewRec.TimeIndex}.rec`}
+              lev={`${config.dlUrl}level/${previewRec.LevelIndex}?UUID=${previewRec.TimeFileData.UUID}`}
+              shirt={[`${config.dlUrl}shirt/${previewRec.KuskiIndex}`]}
+              controls
+              autoPlay="yes"
+            />
+          </Player>
         </Grid>
-        <Grid item sm>
-          <Box display="flex" flexDirection="column" height="100%">
-            <Box p={2}>
-              <Box display="flex">
+        <Grid item sm={4}>
+          <Column height="100%">
+            <Pad>
+              <Row>
                 <Header h2>
                   <Previous onClick={previousReplay} />
                   <a
@@ -56,7 +59,7 @@ export default function Preview({
                   onClick={() => setPreviewRec(null)}
                   style={{ marginLeft: 'auto' }}
                 />
-              </Box>
+              </Row>
               <p>
                 <Time time={previewRec.Time} /> in{' '}
                 <Level
@@ -93,24 +96,36 @@ export default function Preview({
                   {previewRec.Drunk === 1 && <>Drunk</>}
                 </Comment>
               )}
-            </Box>
+            </Pad>
 
-            <Box p={2}>
+            <Pad>
               <Typography variant="caption" display="block">
                 Driven{' '}
                 <LocalTime
                   date={previewRec.Driven}
-                  format="YYYY-MM-DD HH:mm:ss"
+                  format="yyyy-MM-dd HH:mm:ss"
                   parse="X"
                 />
               </Typography>
-            </Box>
-          </Box>
+            </Pad>
+          </Column>
         </Grid>
       </Container>
     </Backdrop>
   );
 }
+
+const Player = styled.div`
+  background: ${p => p.theme.pageBackground};
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Pad = styled.div`
+  padding: 16px;
+`;
 
 const Container = styled(Grid)`
   background: ${p => p.theme.paperBackground};

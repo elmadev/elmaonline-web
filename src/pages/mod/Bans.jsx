@@ -1,6 +1,5 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import { ListRow, ListCell, ListHeader } from 'components/List';
@@ -41,7 +40,7 @@ const Bans = () => {
                   <ListCell>
                     <LocalTime
                       date={n.Expires}
-                      format="D MMM YYYY HH:mm:ss"
+                      format="d MMM yyyy HH:mm:ss"
                       parse="X"
                     />
                   </ListCell>
@@ -69,7 +68,7 @@ const Bans = () => {
                   <ListCell>
                     <LocalTime
                       date={n.ExpireDate}
-                      format="D MMM YYYY HH:mm:ss"
+                      format="d MMM yyyy HH:mm:ss"
                       parse="X"
                     />
                   </ListCell>

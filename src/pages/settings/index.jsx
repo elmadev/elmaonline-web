@@ -1,6 +1,5 @@
-/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Grid, Tabs, Tab, Checkbox, Drawer } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import { RemoveCircle, Info } from '@material-ui/icons';
@@ -12,10 +11,11 @@ import Layout from 'components/Layout';
 import Setting from './Setting';
 import Themes from './Themes';
 import Notifications from './Notifications';
-import { useNavigate } from '@reach/router';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import DeviceSettings from './DeviceSettings';
 
-const Settings = ({ tab }) => {
+const Settings = () => {
+  const { tab } = useParams({ strict: false });
   const { userInfo, error, message, ignored } = useStoreState(
     state => state.Settings,
   );
@@ -72,9 +72,9 @@ const Settings = ({ tab }) => {
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
-        value={tab}
+        value={tab || ''}
         onChange={(e, value) => {
-          navigate(['/settings', value].filter(Boolean).join('/'));
+          navigate({ to: ['/settings', value].filter(Boolean).join('/') });
         }}
       >
         {nickId() > 0 && <Tab label="User info" value="" />}

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import {
   Grid,
@@ -8,7 +7,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from '@material-ui/core';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import {
   Delete as DeleteIcon,
   PlaylistAdd,
@@ -30,13 +29,8 @@ const Admin = () => {
     settings: { showLegacy },
     levelPackInfo,
   } = useStoreState(state => state.LevelPack);
-  const {
-    deleteLevel,
-    searchLevel,
-    addLevel,
-    sortLevel,
-    sortPack,
-  } = useStoreActions(actions => actions.LevelPack);
+  const { deleteLevel, searchLevel, addLevel, sortLevel, sortPack } =
+    useStoreActions(actions => actions.LevelPack);
 
   useEffect(() => {
     if (levelPackInfo?.levels) {
@@ -215,10 +209,9 @@ const Admin = () => {
                               LevelPackIndex: levelPackInfo.LevelPackIndex,
                               name: levelPackInfo.LevelPackName,
                               levels: levelPackInfo.levels.length,
-                              last:
-                                levelPackInfo.levels[
-                                  levelPackInfo.levels.length - 1
-                                ],
+                              last: levelPackInfo.levels[
+                                levelPackInfo.levels.length - 1
+                              ],
                               showLegacy,
                             })
                           }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { Paper } from 'components/Paper';
 import { TextField, Button } from '@material-ui/core';
 import { format } from 'date-fns';
@@ -72,7 +72,7 @@ const Standings = props => {
               by <Kuski kuskiData={i.KuskiData} /> at{' '}
               <LocalTime
                 date={i.Written}
-                format="ddd D MMM YYYY HH:mm"
+                format="eee d MMM yyyy HH:mm"
                 parse="X"
               />
             </SubHeadline>

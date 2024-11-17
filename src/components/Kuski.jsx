@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Link from 'components/Link';
 import Flag from 'components/Flag';
 
-const Kuski = ({ kuskiData, team, flag, noLink }) => (
+const Kuski = ({
+  kuskiData = null,
+  team = false,
+  flag = false,
+  noLink = false,
+}) => (
   <>
     {kuskiData ? (
       <Container>
@@ -42,13 +47,6 @@ const Kuski = ({ kuskiData, team, flag, noLink }) => (
 const Container = styled.span`
   white-space: nowrap;
 `;
-
-Kuski.defaultProps = {
-  team: false,
-  flag: false,
-  kuskiData: null,
-  noLink: false,
-};
 
 Kuski.propTypes = {
   kuskiData: PropTypes.shape({}),

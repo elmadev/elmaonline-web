@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useStoreActions } from 'easy-peasy';
 import { Divider } from '@material-ui/core';
 

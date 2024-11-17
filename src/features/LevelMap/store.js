@@ -1,6 +1,6 @@
-/* eslint-disable no-param-reassign */
-import { action, computed, thunk, memo } from 'easy-peasy';
+import { action, computed, thunk } from 'easy-peasy';
 import { LevelData } from 'api';
+import memoize from 'memoizee';
 
 export default {
   levelData: {},
@@ -14,6 +14,6 @@ export default {
     }
   }),
   getByLevelIndex: computed(state => {
-    return memo(id => state.levelData[id], 1000);
+    return memoize(id => state.levelData[id], { max: 1000 });
   }),
 };

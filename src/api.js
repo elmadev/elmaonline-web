@@ -3,7 +3,7 @@ import config from 'config';
 import { authToken } from 'utils/nick';
 import assert from 'assert';
 import { isObjectLike, isArray, mapValues, meanBy } from 'lodash';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 let baseURL = config.api;
 const api = create({
@@ -22,6 +22,7 @@ const apiUpload = create({
     Accept: '*/*',
     'Cache-Control': 'no-cache',
     Authorization: authToken(),
+    'Content-Type': 'multipart/form-data',
   },
   timeout: 60000,
 });
@@ -48,9 +49,9 @@ export const useQueryAlt = (
     queryOpts.staleTime = 300000;
   }
 
-  return useQuery(
+  return useQuery({
     queryKey,
-    async (...args) => {
+    queryFn: async (...args) => {
       const res = await queryFn(...args);
 
       if (arrayFormat) {
@@ -81,8 +82,8 @@ export const useQueryAlt = (
         throw new Error('Status not OK');
       }
     },
-    queryOpts,
-  );
+    ...queryOpts,
+  });
 };
 
 // replays
@@ -454,7 +455,8 @@ export const Teams = () => api.get('teams');
 export const TeamMembers = Team => api.get(`teams/${Team}`);
 
 // chat
-export const SearchChat = data => api.get('chatlog', { params: data });
+export const SearchChat = data =>
+  api.get('chatlog', { params: JSON.stringify(data) });
 
 // level
 export const Level = (LevelIndex, withLevelStats = false) =>
@@ -495,7 +497,7 @@ export const Levels = ({
     q,
   });
 };
-export const GetLevelKuskis = data => api.get(`level/kuskis`);
+export const GetLevelKuskis = () => api.get(`level/kuskis`);
 
 // ranking
 export const PersonalRanking = KuskiIndex =>
@@ -539,7 +541,7 @@ export const DeleteFile = data =>
   api.delete(`upload/${data.index}/${data.uuid}/${data.filename}`);
 
 // taswr
-export const GetDatInfo = data => api.post(`taswr/getdatinfo`, data);
+export const GetDatInfo = data => apiUpload.post(`api/taswr/getdatinfo`, data);
 
 // tags
 export const GetReplayTags = () => api.get(`tag?type=replay`);

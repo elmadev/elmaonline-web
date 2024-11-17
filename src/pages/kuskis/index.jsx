@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Tabs, Tab } from '@material-ui/core';
-import { useNavigate } from '@reach/router';
+import { useNavigate } from '@tanstack/react-router';
 import Layout from 'components/Layout';
 import Alphabetical from './Alphabetical';
 import ByCountry from './ByCountry';
@@ -25,7 +25,7 @@ const Kuskis = ({ tab }) => {
         scrollButtons="auto"
         value={tab}
         onChange={(e, value) =>
-          navigate(['/kuskis', value].filter(Boolean).join('/'))
+          navigate({ to: ['/kuskis', value].filter(Boolean).join('/') })
         }
       >
         <Tab label="By Country" value="" />

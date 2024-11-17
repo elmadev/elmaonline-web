@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell } from 'components/List';
 import PaginationActions from 'components/Table/PaginationActions';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 class DerpTable extends React.Component {
   static propTypes = {
@@ -31,15 +31,6 @@ class DerpTable extends React.Component {
     width: PropTypes.string,
   };
 
-  static defaultProps = {
-    loading: false,
-    length: 0,
-    pagination: false,
-    onChangePage: null,
-    onChangeRowsPerPage: null,
-    width: 'auto',
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -51,13 +42,13 @@ class DerpTable extends React.Component {
   render() {
     const {
       headers,
-      loading,
+      loading = false,
       children,
-      length,
-      pagination,
-      onChangePage,
-      onChangeRowsPerPage,
-      width,
+      length = 0,
+      pagination = false,
+      onChangePage = null,
+      onChangeRowsPerPage = null,
+      width = 'auto',
     } = this.props;
     const { page, rowsPerPage } = this.state;
     return (
@@ -88,11 +79,11 @@ class DerpTable extends React.Component {
                   count={pagination ? length : 0}
                   rowsPerPage={rowsPerPage}
                   page={page}
-                  onChangePage={(e, nextPage) => {
+                  onPageChange={(e, nextPage) => {
                     this.setState({ page: nextPage });
                     onChangePage(nextPage);
                   }}
-                  onChangeRowsPerPage={e => {
+                  onRowsPerPageChange={e => {
                     this.setState({
                       page: 0,
                       rowsPerPage: e.target.value,

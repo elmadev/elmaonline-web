@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { action, persist } from 'easy-peasy';
 
 export default {

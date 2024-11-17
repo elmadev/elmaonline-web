@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Loading from 'components/Loading';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
 import { LevelPackRecordHistory, useQueryAlt } from '../../api';
@@ -13,7 +13,7 @@ import { SportsMotorsports } from '@material-ui/icons';
 import Link from 'components/Link';
 
 const Date = ({ driven }) => {
-  return <LocalTime date={driven} format="MMM D YYYY" parse="X" />;
+  return <LocalTime date={driven} format="MMM d yyyy" parse="X" />;
 };
 
 const RecordHistory = ({ levelPackInfo }) => {
@@ -46,16 +46,22 @@ const RecordHistory = ({ levelPackInfo }) => {
       <div>
         {countAll !== undefined && (
           <TextDiv>
-            {countAll} record(s) in total were driven between
-            {` `}
-            <Strong>
-              <Date driven={minDriven} />
-            </Strong>
-            {` and `}
-            <Strong>
-              <Date driven={maxDriven} />
-            </Strong>
-            .
+            {minDriven ? (
+              <>
+                {countAll} record(s) in total were driven between
+                {` `}
+                <Strong>
+                  <Date driven={minDriven} />
+                </Strong>
+                {` and `}
+                <Strong>
+                  <Date driven={maxDriven} />
+                </Strong>
+                .
+              </>
+            ) : (
+              '0 records in total.'
+            )}
           </TextDiv>
         )}
         {!!levelPackInfo?.Legacy && (

@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import React from 'react';
 
 // ie. "1650 (+50)"

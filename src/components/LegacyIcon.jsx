@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import moposite from '../images/legacy/moposite.png';
 import kopasite from '../images/legacy/kopasite.png';
@@ -35,7 +35,7 @@ const titles = {
   6: 'Legacy time from stats',
 };
 
-const LegacyIcon = ({ source, show }) => {
+const LegacyIcon = ({ source, show = true }) => {
   if (!show) return <span />;
   return (
     <Container>
@@ -51,10 +51,6 @@ const Container = styled.span`
 LegacyIcon.propTypes = {
   source: PropTypes.number.isRequired,
   show: PropTypes.bool,
-};
-
-LegacyIcon.defaultProps = {
-  show: true,
 };
 
 export default LegacyIcon;

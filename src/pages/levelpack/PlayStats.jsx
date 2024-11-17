@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import LevelCollectionStats from 'features/LevelCollectionStats';
 
 const PlayStats = ({ LevelPack }) => {
@@ -8,9 +8,7 @@ const PlayStats = ({ LevelPack }) => {
 
   return (
     <Root>
-      <LevelCollectionStats
-        levelIds={levelIds}
-      />
+      <LevelCollectionStats levelIds={levelIds} />
     </Root>
   );
 };

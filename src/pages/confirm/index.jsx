@@ -4,9 +4,10 @@ import { Grid, CircularProgress } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import Link from 'components/Link';
 import Layout from 'components/Layout';
+import { useParams } from '@tanstack/react-router';
 
-const Confirm = props => {
-  const { confirmCode } = props;
+const Confirm = () => {
+  const { confirmCode } = useParams({ strict: false });
   const { confirmSuccess, password } = useStoreState(state => state.Register);
   const { tryConfirm, tryReset } = useStoreActions(actions => actions.Register);
 

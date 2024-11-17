@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { TextField, Button, Container, Box } from '@material-ui/core';
+import styled from '@emotion/styled';
+import { TextField, Button, Container } from '@material-ui/core';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import Link from 'components/Link';
 import Layout from 'components/Layout';
@@ -55,7 +55,7 @@ const ForgotPassword = () => {
             />
             {error !== '' && <ErrorMessage>{error}</ErrorMessage>}
             {resetMessage !== '' && <ErrorMessage>{resetMessage}</ErrorMessage>}
-            <Box py={2}>
+            <PadY>
               <Button
                 onClick={() => clickReset()}
                 variant="contained"
@@ -63,16 +63,21 @@ const ForgotPassword = () => {
               >
                 Reset password
               </Button>
-            </Box>
-            <Box py={2}>
+            </PadY>
+            <PadY>
               <Link to="/login">Back to login view</Link>
-            </Box>
+            </PadY>
           </>
         )}
       </Container>
     </Layout>
   );
 };
+
+const PadY = styled.div`
+  padding-top: 16px;
+  padding-bottom: 16px;
+`;
 
 const ErrorMessage = styled.div`
   line-height: 36px;

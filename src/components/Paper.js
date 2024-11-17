@@ -1,5 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const Paper = styled.div`
   display: flex;
@@ -8,8 +7,8 @@ export const Paper = styled.div`
     p.width
       ? p.width
       : p.padding
-      ? `calc(100% - ${p.theme.padMedium} * 2)`
-      : '100%'};
+        ? `calc(100% - ${p.theme.padMedium} * 2)`
+        : '100%'};
   background-color: ${p =>
     p.highlight ? p.theme.ongoing : p.theme.paperBackground};
   border: 1px solid

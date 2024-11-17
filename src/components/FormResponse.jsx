@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const FormResponse = ({ msgs, showIfEmpty = false, isError }) => {
   if (!msgs && !showIfEmpty) {

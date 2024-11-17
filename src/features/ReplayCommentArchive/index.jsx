@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Pagination from '@material-ui/lab/Pagination';
 import {
   ListContainer,
@@ -13,13 +13,12 @@ import Link from 'components/Link';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import { useMediaQuery } from '@material-ui/core';
-import { useLocation, useNavigate } from '@reach/router';
-import queryString from 'query-string';
+import { useLocation, useNavigate } from '@tanstack/react-router';
 
 const ReplayCommentArchive = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const query = queryString.parse(location.search);
+  const query = location.search;
   const page = +query.page > 1 ? +query.page : 1;
   const pageSize = 20;
   const narrowCols = useMediaQuery('(max-width: 980px)');
@@ -88,7 +87,7 @@ const ReplayCommentArchive = () => {
         <Pagination
           count={pages}
           onChange={(event, value) =>
-            navigate(`/replays/comments/?page=${value}`)
+            navigate({ to: `/replays/comments/?page=${value}` })
           }
           page={page}
           showFirstButton

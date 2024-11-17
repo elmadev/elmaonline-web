@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { ThemeContext } from 'styled-components';
+import React from 'react';
+import { useTheme } from '@emotion/react';
 import {
   Select,
   MenuItem,
@@ -10,7 +10,7 @@ import {
 import { stripSpace } from 'utils/misc';
 
 const Selector = ({ label, options, selected, onChange }) => {
-  const theme = useContext(ThemeContext);
+  const theme = useTheme();
 
   const update = s => {
     let newSelected = s;

@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Header from 'components/Header';
 import Kuski from 'components/Kuski';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListCell, ListContainer, ListRow } from 'components/List';
 import Layout from 'components/Layout';
+import { useParams } from '@tanstack/react-router';
 
-const Team = ({ TeamName }) => {
+const Team = () => {
+  const { TeamName } = useParams({ strict: false });
   const { teamMembers } = useStoreState(state => state.Teams);
   const { getTeamMembers } = useStoreActions(actions => actions.Teams);
 

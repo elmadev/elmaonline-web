@@ -16,8 +16,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 16
-    
+          node-version: 22
+
       - name: Replace config values
         run: |
           sed -i "s|https://apitest.elma.online/|${{ secrets.API_URL_LIVE }}|g" src/config.js
@@ -39,6 +39,6 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "build/*"
-          target: "${{ secrets.SSH_BUILD_PATH }}"
+          source: 'build/*'
+          target: '${{ secrets.SSH_BUILD_PATH }}'
           strip_components: 1

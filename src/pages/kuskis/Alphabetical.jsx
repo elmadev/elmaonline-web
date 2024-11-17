@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Link from 'components/Link';
 import Kuski from 'components/Kuski';
 import Loading from 'components/Loading';

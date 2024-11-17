@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Header from 'components/Header';
 import { ListCell, ListContainer, ListRow, ListHeader } from 'components/List';
 import * as sections from './programs.json';

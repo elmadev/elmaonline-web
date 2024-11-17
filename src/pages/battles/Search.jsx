@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Loading from 'components/Loading';
 import queryString from 'query-string';
 import { Dropdown, TextField } from 'components/Inputs';
-import { useNavigate, useLocation } from '@reach/router';
+import { useNavigate, useLocation } from '@tanstack/react-router';
 import { getBattleTypes } from 'utils/eol';
 import { forceInt } from 'utils/calcs';
 import Slider from '@material-ui/core/Slider';
@@ -105,11 +105,10 @@ const buildArgs = query => {
 const Search = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const query = queryString.parse(location.search);
+  const query = location.search;
 
   const [kuski, setKuski] = useState('');
   // cripple selector turned off for now (server doesn't support it yet).
-  // eslint-disable-next-line no-unused-vars
   const [cripples, setCripples] = useState([]);
   const [battleType, setBattleType] = useState('');
   // we'll consider a duration of 61 to mean above 60. (battles above 60 min may eventually be possible).
@@ -203,7 +202,7 @@ const Search = () => {
       },
     );
 
-    navigate('/battles/search?' + query);
+    navigate({ to: '/battles/search?' + query });
   };
 
   // const crippleOpts = [['', 'None']].concat(getCripples()[0]);
@@ -344,8 +343,8 @@ const Search = () => {
                     rowsPerPageOptions={[25, 50, 100, 200]}
                     rowsPerPage={pageSize}
                     page={page}
-                    onChangePage={(e, value) => setUrl(value, pageSize, sort)}
-                    onChangeRowsPerPage={e => setUrl(0, e.target.value, sort)}
+                    onPageChange={(e, value) => setUrl(value, pageSize, sort)}
+                    onRowsPerPageChange={e => setUrl(0, e.target.value, sort)}
                   />
                   <td>
                     <Switch
@@ -371,7 +370,7 @@ const Search = () => {
           <BattleListTableMemo
             battles={Array.isArray(battles) ? battles : []}
             condensed={false}
-            startedFormat="MMM D, Y HH:mm"
+            startedFormat="MMM d, y HH:mm"
             wideStartedCol={true}
           />
         </Paper>

@@ -1,8 +1,10 @@
-import React, { useContext } from 'react';
-import ReactDropzone from 'react-dropzone';
-import styled, { ThemeContext } from 'styled-components';
+import React from 'react';
+import { useDropzone } from 'react-dropzone';
+import styled from '@emotion/styled';
 import config from 'config';
 import { nickId } from 'utils/nick';
+
+const types = { '.rec': { '*/*': ['.rec'] }, '.dat': { '*/*': ['.dat'] } };
 
 const Dropzone = ({
   error,
@@ -13,35 +15,49 @@ const Dropzone = ({
   warning,
   minHeight = '100px',
 }) => {
-  const theme = useContext(ThemeContext);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: filetype ? types[filetype] : undefined,
+    multiple: false,
+    maxSize: config.maxUploadSize,
+  });
   return (
-    <ReactDropzone
-      accept={filetype}
-      onDrop={(a, r) => onDrop(a, r)}
-      multiple={false}
-      maxSize={config.maxUploadSize}
-      style={{
-        width: '100%',
-        height: 'auto',
-        minHeight,
-        border: `2px dashed ${theme.borderColor}`,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: theme.paperBackground,
-        color: theme.fontColor,
-      }}
+    <Container
+      {...getRootProps()}
+      isDragActive={isDragActive}
+      minHeight={minHeight}
     >
+      <input {...getInputProps()} />
       {(!login || nickId() !== 0) && (
-        <DropText>Drop file here, or click to select file to upload</DropText>
+        <>
+          {isDragActive ? <DropText>Drop to upload</DropText> : null}
+          {!isDragActive ? (
+            <DropText>
+              Drop file here, or click to select file to upload
+            </DropText>
+          ) : null}
+        </>
       )}
       {error && <ErrorText>{error}</ErrorText>}
       {success && <SuccessText>{success}</SuccessText>}
       {warning && <WarningText>{warning}</WarningText>}
       {login && nickId() === 0 && <DropText>Please log in to upload</DropText>}
-    </ReactDropzone>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  width: 100%;
+  height: auto;
+  min-height: ${p => p.minHeight};
+  border: 2px dashed ${p => p.theme.borderColor};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${p =>
+    p.isDragActive ? p.theme.pageBackgroundDark : p.theme.paperBackground};
+  color: ${p => p.theme.fontColor};
+`;
 
 const DropText = styled.div`
   padding: 8px;

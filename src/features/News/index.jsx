@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LocalTime from 'components/LocalTime';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { CardContent } from '@material-ui/core';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListRow, ListCell, ListContainer } from 'components/List';
@@ -43,7 +43,7 @@ const News = ({ amount, height = 0, onCross = null }) => {
                     <Written>
                       <LocalTime
                         date={n.Written}
-                        format="ddd D MMM YYYY"
+                        format="eee d MMM yyyy"
                         parse="X"
                       />
                     </Written>

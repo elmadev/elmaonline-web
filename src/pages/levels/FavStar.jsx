@@ -1,6 +1,6 @@
 import { Star, StarBorder } from '@material-ui/icons';
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const FavStar = ({ loggedIn, pack, removeFav, addFav }) => {
   if (!loggedIn) {

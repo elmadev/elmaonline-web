@@ -11,14 +11,9 @@ class ErrorPage extends React.Component {
     }),
   };
 
-  static defaultProps = {
-    error: null,
-  };
-
   render() {
-    const { error } = this.props;
-    // eslint-disable-next-line no-undef
-    if (__DEV__ && error) {
+    const { error = null } = this.props;
+    if (error) {
       return (
         <div>
           <h1>{error.name}</h1>

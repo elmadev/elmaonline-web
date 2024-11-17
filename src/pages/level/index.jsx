@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -17,10 +16,11 @@ import {
   Select,
   MenuItem,
   FormControl,
-  Box,
   TextField,
 } from '@material-ui/core';
-import styled, { ThemeContext } from 'styled-components';
+import styled from '@emotion/styled';
+import { Row } from 'components/Containers';
+import { useTheme } from '@emotion/react';
 import Layout from 'components/Layout';
 import { ExpandMore } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
@@ -36,7 +36,7 @@ import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
 import UpdateForm from 'pages/level/UpdateForm';
 import LocalTime from 'components/LocalTime';
-import { useNavigate } from '@reach/router';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import config from 'config';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import TimeTable from './TimeTable';
@@ -53,8 +53,9 @@ import {
 } from 'api';
 import Button from 'components/Buttons';
 
-const Level = ({ LevelId }) => {
-  const theme = useContext(ThemeContext);
+const Level = () => {
+  const { LevelId } = useParams({ strict: false });
+  const theme = useTheme();
   const LevelIndex = parseInt(LevelId, 10);
   const navigate = useNavigate();
   const [tab, setTab] = useState(0);
@@ -105,14 +106,12 @@ const Level = ({ LevelId }) => {
   const kuskiIndex = nickId();
 
   // crippled best times, all times, leader history
-  const {
-    data: crippledTimesData,
-    isLoading: crippledTimesDataLoading,
-  } = useQueryAlt(
-    ['CrippledTimes', LevelId, cripple],
-    async () => CrippledTimes(LevelId, cripple, 1000, 1, 10000),
-    { enabled: cripple !== '' && tab !== 2, retry: 0 },
-  );
+  const { data: crippledTimesData, isLoading: crippledTimesDataLoading } =
+    useQueryAlt(
+      ['CrippledTimes', LevelId, cripple],
+      async () => CrippledTimes(LevelId, cripple, 1000, 1, 10000),
+      { enabled: cripple !== '' && tab !== 2, retry: 0 },
+    );
 
   const {
     allTimes: crippledAllTimes,
@@ -121,14 +120,12 @@ const Level = ({ LevelId }) => {
   } = crippledTimesData || {};
 
   // crippled personal times and record history
-  const {
-    data: crippledPersonalData,
-    isLoading: crippledPersonalDataLoading,
-  } = useQueryAlt(
-    ['CrippledPersonal', LevelId, kuskiIndex, cripple],
-    async () => CrippledPersonal(LevelId, kuskiIndex, cripple, 1000),
-    { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2, retry: 0 },
-  );
+  const { data: crippledPersonalData, isLoading: crippledPersonalDataLoading } =
+    useQueryAlt(
+      ['CrippledPersonal', LevelId, kuskiIndex, cripple],
+      async () => CrippledPersonal(LevelId, kuskiIndex, cripple, 1000),
+      { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2, retry: 0 },
+    );
 
   const {
     kuskiTimes: crippledKuskiTimes,
@@ -152,7 +149,7 @@ const Level = ({ LevelId }) => {
         LevelIndex,
         KuskiIndex: nickId(),
         from: from ? new Date(from).getTime() / 1000 : '',
-        to: to ? new Date(to).getTime() / 1000 : '',
+        to: to ? new Date(to).getTime() / 1000 + 86400 : '',
       });
     }
   };
@@ -184,7 +181,7 @@ const Level = ({ LevelId }) => {
 
   const goToBattle = battleIndex => {
     if (!Number.isNaN(battleIndex)) {
-      navigate(`/battles/${battleIndex}`);
+      navigate({ to: `/battles/${battleIndex}` });
     }
   };
 
@@ -359,7 +356,7 @@ const Level = ({ LevelId }) => {
                               <Link to={`/battles/${i.BattleIndex}`}>
                                 <LocalTime
                                   date={i.Started}
-                                  format="DD MMM YYYY HH:mm:ss"
+                                  format="dd MMM yyyy HH:mm:ss"
                                   parse="X"
                                 />
                               </Link>
@@ -470,12 +467,7 @@ const Level = ({ LevelId }) => {
 
                   {tab === 2 && loggedIn && (
                     <>
-                      <Box
-                        m={4}
-                        display="flex"
-                        alignItems="self-end"
-                        flexDirection="row"
-                      >
+                      <Row ai="self-end" m="Large">
                         <RangeField
                           id="date-from"
                           label="From"
@@ -484,6 +476,9 @@ const Level = ({ LevelId }) => {
                           onChange={event => setFrom(event.target?.value)}
                           InputLabelProps={{
                             shrink: true,
+                          }}
+                          inputProps={{
+                            max: new Date().toISOString().split('T')[0],
                           }}
                         />
 
@@ -496,6 +491,9 @@ const Level = ({ LevelId }) => {
                           InputLabelProps={{
                             shrink: true,
                           }}
+                          inputProps={{
+                            max: new Date().toISOString().split('T')[0],
+                          }}
                         />
                         <Button
                           secondary
@@ -504,7 +502,7 @@ const Level = ({ LevelId }) => {
                         >
                           Submit
                         </Button>
-                      </Box>
+                      </Row>
                       <StatsTable
                         data={timeStats}
                         loading={statsLoading !== LevelIndex}
@@ -710,13 +708,5 @@ const LevelStatsAccordion = styled(AccordionDetails)`
 const RangeField = styled(TextField)`
   margin-right: 16px !important;
 `;
-
-Level.propTypes = {
-  LevelId: PropTypes.string,
-};
-
-Level.defaultProps = {
-  LevelId: '0',
-};
 
 export default Level;

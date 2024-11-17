@@ -8,7 +8,7 @@ import Fab from 'components/Fab';
 import { Row } from 'components/Containers';
 import LocalTime from 'components/LocalTime';
 import { formatDistanceStrict } from 'date-fns';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import config from 'config';
 import { FixedSizeList as List } from 'react-window';
 import {
@@ -173,7 +173,7 @@ const FileList = ({ collapse }) => {
                     <ListCell width={295}>
                       <LocalTime
                         date={file.UploadedOn}
-                        format="ddd D MMM YYYY HH:mm:ss"
+                        format="eee d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>

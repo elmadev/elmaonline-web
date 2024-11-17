@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { action, thunk, persist } from 'easy-peasy';
 import {
   Highlight,

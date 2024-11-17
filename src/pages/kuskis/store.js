@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { thunk } from 'easy-peasy';
 import { Players } from 'api';
 import { getSetter } from 'utils/easy-peasy';

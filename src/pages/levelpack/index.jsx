@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate } from '@reach/router';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { useNavigate, useParams } from '@tanstack/react-router';
+import styled from '@emotion/styled';
 import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
 import { Tabs, Tab } from '@material-ui/core';
 import Layout from 'components/Layout';
@@ -24,9 +23,9 @@ import Menus from './Menus';
 import RecordHistory from './RecordHistory';
 import PlayStats from './PlayStats';
 
-const LevelPack = ({ name, tab, ...props }) => {
+const LevelPack = () => {
+  const { name, tab, subTab } = useParams({ strict: false });
   const isRehydrated = useStoreRehydrated();
-  const subTab = props['*'];
   const {
     levelPackInfo,
     highlight,
@@ -97,14 +96,16 @@ const LevelPack = ({ name, tab, ...props }) => {
         <Tabs
           variant="scrollable"
           scrollButtons="auto"
-          value={tab}
+          value={tab || ''}
           onChange={(e, value) => {
             if (value === 'crippled') {
-              navigate(['/levels/packs', name, 'crippled/noVolt'].join('/'));
+              navigate({
+                to: ['/levels/packs', name, 'crippled/noVolt'].join('/'),
+              });
             } else {
-              navigate(
-                ['/levels/packs', name, value].filter(Boolean).join('/'),
-              );
+              navigate({
+                to: ['/levels/packs', name, value].filter(Boolean).join('/'),
+              });
             }
           }}
         >
@@ -180,23 +181,11 @@ const LevelPack = ({ name, tab, ...props }) => {
             levelPack={levelPackInfo.LevelPackIndex}
           />
         )}
-        {tab === 'play-stats' && (
-          <PlayStats
-            LevelPack={levelPackInfo}
-          />
-        )}
+        {tab === 'play-stats' && <PlayStats LevelPack={levelPackInfo} />}
         {tab === 'admin' && adminAuth && <Admin />}
       </RootStyle>
     </Layout>
   );
-};
-
-LevelPack.propTypes = {
-  name: PropTypes.string,
-};
-
-LevelPack.defaultProps = {
-  name: '',
 };
 
 const RootStyle = styled.div`

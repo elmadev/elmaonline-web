@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import AchievementsCups from 'components/AchievementsCups';
 import AchievementsHacktober from 'components/AchievementsHacktober';
 import Header from 'components/Header';
@@ -29,13 +29,8 @@ import RMod from '../../images/rights/RMod.png';
 import RAdmin from '../../images/rights/RAdmin.png';
 
 const Info = ({ kuskiInfo }) => {
-  const {
-    giveRights,
-    getIplogs,
-    setIplogs,
-    getKuskiBans,
-    banKuski,
-  } = useStoreActions(actions => actions.Kuski);
+  const { giveRights, getIplogs, setIplogs, getKuskiBans, banKuski } =
+    useStoreActions(actions => actions.Kuski);
   const { iplogs, kuskiBans } = useStoreState(state => state.Kuski);
   const [banType, setBanType] = useState('PlayBan');
   const [severity, setSeverity] = useState('warning');
@@ -223,14 +218,14 @@ const Info = ({ kuskiInfo }) => {
                     <ListCell>
                       <LocalTime
                         date={i.LogFrom}
-                        format="D MMM YYYY HH:mm:ss"
+                        format="d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>
                     <ListCell>
                       <LocalTime
                         date={i.LogTo}
-                        format="D MMM YYYY HH:mm:ss"
+                        format="d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>
@@ -264,7 +259,7 @@ const Info = ({ kuskiInfo }) => {
                     <ListCell width={150}>
                       <LocalTime
                         date={i.Expires}
-                        format="D MMM YYYY HH:mm:ss"
+                        format="d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>
@@ -288,7 +283,7 @@ const Info = ({ kuskiInfo }) => {
                     <ListCell width={150}>
                       <LocalTime
                         date={i.ExpireDate}
-                        format="D MMM YYYY HH:mm:ss"
+                        format="d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>

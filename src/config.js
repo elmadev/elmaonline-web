@@ -15,6 +15,8 @@ const config = {
   maxUploadSize: 10485760,
   s3Url: `https://space.elma.online/${s3SubFolder}`,
   hotJarId: 0,
+  routerDevTools: false,
+  queryDevTools: false,
 };
 
 export default config;
