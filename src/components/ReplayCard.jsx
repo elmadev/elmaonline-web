@@ -22,7 +22,9 @@ export default function ReplayCard({ replay, onPreviewClick }) {
   const navigate = useNavigate();
 
   const handleOpenReplay = () => {
-    navigate({ to: `/r/${replay.UUID}` });
+    navigate({
+      to: `/r/${replay.UUID}/${replay.RecFileName?.split('.')[0] || ''}`,
+    });
   };
 
   const handlePreviewClick = event => {

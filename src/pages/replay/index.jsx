@@ -130,6 +130,7 @@ const Replay = () => {
   if (!RecFileName && replay && replay.UUID === ReplayUuid) {
     navigate({
       to: `/r/${ReplayUuid}/${replay.RecFileName.replace('.rec', '')}`,
+      replace: true,
     });
   }
 
@@ -181,11 +182,11 @@ const Replay = () => {
   const updateUrl = (unmerge = false, recUuid) => {
     if (unmerge) {
       return merge?.includes(';')
-        ? `${location.pathname}${location.search.replace(`;${recUuid}`, '')}`
+        ? `${location.pathname}?merge=${merge.replace(`;${recUuid}`, '')}`
         : location.pathname;
     }
     return merge
-      ? `${location.pathname}${location.search};${recUuid}`
+      ? `${location.pathname}?merge=${merge};${recUuid}`
       : `${location.pathname}?merge=${recUuid}`;
   };
 
