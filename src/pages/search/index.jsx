@@ -19,6 +19,7 @@ import { BattleType } from 'components/Names';
 const Search = () => {
   const location = useLocation();
   const { q, t } = location.search;
+  const query = q.toString();
   const [updated, setUpdated] = useState({});
   const {
     levelPacks,
@@ -59,25 +60,25 @@ const Search = () => {
   useEffect(() => {
     if (t === 'level') {
       getLevels({
-        q: encodeURIComponent(q.replace('?', '_')),
+        q: encodeURIComponent(query.replace('?', '_')),
         offset: 0,
         showLocked: 0,
       });
     }
     if (t === 'battle') {
       getBattles({
-        q: encodeURIComponent(q.replace('?', '_')),
+        q: encodeURIComponent(query.replace('?', '_')),
         offset: 0,
       });
     }
     if (t === 'replay') {
-      getReplays({ q: encodeURIComponent(q.replace('?', '_')), offset: 0 });
+      getReplays({ q: encodeURIComponent(query.replace('?', '_')), offset: 0 });
     }
     if (t === 'player') {
-      getPlayers({ q: encodeURIComponent(q.replace('?', '_')), offset: 0 });
+      getPlayers({ q: encodeURIComponent(query.replace('?', '_')), offset: 0 });
     }
     if (t === 'team') {
-      getTeams({ q: encodeURIComponent(q.replace('?', '_')), offset: 0 });
+      getTeams({ q: encodeURIComponent(query.replace('?', '_')), offset: 0 });
     }
   }, [q]);
   useEffect(() => {
@@ -127,7 +128,7 @@ const Search = () => {
   };
 
   return (
-    <Layout t={`Search - ${t} - ${q}`}>
+    <Layout t={`Search - ${t} - ${query}`}>
       <Grid container spacing={2}>
         {!t && (
           <SearchBarWrapper>
@@ -153,7 +154,7 @@ const Search = () => {
                         checked={showLocked}
                         onChange={() =>
                           getLevels({
-                            q: q.replace('?', '_'),
+                            q: query.replace('?', '_'),
                             offset: 0,
                             showLocked: showLocked ? 0 : 1,
                           })
@@ -283,7 +284,7 @@ const Search = () => {
                         type="button"
                         onClick={() =>
                           fetchMoreLevels({
-                            q,
+                            q: query,
                             offset: levels.length,
                             showLocked: showLocked ? 1 : 0,
                           })
@@ -296,7 +297,7 @@ const Search = () => {
                           type="button"
                           onClick={() => {
                             fetchMoreLevels({
-                              q,
+                              q: query,
                               offset: levels.length * -1,
                               showLocked: showLocked ? 1 : 0,
                             });
@@ -387,7 +388,7 @@ const Search = () => {
                       type="button"
                       onClick={() =>
                         fetchmoreReplaysFile({
-                          q,
+                          q: query,
                           offset: replaysByFilename.length,
                         })
                       }
@@ -399,7 +400,7 @@ const Search = () => {
                         type="button"
                         onClick={() => {
                           fetchmoreReplaysFile({
-                            q,
+                            q: query,
                             offset: replaysByFilename.length * -1,
                           });
                         }}
@@ -446,7 +447,7 @@ const Search = () => {
                       type="button"
                       onClick={() =>
                         fetchMoreReplaysDriven({
-                          q,
+                          q: query,
                           offset: replaysByDriven.length,
                         })
                       }
@@ -458,7 +459,7 @@ const Search = () => {
                         type="button"
                         onClick={() => {
                           fetchMoreReplaysDriven({
-                            q,
+                            q: query,
                             offset: replaysByDriven.length * -1,
                           });
                         }}
@@ -505,7 +506,7 @@ const Search = () => {
                       type="button"
                       onClick={() =>
                         fetchMoreReplaysLevel({
-                          q,
+                          q: query,
                           offset: replaysByLevel.length,
                         })
                       }
@@ -517,7 +518,7 @@ const Search = () => {
                         type="button"
                         onClick={() => {
                           fetchMoreReplaysLevel({
-                            q,
+                            q: query,
                             offset: replaysByLevel.length * -1,
                           });
                         }}
@@ -565,7 +566,7 @@ const Search = () => {
                       onClick={() => {
                         fetchMoreBattlesFile({
                           offset: battlesByFilename.length,
-                          q,
+                          q: query,
                         });
                       }}
                     >
@@ -576,7 +577,7 @@ const Search = () => {
                         type="button"
                         onClick={() => {
                           fetchMoreBattlesFile({
-                            q,
+                            q: query,
                             offset: battlesByFilename.length * -1,
                           });
                         }}
@@ -628,7 +629,7 @@ const Search = () => {
                       onClick={() => {
                         fetchMoreBattlesDesigner({
                           offset: battlesByDesigner.length,
-                          q,
+                          q: query,
                         });
                       }}
                     >
@@ -639,7 +640,7 @@ const Search = () => {
                         type="button"
                         onClick={() => {
                           fetchMoreBattlesDesigner({
-                            q,
+                            q: query,
                             offset: battlesByDesigner.length * -1,
                           });
                         }}
@@ -674,7 +675,7 @@ const Search = () => {
                     disabled={!morePlayers}
                     type="button"
                     onClick={() => {
-                      fetchMorePlayers({ q, offset: players.length });
+                      fetchMorePlayers({ q: query, offset: players.length });
                     }}
                   >
                     {morePlayers ? 'Show more' : 'No more results'}
@@ -683,7 +684,10 @@ const Search = () => {
                     <LoadMore
                       type="button"
                       onClick={() => {
-                        fetchMorePlayers({ q, offset: players.length * -1 });
+                        fetchMorePlayers({
+                          q: query,
+                          offset: players.length * -1,
+                        });
                       }}
                     >
                       Show all results
@@ -713,7 +717,7 @@ const Search = () => {
                     disabled={!moreTeams}
                     type="button"
                     onClick={() => {
-                      fetchMoreTeams({ q, offset: teams.length });
+                      fetchMoreTeams({ q: query, offset: teams.length });
                     }}
                   >
                     {moreTeams ? 'Show more' : 'No more results'}
@@ -722,7 +726,7 @@ const Search = () => {
                     <LoadMore
                       type="button"
                       onClick={() => {
-                        fetchMoreTeams({ q, offset: teams.length * -1 });
+                        fetchMoreTeams({ q: query, offset: teams.length * -1 });
                       }}
                     >
                       Show all results
