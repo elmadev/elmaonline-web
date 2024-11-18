@@ -130,6 +130,7 @@ const Replay = () => {
   if (!RecFileName && replay && replay.UUID === ReplayUuid) {
     navigate({
       to: `/r/${ReplayUuid}/${replay.RecFileName.replace('.rec', '')}`,
+      replace: true,
     });
   }
 
