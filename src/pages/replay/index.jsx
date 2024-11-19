@@ -295,7 +295,7 @@ const Replay = () => {
               />
             </AccordionDetails>
           </Accordion>
-          {(userid === `${replay.UploadedBy}` || mod() === 1) &&
+          {(userid === replay.UploadedBy || mod() === 1) &&
             type === 'replay' && (
               <Accordion>
                 <AccordionSummary expandIcon={<ExpandMore />}>
@@ -314,7 +314,7 @@ const Replay = () => {
                     value={edit.DrivenBy}
                     onChange={value => setEdit({ field: 'DrivenBy', value })}
                   />
-                  {userid === `${replay.UploadedBy}` && (
+                  {userid === replay.UploadedBy && (
                     <FieldBoolean
                       label="Unlisted"
                       value={edit.Unlisted}
