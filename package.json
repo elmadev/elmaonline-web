@@ -50,7 +50,7 @@
   },
   "scripts": {
     "start": "vite --mode test",
-    "start:local": "vite --mode dev",
+    "start:dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
     "g": "plop",
