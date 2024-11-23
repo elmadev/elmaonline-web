@@ -302,7 +302,7 @@ const Replay = () => {
                   <Header h3>Edit replay</Header>
                 </AccordionSummary>
                 <AccordionDetails style={{ flexDirection: 'column' }}>
-                  {userid === `${replay.UploadedBy}` && (
+                  {userid === replay.UploadedBy && (
                     <TextField
                       name="Comment"
                       value={edit.Comment}
