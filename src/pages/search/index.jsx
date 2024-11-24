@@ -19,7 +19,7 @@ import { BattleType } from 'components/Names';
 const Search = () => {
   const location = useLocation();
   const { q, t } = location.search;
-  const query = q.toString();
+  const query = q == null ? '' : q.toString();
   const [updated, setUpdated] = useState({});
   const {
     levelPacks,
