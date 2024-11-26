@@ -1,7 +1,8 @@
-// const url = 'http://localhost:3003/';
-const url = 'https://apitest.elma.online/';
-
-const s3SubFolder = 'test/';
+const url = import.meta.env.VITE_API_URL;
+const s3SubFolder = import.meta.env.VITE_S3_SUB_FOLDER;
+const upUrl = import.meta.env.VITE_UP_URL;
+const recaptcha = import.meta.env.VITE_RECAPTCHA;
+const hotJarId = import.meta.env.VITE_HOTJAR_ID;
 
 const config = {
   url,
@@ -9,12 +10,12 @@ const config = {
   s3SubFolder,
   dlUrl: `${url}dl/`,
   api: `${url}api/`,
-  up: `https://apitest.elma.online/u/`,
+  up: upUrl,
   maps: 'AIzaSyDE8Prt4OybzNNxo1MzIn1XYNGxm9rI8Zk',
-  recaptcha: '6Le-n9QUAAAAAG-3bYyysXddxwD6I6iJeDBTHf2r',
+  recaptcha,
   maxUploadSize: 10485760,
   s3Url: `https://space.elma.online/${s3SubFolder}`,
-  hotJarId: 0,
+  hotJarId,
   routerDevTools: false,
   queryDevTools: false,
 };

@@ -18,19 +18,17 @@ jobs:
         with:
           node-version: 22
 
-      - name: Replace config values
-        run: |
-          sed -i "s|https://apitest.elma.online/|${{ secrets.API_URL_LIVE }}|g" src/config.js
-          sed -i "s|'test/'|${{ secrets.S3_SUB_FOLDER_LIVE }}|g" src/config.js
-          sed -i "s|https://apitest.elma.online/u/|${{ secrets.UP_LIVE }}|g" src/config.js
-          sed -i "s|6Le-n9QUAAAAAG-3bYyysXddxwD6I6iJeDBTHf2r|${{ secrets.RECAPTCHA_LIVE }}|g" src/config.js
-          sed -i "s|hotJarId: 0|hotJarId: ${{ secrets.HOTJAR }}|g" src/config.js
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Build project
         run: yarn build
+        env:
+          VITE_API_URL: ${{ secrets.API_URL_LIVE }}
+          VITE_S3_SUB_FOLDER: ${{ secrets.S3_SUB_FOLDER_LIVE }}
+          VITE_UP_URL: ${{ secrets.UP_LIVE }}
+          VITE_RECAPTCHA: ${{ secrets.RECAPTCHA_LIVE }}
+          VITE_HOTJAR_ID: ${{ secrets.HOTJAR }}
 
       - name: Deploy to server
         uses: appleboy/scp-action@master
