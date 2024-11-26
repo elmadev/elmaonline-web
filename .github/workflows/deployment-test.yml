@@ -22,7 +22,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build project
-        run: yarn build
+        run: yarn build --mode test
 
       - name: Deploy to server
         uses: appleboy/scp-action@master
