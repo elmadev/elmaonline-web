@@ -1,4 +1,4 @@
-import { action, thunk } from 'easy-peasy';
+import { action, thunk, persist } from 'easy-peasy';
 import { Levels, GetLevelTags, GetLevelKuskis } from 'api';
 
 export default {
@@ -41,5 +41,14 @@ export default {
     if (get.ok) {
       actions.setKuskiOptions(get.data);
     }
+  }),
+  settings: persist(
+    {
+      grid: true,
+    },
+    { storage: 'localStorage' },
+  ),
+  setSettings: action((state, payload) => {
+    state.settings = { ...state.settings, ...payload };
   }),
 };
