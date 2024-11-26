@@ -79,14 +79,16 @@ const RightBarContainer = props => {
             {' by '}
             {battle.KuskiData.Kuski}
             <CrippleText>{crippleOptions(battle)}</CrippleText>
-            <div className="timeStamp">
-              Started{' '}
-              <LocalTime
-                date={battle.Started}
-                format="dd.MM.yyyy HH:mm:ss"
-                parse="X"
-              />
-            </div>
+            {battle.Started ? (
+              <div className="timeStamp">
+                Started{' '}
+                <LocalTime
+                  date={battle.Started}
+                  format="dd.MM.yyyy HH:mm:ss"
+                  parse="X"
+                />
+              </div>
+            ) : null}
             <AbortedText>{aborted === 1 && 'Battle Aborted'}</AbortedText>
             <div className="timeStamp">
               <Download href={`battlereplay/${battle.BattleIndex}`}>
