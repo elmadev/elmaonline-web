@@ -37,8 +37,8 @@ export const Text = styled.div`
   padding-bottom: ${p => (p.noPad ? 0 : '16px')};
   color: ${p => (p.light ? p.theme.lightTextColor : p.theme.fontColor)};
   font-size: ${p => (p.small ? p.theme.smallFont : p.theme.fontSize)};
-  ${p => p.t && `margin-top ${p.theme[`pad${p.t}`]};`}
-  ${p => p.b && `margin-bottom ${p.theme[`pad${p.b}`]};`}
-  ${p => p.l && `margin-left ${p.theme[`pad${p.l}`]};`}
-  ${p => p.r && `margin-right ${p.theme[`pad${p.r}`]};`}
+  ${p => p.t && `margin-top: ${p.theme[`pad${p.t}`]};`}
+  ${p => p.b && `margin-bottom: ${p.theme[`pad${p.b}`]};`}
+  ${p => p.l && `margin-left: ${p.theme[`pad${p.l}`]};`}
+  ${p => p.r && `margin-right: ${p.theme[`pad${p.r}`]};`}
 `;

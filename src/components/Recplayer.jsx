@@ -18,7 +18,14 @@ const Recplayer = props => {
     forceRefresh = false,
   } = props;
   const {
-    settings: { grass, pictures, customSkyGround, zoomScale, arrows },
+    settings: {
+      grass,
+      pictures,
+      customSkyGround,
+      zoomScale,
+      arrows,
+      autoPlay: autoPlaySetting,
+    },
   } = useStoreState(state => state.ReplaySettings);
 
   let defaultZoom = 1;
@@ -46,7 +53,7 @@ const Recplayer = props => {
   if (autoPlay === 'if-visible') {
     const { visibilityState } = document;
 
-    if (visibilityState === 'visible') {
+    if (visibilityState === 'visible' && autoPlaySetting) {
       shouldAutoPlay = true;
     }
   } else if (autoPlay === 'no') {
