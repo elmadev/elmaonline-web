@@ -137,7 +137,14 @@ const LevelPack = () => {
               )}
             </DescriptionStyle>
           </div>
-          {['record-history', 'replays', 'admin'].indexOf(tab) === -1 && (
+          {[
+            'record-history',
+            'replays',
+            'admin',
+            'multi',
+            'play-stats',
+            'crippled',
+          ].indexOf(tab) === -1 && (
             <Menus name={name} hideFilter={tab === 'personal'} />
           )}
         </Row>

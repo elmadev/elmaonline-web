@@ -30,6 +30,7 @@ const TableRow = ({
   setLevelName,
   showMoreStats,
   showLegacyIcon,
+  showLogos,
 }) => {
   // levels not played will not have stats objects.
   const stats = levelStats?.[level.LevelIndex] || {};
@@ -71,9 +72,14 @@ const TableRow = ({
 
       {hasRecord && (
         <>
-          <ListCell>
-            <Kuski kuskiData={r.KuskiData} team flag />
-          </ListCell>
+          <KuskiCell>
+            <Kuski
+              kuskiData={r.KuskiData}
+              logo={showLogos}
+              team={!showLogos}
+              flag
+            />
+          </KuskiCell>
 
           <ListCell highlight={isHighlight}>
             <Time time={r.Time} />
@@ -132,7 +138,7 @@ const Records = ({ levelStats }) => {
     highlight,
     recordsOnly: records,
     recordsOnlyLoading: loading,
-    settings: { highlightWeeks, showLegacyIcon, showMoreStats },
+    settings: { highlightWeeks, showLegacyIcon, showMoreStats, showLogos },
   } = useStoreState(state => state.LevelPack);
 
   const { setShowMoreStats } = useStoreActions(state => state.LevelPack);
@@ -222,6 +228,7 @@ const Records = ({ levelStats }) => {
                 setLevelName,
                 showMoreStats,
                 showLegacyIcon,
+                showLogos,
               }}
             />
           );
@@ -235,9 +242,9 @@ const Records = ({ levelStats }) => {
             <Time time={totalTimeArgs} />
           </ListCell>
           <ListCell />
+          <ListCell />
           {showMoreStats && (
             <>
-              <ListCell />
               <ListCell />
               <ListCell />
             </>
@@ -259,6 +266,12 @@ const Records = ({ levelStats }) => {
     </>
   );
 };
+
+const KuskiCell = styled(ListCell)`
+  height: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+`;
 
 const TimeRow = styled(ListRow)`
   background: ${p => (p.selected ? p.theme.primary : 'transparent')};

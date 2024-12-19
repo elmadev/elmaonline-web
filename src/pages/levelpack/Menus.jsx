@@ -21,7 +21,7 @@ const Menus = ({ name, hideFilter }) => {
   const [openFilter, setOpenFilter] = useState(false);
   const {
     levelPackInfo,
-    settings: { highlightWeeks, showLegacyIcon, showLegacy },
+    settings: { highlightWeeks, showLegacyIcon, showLegacy, showLogos },
     teams,
     countries,
     kuskis,
@@ -34,12 +34,14 @@ const Menus = ({ name, hideFilter }) => {
     setHighlightWeeks,
     toggleShowLegacyIcon,
     toggleShowLegacy,
+    toggleShowLogos,
     getStats,
     setTeam,
     setCountry,
     setKuskisFilter,
     getRecordsOnly,
   } = useStoreActions(actions => actions.LevelPack);
+
   return (
     <Settings>
       {openSettings || openFilter ? (
@@ -180,31 +182,31 @@ const Menus = ({ name, hideFilter }) => {
                       >
                         <FormControlLabel
                           value={0}
-                          checked={highlightWeeks === '0'}
+                          checked={highlightWeeks === 0}
                           label="0"
                           control={<Radio size="small" />}
                         />
                         <FormControlLabel
                           value={1}
-                          checked={highlightWeeks === '1'}
+                          checked={highlightWeeks === 1}
                           label="1"
                           control={<Radio size="small" />}
                         />
                         <FormControlLabel
                           value={2}
-                          checked={highlightWeeks === '2'}
+                          checked={highlightWeeks === 2}
                           label="2"
                           control={<Radio size="small" />}
                         />
                         <FormControlLabel
                           value={3}
-                          checked={highlightWeeks === '3'}
+                          checked={highlightWeeks === 3}
                           label="3"
                           control={<Radio size="small" />}
                         />
                         <FormControlLabel
                           value={4}
-                          checked={highlightWeeks === '4'}
+                          checked={highlightWeeks === 4}
                           label="4"
                           control={<Radio size="small" />}
                         />
@@ -233,6 +235,13 @@ const Menus = ({ name, hideFilter }) => {
                     </SettingItem>
                   </>
                 )}
+                <SettingItem>
+                  <FieldBoolean
+                    value={showLogos}
+                    label="Show team logos"
+                    onChange={() => toggleShowLogos()}
+                  />
+                </SettingItem>
               </Paper>
             </ClickAwayListener>
           )}

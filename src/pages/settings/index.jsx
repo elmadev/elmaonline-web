@@ -13,6 +13,8 @@ import Themes from './Themes';
 import Notifications from './Notifications';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import DeviceSettings from './DeviceSettings';
+import { Row, Column } from 'components/Containers';
+import GenericUpload from 'features/GenericUpload';
 
 const Settings = () => {
   const { tab } = useParams({ strict: false });
@@ -78,7 +80,9 @@ const Settings = () => {
         }}
       >
         {nickId() > 0 && <Tab label="User info" value="" />}
-        {nickId() > 0 && <Tab label="Team" value="team" />}
+        {nickId() > 0 && userInfo.TeamIndex && (
+          <Tab label="Team" value="team" />
+        )}
         {nickId() > 0 && <Tab label="Ignore" value="ignore" />}
         {nickId() > 0 && <Tab label="Site theme" value="themes" />}
         {nickId() > 0 && <Tab label="Notifications" value="notifications" />}
@@ -152,21 +156,52 @@ const Settings = () => {
                 <Grid item xs={12} sm={6}>
                   <Paper>
                     <PaperCon>
-                      <Checkbox
-                        checked={locked}
-                        onChange={() =>
-                          updateUserInfo({
-                            Value: locked ? [0] : [1],
-                            Field: 'Locked',
-                          })
-                        }
-                        value="Locked"
-                        color="primary"
-                      />
-                      <Text>Lock team</Text>
-                      <OpenInfo onClick={() => openInfo(!info)}>
-                        <Info />
-                      </OpenInfo>
+                      <Row>
+                        <Checkbox
+                          checked={locked}
+                          onChange={() =>
+                            updateUserInfo({
+                              Value: locked ? [0] : [1],
+                              Field: 'Locked',
+                            })
+                          }
+                          value="Locked"
+                          color="primary"
+                        />
+                        <Text>Lock team</Text>
+                        <OpenInfo onClick={() => openInfo(!info)}>
+                          <Info />
+                        </OpenInfo>
+                      </Row>
+                      <Column>
+                        <Header h2>Upload logo</Header>
+                        <Column>
+                          <div>
+                            Current Logo:
+                            {userInfo.TeamData?.Logo ? (
+                              <LogoImg
+                                src={userInfo.TeamData.Logo}
+                                alt="Team logo"
+                              />
+                            ) : (
+                              ' No logo'
+                            )}
+                          </div>
+                          <div>
+                            Max file size is 1mb. Logos will be shown with a
+                            height of 20px and width up to 40px. Common aspect
+                            ratio is 1/2. Most image types are supported
+                            including animated.
+                          </div>
+                        </Column>
+                        <GenericUpload
+                          maxUploadSize={1000000}
+                          filetype="img"
+                          onUploaded={url =>
+                            updateUserInfo({ Value: url, Field: 'Logo' })
+                          }
+                        />
+                      </Column>
                     </PaperCon>
                   </Paper>
                 </Grid>
@@ -243,11 +278,9 @@ const InfoBox = styled.div`
 `;
 
 const PaperCon = styled.div`
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
+  padding: 10px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
 
 const OpenInfo = styled.div`
@@ -269,6 +302,13 @@ const Remove = styled(RemoveCircle)`
 const IgnoreCon = styled.div`
   margin-top: 4px;
   cursor: pointer;
+`;
+
+const LogoImg = styled.img`
+  margin-left: ${p => p.theme.padSmall};
+  height: 20px;
+  max-width: 40px;
+  object-fit: contain;
 `;
 
 export default Settings;
