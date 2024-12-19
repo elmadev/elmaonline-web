@@ -68,6 +68,7 @@ export default {
       showMoreStats: false,
       relative: false,
       highlightTargets: false,
+      showLogos: true,
     },
     { storage: 'localStorage' },
   ),
@@ -79,6 +80,9 @@ export default {
   }),
   toggleShowLegacy: action(state => {
     state.settings.showLegacy = !state.settings.showLegacy;
+  }),
+  toggleShowLogos: action(state => {
+    state.settings.showLogos = !state.settings.showLogos;
   }),
   setShowMoreStats: action((state, payload) => {
     state.settings.showMoreStats = payload;
