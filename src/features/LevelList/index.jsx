@@ -321,6 +321,7 @@ export default function LevelList({
             </ToggleButtonGroup>
             <SortPagination>
               <TablePagination
+                component="div"
                 count={-1}
                 rowsPerPageOptions={false}
                 rowsPerPage={pageSize}
@@ -525,7 +526,7 @@ const SortPagination = styled.div`
     padding: 0;
   }
   @media screen and (max-width: 900px) {
-    justify-content: flex-start;
+    min-width: auto;
   }
 `;
 
