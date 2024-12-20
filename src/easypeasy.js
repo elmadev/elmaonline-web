@@ -41,6 +41,7 @@ import ReplayCommentArchive from 'features/ReplayCommentArchive/store';
 import Recap from 'pages/recap/store';
 import DatInfo from 'pages/datinfo/store';
 import LevelCollectionStats from 'features/LevelCollectionStats/store';
+import GenericUpload from 'features/GenericUpload/store';
 
 export default {
   LevelCollectionStats,
@@ -85,6 +86,7 @@ export default {
   Replays,
   Notifications,
   Recap,
+  GenericUpload,
   Page: {
     sideBarVisible: true,
     showSideBar: action(state => {

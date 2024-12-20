@@ -4,7 +4,11 @@ import styled from '@emotion/styled';
 import config from 'config';
 import { nickId } from 'utils/nick';
 
-const types = { '.rec': { '*/*': ['.rec'] }, '.dat': { '*/*': ['.dat'] } };
+const types = {
+  '.rec': { '*/*': ['.rec'] },
+  '.dat': { '*/*': ['.dat'] },
+  img: { 'image/*': ['.png', '.gif', '.webp', '.jpg', '.apng', '.svg'] },
+};
 
 const Dropzone = ({
   error,
@@ -14,12 +18,13 @@ const Dropzone = ({
   login,
   warning,
   minHeight = '100px',
+  maxSize,
 }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: filetype ? types[filetype] : undefined,
     multiple: false,
-    maxSize: config.maxUploadSize,
+    maxSize: maxSize ? maxSize : config.maxUploadSize,
   });
   return (
     <Container
