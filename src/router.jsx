@@ -35,6 +35,7 @@ import Mod from 'pages/mod';
 import NotFound from 'pages/not-found';
 import Ranking from 'pages/ranking';
 import Register from 'pages/register';
+import ReplayStandalone from 'pages/replay-standalone';
 import Replay from 'pages/replay';
 import Replays from 'pages/replays';
 import Search from 'pages/search';
@@ -356,6 +357,12 @@ const registerRoute = createRoute({
   component: Register,
 });
 
+const standaloneReplayRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/r',
+  component: ReplayStandalone,
+});
+
 const replayRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/r/$ReplayUuid',
@@ -468,6 +475,7 @@ const routeTree = rootRoute.addChildren([
   rankingRoute,
   recapRoute,
   registerRoute,
+  standaloneReplayRoute,
   replayRoute,
   replayNameRoute,
   replaysRoute,

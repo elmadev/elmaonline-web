@@ -10524,10 +10524,10 @@ nanoid@^3.3.7:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
 
-nanoid@^5.0.8:
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.8.tgz#7610003f6b3b761b5c244bb342c112c5312512bf"
-  integrity sha512-TcJPw+9RV9dibz1hHUzlLVy8N4X9TnwirAjrU08Juo6BNKggzVfP2ZJ/3ZUSq15Xl5i85i+Z89XBO90pB2PghQ==
+nanoid@^5.0.9:
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.9.tgz#977dcbaac055430ce7b1e19cf0130cea91a20e50"
+  integrity sha512-Aooyr6MXU6HpvvWXKoVoXwKMs/KyVakWwg7xQfv5/S/RIgJMy0Ifa45H9qqYy7pTCszrHzP21Uk4PZq2HpEM8Q==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -12292,10 +12292,10 @@ rechoir@^0.8.0:
   dependencies:
     resolve "^1.20.0"
 
-recplayer-react@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/recplayer-react/-/recplayer-react-1.7.2.tgz#abdda9e65f4d37550143bf6872d13c8a5ea1ae18"
-  integrity sha512-1ckwZ0l8YnbSAa5fJDM1HPH/YYxQrAE4yrdB6FQRdzi+fbfcLNx9uukVMQ9ScBn2JjEu5ZpJzjbrs9QVtO3G9w==
+recplayer-react@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/recplayer-react/-/recplayer-react-1.7.3.tgz#261aaa155d73a63e4d77e0ab45f0488ab056715d"
+  integrity sha512-NKJME9DXRzXMG/NFeu+m+ZzLayFKSM9lnLzX9hBqsLwDjsXLP+uHhFInkBZ4zwWF2qDEevvUz8PTKOECpiGkfg==
 
 recursive-readdir@2.2.2:
   version "2.2.2"

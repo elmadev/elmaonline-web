@@ -6,11 +6,12 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  TablePagination,
+  Paper,
 } from '@material-ui/core';
 import { ListContainer, ListHeader, ListCell, ListRow } from 'components/List';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import styled from '@emotion/styled';
-import Pagination from '@material-ui/lab/Pagination';
 import { Level } from 'components/Names';
 import Kuski from 'components/Kuski';
 import Tags from 'components/Tags';
@@ -18,6 +19,13 @@ import LocalTime from 'components/LocalTime';
 import Time from 'components/Time';
 import { KuskiAutoComplete } from 'components/AutoComplete';
 import Loading from 'components/Loading';
+import LevelCard from 'components/LevelCard';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import ListIcon from '@material-ui/icons/List';
+import AppsIcon from '@material-ui/icons/Apps';
+import { useSearch, useNavigate } from '@tanstack/react-router';
+import Switch from 'components/Switch';
 
 export default function LevelList({
   defaultPage = 0,
@@ -27,31 +35,35 @@ export default function LevelList({
   nonsticky = false,
   levelPack = null,
 }) {
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [excludedTags, setExcludedTags] = useState([]);
-  const [addedBy, setAddedBy] = useState(defaultAddedBy || null);
-  const [selectedLevelpack, setSelectedLevelpack] = useState(levelPack);
-  const [finished, setFinished] = useState('all');
-  const [finishedBy, setFinishedBy] = useState(null);
-  const [battled, setBattled] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [page, setPage] = useState(defaultPage);
+  const {
+    page = defaultPage,
+    selectedTags,
+    excludedTags,
+    addedBy = defaultAddedBy,
+    selectedLevelpack = levelPack,
+    finished = 'all',
+    finishedBy,
+    battled = 'all',
+    q = '',
+    order = 'desc',
+  } = useSearch({
+    strict: false,
+  });
+  const navigate = useNavigate();
+
   const [pageSize] = useState(defaultPageSize);
   const { loggedIn } = useStoreState(state => state.Login);
-  const { levels, tagOptions, kuskiOptions, loadingLevels } = useStoreState(
-    state => state.LevelList,
-  );
+  const { levels, tagOptions, kuskiOptions, loadingLevels, settings } =
+    useStoreState(state => state.LevelList);
   const { levelpacksSorted } = useStoreState(state => state.Levels);
   const { getLevelpacks } = useStoreActions(state => state.Levels);
-  const { getLevels, getTagOptions, getKuskiOptions } = useStoreActions(
-    actions => actions.LevelList,
-  );
+  const { getLevels, getTagOptions, getKuskiOptions, setSettings } =
+    useStoreActions(actions => actions.LevelList);
 
   useEffect(() => {
     getTagOptions();
     getKuskiOptions();
     getLevelpacks(false);
-    setPage(getPage());
   }, []);
 
   useEffect(() => {
@@ -66,6 +78,7 @@ export default function LevelList({
     battled,
     finishedBy,
     selectedLevelpack,
+    order,
   ]);
 
   const handleSearchBlur = () => {
@@ -78,26 +91,31 @@ export default function LevelList({
     }
   };
 
-  const updatePage = pageNo => {
-    setPage(pageNo);
+  const updateSearch = values => {
+    navigate({
+      search: prev => ({ ...prev, ...values }),
+    });
   };
 
-  const getPage = () => {
-    return page;
+  const showGrid = () => {
+    if (summary) {
+      return false;
+    }
+    return settings.grid;
   };
 
   const buildSearchQueryParams = () => ({
-    page: getPage(),
+    page,
     pageSize,
-    tags: selectedTags.map(tag => tag.TagIndex),
-    excludedTags: excludedTags.map(tag => tag.TagIndex),
-    order: 'desc',
+    tags: selectedTags,
+    excludedTags,
+    order,
     addedBy,
     finished,
     battled,
-    finishedBy: finishedBy?.KuskiIndex || undefined,
-    q: searchQuery,
-    levelPack: selectedLevelpack?.LevelPackIndex || undefined,
+    finishedBy: finishedBy || undefined,
+    q,
+    levelPack: selectedLevelpack,
   });
 
   const columns = [
@@ -124,240 +142,321 @@ export default function LevelList({
   };
 
   return (
-    <Container small={summary}>
-      {!summary && (
-        <>
-          <StickyContainer nonsticky={nonsticky}>
-            <SearchTerm
-              label="Search query"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              onBlur={handleSearchBlur}
-              onKeyDown={handleSearchKeyPress}
-            />
+    <Root>
+      <Container small={summary}>
+        {!summary && (
+          <>
+            <StickyContainer nonsticky={nonsticky}>
+              <TextField
+                label="Search query"
+                value={q}
+                onChange={e => updateSearch({ q: e.target.value })}
+                onBlur={handleSearchBlur}
+                onKeyDown={handleSearchKeyPress}
+              />
 
-            <Filter
-              value={selectedTags}
-              onChange={(_event, newValue) => {
-                setSelectedTags(newValue);
-                updatePage(0);
-              }}
-              forcePopupIcon={false}
-              multiple
-              id="Tags"
-              size="small"
-              options={tagOptions.filter(tag => !excludedTags.includes(tag))}
-              getOptionLabel={option => option.Name}
-              getOptionSelected={(option, value) => option.Name === value.Name}
-              filterSelectedOptions
-              renderInput={params => (
-                <TextField {...params} label="Included tags" />
-              )}
-            />
-            <Filter
-              value={excludedTags}
-              onChange={(_event, newValue) => {
-                setExcludedTags(newValue);
-                updatePage(0);
-              }}
-              forcePopupIcon={false}
-              multiple
-              id="Excluded tags"
-              size="small"
-              options={tagOptions.filter(tag => !selectedTags.includes(tag))}
-              getOptionLabel={option => option.Name}
-              getOptionSelected={(option, value) => option.Name === value.Name}
-              filterSelectedOptions
-              renderInput={params => (
-                <TextField {...params} label="Excluded tags" />
-              )}
-            />
-            <Filter
-              value={selectedLevelpack}
-              onChange={(_event, newValue) => {
-                setSelectedLevelpack(newValue);
-                updatePage(0);
-              }}
-              forcePopupIcon={false}
-              multiple={false}
-              id="Levelpack"
-              size="small"
-              options={levelpacksSorted}
-              getOptionLabel={option => option.LevelPackName}
-              getOptionSelected={(option, value) =>
-                option.LevelPackName === value.LevelPackName
-              }
-              filterSelectedOptions
-              renderInput={params => (
-                <TextField {...params} label="Levelpack" />
-              )}
-            />
-            {!defaultAddedBy && (
-              <KuskiFilter>
+              <Autocomplete
+                value={tagOptions.filter(tag =>
+                  selectedTags?.includes(tag.TagIndex),
+                )}
+                onChange={(_event, newValue) => {
+                  updateSearch({
+                    selectedTags: newValue.map(t => t.TagIndex),
+                    page: 0,
+                  });
+                }}
+                forcePopupIcon={false}
+                multiple
+                id="Tags"
+                size="small"
+                options={tagOptions.filter(
+                  tag => !excludedTags?.includes(tag.TagIndex),
+                )}
+                getOptionLabel={option => option.Name}
+                getOptionSelected={(option, value) =>
+                  option.Name === value.Name
+                }
+                filterSelectedOptions
+                renderInput={params => (
+                  <StyledTextField {...params} label="Included tags" />
+                )}
+              />
+              <Autocomplete
+                value={tagOptions.filter(tag =>
+                  excludedTags?.includes(tag.TagIndex),
+                )}
+                onChange={(_event, newValue) => {
+                  updateSearch({
+                    excludedTags: newValue.map(t => t.TagIndex),
+                    page: 0,
+                  });
+                }}
+                forcePopupIcon={false}
+                multiple
+                id="Excluded tags"
+                size="small"
+                options={tagOptions.filter(
+                  tag => !selectedTags?.includes(tag.TagIndex),
+                )}
+                getOptionLabel={option => option.Name}
+                getOptionSelected={(option, value) =>
+                  option.Name === value.Name
+                }
+                filterSelectedOptions
+                renderInput={params => (
+                  <StyledTextField {...params} label="Excluded tags" />
+                )}
+              />
+              <Autocomplete
+                value={
+                  levelpacksSorted.find(
+                    lp => lp.LevelPackIndex === selectedLevelpack,
+                  ) || null
+                }
+                onChange={(_event, newValue) => {
+                  updateSearch({
+                    selectedLevelpack: newValue?.LevelPackIndex,
+                    page: 0,
+                  });
+                }}
+                forcePopupIcon={false}
+                multiple={false}
+                id="Levelpack"
+                size="small"
+                options={levelpacksSorted}
+                getOptionLabel={option => option.LevelPackName}
+                getOptionSelected={(option, value) =>
+                  option.LevelPackName === value?.LevelPackName
+                }
+                filterSelectedOptions
+                renderInput={params => (
+                  <StyledTextField {...params} label="Levelpack" />
+                )}
+              />
+              {!defaultAddedBy && (
                 <KuskiAutoComplete
                   list={kuskiOptions}
-                  value={kuskiOptions.find(k => +k.KuskiIndex === +addedBy)}
+                  selected={
+                    kuskiOptions.find(k => +k.KuskiIndex === +addedBy) || null
+                  }
                   onChange={newValue => {
-                    setAddedBy(newValue?.KuskiIndex || null);
-                    updatePage(0);
+                    updateSearch({
+                      addedBy: newValue?.KuskiIndex,
+                      page: 0,
+                    });
                   }}
                   multiple={false}
                   label="Added by"
                   variant="standard"
                 />
-              </KuskiFilter>
-            )}
-            <FormControl>
-              <InputLabel id="battled">Battled</InputLabel>
-              <SelectFilter
-                labelId="battled"
-                value={battled}
-                displayEmpty
-                onChange={e => setBattled(e.target.value)}
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value={true}>Battled</MenuItem>
-                <MenuItem value={false}>Unbattled</MenuItem>
-              </SelectFilter>
-            </FormControl>
-            <FormControl>
-              <InputLabel id="finished">Finished</InputLabel>
-              <SelectFilter
-                labelId="finished"
-                value={finished}
-                displayEmpty
-                onChange={e => {
-                  if (e.target.value === 'all') {
-                    setFinishedBy(null);
-                  }
-                  setFinished(e.target.value);
-                }}
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value={true}>Finished</MenuItem>
-                <MenuItem value={false}>Unfinished</MenuItem>
-              </SelectFilter>
-            </FormControl>
-            <KuskiFilter>
+              )}
+              <FormControl>
+                <InputLabel id="battled">Battled</InputLabel>
+                <Select
+                  labelId="battled"
+                  value={battled}
+                  displayEmpty
+                  onChange={e => updateSearch({ battled: e.target.value })}
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value={true}>Battled</MenuItem>
+                  <MenuItem value={false}>Unbattled</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl>
+                <InputLabel id="finished">Finished</InputLabel>
+                <Select
+                  labelId="finished"
+                  value={finished}
+                  displayEmpty
+                  onChange={e => {
+                    updateSearch({
+                      ...(e.target.value === 'all' && {
+                        finishedBy: undefined,
+                      }),
+                      finished: e.target.value,
+                    });
+                  }}
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value={true}>Finished</MenuItem>
+                  <MenuItem value={false}>Unfinished</MenuItem>
+                </Select>
+              </FormControl>
               <KuskiAutoComplete
                 list={kuskiOptions}
-                selected={finishedBy}
+                selected={
+                  kuskiOptions.find(k => +k.KuskiIndex === +finishedBy) || null
+                }
                 onChange={newValue => {
-                  if (finished === 'all') {
-                    setFinished(true);
-                  }
-                  setFinishedBy(newValue);
-                  updatePage(0);
+                  updateSearch({
+                    ...(finished === 'all' && newValue && { finished: true }),
+                    finishedBy: newValue?.KuskiIndex,
+                    page: 0,
+                  });
                 }}
                 multiple={false}
                 label="Finished by"
                 variant="standard"
               />
-            </KuskiFilter>
-          </StickyContainer>
-        </>
-      )}
-
-      <ListContainerScrollable flex>
-        <ListHeader>
-          <ListCell width={170}>Added</ListCell>
-          <ListCell width={150}>Filename</ListCell>
-          <ListCell>Level name</ListCell>
-          <ListCell width={100}>Added by</ListCell>
-          <ListCell width={100}>Best time</ListCell>
-          {loggedIn && <ListCell width={100}>My time</ListCell>}
-          <ListCell width={100}>Battles</ListCell>
-          <ListCell width={100}>Apples</ListCell>
-          <ListCell width={100}>Killers</ListCell>
-
-          {!summary && (
-            <>
-              <ListCell>Tags</ListCell>
-            </>
-          )}
-        </ListHeader>
-        {loadingLevels ? (
-          <Loading />
-        ) : (
-          levels.rows.map(level => {
-            return (
-              <ListRow key={`${level.LevelIndex}`}>
-                {columns.indexOf('Added') !== -1 && (
-                  <ListCell width={170}>
-                    <LocalTime
-                      date={level.Added}
-                      format="eee d MMM yyyy HH:mm"
-                      parse="X"
-                    />
-                  </ListCell>
-                )}
-                {columns.indexOf('Filename') !== -1 && (
-                  <ListCell width={150}>
-                    <Level LevelIndex={level.LevelIndex} LevelData={level} />
-                  </ListCell>
-                )}
-                {columns.indexOf('Level name') !== -1 && (
-                  <ListCell>{level.LongName}</ListCell>
-                )}
-                {columns.indexOf('Added by') !== -1 && (
-                  <ListCell width={100}>
-                    {level.KuskiData ? (
-                      <Kuski kuskiData={level.KuskiData} />
-                    ) : (
-                      <div>{level.AddedByText || 'Unknown'}</div>
-                    )}
-                  </ListCell>
-                )}
-                {columns.indexOf('Best time') !== -1 && (
-                  <ListCell width={100}>
-                    {level.Besttime ? <Time time={level.Besttime} /> : '-'}
-                  </ListCell>
-                )}
-                {loggedIn && columns.indexOf('My time') !== -1 && (
-                  <ListCell width={100}>
-                    {level.Mytime ? <Time time={level.Mytime} /> : '-'}
-                  </ListCell>
-                )}
-                {columns.indexOf('Battles') !== -1 && (
-                  <ListCell width={100}>{level.BattleCount || '-'}</ListCell>
-                )}
-                {columns.indexOf('Apples') !== -1 && (
-                  <ListCell width={100}>{level.Apples}</ListCell>
-                )}
-                {columns.indexOf('Killers') !== -1 && (
-                  <ListCell width={100}>{level.Killers}</ListCell>
-                )}
-                {columns.indexOf('Tags') !== -1 && (
-                  <ListCell>
-                    <Tags tags={getTags(level)} />
-                  </ListCell>
-                )}
-              </ListRow>
-            );
-          })
+            </StickyContainer>
+          </>
         )}
-      </ListContainerScrollable>
 
-      {!summary && (
-        <div style={{ padding: '16px' }}>
-          <Pagination
-            count={Math.ceil(levels.count.length / pageSize)}
-            onChange={(event, value) => updatePage(value - 1)}
-            page={getPage() + 1}
-            showFirstButton
-            showLastButton
-          />
-        </div>
-      )}
-    </Container>
+        <LevelContainer>
+          <Row>
+            <ToggleButtonGroup
+              value={settings.grid}
+              size="small"
+              exclusive
+              style={{ alignSelf: 'center', marginRight: '12px' }}
+              onChange={(ev, value) => setSettings({ grid: value })}
+            >
+              <ToggleButton value={false}>
+                <ListIcon fontSize="small" />
+              </ToggleButton>
+              <ToggleButton value={true}>
+                <AppsIcon fontSize="small" />
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <SortPagination>
+              <TablePagination
+                component="div"
+                count={-1}
+                rowsPerPageOptions={false}
+                rowsPerPage={pageSize}
+                page={page}
+                onPageChange={(e, value) => updateSearch({ page: value })}
+              />
+              <Switch
+                checked={order === 'desc'}
+                onChange={value =>
+                  updateSearch({ order: value ? 'desc' : 'asc', page: 0 })
+                }
+              >
+                Recent levels first
+              </Switch>
+            </SortPagination>
+          </Row>
+
+          {!showGrid() && (
+            <ListContainerScrollable flex>
+              <ListHeader>
+                <ListCell width={170}>Added</ListCell>
+                <ListCell width={120}>Filename</ListCell>
+                <ListCell width={150}>Level name</ListCell>
+                <ListCell width={100}>Added by</ListCell>
+                <ListCell width={100}>Best time</ListCell>
+                {loggedIn && <ListCell width={100}>My time</ListCell>}
+                <ListCell width={80}>Battles</ListCell>
+                <ListCell width={80}>Apples</ListCell>
+                <ListCell width={80}>Killers</ListCell>
+
+                {!summary && (
+                  <>
+                    <ListCell>Tags</ListCell>
+                  </>
+                )}
+              </ListHeader>
+              {loadingLevels ? (
+                <Loading />
+              ) : (
+                levels.rows.map(level => {
+                  return (
+                    <ListRow key={`${level.LevelIndex}`}>
+                      {columns.indexOf('Added') !== -1 && (
+                        <ListCell width={170}>
+                          <LocalTime
+                            date={level.Added}
+                            format="eee d MMM yyyy HH:mm"
+                            parse="X"
+                          />
+                        </ListCell>
+                      )}
+                      {columns.indexOf('Filename') !== -1 && (
+                        <ListCell width={120}>
+                          <Level
+                            LevelIndex={level.LevelIndex}
+                            LevelData={level}
+                          />
+                        </ListCell>
+                      )}
+                      {columns.indexOf('Level name') !== -1 && (
+                        <ListCell width={150}>{level.LongName}</ListCell>
+                      )}
+                      {columns.indexOf('Added by') !== -1 && (
+                        <ListCell width={100}>
+                          {level.KuskiData ? (
+                            <Kuski kuskiData={level.KuskiData} />
+                          ) : (
+                            <div>{level.AddedByText || 'Unknown'}</div>
+                          )}
+                        </ListCell>
+                      )}
+                      {columns.indexOf('Best time') !== -1 && (
+                        <ListCell width={100}>
+                          {level.Besttime ? (
+                            <Time time={level.Besttime} />
+                          ) : (
+                            '-'
+                          )}
+                        </ListCell>
+                      )}
+                      {loggedIn && columns.indexOf('My time') !== -1 && (
+                        <ListCell width={100}>
+                          {level.Mytime ? <Time time={level.Mytime} /> : '-'}
+                        </ListCell>
+                      )}
+                      {columns.indexOf('Battles') !== -1 && (
+                        <ListCell width={80}>
+                          {level.BattleCount || '-'}
+                        </ListCell>
+                      )}
+                      {columns.indexOf('Apples') !== -1 && (
+                        <ListCell width={80}>{level.Apples}</ListCell>
+                      )}
+                      {columns.indexOf('Killers') !== -1 && (
+                        <ListCell width={80}>{level.Killers}</ListCell>
+                      )}
+                      {columns.indexOf('Tags') !== -1 && (
+                        <ListCell>
+                          <Tags tags={getTags(level)} />
+                        </ListCell>
+                      )}
+                    </ListRow>
+                  );
+                })
+              )}
+            </ListContainerScrollable>
+          )}
+
+          {showGrid() && (
+            <CardGrid>
+              {loadingLevels ? (
+                <Loading />
+              ) : (
+                levels.rows.map(level => (
+                  <LevelCard
+                    key={level.LevelIndex}
+                    level={level}
+                    tags={getTags(level)}
+                  />
+                ))
+              )}
+            </CardGrid>
+          )}
+        </LevelContainer>
+      </Container>
+    </Root>
   );
 }
 
+const Root = styled.div`
+  background: ${p => p.theme.pageBackground};
+`;
+
 const Container = styled.div`
   display: block;
-  background: ${p =>
-    p.grid ? p.theme.pageBackgroundDark : p.theme.paperBackground};
-  min-width: 100%;
   max-height: ${p => (p.small ? '243px' : 'auto')};
   overflow: ${p => (p.small ? 'auto' : 'visible')};
   a {
@@ -366,68 +465,74 @@ const Container = styled.div`
       color: ${p => p.theme.linkColor};
     }
   }
+  padding: 0.5rem;
 `;
 
-const StickyContainer = styled.div`
-  background: ${p => p.theme.pageBackground};
+const StickyContainer = styled(Paper)`
   position: ${p => (p.nonsticky ? 'relative' : 'sticky')};
-  display: flex;
-  justify-content: space-between;
   top: ${p => (p.nonsticky ? '0' : '52px')};
-  padding-left: 1rem;
-  align-items: center;
+  padding: 1rem 0.25rem;
+  margin: 0.5rem;
   z-index: 10;
-  flex-wrap: wrap;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+
+  & > div:nth-child(2),
+  & > div:nth-child(3) {
+    grid-column: span 2;
+  }
+  padding: 12px;
 `;
 
-const Filter = styled(Autocomplete)`
-  background: ${p => p.theme.pageBackground};
-  padding: 0.7rem 1rem 0.5rem 1rem;
-  flex-grow: 1;
-
-  .MuiInput-underline:before {
-    content: none;
-  }
-
-  .MuiInput-underline:after {
-    content: none;
-  }
+const LevelContainer = styled(Paper)`
+  margin: 0.5rem;
 `;
 
-const SearchTerm = styled(TextField)`
-  background: ${p => p.theme.pageBackground};
-  padding: 0.7rem 1rem 0.5rem 1rem;
-  flex-grow: 1;
-
-  .MuiInput-underline:before {
-    content: none;
-  }
-
-  .MuiInput-underline:after {
-    content: none;
-  }
-`;
-
-const SelectFilter = styled(Select)`
-  background: ${p => p.theme.pageBackground};
-  padding: 0.7rem 1rem 0.5rem 1rem;
-  flex-grow: 1;
-  min-width: 100px;
-`;
-
-const KuskiFilter = styled.div`
-  flex-grow: 1;
-
-  .MuiInput-underline:before {
-    content: none;
-  }
-
-  .MuiInput-underline:after {
-    content: none;
+const StyledTextField = styled(TextField)`
+  input {
+    padding: 6px 0 !important;
   }
 `;
 
 const ListContainerScrollable = styled(ListContainer)`
   overflow: auto;
-  width: 100%;
+  background: ${p => p.theme.paperBackground};
+  padding: 0.5rem;
+  width: auto;
+`;
+
+const CardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+  padding: 12px;
+  background: ${p => p.theme.pageBackground};
+`;
+
+const SortPagination = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 3px;
+  min-width: 473px;
+  border-bottom: 0px;
+  > * {
+    padding-right: 10px;
+  }
+  td {
+    padding: 0;
+  }
+  @media screen and (max-width: 900px) {
+    min-width: auto;
+  }
+`;
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-bottom: 10px;
 `;

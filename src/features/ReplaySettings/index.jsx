@@ -29,7 +29,7 @@ const ReplaySettings = ({ battle = false }) => {
     <Row jc="flex-end" ai="center">
       {openSettings && (
         <SettingsContainer>
-          <Text light small noPad r="XSmall">
+          <Text light small noPad r="Small">
             Refresh to apply changes
           </Text>
           {battle && (
@@ -85,6 +85,7 @@ const ReplaySettings = ({ battle = false }) => {
 const SettingsContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   @media (max-width: 1100px) {
     flex-direction: column;
   }

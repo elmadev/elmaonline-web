@@ -31,7 +31,7 @@
     "level-editor-gui": "https://github.com/elmadev/level-editor-gui.git",
     "lodash": "^4.17.21",
     "memoizee": "^0.4.17",
-    "nanoid": "^5.0.8",
+    "nanoid": "^5.0.9",
     "query-string": "9.1.1",
     "react": "^18.3.1",
     "react-beautiful-dnd": "13.1.1",
@@ -43,7 +43,7 @@
     "react-tiny-bbcode": "^0.4.0",
     "react-window": "1.8.10",
     "recharts": "2.13.3",
-    "recplayer-react": "^1.7.2",
+    "recplayer-react": "^1.7.3",
     "universal-cookie": "^7.2.2",
     "use-debounce": "^10.0.4",
     "yup": "^1.4.0"
