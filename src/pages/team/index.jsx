@@ -31,19 +31,21 @@ const Team = () => {
             ))}
           </ListContainer>
         </Paper>
-        <Paper pad>
-          <div>Team Name: {teamData.Team}</div>
-          <div>Members: {teamMembers.length}</div>
-          <div>
-            Team Logo:
-            {teamData?.Logo ? (
-              <LogoImg src={teamData.Logo} alt="Team logo" />
-            ) : (
-              ' No logo'
-            )}
-          </div>
-          <div>Index: {teamData.TeamIndex}</div>
-        </Paper>
+        {teamData ? (
+          <Paper pad>
+            <div>Team Name: {teamData.Team}</div>
+            <div>Members: {teamMembers.length}</div>
+            <div>
+              Team Logo:
+              {teamData?.Logo ? (
+                <LogoImg src={teamData.Logo} alt="Team logo" />
+              ) : (
+                ' No logo'
+              )}
+            </div>
+            <div>Index: {teamData.TeamIndex}</div>
+          </Paper>
+        ) : null}
       </Rows>
     </Layout>
   );
