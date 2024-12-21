@@ -40,13 +40,11 @@ const Awards = ({ overall, year }) => {
 
   useEffect(() => {
     if (!data) {
-      fetch();
+      fetch(year);
     }
-  }, []);
+  }, [year]);
 
-  if (!overall || loading || !data) {
-    return <Loading />;
-  }
+  const isLoading = !overall || loading || !data;
 
   const wins = overall.ranking.sort((a, b) => b.Wins - a.Wins).slice(0, 10);
   const ratio = overall.ranking.sort((a, b) => b.Ratio - a.Ratio).slice(0, 10);
@@ -225,73 +223,81 @@ const Awards = ({ overall, year }) => {
           onClick={index => onStep(index)}
         />
       </StepCon>
-      <Header>
-        <HeadlineTop>Best of</HeadlineTop>
-        <Headline>EOL {year}</Headline>
-      </Header>
-      <Container ref={ref}>
-        {awards.map((award, awardIndex) => {
-          if (!award?.data?.length > 0) {
-            return null;
-          }
-          return (
-            <Section>
-              <Text white>{award.title}</Text>
-              <Row ai="center" jc="center">
-                <Silver>
-                  <Name award={award} index={1} />
-                  <br />
-                  {parseFloat(award.data[1][award.key]).toLocaleString()}
-                  {award.unit}
-                </Silver>
-                <Gold>
-                  <Name award={award} index={0} />
-                  <br />
-                  {parseFloat(award.data[0][award.key]).toLocaleString()}
-                  {award.unit}
-                </Gold>
-                <Bronze>
-                  <Name award={award} index={2} />
-                  <br />
-                  {parseFloat(award.data[2][award.key]).toLocaleString()}
-                  {award.unit}
-                </Bronze>
-              </Row>
-              <Row ai="center" jc="center">
-                {open.indexOf(awardIndex) === -1 ? (
-                  <ExpandMore onClick={() => setOpen([...open, awardIndex])} />
-                ) : (
-                  <ExpandLess
-                    onClick={() => {
-                      const index = open.indexOf(awardIndex);
-                      const newOpen = [...open];
-                      newOpen.splice(index, 1);
-                      setOpen(newOpen);
-                    }}
-                  />
-                )}
-              </Row>
-              {open.indexOf(awardIndex) > -1 && (
-                <Column t="Small" ai="center" jc="center">
-                  {award.data.map((val, no) => (
-                    <Row>
-                      <No>{no + 1}.</No>
-                      <NameCon>
-                        <Name award={award} index={no} />
-                      </NameCon>
-                      <Value>
-                        {parseFloat(val[award.key]).toLocaleString()}
-                        {award.unit}
-                      </Value>
-                    </Row>
-                  ))}
-                  <Column t="Small">{award.desc}</Column>
-                </Column>
-              )}
-            </Section>
-          );
-        })}
-      </Container>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <Header>
+            <HeadlineTop>Best of</HeadlineTop>
+            <Headline>EOL {year}</Headline>
+          </Header>
+          <Container ref={ref}>
+            {awards.map((award, awardIndex) => {
+              if (!award?.data?.length > 0) {
+                return null;
+              }
+              return (
+                <Section>
+                  <Text white>{award.title}</Text>
+                  <Row ai="center" jc="center">
+                    <Silver>
+                      <Name award={award} index={1} />
+                      <br />
+                      {parseFloat(award.data[1][award.key]).toLocaleString()}
+                      {award.unit}
+                    </Silver>
+                    <Gold>
+                      <Name award={award} index={0} />
+                      <br />
+                      {parseFloat(award.data[0][award.key]).toLocaleString()}
+                      {award.unit}
+                    </Gold>
+                    <Bronze>
+                      <Name award={award} index={2} />
+                      <br />
+                      {parseFloat(award.data[2][award.key]).toLocaleString()}
+                      {award.unit}
+                    </Bronze>
+                  </Row>
+                  <Row ai="center" jc="center">
+                    {open.indexOf(awardIndex) === -1 ? (
+                      <ExpandMore
+                        onClick={() => setOpen([...open, awardIndex])}
+                      />
+                    ) : (
+                      <ExpandLess
+                        onClick={() => {
+                          const index = open.indexOf(awardIndex);
+                          const newOpen = [...open];
+                          newOpen.splice(index, 1);
+                          setOpen(newOpen);
+                        }}
+                      />
+                    )}
+                  </Row>
+                  {open.indexOf(awardIndex) > -1 && (
+                    <Column t="Small" ai="center" jc="center">
+                      {award.data.map((val, no) => (
+                        <Row>
+                          <No>{no + 1}.</No>
+                          <NameCon>
+                            <Name award={award} index={no} />
+                          </NameCon>
+                          <Value>
+                            {parseFloat(val[award.key]).toLocaleString()}
+                            {award.unit}
+                          </Value>
+                        </Row>
+                      ))}
+                      <Column t="Small">{award.desc}</Column>
+                    </Column>
+                  )}
+                </Section>
+              );
+            })}
+          </Container>
+        </>
+      )}
     </>
   );
 };

@@ -15,6 +15,7 @@ import {
   Tooltip,
 } from 'recharts';
 import { ChartPie, ChartCon } from 'components/Chart';
+import { Dropdown } from 'components/Inputs';
 import Stepper from 'components/Stepper';
 import Awards from './Awards';
 import CrippledBattles from './CrippledBattles';
@@ -32,8 +33,8 @@ import designed from 'images/recap/designed.jpg';
 import seasons from 'images/recap/seasons.jpg';
 
 const Recap = () => {
-  const year = 2023;
   const [tab, setTab] = useState(nickId() === 0 ? 1 : 0);
+  const [year, setYear] = useState('2023');
   const container = useRef();
   const {
     player: { data: playerData, loading: playerLoading },
@@ -45,11 +46,9 @@ const Recap = () => {
   } = useStoreActions(actions => actions.Recap);
 
   useEffect(() => {
-    fetch(nickId());
-    overallFetch();
-  }, []);
-
-  if (playerLoading || overallLoading) return <Loading />;
+    fetch({ user: nickId(), year });
+    overallFetch(year);
+  }, [year]);
 
   const pronoun = tab ? 'We' : 'You';
   const pronounLower = tab ? 'we' : 'you';
@@ -212,20 +211,46 @@ const Recap = () => {
     steps.push('Replays');
   }
 
+  const loading = playerLoading || overallLoading;
+
   return (
     <Layout edge>
-      <Tabs
-        variant="scrollable"
-        scrollButtons="auto"
-        value={tab}
-        onChange={(e, value) => {
-          setTab(value);
-        }}
-      >
-        {nickId() !== 0 ? <Tab label="Personal" value={0} /> : null}
-        <Tab label="Overall" value={1} />
-        <Tab label="Best of" value={2} />
-      </Tabs>
+      <Header>
+        <Tabs
+          variant="scrollable"
+          scrollButtons="auto"
+          value={tab}
+          onChange={(e, value) => {
+            setTab(value);
+          }}
+        >
+          {nickId() !== 0 ? <Tab label="Personal" value={0} /> : null}
+          <Tab label="Overall" value={1} />
+          <Tab label="Best of" value={2} />
+        </Tabs>
+        <Dropdown
+          name="Year"
+          selected={year}
+          update={y => setYear(y)}
+          options={[
+            '2010',
+            '2011',
+            '2012',
+            '2013',
+            '2014',
+            '2015',
+            '2016',
+            '2017',
+            '2018',
+            '2019',
+            '2020',
+            '2021',
+            '2022',
+            '2023',
+          ]}
+        />
+      </Header>
+      {loading ? <Loading /> : null}
       {(tab === 0 || tab === 1) && (
         <StepCon>
           <Stepper
@@ -236,8 +261,10 @@ const Recap = () => {
           />
         </StepCon>
       )}
-      {tab === 2 && <Awards overall={overallData} year={year} />}
-      {(tab === 0 || tab === 1) && (
+      {tab === 2 && !loading ? (
+        <Awards overall={overallData} year={year} />
+      ) : null}
+      {(tab === 0 || tab === 1) && !loading && (
         <Sections ref={container}>
           <Section bg="white">
             <HeadlineNick>{tab ? 'OVERALL' : nick()}</HeadlineNick>
@@ -556,6 +583,13 @@ const Recap = () => {
     </Layout>
   );
 };
+
+const Header = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+`;
 
 export const StepCon = styled.div`
   position: fixed;
