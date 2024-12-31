@@ -576,3 +576,5 @@ export const DeleteBattleLeagueBattle = id =>
 export const RecapOverall = year => api.get(`recap/${year}`);
 export const RecapPlayer = ({ user, year }) => api.get(`recap/${year}/${user}`);
 export const RecapBestof = year => api.get(`recap/bestof/${year}`);
+export const RecalPlayerAll = user => api.get(`recap/alltime/${user}`);
+export const RecapOverAllAll = () => api.get(`recap/alltime`);

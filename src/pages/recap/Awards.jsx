@@ -131,7 +131,7 @@ const Awards = ({ overall, year }) => {
       title: 'Apples battles played',
       key: 'Value',
       unit: '',
-      data: data.Ap,
+      data: data?.Ap,
       type: 'kuski',
       desc: 'Total amount of apple battles played.',
     },

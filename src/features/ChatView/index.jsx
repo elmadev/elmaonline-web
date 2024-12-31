@@ -5,6 +5,7 @@ import { Pagination } from '@material-ui/lab';
 import styled from '@emotion/styled';
 import LocalTime from 'components/LocalTime';
 import { CHAT_API_LIMIT } from 'constants/api';
+import { colorPool } from 'utils/misc';
 
 const ChatView = props => {
   const {
@@ -105,28 +106,6 @@ const ChatView = props => {
   if (!chatLines.length) return <span>No chat recorded during this time.</span>;
 
   const colorMap = {};
-
-  const colorPool = [
-    '#cb52e2',
-    '#0075DC',
-    '#993F00',
-    '#4C005C',
-    '#005C31',
-    '#2BCE48',
-    '#00998F',
-    '#740AFF',
-    '#FF5005',
-    '#ce7a26',
-    '#8F7C00',
-    '#9DCC00',
-    '#C20088',
-    '#FFA405',
-    '#FFA8BB',
-    '#426600',
-    '#FF0010',
-    '#2ec6c7',
-    '#990000',
-  ];
 
   let colorIndex = 0;
 

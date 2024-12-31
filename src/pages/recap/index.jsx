@@ -18,6 +18,7 @@ import { ChartPie, ChartCon } from 'components/Chart';
 import { Dropdown } from 'components/Inputs';
 import Stepper from 'components/Stepper';
 import Awards from './Awards';
+import OverTime from './OverTime';
 import CrippledBattles from './CrippledBattles';
 
 import playing from 'images/recap/playing.jpg';
@@ -31,6 +32,39 @@ import flag from 'images/recap/flag.jpg';
 import designer from 'images/recap/designer.jpg';
 import designed from 'images/recap/designed.jpg';
 import seasons from 'images/recap/seasons.jpg';
+
+export const hours = t => {
+  if (!t) {
+    return 0;
+  }
+  return (t / (100 * 60 * 60)).toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+  });
+};
+
+export const percent = (value, of) => {
+  if (!value || !of) {
+    return 0;
+  }
+  return `${((value * 100) / of).toFixed(0)}%`;
+};
+
+export const number = (...args) => {
+  let value = 0;
+  for (var i = 0; i < args.length; i++) {
+    if (!isNaN(parseInt(args[i]))) {
+      value += parseInt(args[i]);
+    }
+  }
+  return value.toLocaleString();
+};
+
+export const int = value => {
+  if (!value) {
+    return 0;
+  }
+  return parseInt(value);
+};
 
 const Recap = () => {
   const [tab, setTab] = useState(nickId() === 0 ? 1 : 0);
@@ -68,39 +102,6 @@ const Recap = () => {
   }
 
   const ranking = playerData?.ranking;
-
-  const hours = t => {
-    if (!t) {
-      return 0;
-    }
-    return (t / (100 * 60 * 60)).toLocaleString(undefined, {
-      maximumFractionDigits: 2,
-    });
-  };
-
-  const percent = (value, of) => {
-    if (!value || !of) {
-      return 0;
-    }
-    return `${((value * 100) / of).toFixed(0)}%`;
-  };
-
-  const number = (...args) => {
-    let value = 0;
-    for (var i = 0; i < args.length; i++) {
-      if (!isNaN(parseInt(args[i]))) {
-        value += parseInt(args[i]);
-      }
-    }
-    return value.toLocaleString();
-  };
-
-  const int = value => {
-    if (!value) {
-      return 0;
-    }
-    return parseInt(value);
-  };
 
   const voltChart = [
     { name: 'Left Volts', value: int(data.LeftVolts) },
@@ -227,28 +228,32 @@ const Recap = () => {
           {nickId() !== 0 ? <Tab label="Personal" value={0} /> : null}
           <Tab label="Overall" value={1} />
           <Tab label="Best of" value={2} />
+          <Tab label="All time (overall)" value={3} />
+          <Tab label="All time (personal)" value={4} />
         </Tabs>
-        <Dropdown
-          name="Year"
-          selected={year}
-          update={y => setYear(y)}
-          options={[
-            '2010',
-            '2011',
-            '2012',
-            '2013',
-            '2014',
-            '2015',
-            '2016',
-            '2017',
-            '2018',
-            '2019',
-            '2020',
-            '2021',
-            '2022',
-            '2023',
-          ]}
-        />
+        {[3, 4].indexOf(tab) === -1 ? (
+          <Dropdown
+            name="Year"
+            selected={year}
+            update={y => setYear(y)}
+            options={[
+              '2010',
+              '2011',
+              '2012',
+              '2013',
+              '2014',
+              '2015',
+              '2016',
+              '2017',
+              '2018',
+              '2019',
+              '2020',
+              '2021',
+              '2022',
+              '2023',
+            ]}
+          />
+        ) : null}
       </Header>
       {loading ? <Loading /> : null}
       {(tab === 0 || tab === 1) && (
@@ -264,6 +269,8 @@ const Recap = () => {
       {tab === 2 && !loading ? (
         <Awards overall={overallData} year={year} />
       ) : null}
+      {tab === 3 && !loading ? <OverTime tab={tab} /> : null}
+      {tab === 4 && !loading ? <OverTime tab={tab} /> : null}
       {(tab === 0 || tab === 1) && !loading && (
         <Sections ref={container}>
           <Section bg="white">
@@ -622,7 +629,7 @@ export const TextSmall = styled(Text)`
   font-size: 28px;
 `;
 
-const Img = styled.img`
+export const Img = styled.img`
   height: 500px;
   position: absolute;
   z-index: 0;
@@ -656,7 +663,7 @@ export const Section = styled.div`
   padding-bottom: 50px;
 `;
 
-const RecapHeadline = styled.div`
+export const RecapHeadline = styled.div`
   margin: ${p => p.theme.padSmall};
   margin-bottom: ${p => p.theme.padMedium};
   color: #4f8ec9;
@@ -672,7 +679,7 @@ const RecapHeadline = styled.div`
   -webkit-text-stroke: 2px white;
 `;
 
-const HeadlineNick = styled(RecapHeadline)`
+export const HeadlineNick = styled(RecapHeadline)`
   margin: 0;
   margin-top: 50px;
   text-transform: none;

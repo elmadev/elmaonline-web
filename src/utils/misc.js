@@ -128,3 +128,24 @@ export const highlightTime = (time, level, isMedalsTargets) => {
   }
   return '';
 };
+
+export const colorPool = [
+  '#cb52e2',
+  '#0075DC',
+  '#993F00',
+  '#005C31',
+  '#2BCE48',
+  '#00998F',
+  '#740AFF',
+  '#FF5005',
+  '#ce7a26',
+  '#8F7C00',
+  '#9DCC00',
+  '#C20088',
+  '#FFA405',
+  '#FFA8BB',
+  '#426600',
+  '#FF0010',
+  '#2ec6c7',
+  '#990000',
+];
