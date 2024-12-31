@@ -573,6 +573,8 @@ export const DeleteBattleLeagueBattle = id =>
   api.delete(`battleleague/delete/battle/${id}`);
 
 // recap
-export const RecapOverall = () => api.get('recap/2023');
-export const RecapPlayer = id => api.get(`recap/2023/${id}`);
-export const RecapBestof = () => api.get('recap/bestof/2023');
+export const RecapOverall = year => api.get(`recap/${year}`);
+export const RecapPlayer = ({ user, year }) => api.get(`recap/${year}/${user}`);
+export const RecapBestof = year => api.get(`recap/bestof/${year}`);
+export const RecalPlayerAll = user => api.get(`recap/alltime/${user}`);
+export const RecapOverAllAll = () => api.get(`recap/alltime`);
