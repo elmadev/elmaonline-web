@@ -322,7 +322,11 @@ export default function LevelList({
             <SortPagination>
               <TablePagination
                 component="div"
-                count={-1}
+                count={
+                  levels.rows.length < pageSize
+                    ? pageSize * page + levels.rows.length
+                    : -1
+                }
                 rowsPerPageOptions={false}
                 rowsPerPage={pageSize}
                 page={page}
