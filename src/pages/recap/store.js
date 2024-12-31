@@ -1,4 +1,10 @@
-import { RecapOverall, RecapPlayer, RecapBestof } from 'api';
+import {
+  RecapOverall,
+  RecapPlayer,
+  RecapBestof,
+  RecalPlayerAll,
+  RecapOverAllAll,
+} from 'api';
 import { model } from 'utils/easy-peasy';
 
 export default {
@@ -10,5 +16,11 @@ export default {
   },
   bestof: {
     ...model(RecapBestof),
+  },
+  playerAll: {
+    ...model(RecalPlayerAll),
+  },
+  overallAll: {
+    ...model(RecapOverAllAll),
   },
 };
