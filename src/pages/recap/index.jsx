@@ -68,7 +68,7 @@ export const int = value => {
 
 const Recap = () => {
   const [tab, setTab] = useState(nickId() === 0 ? 1 : 0);
-  const [year, setYear] = useState('2023');
+  const [year, setYear] = useState('2024');
   const container = useRef();
   const {
     player: { data: playerData, loading: playerLoading },
@@ -251,6 +251,7 @@ const Recap = () => {
               '2021',
               '2022',
               '2023',
+              '2024',
             ]}
           />
         ) : null}
