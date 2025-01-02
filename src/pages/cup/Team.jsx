@@ -161,15 +161,15 @@ const Team = () => {
                               CupTimeIndex={replay.CupTimeIndex}
                             />
                             <ShareLink
-                              to={`/r?levUrl=${config.dlUrl}level/${
-                                e.LevelIndex
-                              }&recUrl=${getPrivateCupRecUri(
-                                replay.CupTimeIndex,
-                                cup.ShortName,
-                                replay.KuskiData.Kuski,
-                                replay.Code,
-                                getEventNumber(e.CupIndex),
-                                replay.Time,
+                              to={`/r?levUrl=${encodeURIComponent(`${config.dlUrl}level/${e.LevelIndex}`)}&recUrl=${encodeURIComponent(
+                                getPrivateCupRecUri(
+                                  replay.CupTimeIndex,
+                                  cup.ShortName,
+                                  replay.KuskiData.Kuski,
+                                  replay.Code,
+                                  getEventNumber(e.CupIndex),
+                                  replay.Time,
+                                ),
                               )}`}
                             >
                               <Share />
