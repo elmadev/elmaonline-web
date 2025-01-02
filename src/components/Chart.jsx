@@ -90,6 +90,9 @@ export const ChartCon = styled.div`
   height: 400px;
   width: 600px;
   z-index: 1;
+  @media (max-width: 599px) {
+    width: 100%;
+  }
 `;
 
 export const WideChartCon = styled.div`

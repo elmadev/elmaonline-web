@@ -270,7 +270,7 @@ const charts = [
   {
     type: 'line',
     fields: ['AveragePlayedDuration'],
-    name: 'Palyed battle duration',
+    name: 'Played battle duration',
     func: int,
     isPersonal: true,
   },
