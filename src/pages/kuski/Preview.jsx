@@ -28,6 +28,22 @@ export default function Preview({
   nextReplay,
   previousReplay,
 }) {
+  if (!previewRec?.TimeFileData?.UUID || !previewRec?.TimeFileData?.MD5) {
+    return (
+      <Backdrop open={true} style={{ zIndex: 100 }}>
+        <Container container>
+          <Grid item sm={8} xs={12}>
+            <Player>Replay not available.</Player>
+          </Grid>
+          <Close
+            onClick={() => setPreviewRec(null)}
+            style={{ marginLeft: 'auto' }}
+          />
+        </Container>
+      </Backdrop>
+    );
+  }
+
   return (
     <Backdrop open={true} style={{ zIndex: 100 }}>
       <Container container>
@@ -47,13 +63,13 @@ export default function Preview({
             <Pad>
               <Row>
                 <Header h2>
-                  <Previous onClick={previousReplay} />
+                  {previousReplay && <Previous onClick={previousReplay} />}
                   <a
                     href={`${config.s3Url}time/${previewRec.TimeFileData.UUID}-${previewRec.TimeFileData.MD5}/${previewRec.TimeIndex}.rec`}
                   >
                     Download
                   </a>
-                  <Next onClick={nextReplay} />
+                  {nextReplay && <Next onClick={nextReplay} />}
                 </Header>
                 <Close
                   onClick={() => setPreviewRec(null)}
