@@ -27,12 +27,17 @@ const Cups = () => {
               <Header h1>Ongoing Cups</Header>
               {cupList
                 .filter(c => c.Finished === 0)
-                .map(c => (
+                .sort((a, b) => b.StartTime - a.StartTime)
+                .map((c, i) => (
                   <LinkWithDesc
                     key={c.ShortName}
                     link={`/cup/${c.ShortName}`}
                     name={c.CupName}
                     desc={c.Description}
+                    start={c.StartTime}
+                    divider={
+                      i !== cupList.filter(c => c.Finished === 0).length - 1
+                    }
                   />
                 ))}
             </Paper>
@@ -40,13 +45,18 @@ const Cups = () => {
               <Header h1>Finished Cups</Header>
               {cupList
                 .filter(c => c.Finished === 1)
-                .sort((a, b) => b.CupGroupIndex - a.CupGroupIndex)
-                .map(c => (
+                .sort((a, b) => b.StartTime - a.StartTime)
+                .map((c, i) => (
                   <LinkWithDesc
                     key={c.ShortName}
                     link={`/cup/${c.ShortName}`}
                     name={c.CupName}
                     desc={c.Description}
+                    start={c.StartTime}
+                    end={c.EndTime}
+                    divider={
+                      i !== cupList.filter(c => c.Finished === 1).length - 1
+                    }
                   />
                 ))}
             </Paper>
