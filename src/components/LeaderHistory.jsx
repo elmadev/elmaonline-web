@@ -106,8 +106,21 @@ export default function LeaderHistory({
   loading,
   openReplay,
   started,
+  personal = false,
 }) {
   if (loading) return <Loading />;
+
+  const replayAvailable = replay => {
+    if (!openReplay) {
+      return false;
+    }
+
+    if (!personal) {
+      return true;
+    }
+
+    return replay?.TimeFileData?.UUID && replay?.TimeFileData?.MD5;
+  };
 
   return (
     <Container>
@@ -120,8 +133,8 @@ export default function LeaderHistory({
           }, [])
           .map((b, i, a) => (
             <TimeDevelopmentRow
-              pointer={openReplay}
-              onClick={openReplay ? () => openReplay(b) : null}
+              pointer={replayAvailable(b)}
+              onClick={replayAvailable(b) ? () => openReplay(b) : null}
               key={b.TimeIndex}
             >
               <TimeDiff>
@@ -157,7 +170,7 @@ export default function LeaderHistory({
                   />
                 )}
               </TimeDevelopmentLocalTime>
-              {openReplay && <PlayArrow title="View" />}
+              {replayAvailable(b) && <PlayArrow title="View" />}
             </TimeDevelopmentRow>
           ))}
       </TimeDevelopment>

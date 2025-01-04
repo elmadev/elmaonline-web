@@ -512,6 +512,7 @@ const Level = () => {
                       <LeaderHistory
                         allFinished={personalLeaderHistory}
                         loading={personalLeaderHistoryLoading !== LevelIndex}
+                        personal={true}
                         openReplay={time =>
                           setPreviewRec({
                             ...time,
