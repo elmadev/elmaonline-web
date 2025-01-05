@@ -6,7 +6,6 @@ import {
   Tabs,
   Tab,
   FormControlLabel,
-  Checkbox,
   InputLabel,
   Select,
   MenuItem,
@@ -19,15 +18,11 @@ import Layout from 'components/Layout';
 import { ExpandMore } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import Recplayer from 'components/Recplayer';
 import RecList from 'features/RecList';
 import Header from 'components/Header';
 import Loading from 'components/Loading';
-import LevelMap from 'features/LevelMap';
 import UpdateForm from 'pages/level/UpdateForm';
 import { useParams } from '@tanstack/react-router';
-import config from 'config';
-import { battleStatus } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
 import LevelInfoLevelStats from './LevelInfoLevelStats';
@@ -43,6 +38,7 @@ import Button from 'components/Buttons';
 import Preview from '../kuski/Preview';
 import LevelInfo from './LevelInfo.jsx';
 import LevelBattles from './LevelBattles.jsx';
+import LevelPlayer from './LevelPlayer.jsx';
 
 const Level = () => {
   const { LevelId } = useParams({ strict: false });
@@ -67,7 +63,6 @@ const Level = () => {
     levelpacks,
     cups,
     statsLoading,
-    settings: { fancyMap, showGravityApples },
     personalLeaderHistory,
     personalLeaderHistoryLoading,
     leaderHistory,
@@ -80,8 +75,6 @@ const Level = () => {
     getAllfinished,
     getEoltimes,
     getTimeStats,
-    toggleFancyMap,
-    toggleShowGravityApples,
     getPersonalLeaderHistory,
     getLeaderHistory,
   } = useStoreActions(actions => actions.Level);
@@ -169,58 +162,16 @@ const Level = () => {
     }
   };
 
-  const isWindow = typeof window !== 'undefined';
-
   const loggedIn = nickId() > 0;
 
   return (
     <Layout t={`Level - ${level.LevelName}.lev`}>
       <PlayerContainer>
-        {loading && <Loading />}
-        {!loading && !level.Locked ? (
-          <>
-            <Player>
-              {fancyMap ? (
-                <>
-                  {isWindow &&
-                    (battlesForLevel.length < 1 ||
-                      battleStatus(battlesForLevel[0]) !== 'Queued') && (
-                      <Recplayer
-                        lev={`${config.dlUrl}level/${LevelIndex}`}
-                        controls
-                      />
-                    )}
-                </>
-              ) : (
-                <LevelMap LevelIndex={LevelIndex} />
-              )}
-            </Player>
-            <StyledFormControlLabel
-              control={
-                <Checkbox
-                  onChange={() => toggleFancyMap()}
-                  checked={fancyMap}
-                  color="primary"
-                  size="small"
-                />
-              }
-              label="Fancy map"
-            />
-            {!fancyMap && (
-              <StyledFormControlLabel
-                control={
-                  <Checkbox
-                    onChange={() => toggleShowGravityApples()}
-                    checked={showGravityApples}
-                    color="primary"
-                    size="small"
-                  />
-                }
-                label="Show gravity apples"
-              />
-            )}
-          </>
-        ) : null}
+        <LevelPlayer
+          level={level}
+          battles={battlesForLevel}
+          loading={loading}
+        />
       </PlayerContainer>
       <RightBarContainer>
         <ChatContainer>
@@ -393,7 +344,6 @@ const Level = () => {
                       <LeaderHistory
                         allFinished={personalLeaderHistory}
                         loading={personalLeaderHistoryLoading !== LevelIndex}
-                        personal={true}
                         openReplay={time =>
                           setPreviewRec({
                             ...time,
@@ -527,23 +477,7 @@ const PlayerContainer = styled.div`
     float: none;
     width: 100%;
   }
-`;
-
-const Player = styled.div`
-  background: ${p => p.theme.pageBackground};
-  height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  @media screen and (max-width: 640px) {
-    height: 350px;
-  }
-`;
-
-const StyledFormControlLabel = styled(FormControlLabel)`
-  span {
-    font-size: 14px;
-  }
+  min-height: 350px;
 `;
 
 const StyledTabs = styled(Tabs)`
