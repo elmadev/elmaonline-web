@@ -5,10 +5,6 @@ import {
   AccordionDetails,
   Tabs,
   Tab,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
   TextField,
   Grid,
 } from '@material-ui/core';
@@ -39,6 +35,7 @@ import Preview from '../kuski/Preview';
 import LevelInfo from './LevelInfo.jsx';
 import LevelBattles from './LevelBattles.jsx';
 import LevelPlayer from './LevelPlayer.jsx';
+import CrippledSelect from './CrippledSelect.jsx';
 
 const Level = () => {
   const { LevelId } = useParams({ strict: false });
@@ -176,32 +173,13 @@ const Level = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <CrippledSelectWrapper topMargin={level.Locked}>
-              <FormControl>
-                <InputLabel id="cripple">Crippled Condition</InputLabel>
-                <Select
-                  id="cripple"
-                  value={cripple || 'none'}
-                  onChange={e => {
-                    setCripple(e.target.value === 'none' ? '' : e.target.value);
-
-                    if (tab === 4 && e.target.value) {
-                      setTab(0);
-                    }
-                  }}
-                >
-                  <MenuItem value="none">None</MenuItem>
-                  <MenuItem value="noVolt">No Volt</MenuItem>
-                  <MenuItem value="noTurn">No Turn</MenuItem>
-                  <MenuItem value="oneTurn">One Turn</MenuItem>
-                  <MenuItem value="noBrake">No Brake</MenuItem>
-                  <MenuItem value="noThrottle">No Throttle</MenuItem>
-                  <MenuItem value="alwaysThrottle">Always Throttle</MenuItem>
-                  <MenuItem value="oneWheel">One Wheel</MenuItem>
-                  <MenuItem value="drunk">Drunk</MenuItem>
-                </Select>
-              </FormControl>
-            </CrippledSelectWrapper>
+            <CrippledSelect
+              level={level}
+              cripple={cripple}
+              setCripple={setCripple}
+              tab={tab}
+              setTab={setTab}
+            />
           </Grid>
           <Grid item xs={12}>
             <Paper>
@@ -446,19 +424,6 @@ const StyledTabs = styled(Tabs)`
     @media screen and (max-width: 1440px) {
       min-width: 100px;
     }
-  }
-`;
-
-const CrippledSelectWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: ${p => (p.topMargin ? '-12px' : '-22px')};
-  margin-bottom: 12px;
-  .MuiFormControl-root {
-    min-width: 180px;
-  }
-  @media screen and (max-width: 1100px) {
-    margin-top: 0;
   }
 `;
 
