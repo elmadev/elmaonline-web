@@ -70,7 +70,11 @@ export default {
   setBattlesForLevel: action((state, payload) => {
     state.battlesForLevel = payload;
   }),
+  setLoading: action((state, payload) => {
+    state.loading = payload;
+  }),
   getLevel: thunk(async (actions, payload) => {
+    actions.setLoading(true);
     Level(payload, 1).then(res => {
       if (res.ok) {
         actions.setLevel(res.data);
