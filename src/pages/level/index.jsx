@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -20,23 +15,19 @@ import {
 } from '@material-ui/core';
 import styled from '@emotion/styled';
 import { Row } from 'components/Containers';
-import { useTheme } from '@emotion/react';
 import Layout from 'components/Layout';
 import { ExpandMore } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import Kuski from 'components/Kuski';
 import Recplayer from 'components/Recplayer';
 import RecList from 'features/RecList';
 import Header from 'components/Header';
 import Loading from 'components/Loading';
 import LevelMap from 'features/LevelMap';
-import Link from 'components/Link';
 import UpdateForm from 'pages/level/UpdateForm';
-import LocalTime from 'components/LocalTime';
-import { useNavigate, useParams } from '@tanstack/react-router';
+import { useParams } from '@tanstack/react-router';
 import config from 'config';
-import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
+import { battleStatus } from 'utils/battle';
 import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
 import LevelInfoLevelStats from './LevelInfoLevelStats';
@@ -51,12 +42,11 @@ import {
 import Button from 'components/Buttons';
 import Preview from '../kuski/Preview';
 import LevelInfo from './LevelInfo.jsx';
+import LevelBattles from './LevelBattles.jsx';
 
 const Level = () => {
   const { LevelId } = useParams({ strict: false });
-  const theme = useTheme();
   const LevelIndex = parseInt(LevelId, 10);
-  const navigate = useNavigate();
   const [tab, setTab] = useState(0);
   const [cripple, setCripple] = useState('');
   const [from, setFrom] = useState('');
@@ -179,12 +169,6 @@ const Level = () => {
     }
   };
 
-  const goToBattle = battleIndex => {
-    if (!Number.isNaN(battleIndex)) {
-      navigate({ to: `/battles/${battleIndex}` });
-    }
-  };
-
   const isWindow = typeof window !== 'undefined';
 
   const loggedIn = nickId() > 0;
@@ -280,61 +264,7 @@ const Level = () => {
               <Header h3>Battles in level</Header>
             </AccordionSummary>
             <AccordionBattles>
-              <BattlesContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Started</TableCell>
-                      <TableCell>Designer</TableCell>
-                      <TableCell>Winner</TableCell>
-                      <TableCell>Battle ID</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {!loading &&
-                      battlesForLevel.map(i => {
-                        const sorted = [...i.Results].sort(
-                          sortResults(i.BattleType),
-                        );
-                        return (
-                          <BattleRow
-                            bg={battleStatusBgColor(i, theme)}
-                            hover
-                            key={i.BattleIndex}
-                            onClick={() => {
-                              goToBattle(i.BattleIndex);
-                            }}
-                          >
-                            <TableCell>
-                              <Link to={`/battles/${i.BattleIndex}`}>
-                                <LocalTime
-                                  date={i.Started}
-                                  format="dd MMM yyyy HH:mm:ss"
-                                  parse="X"
-                                />
-                              </Link>
-                            </TableCell>
-                            <TableCell>
-                              <Kuski kuskiData={i.KuskiData} team flag />
-                            </TableCell>
-                            <TableCell>
-                              {i.Finished === 1 && sorted.length > 0 ? (
-                                <Kuski
-                                  kuskiData={sorted[0].KuskiData}
-                                  team
-                                  flag
-                                />
-                              ) : (
-                                battleStatus(i)
-                              )}
-                            </TableCell>
-                            <TableCell>{i.BattleIndex}</TableCell>
-                          </BattleRow>
-                        );
-                      })}
-                  </TableBody>
-                </Table>
-              </BattlesContainer>
+              <LevelBattles battles={battlesForLevel} loading={loading} />
             </AccordionBattles>
           </Accordion>
           <Accordion defaultExpanded>
@@ -562,13 +492,6 @@ const AccordionBattles = styled(AccordionDetails)`
   }
 `;
 
-const BattleRow = styled(TableRow)`
-  && {
-    cursor: pointer;
-    background-color: ${p => p.bg};
-  }
-`;
-
 const ResultsContainer = styled.div`
   width: 60%;
   float: left;
@@ -578,10 +501,6 @@ const ResultsContainer = styled.div`
     float: none;
     width: 100%;
   }
-`;
-
-const BattlesContainer = styled.div`
-  width: 100%;
 `;
 
 const ChatContainer = styled.div`
