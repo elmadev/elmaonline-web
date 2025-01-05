@@ -26,12 +26,10 @@ import { ExpandMore } from '@material-ui/icons';
 import { Paper } from 'components/Paper';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Kuski from 'components/Kuski';
-import Download from 'components/Download';
 import Recplayer from 'components/Recplayer';
 import RecList from 'features/RecList';
 import Header from 'components/Header';
 import Loading from 'components/Loading';
-import Tags from 'components/Tags';
 import LevelMap from 'features/LevelMap';
 import Link from 'components/Link';
 import UpdateForm from 'pages/level/UpdateForm';
@@ -43,7 +41,6 @@ import TimeTable from './TimeTable';
 import StatsTable from './StatsTable';
 import LevelInfoLevelStats from './LevelInfoLevelStats';
 import { nickId, mod } from 'utils/nick';
-import { pluralize } from 'utils/misc';
 import LeaderHistory from 'components/LeaderHistory';
 import {
   CrippledTimes,
@@ -53,6 +50,7 @@ import {
 } from 'api';
 import Button from 'components/Buttons';
 import Preview from '../kuski/Preview';
+import LevelInfo from './LevelInfo.jsx';
 
 const Level = () => {
   const { LevelId } = useParams({ strict: false });
@@ -250,58 +248,11 @@ const Level = () => {
                   <Header h3>Level info</Header>
                 </AccordionSummary>
                 <AccordionDetails>
-                  {level.Locked ? (
-                    <LevelDescription>{level.LevelName}.lev</LevelDescription>
-                  ) : (
-                    <LevelDescription>
-                      <Download href={`level/${LevelIndex}`}>
-                        {level.LevelName}.lev
-                      </Download>
-                      <LevelFullName>{level.LongName}</LevelFullName>
-                      <br />
-                      <div>{`Level ID: ${LevelIndex}`}</div>
-                      <div>
-                        {pluralize(level.Apples, 'apple')},{' '}
-                        {pluralize(level.Killers, 'killer')} and{' '}
-                        {pluralize(level.Flowers, 'flower')}.
-                      </div>
-                      {levelpacks.length > 0 && (
-                        <div>
-                          {`Level Pack: `}
-                          {levelpacks.map((pack, index) => [
-                            index > 0 && ', ',
-                            <Link to={`/levels/packs/${pack.LevelPackName}`}>
-                              {pack.LevelPackName}
-                            </Link>,
-                          ])}
-                        </div>
-                      )}
-                      {cups && cups.length > 0 && (
-                        <div>
-                          {`Cup: `}
-                          {cups.map((cup, index) => [
-                            index > 0 && ', ',
-                            <Link to={`/cup/${cup.ShortName}/events`}>
-                              {cup.CupName}
-                            </Link>,
-                          ])}
-                        </div>
-                      )}
-                      {level.AcceptBugs !== 0 && (
-                        <div>Apple bugs are allowed in this level.</div>
-                      )}
-                      {level.Legacy !== 0 && (
-                        <div>
-                          This level has legacy times imported from a third
-                          party site.
-                        </div>
-                      )}
-                      <br />
-                      {level.Tags && (
-                        <Tags tags={level.Tags.map(tag => tag.Name)} />
-                      )}
-                    </LevelDescription>
-                  )}
+                  <LevelInfo
+                    level={level}
+                    levelpacks={levelpacks}
+                    cups={cups}
+                  />
                 </AccordionDetails>
               </Accordion>
               {(parseInt(userid, 10) === level.AddedBy || mod() === 1) && (
@@ -631,14 +582,6 @@ const ResultsContainer = styled.div`
 
 const BattlesContainer = styled.div`
   width: 100%;
-`;
-
-const LevelFullName = styled.div`
-  color: #7d7d7d;
-`;
-
-const LevelDescription = styled.div`
-  font-size: 14px;
 `;
 
 const ChatContainer = styled.div`
