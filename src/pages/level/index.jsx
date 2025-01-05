@@ -5,12 +5,12 @@ import {
   AccordionDetails,
   Tabs,
   Tab,
-  FormControlLabel,
   InputLabel,
   Select,
   MenuItem,
   FormControl,
   TextField,
+  Grid,
 } from '@material-ui/core';
 import styled from '@emotion/styled';
 import { Row } from 'components/Containers';
@@ -166,258 +166,256 @@ const Level = () => {
 
   return (
     <Layout t={`Level - ${level.LevelName}.lev`}>
-      <PlayerContainer>
-        <LevelPlayer
-          level={level}
-          battles={battlesForLevel}
-          loading={loading}
-        />
-      </PlayerContainer>
-      <RightBarContainer>
-        <ChatContainer>
-          {loading && <Loading />}
-          {!loading && (
-            <>
-              <Accordion defaultExpanded>
+      <Grid container spacing={2}>
+        <Grid container item xs={12} md={7} alignContent="flex-start">
+          <Grid item xs={12}>
+            <LevelPlayer
+              level={level}
+              battles={battlesForLevel}
+              loading={loading}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CrippledSelectWrapper topMargin={level.Locked}>
+              <FormControl>
+                <InputLabel id="cripple">Crippled Condition</InputLabel>
+                <Select
+                  id="cripple"
+                  value={cripple || 'none'}
+                  onChange={e => {
+                    setCripple(e.target.value === 'none' ? '' : e.target.value);
+
+                    if (tab === 4 && e.target.value) {
+                      setTab(0);
+                    }
+                  }}
+                >
+                  <MenuItem value="none">None</MenuItem>
+                  <MenuItem value="noVolt">No Volt</MenuItem>
+                  <MenuItem value="noTurn">No Turn</MenuItem>
+                  <MenuItem value="oneTurn">One Turn</MenuItem>
+                  <MenuItem value="noBrake">No Brake</MenuItem>
+                  <MenuItem value="noThrottle">No Throttle</MenuItem>
+                  <MenuItem value="alwaysThrottle">Always Throttle</MenuItem>
+                  <MenuItem value="oneWheel">One Wheel</MenuItem>
+                  <MenuItem value="drunk">Drunk</MenuItem>
+                </Select>
+              </FormControl>
+            </CrippledSelectWrapper>
+          </Grid>
+          <Grid item xs={12}>
+            <Paper>
+              {loading && <Loading />}
+              {!loading && (
+                <>
+                  <StyledTabs
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    value={tab}
+                    onChange={(e, value) => onTabClick(e, value)}
+                  >
+                    <Tab label="Best times" />
+                    <Tab label="All times" />
+                    <Tab label="Personal stats" />
+                    <Tab label="Leaders" />
+                    {!cripple && level.Legacy && <Tab label="EOL times" />}
+                  </StyledTabs>
+
+                  {tab === 2 && !loggedIn && (
+                    <Container>Log in to see personal stats.</Container>
+                  )}
+
+                  {!cripple && (
+                    <>
+                      {tab === 0 && (
+                        <TimeTable
+                          loading={besttimesLoading}
+                          data={besttimes}
+                          latestBattle={battlesForLevel[0]}
+                        />
+                      )}
+
+                      {tab === 1 && (
+                        <TimeTable
+                          loading={allLoading !== LevelIndex}
+                          data={allfinished}
+                          latestBattle={battlesForLevel[0]}
+                        />
+                      )}
+
+                      {tab === 2 && loggedIn && (
+                        <>
+                          <Row ai="self-end" m="Large">
+                            <RangeField
+                              id="date-from"
+                              label="From"
+                              type="date"
+                              defaultValue={from}
+                              onChange={event => setFrom(event.target?.value)}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              inputProps={{
+                                max: new Date().toISOString().split('T')[0],
+                              }}
+                            />
+
+                            <RangeField
+                              id="date-to"
+                              label="To"
+                              type="date"
+                              defaultValue={to}
+                              onChange={event => setTo(event.target?.value)}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              inputProps={{
+                                max: new Date().toISOString().split('T')[0],
+                              }}
+                            />
+                            <Button
+                              secondary
+                              onClick={() => fetchPersonalStats()}
+                              disabled={!to || !from}
+                            >
+                              Submit
+                            </Button>
+                          </Row>
+                          <StatsTable
+                            data={timeStats}
+                            loading={statsLoading !== LevelIndex}
+                          />
+                          <LeaderHistory
+                            allFinished={personalLeaderHistory}
+                            loading={
+                              personalLeaderHistoryLoading !== LevelIndex
+                            }
+                            openReplay={time =>
+                              setPreviewRec({
+                                ...time,
+                                LevelIndex,
+                                LevelData: level,
+                              })
+                            }
+                          />
+                        </>
+                      )}
+
+                      {tab === 3 && (
+                        <LeaderHistory
+                          allFinished={leaderHistory}
+                          loading={leaderHistoryLoading !== LevelIndex}
+                        />
+                      )}
+
+                      {tab === 4 && (
+                        <TimeTable
+                          loading={eolLoading !== LevelIndex}
+                          data={eoltimes}
+                          latestBattle={battlesForLevel[0]}
+                        />
+                      )}
+                    </>
+                  )}
+
+                  {cripple && (
+                    <>
+                      {tab === 0 && (
+                        <TimeTable
+                          data={crippledBestTimes}
+                          loading={crippledTimesDataLoading}
+                        />
+                      )}
+
+                      {tab === 1 && (
+                        <TimeTable
+                          data={crippledAllTimes}
+                          loading={crippledTimesDataLoading}
+                        />
+                      )}
+
+                      {tab === 2 && loggedIn && (
+                        <>
+                          <StatsTable
+                            data={crippledKuskiTimeStats}
+                            loading={crippledKuskiTimeStatsLoading}
+                          />
+                          <LeaderHistory
+                            allFinished={crippledKuskiLeaderHistory}
+                            loading={crippledPersonalDataLoading}
+                          />
+                          <TimeTable
+                            data={crippledKuskiTimes}
+                            loading={crippledPersonalDataLoading}
+                            height={376}
+                          />
+                        </>
+                      )}
+
+                      {tab === 3 && (
+                        <LeaderHistory
+                          allFinished={crippledLeaderHistory}
+                          loading={crippledTimesDataLoading}
+                        />
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </Paper>
+          </Grid>
+        </Grid>
+        <Grid container item xs={12} md={5}>
+          <Grid item xs={12}>
+            <Accordion defaultExpanded>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Header h3>Level info</Header>
+              </AccordionSummary>
+              <AccordionDetails>
+                <LevelInfo level={level} levelpacks={levelpacks} cups={cups} />
+              </AccordionDetails>
+            </Accordion>
+            {(parseInt(userid, 10) === level.AddedBy || mod() === 1) && (
+              <Accordion>
                 <AccordionSummary expandIcon={<ExpandMore />}>
-                  <Header h3>Level info</Header>
+                  <Header h3>Edit tags</Header>
                 </AccordionSummary>
-                <AccordionDetails>
-                  <LevelInfo
-                    level={level}
-                    levelpacks={levelpacks}
-                    cups={cups}
-                  />
+                <AccordionDetails style={{ flexDirection: 'column' }}>
+                  <UpdateForm />
                 </AccordionDetails>
               </Accordion>
-              {(parseInt(userid, 10) === level.AddedBy || mod() === 1) && (
-                <Accordion>
-                  <AccordionSummary expandIcon={<ExpandMore />}>
-                    <Header h3>Edit tags</Header>
-                  </AccordionSummary>
-                  <AccordionDetails style={{ flexDirection: 'column' }}>
-                    <UpdateForm />
-                  </AccordionDetails>
-                </Accordion>
-              )}
-              <Accordion defaultExpanded>
-                <AccordionSummary expandIcon={<ExpandMore />}>
-                  <Header h3>Play stats</Header>
-                </AccordionSummary>
-                <LevelStatsAccordion>
-                  <LevelInfoLevelStats level={level} />
-                </LevelStatsAccordion>
-              </Accordion>
-            </>
-          )}
-          <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMore />}>
-              <Header h3>Battles in level</Header>
-            </AccordionSummary>
-            <AccordionBattles>
-              <LevelBattles battles={battlesForLevel} loading={loading} />
-            </AccordionBattles>
-          </Accordion>
-          <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMore />}>
-              <Header h3>Replays in level</Header>
-            </AccordionSummary>
-            <AccordionReplays>
-              <RecList
-                LevelIndex={LevelIndex}
-                columns={['Replay', 'Time', 'By', 'Tags']}
-                horizontalMargin={-16}
-              />
-            </AccordionReplays>
-          </Accordion>
-        </ChatContainer>
-      </RightBarContainer>
-      <ResultsContainer>
-        <CrippledSelectWrapper topMargin={level.Locked}>
-          <FormControl>
-            <InputLabel id="cripple">Crippled Condition</InputLabel>
-            <Select
-              id="cripple"
-              value={cripple || 'none'}
-              onChange={e => {
-                setCripple(e.target.value === 'none' ? '' : e.target.value);
-
-                if (tab === 4 && e.target.value) {
-                  setTab(0);
-                }
-              }}
-            >
-              <MenuItem value="none">None</MenuItem>
-              <MenuItem value="noVolt">No Volt</MenuItem>
-              <MenuItem value="noTurn">No Turn</MenuItem>
-              <MenuItem value="oneTurn">One Turn</MenuItem>
-              <MenuItem value="noBrake">No Brake</MenuItem>
-              <MenuItem value="noThrottle">No Throttle</MenuItem>
-              <MenuItem value="alwaysThrottle">Always Throttle</MenuItem>
-              <MenuItem value="oneWheel">One Wheel</MenuItem>
-              <MenuItem value="drunk">Drunk</MenuItem>
-            </Select>
-          </FormControl>
-        </CrippledSelectWrapper>
-
-        <Paper>
-          {loading && <Loading />}
-          {!loading && (
-            <>
-              <StyledTabs
-                variant="scrollable"
-                scrollButtons="auto"
-                value={tab}
-                onChange={(e, value) => onTabClick(e, value)}
-              >
-                <Tab label="Best times" />
-                <Tab label="All times" />
-                <Tab label="Personal stats" />
-                <Tab label="Leaders" />
-                {!cripple && level.Legacy && <Tab label="EOL times" />}
-              </StyledTabs>
-
-              {tab === 2 && !loggedIn && (
-                <Container>Log in to see personal stats.</Container>
-              )}
-
-              {!cripple && (
-                <>
-                  {tab === 0 && (
-                    <TimeTable
-                      loading={besttimesLoading}
-                      data={besttimes}
-                      latestBattle={battlesForLevel[0]}
-                    />
-                  )}
-
-                  {tab === 1 && (
-                    <TimeTable
-                      loading={allLoading !== LevelIndex}
-                      data={allfinished}
-                      latestBattle={battlesForLevel[0]}
-                    />
-                  )}
-
-                  {tab === 2 && loggedIn && (
-                    <>
-                      <Row ai="self-end" m="Large">
-                        <RangeField
-                          id="date-from"
-                          label="From"
-                          type="date"
-                          defaultValue={from}
-                          onChange={event => setFrom(event.target?.value)}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          inputProps={{
-                            max: new Date().toISOString().split('T')[0],
-                          }}
-                        />
-
-                        <RangeField
-                          id="date-to"
-                          label="To"
-                          type="date"
-                          defaultValue={to}
-                          onChange={event => setTo(event.target?.value)}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          inputProps={{
-                            max: new Date().toISOString().split('T')[0],
-                          }}
-                        />
-                        <Button
-                          secondary
-                          onClick={() => fetchPersonalStats()}
-                          disabled={!to || !from}
-                        >
-                          Submit
-                        </Button>
-                      </Row>
-                      <StatsTable
-                        data={timeStats}
-                        loading={statsLoading !== LevelIndex}
-                      />
-                      <LeaderHistory
-                        allFinished={personalLeaderHistory}
-                        loading={personalLeaderHistoryLoading !== LevelIndex}
-                        openReplay={time =>
-                          setPreviewRec({
-                            ...time,
-                            LevelIndex,
-                            LevelData: level,
-                          })
-                        }
-                      />
-                    </>
-                  )}
-
-                  {tab === 3 && (
-                    <LeaderHistory
-                      allFinished={leaderHistory}
-                      loading={leaderHistoryLoading !== LevelIndex}
-                    />
-                  )}
-
-                  {tab === 4 && (
-                    <TimeTable
-                      loading={eolLoading !== LevelIndex}
-                      data={eoltimes}
-                      latestBattle={battlesForLevel[0]}
-                    />
-                  )}
-                </>
-              )}
-
-              {cripple && (
-                <>
-                  {tab === 0 && (
-                    <TimeTable
-                      data={crippledBestTimes}
-                      loading={crippledTimesDataLoading}
-                    />
-                  )}
-
-                  {tab === 1 && (
-                    <TimeTable
-                      data={crippledAllTimes}
-                      loading={crippledTimesDataLoading}
-                    />
-                  )}
-
-                  {tab === 2 && loggedIn && (
-                    <>
-                      <StatsTable
-                        data={crippledKuskiTimeStats}
-                        loading={crippledKuskiTimeStatsLoading}
-                      />
-                      <LeaderHistory
-                        allFinished={crippledKuskiLeaderHistory}
-                        loading={crippledPersonalDataLoading}
-                      />
-                      <TimeTable
-                        data={crippledKuskiTimes}
-                        loading={crippledPersonalDataLoading}
-                        height={376}
-                      />
-                    </>
-                  )}
-
-                  {tab === 3 && (
-                    <LeaderHistory
-                      allFinished={crippledLeaderHistory}
-                      loading={crippledTimesDataLoading}
-                    />
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </Paper>
-      </ResultsContainer>
+            )}
+            <Accordion defaultExpanded>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Header h3>Play stats</Header>
+              </AccordionSummary>
+              <LevelStatsAccordion>
+                <LevelInfoLevelStats level={level} />
+              </LevelStatsAccordion>
+            </Accordion>
+            <Accordion defaultExpanded>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Header h3>Battles in level</Header>
+              </AccordionSummary>
+              <AccordionBattles>
+                <LevelBattles battles={battlesForLevel} loading={loading} />
+              </AccordionBattles>
+            </Accordion>
+            <Accordion defaultExpanded>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Header h3>Replays in level</Header>
+              </AccordionSummary>
+              <AccordionReplays>
+                <RecList
+                  LevelIndex={LevelIndex}
+                  columns={['Replay', 'Time', 'By', 'Tags']}
+                  horizontalMargin={-16}
+                />
+              </AccordionReplays>
+            </Accordion>
+          </Grid>
+        </Grid>
+      </Grid>
       {previewRec && (
         <Preview previewRec={previewRec} setPreviewRec={setPreviewRec} />
       )}
@@ -442,44 +440,6 @@ const AccordionBattles = styled(AccordionDetails)`
   }
 `;
 
-const ResultsContainer = styled.div`
-  width: 60%;
-  float: left;
-  padding: 7px;
-  box-sizing: border-box;
-  @media screen and (max-width: 1100px) {
-    float: none;
-    width: 100%;
-  }
-`;
-
-const ChatContainer = styled.div`
-  clear: both;
-`;
-
-const RightBarContainer = styled.div`
-  float: right;
-  width: 40%;
-  padding: 7px;
-  box-sizing: border-box;
-  @media screen and (max-width: 1100px) {
-    float: none;
-    width: 100%;
-  }
-`;
-
-const PlayerContainer = styled.div`
-  width: 60%;
-  float: left;
-  padding: 7px;
-  box-sizing: border-box;
-  @media screen and (max-width: 1100px) {
-    float: none;
-    width: 100%;
-  }
-  min-height: 350px;
-`;
-
 const StyledTabs = styled(Tabs)`
   .MuiTab-root {
     min-width: 125px;
@@ -492,8 +452,8 @@ const StyledTabs = styled(Tabs)`
 const CrippledSelectWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: ${p => (p.topMargin ? '-12px' : '-38px')};
-  margin-bottom: 15px;
+  margin-top: ${p => (p.topMargin ? '-12px' : '-22px')};
+  margin-bottom: 12px;
   .MuiFormControl-root {
     min-width: 180px;
   }
