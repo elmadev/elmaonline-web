@@ -7,8 +7,15 @@ import LeaderHistory from 'components/LeaderHistory';
 import { Row } from 'components/Containers';
 import Button from 'components/Buttons';
 import { TextField } from '@material-ui/core';
+import TimeTable from '../../TimeTable.jsx';
 
-const PersonalStatsTab = ({ LevelIndex, openReplay }) => {
+const PersonalStatsTab = ({
+  LevelIndex,
+  openReplay,
+  cripple,
+  crippleData,
+  crippleLoading,
+}) => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const loggedIn = nickId() > 0;
@@ -41,6 +48,10 @@ const PersonalStatsTab = ({ LevelIndex, openReplay }) => {
   };
 
   useEffect(() => {
+    if (cripple) {
+      return;
+    }
+
     if (timeStats.length === 0 || statsLoading !== LevelIndex) {
       fetchPersonalStats();
     }
@@ -48,6 +59,23 @@ const PersonalStatsTab = ({ LevelIndex, openReplay }) => {
 
   if (!loggedIn) {
     return <Container>Log in to see personal stats.</Container>;
+  }
+
+  if (cripple) {
+    return (
+      <>
+        <StatsTable data={crippleData.stats} loading={crippleLoading.stats} />
+        <LeaderHistory
+          allFinished={crippleData.leaderHistory}
+          loading={crippleLoading.leaderHistory}
+        />
+        <TimeTable
+          data={crippleData.times}
+          loading={crippleLoading.times}
+          height={376}
+        />
+      </>
+    );
   }
 
   return (

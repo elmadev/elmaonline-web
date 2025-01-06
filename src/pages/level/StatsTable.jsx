@@ -39,11 +39,11 @@ const StatsTable = ({ data, loading }) => {
   };
 
   const lastPlayed = () => {
-    return maxBy(data, 'LastPlayed').LastPlayed;
+    return maxBy(data, 'LastPlayed')?.LastPlayed;
   };
 
   const firstPlayed = () => {
-    return minBy(data, 'FirstPlayed').FirstPlayed;
+    return minBy(data, 'FirstPlayed')?.FirstPlayed;
   };
 
   return (
@@ -103,19 +103,27 @@ const StatsTable = ({ data, loading }) => {
       </ListContainer>
       <FirstLast>
         First played:{' '}
-        <LocalTime
-          date={firstPlayed()}
-          format="eee d MMM yyyy HH:mm:ss"
-          parse="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        />
+        {firstPlayed() ? (
+          <LocalTime
+            date={firstPlayed()}
+            format="eee d MMM yyyy HH:mm:ss"
+            parse="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+          />
+        ) : (
+          <span>-</span>
+        )}
       </FirstLast>
       <FirstLast>
         Last played:{' '}
-        <LocalTime
-          date={lastPlayed()}
-          format="eee d MMM yyyy HH:mm:ss"
-          parse="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        />
+        {lastPlayed() ? (
+          <LocalTime
+            date={lastPlayed()}
+            format="eee d MMM yyyy HH:mm:ss"
+            parse="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+          />
+        ) : (
+          <span>-</span>
+        )}
       </FirstLast>
     </>
   );

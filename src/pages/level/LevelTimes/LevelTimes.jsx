@@ -26,7 +26,6 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
   const [tab, setTab] = useState(0);
   const [cripple, setCripple] = useState('');
 
-  const loggedIn = nickId() > 0;
   const kuskiIndex = nickId();
 
   const { level, loading } = useStoreState(state => state.Level);
@@ -95,67 +94,48 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
           {!cripple && level.Legacy && <Tab label="EOL times" />}
         </StyledTabs>
 
-        {tab === 2 && !loggedIn && (
-          <Container>Log in to see personal stats.</Container>
+        {tab === 0 && (
+          <BestTimesTab
+            LevelIndex={LevelIndex}
+            cripple={cripple}
+            crippleData={crippledBestTimes}
+            crippleLoading={crippledTimesDataLoading}
+          />
         )}
-
-        {!cripple && (
-          <>
-            {tab === 0 && <BestTimesTab LevelIndex={LevelIndex} />}
-            {tab === 1 && <AllTimesTab LevelIndex={LevelIndex} />}
-            {tab === 2 && (
-              <PersonalStatsTab
-                LevelIndex={LevelIndex}
-                openReplay={openReplay}
-              />
-            )}
-            {tab === 3 && <LeaderHistoryTab LevelIndex={LevelIndex} />}
-            {tab === 4 && <EolTimesTab LevelIndex={LevelIndex} />}
-          </>
+        {tab === 1 && (
+          <AllTimesTab
+            LevelIndex={LevelIndex}
+            cripple={cripple}
+            crippleData={crippledAllTimes}
+            crippleLoading={crippledTimesDataLoading}
+          />
         )}
-
-        {cripple && (
-          <>
-            {tab === 0 && (
-              <TimeTable
-                data={crippledBestTimes}
-                loading={crippledTimesDataLoading}
-              />
-            )}
-
-            {tab === 1 && (
-              <TimeTable
-                data={crippledAllTimes}
-                loading={crippledTimesDataLoading}
-              />
-            )}
-
-            {tab === 2 && loggedIn && (
-              <>
-                <StatsTable
-                  data={crippledKuskiTimeStats}
-                  loading={crippledKuskiTimeStatsLoading}
-                />
-                <LeaderHistory
-                  allFinished={crippledKuskiLeaderHistory}
-                  loading={crippledPersonalDataLoading}
-                />
-                <TimeTable
-                  data={crippledKuskiTimes}
-                  loading={crippledPersonalDataLoading}
-                  height={376}
-                />
-              </>
-            )}
-
-            {tab === 3 && (
-              <LeaderHistory
-                allFinished={crippledLeaderHistory}
-                loading={crippledTimesDataLoading}
-              />
-            )}
-          </>
+        {tab === 2 && (
+          <PersonalStatsTab
+            LevelIndex={LevelIndex}
+            openReplay={openReplay}
+            cripple={cripple}
+            crippleData={{
+              stats: crippledKuskiTimeStats,
+              leaderHistory: crippledKuskiLeaderHistory,
+              times: crippledKuskiTimes,
+            }}
+            crippleLoading={{
+              stats: crippledKuskiTimeStatsLoading,
+              leaderHistory: crippledPersonalDataLoading,
+              times: crippledPersonalDataLoading,
+            }}
+          />
         )}
+        {tab === 3 && (
+          <LeaderHistoryTab
+            LevelIndex={LevelIndex}
+            cripple={cripple}
+            crippleData={crippledLeaderHistory}
+            crippleLoading={crippledTimesDataLoading}
+          />
+        )}
+        {tab === 4 && <EolTimesTab LevelIndex={LevelIndex} />}
       </Paper>
     </>
   );
@@ -168,10 +148,6 @@ const StyledTabs = styled(Tabs)`
       min-width: 100px;
     }
   }
-`;
-
-const Container = styled.div`
-  padding: 20px;
 `;
 
 export default LevelTimes;
