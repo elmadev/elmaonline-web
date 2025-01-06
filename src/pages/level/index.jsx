@@ -36,6 +36,14 @@ const Level = () => {
     getLevel(LevelIndex);
   }, []);
 
+  const openReplay = time => {
+    setPreviewRec({
+      ...time,
+      LevelIndex,
+      LevelData: level,
+    });
+  };
+
   return (
     <Layout t={`Level - ${level.LevelName}.lev`}>
       <Grid container spacing={2}>
@@ -48,7 +56,7 @@ const Level = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <LevelTimes LevelIndex={LevelIndex} />
+            <LevelTimes LevelIndex={LevelIndex} openReplay={openReplay} />
           </Grid>
         </Grid>
         <Grid container item xs={12} md={5}>

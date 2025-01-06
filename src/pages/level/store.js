@@ -14,7 +14,7 @@ import {
 
 export default {
   besttimes: [],
-  besttimesLoading: false,
+  besttimesLoading: 0,
   level: {},
   levelpacks: [],
   cups: [],
@@ -47,14 +47,14 @@ export default {
     state.besttimesLoading = payload;
   }),
   setBesttimes: action((state, payload) => {
-    state.besttimes = payload;
-    state.besttimesLoading = false;
+    state.besttimes = payload.times;
+    state.besttimesLoading = payload.id;
   }),
   getBesttimes: thunk(async (actions, payload) => {
     actions.setBestLoading(true);
     const times = await Besttime(payload);
     if (times.ok) {
-      actions.setBesttimes(times.data);
+      actions.setBesttimes({ times: times.data, id: payload.levelId });
     }
   }),
   setLevel: action((state, payload) => {
