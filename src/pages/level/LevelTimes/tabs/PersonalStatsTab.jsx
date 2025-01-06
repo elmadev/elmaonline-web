@@ -25,7 +25,11 @@ const PersonalStatsTab = ({ LevelIndex, openReplay }) => {
   );
 
   const fetchPersonalStats = () => {
-    getTimeStats({ LevelIndex, from, to });
+    getTimeStats({
+      LevelIndex,
+      from: from ? `${from} 00:00:00` : '',
+      to: to ? `${to} 23:59:59` : '',
+    });
     if (nickId() > 0) {
       getPersonalLeaderHistory({
         LevelIndex,
