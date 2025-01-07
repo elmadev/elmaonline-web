@@ -9,6 +9,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Button,
 } from '@material-ui/core';
 import { Paper } from 'components/Paper';
 import Header from 'components/Header';
@@ -20,6 +21,8 @@ import { getPrivateCupRecUri } from 'utils/cups';
 import PreviewRecButton from 'components/PreviewRecButton';
 import config from 'config';
 import FieldBoolean from 'components/FieldBoolean';
+import Preview from '../kuski/Preview';
+import { PlayArrow } from '@material-ui/icons';
 
 const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
@@ -44,6 +47,7 @@ const Personal = () => {
     useStoreActions(actions => actions.Cup);
 
   const [previewRecIndex, setPreviewRecIndex] = useState(null);
+  const [previewRec, setPreviewRec] = useState(null);
 
   useEffect(() => {
     if (cup?.CupGroupIndex && events?.length > 0) {
@@ -177,10 +181,9 @@ const Personal = () => {
             <Paper padding>
               <Header h2>Current event times</Header>
               <MyTimesDesc>
-                This shows your online times for current event. Can be used to
+                This shows your online runs for current event. Can be used to
                 verify that your times was registered on the server, as you
-                can&apos;t see these anywhere else. Apples results are not shown
-                here.
+                can&apos;t see these anywhere else.
               </MyTimesDesc>
               <RadioGroup
                 aria-label="type"
@@ -232,20 +235,23 @@ const Personal = () => {
                         {timesFilter(myTimesInLev[0].times)
                           .sort(timesSort)
                           .map(t => (
-                            <ReplayCon key={t.TimeIndex}>
-                              <div>
-                                <Time time={t.Time} />
-                              </div>
-                              <Desc>
-                                (
-                                <LocalTime
-                                  date={t.Driven}
-                                  format="dddd HH:mm:ss"
-                                  parse="X"
-                                />
-                                )
-                              </Desc>
-                            </ReplayCon>
+                            <TimeRow
+                              time={t}
+                              key={t.TimeIndex}
+                              TimeIndex={t.TimeIndex}
+                              LevelIndex={e.LevelIndex}
+                              setPreviewRec={setPreviewRec}
+                            />
+                          ))}
+                        {myTimesInLev[0].times.length === 0 &&
+                          myTimesInLev[0].appleRuns.map(t => (
+                            <TimeRow
+                              time={t}
+                              key={t.TimeFileData.TimeIndex}
+                              TimeIndex={t.TimeFileData.TimeIndex}
+                              LevelIndex={e.LevelIndex}
+                              setPreviewRec={setPreviewRec}
+                            />
                           ))}
                       </>
                     );
@@ -256,7 +262,44 @@ const Personal = () => {
           </Grid>
         </Grid>
       )}
+      {previewRec && (
+        <Preview previewRec={previewRec} setPreviewRec={setPreviewRec} />
+      )}
     </Container>
+  );
+};
+
+const TimeRow = ({ time, TimeIndex, LevelIndex, setPreviewRec }) => {
+  return (
+    <>
+      <ReplayCon key={time.TimeIndex}>
+        <div>
+          <Time apples={time.Apples} time={time.Time} />
+        </div>
+        <Desc>
+          (
+          <LocalTime
+            date={time.Driven}
+            format="eee d MMM yyyy HH:mm:ss"
+            parse="X"
+          />
+          )
+        </Desc>
+        {time?.TimeFileData?.UUID && time?.TimeFileData?.MD5 && (
+          <PlayButton
+            onClick={() =>
+              setPreviewRec({
+                ...time,
+                TimeIndex,
+                LevelIndex,
+              })
+            }
+          >
+            <PlayArrow title="View" />
+          </PlayButton>
+        )}
+      </ReplayCon>
+    </>
   );
 };
 
@@ -285,6 +328,9 @@ const RadioThin = styled(Radio)`
   }
 `;
 
+const PlayButton = styled(Button)`
+  padding: 2px !important;
+`;
 const MyTimesDesc = styled.div`
   margin-bottom: ${p => p.theme.padSmall};
 `;
