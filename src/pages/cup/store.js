@@ -14,6 +14,7 @@ import {
   MyReplays,
   UpdateCupReplay,
   PersonalAllFinished,
+  PersonalAppleRuns,
   TeamReplays,
   LevelsSearchAll,
 } from 'api';
@@ -108,7 +109,11 @@ export default {
     state.myTimes = payload;
   }),
   pushMyTimes: action((state, payload) => {
-    state.myTimes.push({ level: payload.level, times: payload.times });
+    state.myTimes.push({
+      level: payload.level,
+      times: payload.times,
+      appleRuns: payload.appleRuns,
+    });
   }),
   setLeaderHistory: action((state, payload) => {
     state.leaderHistory = payload;
@@ -128,8 +133,16 @@ export default {
   getMyTimes: thunk(async (actions, payload) => {
     actions.setMyTimes([]);
     const times = await PersonalAllFinished(payload);
-    if (times.ok) {
-      actions.pushMyTimes({ times: times.data, level: payload.LevelIndex });
+    const appleRuns = await PersonalAppleRuns({
+      LevelIndex: payload.LevelIndex,
+      limit: 5,
+    });
+    if (times.ok && appleRuns.ok) {
+      actions.pushMyTimes({
+        times: times.data,
+        appleRuns: appleRuns.data,
+        level: payload.LevelIndex,
+      });
     }
   }),
   myTimesOptions: persist(
