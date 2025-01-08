@@ -636,6 +636,8 @@ export const Img = styled.img`
   z-index: 0;
   margin-top: auto;
   margin-bottom: auto;
+  max-width: 100%;
+  object-fit: cover;
   ${p => p.top && 'top: 0;'}
   ${p => p.bottom && 'bottom: 0;'}
   ${p => p.opacity && 'opacity: 0.8;'}

@@ -52,6 +52,7 @@ import {
   useQueryAlt,
 } from 'api';
 import Button from 'components/Buttons';
+import Preview from '../kuski/Preview';
 
 const Level = () => {
   const { LevelId } = useParams({ strict: false });
@@ -62,6 +63,7 @@ const Level = () => {
   const [cripple, setCripple] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
+  const [previewRec, setPreviewRec] = useState(null);
 
   const {
     besttimes,
@@ -510,6 +512,14 @@ const Level = () => {
                       <LeaderHistory
                         allFinished={personalLeaderHistory}
                         loading={personalLeaderHistoryLoading !== LevelIndex}
+                        personal={true}
+                        openReplay={time =>
+                          setPreviewRec({
+                            ...time,
+                            LevelIndex,
+                            LevelData: level,
+                          })
+                        }
                       />
                     </>
                   )}
@@ -577,6 +587,9 @@ const Level = () => {
           )}
         </Paper>
       </ResultsContainer>
+      {previewRec && (
+        <Preview previewRec={previewRec} setPreviewRec={setPreviewRec} />
+      )}
     </Layout>
   );
 };

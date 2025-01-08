@@ -204,6 +204,9 @@ export const AddKuskiMap = data => api.post('kuskimap/add', data);
 export const Highlight = () => api.get('allfinished/highlight');
 export const PersonalAllFinished = data =>
   api.get(`allfinished/${data.LevelIndex}/${data.KuskiIndex}/${data.limit}`);
+export const PersonalAppleRuns = data =>
+  api.get(`allfinished/appleruns/${data.LevelIndex}/${data.limit}`);
+
 export const PersonalLatest = data =>
   api.get(
     `allfinished/${data.KuskiIndex}/${data.limit}?level=${data.search.level}&from=${data.search.from}&to=${data.search.to}`,
