@@ -7,7 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import LevelMap from 'features/LevelMap';
 import Kuski from 'components/Kuski';
-import { formatDistanceStrict } from 'date-fns';
+import { formatDistanceStrict, isValid } from 'date-fns';
 import config from 'config';
 import { useNavigate } from '@tanstack/react-router';
 import styled from '@emotion/styled';
@@ -51,9 +51,13 @@ export default function LevelCard({ level, tags }) {
             'Unknown'
           )
         }
-        subheader={formatDistanceStrict(level.Added * 1000, Date.now(), {
-          addSuffix: true,
-        })}
+        subheader={
+          isValid(level.Added)
+            ? formatDistanceStrict(level.Added * 1000, Date.now(), {
+                addSuffix: true,
+              })
+            : 'Unknown date'
+        }
       />
       <LevelCardMedia title={level.LevelName} height="160">
         <LevelMap
