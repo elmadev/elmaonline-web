@@ -42,7 +42,7 @@ const Dashboard = props => {
         <Grid item xs={12} sm={6}>
           <Paper padding>
             <Header h2>Current Event</Header>
-            <CupCurrent events={events} />
+            <CupCurrent events={events} ShortName={cup.ShortName} />
           </Paper>
           <CupUpload top />
         </Grid>
