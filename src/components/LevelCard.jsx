@@ -52,7 +52,7 @@ export default function LevelCard({ level, tags }) {
           )
         }
         subheader={
-          isValid(level.Added)
+          isValid(level.Added * 1000)
             ? formatDistanceStrict(level.Added * 1000, Date.now(), {
                 addSuffix: true,
               })
