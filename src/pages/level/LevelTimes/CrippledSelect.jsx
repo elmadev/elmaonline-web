@@ -13,8 +13,8 @@ const CrippledSelect = ({ level, cripple, setCripple, tab, setTab }) => {
           onChange={e => {
             setCripple(e.target.value === 'none' ? '' : e.target.value);
 
-            if (tab === 4 && e.target.value) {
-              setTab(0);
+            if (tab === 'eol-times' && e.target.value) {
+              setTab('best-times');
             }
           }}
         >

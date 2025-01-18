@@ -21,7 +21,7 @@ import EolTimesTab from './tabs/EolTimesTab.jsx';
 import MyTimesTab from './tabs/MyTimesTab.jsx';
 
 const LevelTimes = ({ LevelIndex, openReplay }) => {
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState('best-times');
   const [cripple, setCripple] = useState('');
 
   const kuskiIndex = nickId();
@@ -33,7 +33,7 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
     useQueryAlt(
       ['CrippledTimes', LevelIndex, cripple],
       async () => CrippledTimes(LevelIndex, cripple, 1000, 1, 10000),
-      { enabled: cripple !== '' && tab !== 2, retry: 0 },
+      { enabled: cripple !== '' && tab !== 'personal-stats', retry: 0 },
     );
 
   const {
@@ -48,7 +48,10 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
       ['CrippledPersonal', LevelIndex, kuskiIndex, cripple],
       async () => CrippledPersonal(LevelIndex, kuskiIndex, cripple, 1000),
       {
-        enabled: cripple !== '' && kuskiIndex > 0 && [2, 3].includes(tab),
+        enabled:
+          cripple !== '' &&
+          kuskiIndex > 0 &&
+          ['personal-stats', 'my-times'].includes(tab),
         retry: 0,
       },
     );
@@ -65,7 +68,10 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
   } = useQueryAlt(
     ['CrippledTimeStats', LevelIndex, kuskiIndex, cripple],
     async () => CrippledTimeStats(LevelIndex, kuskiIndex, cripple),
-    { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2, retry: 0 },
+    {
+      enabled: cripple !== '' && kuskiIndex > 0 && tab === 'personal-stats',
+      retry: 0,
+    },
   );
 
   if (loading) {
@@ -88,15 +94,17 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
           value={tab}
           onChange={(e, value) => setTab(value)}
         >
-          <Tab label="Best times" />
-          <Tab label="All times" />
-          <Tab label="Personal stats" />
-          <Tab label="My times" />
-          <Tab label="Leaders" />
-          {!cripple && level.Legacy && <Tab label="EOL times" />}
+          <Tab label="Best times" value="best-times" />
+          <Tab label="All times" value="all-times" />
+          <Tab label="Personal stats" value="personal-stats" />
+          <Tab label="My times" value="my-times" />
+          <Tab label="Leaders" value="leaders" />
+          {!cripple && level.Legacy && (
+            <Tab label="EOL times" value="eol-times" />
+          )}
         </StyledTabs>
 
-        {tab === 0 && (
+        {tab === 'best-times' && (
           <BestTimesTab
             LevelIndex={LevelIndex}
             cripple={cripple}
@@ -104,7 +112,7 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
             crippleLoading={crippledTimesDataLoading}
           />
         )}
-        {tab === 1 && (
+        {tab === 'all-times' && (
           <AllTimesTab
             LevelIndex={LevelIndex}
             cripple={cripple}
@@ -112,7 +120,7 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
             crippleLoading={crippledTimesDataLoading}
           />
         )}
-        {tab === 2 && (
+        {tab === 'personal-stats' && (
           <PersonalStatsTab
             LevelIndex={LevelIndex}
             openReplay={openReplay}
@@ -127,7 +135,7 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
             }}
           />
         )}
-        {tab === 3 && (
+        {tab === 'my-times' && (
           <MyTimesTab
             LevelIndex={LevelIndex}
             cripple={cripple}
@@ -136,7 +144,7 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
             crippleLoading={crippledPersonalDataLoading}
           />
         )}
-        {tab === 4 && (
+        {tab === 'leaders' && (
           <LeaderHistoryTab
             LevelIndex={LevelIndex}
             cripple={cripple}
@@ -144,7 +152,7 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
             crippleLoading={crippledTimesDataLoading}
           />
         )}
-        {tab === 5 && <EolTimesTab LevelIndex={LevelIndex} />}
+        {tab === 'eol-times' && <EolTimesTab LevelIndex={LevelIndex} />}
       </Paper>
     </>
   );
