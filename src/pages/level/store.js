@@ -10,11 +10,12 @@ import {
   CupsByLevel,
   GetLevelTags,
   UpdateLevelTags,
+  PersonalAllFinished,
 } from 'api';
 
 export default {
   besttimes: [],
-  besttimesLoading: false,
+  besttimesLoading: 0,
   level: {},
   levelpacks: [],
   cups: [],
@@ -22,6 +23,8 @@ export default {
   loading: true,
   allfinished: [],
   allLoading: 0,
+  myTimes: [],
+  myTimesLoading: 0,
   eoltimes: [],
   eolLoading: 0,
   timeStats: [],
@@ -47,14 +50,14 @@ export default {
     state.besttimesLoading = payload;
   }),
   setBesttimes: action((state, payload) => {
-    state.besttimes = payload;
-    state.besttimesLoading = false;
+    state.besttimes = payload.times;
+    state.besttimesLoading = payload.id;
   }),
   getBesttimes: thunk(async (actions, payload) => {
     actions.setBestLoading(true);
     const times = await Besttime(payload);
     if (times.ok) {
-      actions.setBesttimes(times.data);
+      actions.setBesttimes({ times: times.data, id: payload.levelId });
     }
   }),
   setLevel: action((state, payload) => {
@@ -70,7 +73,11 @@ export default {
   setBattlesForLevel: action((state, payload) => {
     state.battlesForLevel = payload;
   }),
+  setLoading: action((state, payload) => {
+    state.loading = payload;
+  }),
   getLevel: thunk(async (actions, payload) => {
+    actions.setLoading(true);
     Level(payload, 1).then(res => {
       if (res.ok) {
         actions.setLevel(res.data);
@@ -171,6 +178,16 @@ export default {
       actions.setLevel(response.data);
     } else {
       return ['Server error.'];
+    }
+  }),
+  setMyTimes: action((state, payload) => {
+    state.myTimes = payload.times;
+    state.myTimesLoading = payload.id;
+  }),
+  getMyTimes: thunk(async (actions, payload) => {
+    const times = await PersonalAllFinished(payload);
+    if (times.ok) {
+      actions.setMyTimes({ times: times.data, id: payload.LevelIndex });
     }
   }),
 };
