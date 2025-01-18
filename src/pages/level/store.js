@@ -10,6 +10,7 @@ import {
   CupsByLevel,
   GetLevelTags,
   UpdateLevelTags,
+  PersonalAllFinished,
 } from 'api';
 
 export default {
@@ -22,6 +23,8 @@ export default {
   loading: true,
   allfinished: [],
   allLoading: 0,
+  myTimes: [],
+  myTimesLoading: 0,
   eoltimes: [],
   eolLoading: 0,
   timeStats: [],
@@ -175,6 +178,16 @@ export default {
       actions.setLevel(response.data);
     } else {
       return ['Server error.'];
+    }
+  }),
+  setMyTimes: action((state, payload) => {
+    state.myTimes = payload.times;
+    state.myTimesLoading = payload.id;
+  }),
+  getMyTimes: thunk(async (actions, payload) => {
+    const times = await PersonalAllFinished(payload);
+    if (times.ok) {
+      actions.setMyTimes({ times: times.data, id: payload.LevelIndex });
     }
   }),
 };

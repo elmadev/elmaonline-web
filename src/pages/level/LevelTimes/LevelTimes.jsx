@@ -1,12 +1,9 @@
 import { Tab, Tabs } from '@material-ui/core';
-import TimeTable from '../TimeTable';
-import StatsTable from '../StatsTable';
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Paper } from 'components/Paper';
 import Loading from 'components/Loading';
 import { useStoreState } from 'easy-peasy';
-import LeaderHistory from 'components/LeaderHistory';
 import { nickId } from 'utils/nick';
 
 import {
@@ -21,6 +18,7 @@ import AllTimesTab from './tabs/AllTimesTab.jsx';
 import PersonalStatsTab from './tabs/PersonalStatsTab.jsx';
 import LeaderHistoryTab from './tabs/LeaderHistoryTab';
 import EolTimesTab from './tabs/EolTimesTab.jsx';
+import MyTimesTab from './tabs/MyTimesTab.jsx';
 
 const LevelTimes = ({ LevelIndex, openReplay }) => {
   const [tab, setTab] = useState(0);
@@ -49,7 +47,10 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
     useQueryAlt(
       ['CrippledPersonal', LevelIndex, kuskiIndex, cripple],
       async () => CrippledPersonal(LevelIndex, kuskiIndex, cripple, 1000),
-      { enabled: cripple !== '' && kuskiIndex > 0 && tab === 2, retry: 0 },
+      {
+        enabled: cripple !== '' && kuskiIndex > 0 && [2, 3].includes(tab),
+        retry: 0,
+      },
     );
 
   const {
@@ -90,6 +91,7 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
           <Tab label="Best times" />
           <Tab label="All times" />
           <Tab label="Personal stats" />
+          <Tab label="My times" />
           <Tab label="Leaders" />
           {!cripple && level.Legacy && <Tab label="EOL times" />}
         </StyledTabs>
@@ -118,16 +120,23 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
             crippleData={{
               stats: crippledKuskiTimeStats,
               leaderHistory: crippledKuskiLeaderHistory,
-              times: crippledKuskiTimes,
             }}
             crippleLoading={{
               stats: crippledKuskiTimeStatsLoading,
               leaderHistory: crippledPersonalDataLoading,
-              times: crippledPersonalDataLoading,
             }}
           />
         )}
         {tab === 3 && (
+          <MyTimesTab
+            LevelIndex={LevelIndex}
+            cripple={cripple}
+            openReplay={openReplay}
+            crippleData={crippledKuskiTimes}
+            crippleLoading={crippledPersonalDataLoading}
+          />
+        )}
+        {tab === 4 && (
           <LeaderHistoryTab
             LevelIndex={LevelIndex}
             cripple={cripple}
@@ -135,7 +144,7 @@ const LevelTimes = ({ LevelIndex, openReplay }) => {
             crippleLoading={crippledTimesDataLoading}
           />
         )}
-        {tab === 4 && <EolTimesTab LevelIndex={LevelIndex} />}
+        {tab === 5 && <EolTimesTab LevelIndex={LevelIndex} />}
       </Paper>
     </>
   );
