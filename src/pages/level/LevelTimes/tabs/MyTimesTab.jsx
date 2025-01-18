@@ -31,7 +31,13 @@ const MyTimesTab = ({
   }
 
   if (cripple) {
-    return <TimeTable data={crippleData} loading={crippleLoading} />;
+    return (
+      <TimeTable
+        data={crippleData}
+        loading={crippleLoading}
+        openReplay={openReplay}
+      />
+    );
   }
 
   return (
