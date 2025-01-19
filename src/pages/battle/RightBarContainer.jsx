@@ -5,8 +5,15 @@ import {
   AccordionSummary,
   AccordionDetails,
   Button,
+  Tooltip,
 } from '@material-ui/core';
-import { ExpandMore } from '@material-ui/icons';
+import {
+  ExpandMore,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+  CropOriginal,
+  PlayArrow,
+} from '@material-ui/icons';
 import { BattleType } from 'components/Names';
 import Link from 'components/Link';
 import Download from 'components/Download';
@@ -18,6 +25,7 @@ import { battleStatus } from 'utils/battle';
 import { pluralize } from 'utils/misc';
 import { useNavigate } from '@tanstack/react-router';
 import { useStoreActions, useStoreState } from 'easy-peasy';
+import IconButton from '@material-ui/core/IconButton';
 
 const crippleOptions = battle => {
   let crippleString = '';
@@ -104,38 +112,53 @@ const RightBarContainer = props => {
             )}
             <br />
             <div>
+              <Link to={`/levels/${battle.LevelIndex}`}>
+                <StyledButton
+                  size="small"
+                  color="primary"
+                  variant="contained"
+                  startIcon={<CropOriginal />}
+                >
+                  Go to level page
+                </StyledButton>
+              </Link>
               <Link to={`/r/b-${battle.BattleIndex}`}>
-                <StyledButton size="small" color="primary">
+                <StyledButton
+                  size="small"
+                  color="primary"
+                  variant="contained"
+                  startIcon={<PlayArrow />}
+                >
                   Go to replay page
                 </StyledButton>
               </Link>
+
+              <RightLinkContainer>
+                <Tooltip title="Previous Battle">
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      navigate({ to: `/battles/${battle.BattleIndex - 1}` })
+                    }
+                    aria-label="Previous Battle"
+                  >
+                    <KeyboardArrowLeft />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Next Battle">
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      navigate({ to: `/battles/${battle.BattleIndex + 1}` })
+                    }
+                    disabled={!nextBattleFound}
+                    aria-label="Next Battle"
+                  >
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </Tooltip>
+              </RightLinkContainer>
             </div>
-            <Link to={`/levels/${battle.LevelIndex}`}>
-              <StyledButton size="small" color="primary">
-                Go to level page
-              </StyledButton>
-            </Link>
-            <RightLinkContainer>
-              <StyledButton
-                size="small"
-                color="primary"
-                onClick={() =>
-                  navigate({ to: `/battles/${battle.BattleIndex - 1}` })
-                }
-              >
-                Previous Battle{' '}
-              </StyledButton>
-              <StyledButton
-                size="small"
-                color="primary"
-                onClick={() =>
-                  navigate({ to: `/battles/${battle.BattleIndex + 1}` })
-                }
-                disabled={nextBattleFound ? false : true}
-              >
-                Next Battle{' '}
-              </StyledButton>
-            </RightLinkContainer>
           </BattleStyleDescription>
         </AccordionDetails>
       </Accordion>
@@ -199,6 +222,7 @@ const StyledButton = styled(Button)`
   && {
     font-weight: inherit;
     text-transform: initial;
+    margin-right: 8px;
   }
 `;
 
