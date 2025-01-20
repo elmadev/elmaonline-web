@@ -247,8 +247,8 @@ const Personal = () => {
                           myTimesInLev[0].appleRuns.map(t => (
                             <TimeRow
                               time={t}
-                              key={t.TimeFileData.TimeIndex}
-                              TimeIndex={t.TimeFileData.TimeIndex}
+                              key={t.TimeFileData?.TimeIndex}
+                              TimeIndex={t.TimeFileData?.TimeIndex}
                               LevelIndex={e.LevelIndex}
                               setPreviewRec={setPreviewRec}
                             />
