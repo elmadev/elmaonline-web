@@ -1,4 +1,4 @@
-import { action, thunk, persist } from 'easy-peasy';
+import { action, thunk } from 'easy-peasy';
 import {
   GetAllBattleTimes,
   BattleResults,
@@ -8,15 +8,6 @@ import {
 } from 'api';
 
 export default {
-  settings: persist(
-    {
-      autoPlayRecs: false,
-    },
-    { storage: 'localStorage' },
-  ),
-  toggleRecAutoplay: action(state => {
-    state.settings.autoPlayRecs = !state.settings.autoPlayRecs;
-  }),
   allBattleTimes: null,
   setAllBattleTimes: action((state, payload) => {
     state.allBattleTimes = payload;

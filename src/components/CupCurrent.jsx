@@ -10,7 +10,7 @@ import Link from 'components/Link';
 
 const eventSort = (a, b) => a.CupIndex - b.CupIndex;
 
-const CupResults = props => {
+const CupCurrent = props => {
   const { events, ShortName } = props;
   const currentEvents = events.filter(
     e =>
@@ -115,4 +115,4 @@ const EventInfo = styled.div`
   padding-bottom: 8px;
 `;
 
-export default CupResults;
+export default CupCurrent;

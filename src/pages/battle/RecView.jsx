@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
-import { useStoreState, useStoreActions, useStoreRehydrated } from 'easy-peasy';
-import { Checkbox, FormControlLabel, useMediaQuery } from '@material-ui/core';
+import React from 'react';
+import { useStoreRehydrated } from 'easy-peasy';
+import { useMediaQuery } from '@material-ui/core';
+import { useStoreState } from 'easy-peasy';
 import Recplayer from 'components/Recplayer';
-import Play from 'components/Play';
 import styled from '@emotion/styled';
 import config from 'config';
 import { Row } from 'components/Containers';
 import Time from 'components/Time';
 import Kuski from 'components/Kuski';
 import { downloadRec } from 'utils/misc';
+import ReplaySettings from 'features/ReplaySettings';
 
 const RecView = props => {
-  const [play, setPlay] = useState(
-    navigator.userAgent.toLowerCase().indexOf('firefox') === -1,
-  );
-
   const isRehydrated = useStoreRehydrated();
 
   const {
@@ -28,44 +25,34 @@ const RecView = props => {
     hasReplay,
   } = props;
 
-  const { toggleRecAutoplay } = useStoreActions(actions => actions.Battle);
-
-  const {
-    settings: { autoPlayRecs },
-  } = useStoreState(state => state.Battle);
-
   const isMobile = useMediaQuery('(max-width: 1000px)');
+  const {
+    settings: { theater },
+  } = useStoreState(state => state.ReplaySettings);
 
   return (
     <div>
       {!isRehydrated ? null : (
-        <PlayerContainer>
+        <PlayerContainer theater={theater}>
           <div className="player">
-            {play ? (
-              <>
-                {isWindow && battleStatus !== 'Queued' && (
-                  <Recplayer
-                    rec={
-                      !hasReplay
-                        ? undefined
-                        : replayUrl ||
-                          `${config.dlUrl}battlereplay/${BattleIndex}`
-                    }
-                    lev={`${config.dlUrl}level/${levelIndex}`}
-                    shirt={[
-                      `${config.dlUrl}shirt/${player?.Kuski?.KuskiIndex}`,
-                    ]}
-                    autoPlay={autoPlayRecs ? 'if-visible' : 'no'}
-                    controls
-                    forceRefresh
-                  />
-                )}
-              </>
-            ) : (
-              <Play type="replay" onClick={() => setPlay(true)} />
-            )}
+            <>
+              {isWindow && battleStatus !== 'Queued' && (
+                <Recplayer
+                  rec={
+                    !hasReplay
+                      ? undefined
+                      : replayUrl ||
+                        `${config.dlUrl}battlereplay/${BattleIndex}`
+                  }
+                  lev={`${config.dlUrl}level/${levelIndex}`}
+                  shirt={[`${config.dlUrl}shirt/${player?.Kuski?.KuskiIndex}`]}
+                  controls
+                  forceRefresh
+                />
+              )}
+            </>
           </div>
-          <Row>
+          <Row jc="space-between">
             {player?.Kuski?.Kuski && !isMobile && hasReplay && (
               <PlayerTitle>
                 <Kuski kuskiData={player.Kuski} flag={true} team={true} />
@@ -84,17 +71,7 @@ const RecView = props => {
                 </Download>
               </PlayerTitle>
             )}
-            <StyledFormControlLabel
-              control={
-                <Checkbox
-                  onChange={() => toggleRecAutoplay()}
-                  checked={autoPlayRecs}
-                  color="primary"
-                  size="small"
-                />
-              }
-              label="Autoplay replays"
-            />
+            <ReplaySettings />
           </Row>
         </PlayerContainer>
       )}
@@ -117,7 +94,7 @@ const Download = styled.span`
 `;
 
 const PlayerContainer = styled.div`
-  width: 60%;
+  width: ${p => (p.theater ? '100%' : '60%')};
   float: left;
   padding: 7px;
   box-sizing: border-box;
@@ -137,12 +114,6 @@ const PlayerContainer = styled.div`
   @media screen and (max-width: 1100px) {
     float: none;
     width: 100%;
-  }
-`;
-
-const StyledFormControlLabel = styled(FormControlLabel)`
-  span {
-    font-size: 14px;
   }
 `;
 
