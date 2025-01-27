@@ -56,10 +56,13 @@ const Upload = ({ onUpload = null, filetype }) => {
       return renameFile(f, f.name.replace('.REC', '.rec'));
     });
     let unlisted = false;
-    if (fixedFiles[0].name.substring(0, 2).toLowerCase() === 'wc') {
+    if (
+      ['wc', 'cpc'].indexOf(fixedFiles[0].name.substring(0, 2).toLowerCase()) >
+      -1
+    ) {
       unlisted = true;
       setWarning(
-        `It looks like you're uploading a World Cup replay, it will be unlisted by default. Please avoid sharing it publicly. To share with your team, you can also use the team tab on the cup page.`,
+        `It looks like you're uploading a cup replay, it will be unlisted by default. Please avoid sharing it publicly. To share with your team, you can also use the team tab on the cup page.`,
       );
     }
     fixedFiles.forEach((file, index) => {
