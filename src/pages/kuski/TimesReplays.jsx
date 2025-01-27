@@ -114,7 +114,11 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
 
   const selectToShare = rec => {
     let unlisted = false;
-    if (rec.LevelData?.LevelName?.substring(0, 5).toLowerCase() === 'wcup9') {
+    if (
+      ['wcup9', 'cpc'].indexOf(
+        rec.LevelData?.LevelName?.substring(0, 5).toLowerCase(),
+      ) > -1
+    ) {
       unlisted = true;
     }
     setShare({
