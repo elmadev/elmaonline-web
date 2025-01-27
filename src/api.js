@@ -461,6 +461,10 @@ export const TeamMembers = Team => api.get(`teams/${Team}`);
 export const SearchChat = data =>
   api.get('chatlog', { params: JSON.stringify(data) });
 
+// lgr
+export const LGRs = () => api.get(`lgr/all`);
+export const NewLGR = formData => apiUpload.post('api/lgr/add', formData);
+
 // level
 export const Level = (LevelIndex, withLevelStats = false) =>
   api.get(`level/${LevelIndex}`, { stats: withLevelStats ? '1' : '' });

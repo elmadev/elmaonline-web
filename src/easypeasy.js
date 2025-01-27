@@ -17,6 +17,8 @@ import KuskiMap from 'pages/map/store';
 import LevelPack from 'pages/levelpack/store';
 import Search from 'pages/search/store';
 import Kuski from 'pages/kuski/store';
+import LGRList from 'features/lgrlist/store';
+import LGRUpload from 'features/lgrupload/store';
 import LevelsAdd from 'pages/levels-add/store';
 import LevelsAddCollection from 'pages/levels-add-collection/store';
 import LevelpackCollection from 'pages/levelpack-collection/store';
@@ -63,6 +65,8 @@ export default {
   Kuski,
   Help,
   LevelList,
+  LGRList,
+  LGRUpload,
   LevelsAdd,
   LevelsAddCollection,
   LevelpackCollection,

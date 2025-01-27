@@ -5,8 +5,9 @@ import config from 'config';
 import { nickId } from 'utils/nick';
 
 const types = {
-  '.rec': { '*/*': ['.rec'] },
-  '.dat': { '*/*': ['.dat'] },
+  '.rec': { 'application/octet-stream': ['.rec'] },
+  '.dat': { 'application/octet-stream': ['.dat'] },
+  '.lgr': { 'application/octet-stream': ['.lgr'] },
   img: { 'image/*': ['.png', '.gif', '.webp', '.jpg', '.apng', '.svg'] },
 };
 

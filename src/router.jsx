@@ -22,6 +22,7 @@ import ForgotPassword from 'pages/forgot-password';
 import Help from 'pages/help';
 import Kuski from 'pages/kuski';
 import Kuskis from 'pages/kuskis';
+import LGRs from 'pages/lgrs';
 import Level from 'pages/level';
 import LevelPack from 'pages/levelpack';
 import Levels from 'pages/levels';
@@ -233,6 +234,18 @@ const kuskisSearchRoute = createRoute({
   component: function KuskisSearchComp() {
     return <Kuskis tab="search" />;
   },
+});
+
+const lgrsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/lgrs',
+  component: LGRs,
+});
+
+const lgrsTabRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/lgrs/$tab',
+  component: LGRs,
 });
 
 const levelsRoute = createRoute({
@@ -457,6 +470,8 @@ const routeTree = rootRoute.addChildren([
   kuskiRecordsSortRoute,
   kuskisRoute,
   kuskisSearchRoute,
+  lgrsRoute,
+  lgrsTabRoute,
   levelsRoute,
   levelIdRoute,
   levelPackRoute,
