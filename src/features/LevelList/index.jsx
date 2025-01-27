@@ -52,6 +52,7 @@ export default function LevelList({
   const navigate = useNavigate();
 
   const [pageSize] = useState(defaultPageSize);
+  const [query, setQuery] = useState(q);
   const { loggedIn } = useStoreState(state => state.Login);
   const { levels, tagOptions, kuskiOptions, loadingLevels, settings } =
     useStoreState(state => state.LevelList);
@@ -79,15 +80,16 @@ export default function LevelList({
     finishedBy,
     selectedLevelpack,
     order,
+    q,
   ]);
 
   const handleSearchBlur = () => {
-    getLevels(buildSearchQueryParams());
+    updateSearch({ q: query });
   };
 
   const handleSearchKeyPress = event => {
     if (event.key === 'Enter') {
-      getLevels(buildSearchQueryParams());
+      updateSearch({ q: query });
     }
   };
 
@@ -149,8 +151,8 @@ export default function LevelList({
             <StickyContainer nonsticky={nonsticky}>
               <TextField
                 label="Search query"
-                value={q}
-                onChange={e => updateSearch({ q: e.target.value })}
+                value={query}
+                onChange={e => setQuery(e.target.value)}
                 onBlur={handleSearchBlur}
                 onKeyDown={handleSearchKeyPress}
               />
