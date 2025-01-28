@@ -57,8 +57,7 @@ const Upload = ({ onUpload = null, filetype }) => {
     });
     let unlisted = false;
     if (
-      ['wc', 'cpc'].indexOf(fixedFiles[0].name.substring(0, 2).toLowerCase()) >
-      -1
+      ['cpc'].indexOf(fixedFiles[0].name.substring(0, 3).toLowerCase()) > -1
     ) {
       unlisted = true;
       setWarning(
