@@ -12,6 +12,7 @@ import {
   TextField,
 } from '@material-ui/core';
 import { NewLGR } from 'api';
+import Alert from 'components/Alert';
 
 const LGRUpload = () => {
   const [lgrData, setLgrData] = useState({
@@ -20,6 +21,13 @@ const LGRUpload = () => {
   // TODO tags
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState(null);
+  const [alert, setAlert] = useState({
+    open: false,
+    title: '',
+    text: '',
+    link: '',
+    options: ['Close'],
+  });
 
   const reset = () => {
     setLgrData({
@@ -27,7 +35,15 @@ const LGRUpload = () => {
     });
   };
 
+  const closeAlert = () => {
+    setAlert({
+      ...alert,
+      open: false,
+    });
+  };
+
   const onDropLGR = newFiles => {
+    // Dropzone already limits the file size to 10 MB
     if (newFiles.length !== 1) {
       reset();
       return;
@@ -47,6 +63,7 @@ const LGRUpload = () => {
   };
 
   const onDropPreview = newFiles => {
+    // Dropzone already limits the file size to 10 MB
     if (newFiles.length !== 1) {
       setLgrData({
         ...lgrData,
@@ -80,7 +97,7 @@ const LGRUpload = () => {
     });
   };
 
-  const upload = () => {
+  const upload = async () => {
     setIsUploading(true);
     const formData = new FormData();
     // files
@@ -90,7 +107,24 @@ const LGRUpload = () => {
     formData.append('filename', lgrData.filename);
     formData.append('description', lgrData.description);
     try {
-      NewLGR(formData);
+      const res = await NewLGR(formData);
+      if (res.data && !res.data.error) {
+        setAlert({
+          ...alert,
+          open: true,
+          title: 'LGR Uploaded!',
+          text: `Congratulations, your LGR is uploaded. You can see your LGR here:`,
+          link: `${window.location.origin}/l/${lgrData.filename}`,
+        });
+      } else {
+        setAlert({
+          ...alert,
+          open: true,
+          title: 'Error',
+          text: `There was a problem with uploading your LGR: ${res.data ? res.data.error : 'Unknown error'}`,
+          link: '',
+        });
+      }
     } finally {
       setIsUploading(false);
     }
@@ -103,6 +137,7 @@ const LGRUpload = () => {
         <Text>Upload a fancyboosted lgr here.</Text>
         <Dropzone filetype={'.lgr'} onDrop={e => onDropLGR(e)} />
       </Column>
+      <Alert {...alert} onClose={closeAlert} />
       <UploadButtonContainer container>
         <Grid item xs={12}>
           {lgrData.file && (
@@ -124,7 +159,7 @@ const LGRUpload = () => {
                 </CardContent>
                 <CardContent>
                   <Typography color="primary">
-                    Upload a preview image.
+                    Upload a preview image (max 10 MB).
                   </Typography>
                   <Dropzone filetype={'img'} onDrop={e => onDropPreview(e)} />
                 </CardContent>
