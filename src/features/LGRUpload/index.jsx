@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 import Dropzone from 'components/Dropzone';
 import { Text, Column } from 'components/Containers';
 import Header from 'components/Header';
@@ -10,15 +11,19 @@ import {
   CardContent,
   Typography,
   TextField,
+  Chip,
 } from '@material-ui/core';
 import { NewLGR } from 'api';
 import Alert from 'components/Alert';
+import { xor } from 'lodash';
 
 const LGRUpload = () => {
+  const { tagOptions } = useStoreState(state => state.LGRUpload);
+  const { getTagOptions } = useStoreActions(actions => actions.LGRUpload);
+
   const [lgrData, setLgrData] = useState({
     file: null,
   });
-  // TODO tags
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState(null);
   const [alert, setAlert] = useState({
@@ -28,6 +33,10 @@ const LGRUpload = () => {
     link: '',
     options: ['Close'],
   });
+
+  useEffect(() => {
+    getTagOptions();
+  }, []);
 
   const reset = () => {
     setLgrData({
@@ -51,6 +60,25 @@ const LGRUpload = () => {
     const newFile = newFiles[0];
     const filename = newFile.name.toLowerCase();
     if (!filename.endsWith('.lgr')) {
+      setAlert({
+        ...alert,
+        open: true,
+        title: 'Error',
+        text: `LGR filename does not end in .lgr!`,
+        link: '',
+      });
+      reset();
+      return;
+    }
+    const lgrName = filename.slice(0, -4);
+    if (lgrName.length > 8) {
+      setAlert({
+        ...alert,
+        open: true,
+        title: 'Error',
+        text: `LGR filename is too long!`,
+        link: '',
+      });
       reset();
       return;
     }
@@ -59,6 +87,7 @@ const LGRUpload = () => {
       filename: filename.slice(0, -4),
       preview: null,
       description: '',
+      tags: [],
     });
   };
 
@@ -97,6 +126,13 @@ const LGRUpload = () => {
     });
   };
 
+  const handleTag = tag => {
+    setLgrData({
+      ...lgrData,
+      tags: xor(lgrData.tags, [tag]),
+    });
+  };
+
   const upload = async () => {
     setIsUploading(true);
     const formData = new FormData();
@@ -106,6 +142,10 @@ const LGRUpload = () => {
     // body
     formData.append('filename', lgrData.filename);
     formData.append('description', lgrData.description);
+    formData.append(
+      'tags',
+      JSON.stringify(lgrData.tags.map(tag => tag.TagIndex)),
+    );
     try {
       const res = await NewLGR(formData);
       if (res.data && !res.data.error) {
@@ -116,6 +156,7 @@ const LGRUpload = () => {
           text: `Congratulations, your LGR is uploaded. You can see your LGR here:`,
           link: `${window.location.origin}/l/${lgrData.filename}`,
         });
+        //reset() TODO add reset (removed for faster deving)
       } else {
         setAlert({
           ...alert,
@@ -158,8 +199,31 @@ const LGRUpload = () => {
                   />
                 </CardContent>
                 <CardContent>
+                  <Typography color="primary">Tags</Typography>
+                  {tagOptions.map(option => {
+                    if (lgrData.tags.includes(option)) {
+                      return (
+                        <Chip
+                          label={option.Name}
+                          onDelete={() => handleTag(option)}
+                          color="primary"
+                          style={{ margin: 4 }}
+                        />
+                      );
+                    } else {
+                      return (
+                        <Chip
+                          label={option.Name}
+                          onClick={() => handleTag(option)}
+                          style={{ margin: 4 }}
+                        />
+                      );
+                    }
+                  })}
+                </CardContent>
+                <CardContent>
                   <Typography color="primary">
-                    Upload a preview image (max 10 MB).
+                    Upload a preview image (max 10 MB)
                   </Typography>
                   <Dropzone filetype={'img'} onDrop={e => onDropPreview(e)} />
                 </CardContent>

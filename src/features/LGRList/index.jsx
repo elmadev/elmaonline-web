@@ -75,18 +75,19 @@ const LGRList = () => {
       ) : (
         <>
           {!settings.grid && (
-            <ListContainer>
+            <ListContainerWhite>
               <ListHeader>
                 <ListCell>Uploaded</ListCell>
                 <ListCell>Name</ListCell>
                 <ListCell>Uploader</ListCell>
                 <ListCell>Description</ListCell>
                 <ListCell right>Downloads</ListCell>
+                <ListCell>Tags</ListCell>
               </ListHeader>
               {sortedLgrs.map(lgr => {
                 return <LGRListItem lgr={lgr} key={lgr.LGRIndex} />;
               })}
-            </ListContainer>
+            </ListContainerWhite>
           )}
           {settings.grid && (
             <CardGrid>
@@ -100,6 +101,10 @@ const LGRList = () => {
     </>
   );
 };
+
+const ListContainerWhite = styled(ListContainer)`
+  background: ${p => p.theme.paperBackground};
+`;
 
 const StickyContainer = styled.div`
   background: ${p => p.theme.pageBackground};

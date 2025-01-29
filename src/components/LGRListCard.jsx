@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import config from 'config';
 import { formatDistanceStrict } from 'date-fns';
+import Tags from 'components/Tags';
 
 const LGRListCard = ({ lgr }) => {
   const [raised, setRaised] = useState(false);
@@ -36,6 +37,11 @@ const LGRListCard = ({ lgr }) => {
         <LGRPreviewImg src={`${config.api}lgr/preview/${lgr.LGRName}`} />
         <DownloadsContainer>{lgr.Downloads}</DownloadsContainer>
       </LGRPreviewCard>
+      <CardContent>
+        <TagsContainer>
+          <Tags tags={lgr.Tags.map(tag => tag.Name)} />
+        </TagsContainer>
+      </CardContent>
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {lgr.LGRDesc}
@@ -73,6 +79,10 @@ const DownloadsContainer = styled.span`
   padding: 2px 3px;
   background: yellow;
   color: #222;
+`;
+
+const TagsContainer = styled.span`
+  float: right;
 `;
 
 export default LGRListCard;

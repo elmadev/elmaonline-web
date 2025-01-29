@@ -462,7 +462,7 @@ export const SearchChat = data =>
   api.get('chatlog', { params: JSON.stringify(data) });
 
 // lgr
-export const LGRs = () => api.get(`lgr/all`);
+export const LGRs = () => api.get(`lgr/info`);
 export const NewLGR = formData => apiUpload.post('api/lgr/add', formData);
 
 // level
@@ -554,6 +554,7 @@ export const GetDatInfo = data => apiUpload.post(`api/taswr/getdatinfo`, data);
 export const GetReplayTags = () => api.get(`tag?type=replay`);
 export const GetLevelTags = () => api.get(`tag?type=level`);
 export const GetLevelPackTags = () => api.get(`tag?type=levelpack`);
+export const GetLGRTags = () => api.get(`tag?type=lgr`);
 export const GetTags = () => api.get(`tag`);
 export const CreateTag = data => api.post(`tag`, data);
 export const UpdateTag = (TagIndex, data) => api.put(`tag/${TagIndex}`, data);

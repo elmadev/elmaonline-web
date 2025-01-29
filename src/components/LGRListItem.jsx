@@ -1,5 +1,6 @@
 import React from 'react';
 import { ListCell, ListRow } from 'components/List';
+import Tags from 'components/Tags';
 import { formatDistanceStrict } from 'date-fns';
 import Kuski from 'components/Kuski';
 
@@ -18,6 +19,9 @@ const LGRListItem = ({ lgr }) => {
       </ListCell>
       <ListCell to={url}>{lgr.LGRDesc}</ListCell>
       <ListCell right>{lgr.Downloads}</ListCell>
+      <ListCell>
+        <Tags tags={lgr.Tags.map(tag => tag.Name)} />
+      </ListCell>
     </ListRow>
   );
 };
