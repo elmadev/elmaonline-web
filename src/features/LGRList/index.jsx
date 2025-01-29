@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import LGRListItem from 'components/LGRListItem';
 import LGRListCard from 'components/LGRListCard';
+import TagFilter from 'components/TagFilter';
 import styled from '@emotion/styled';
 import Loading from 'components/Loading';
 import ListIcon from '@material-ui/icons/List';
@@ -15,11 +16,16 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { ListContainer, ListHeader, ListCell } from 'components/List';
 
 const LGRList = () => {
-  const { lgrs, settings } = useStoreState(state => state.LGRList);
-  const { getLGRs, setSettings } = useStoreActions(actions => actions.LGRList);
+  const { lgrs, settings, tagOptions } = useStoreState(state => state.LGRList);
+  const { getLGRs, setSettings, getTagOptions } = useStoreActions(
+    actions => actions.LGRList,
+  );
+  const [includedTags, setIncludedTags] = useState([]);
+  const [excludedTags, setExcludedTags] = useState([]);
 
   useEffect(() => {
     getLGRs();
+    getTagOptions();
   }, []);
 
   const sortBy = settings.sortBy ? settings.sortBy : 'LGRName';
@@ -28,11 +34,33 @@ const LGRList = () => {
       a.LGRName > b.LGRName ? 1 : a.LGRName < b.LGRName ? -1 : 0,
     Downloads: (a, b) => b.Downloads - a.Downloads,
   };
-  const sortedLgrs = lgrs.toSorted(sorts[sortBy]);
+  const filterIncludedLgrs = lgrs.filter(lgr =>
+    includedTags.every(tag =>
+      lgr.Tags.some(lgr_tag => lgr_tag.TagIndex === tag.TagIndex),
+    ),
+  );
+  const filterExcludedLgrs = filterIncludedLgrs.filter(
+    lgr =>
+      !excludedTags.some(tag =>
+        lgr.Tags.some(lgr_tag => lgr_tag.TagIndex === tag.TagIndex),
+      ),
+  );
+  const sortedLgrs = filterExcludedLgrs.toSorted(sorts[sortBy]);
 
   return (
     <>
       <StickyContainer>
+        <TagFilter
+          tagOptions={tagOptions}
+          selectedTags={includedTags}
+          onSelectedTagsChange={(_event, newValue) => {
+            setIncludedTags(newValue);
+          }}
+          excludedTags={excludedTags}
+          onExcludedTagsChange={(_event, newValue) => {
+            setExcludedTags(newValue);
+          }}
+        />
         <ToggleButtonGroup
           value={settings.sortBy}
           size="small"
