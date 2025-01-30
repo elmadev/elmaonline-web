@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import config from 'config';
 import { formatDistanceStrict } from 'date-fns';
 import Tags from 'components/Tags';
@@ -15,39 +16,41 @@ const LGRListCard = ({ lgr }) => {
   const [raised, setRaised] = useState(false);
 
   return (
-    <LGRCard
-      raised={raised}
-      onMouseOver={() => setRaised(true)}
-      onMouseLeave={() => setRaised(false)}
-    >
-      <CardHeader
-        title={lgr.LGRName}
-        subheader={formatDistanceStrict(lgr.Added * 1000, Date.now(), {
-          addSuffix: true,
-        })}
-        action={
-          <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
-            <IconButton aria-label="Download LGR">
-              <GetAppIcon />
-            </IconButton>
-          </a>
-        }
-      />
-      <LGRPreviewCard>
-        <LGRPreviewImg src={`${config.api}lgr/preview/${lgr.LGRName}`} />
-        <DownloadsContainer>{lgr.Downloads}</DownloadsContainer>
-      </LGRPreviewCard>
-      <CardContent>
-        <TagsContainer>
-          <Tags tags={lgr.Tags.map(tag => tag.Name)} />
-        </TagsContainer>
-      </CardContent>
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {lgr.LGRDesc}
-        </Typography>
-      </CardContent>
-    </LGRCard>
+    <Link href={`l/${lgr.LGRName}`} underline="none">
+      <LGRCard
+        raised={raised}
+        onMouseOver={() => setRaised(true)}
+        onMouseLeave={() => setRaised(false)}
+      >
+        <CardHeader
+          title={lgr.LGRName}
+          subheader={formatDistanceStrict(lgr.Added * 1000, Date.now(), {
+            addSuffix: true,
+          })}
+          action={
+            <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+              <IconButton aria-label="Download LGR">
+                <GetAppIcon />
+              </IconButton>
+            </a>
+          }
+        />
+        <LGRPreviewCard>
+          <LGRPreviewImg src={`${config.api}lgr/preview/${lgr.LGRName}`} />
+          <DownloadsContainer>{lgr.Downloads}</DownloadsContainer>
+        </LGRPreviewCard>
+        <CardContent>
+          <TagsContainer>
+            <Tags tags={lgr.Tags.map(tag => tag.Name)} />
+          </TagsContainer>
+        </CardContent>
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {lgr.LGRDesc}
+          </Typography>
+        </CardContent>
+      </LGRCard>
+    </Link>
   );
 };
 

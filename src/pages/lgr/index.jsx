@@ -1,0 +1,112 @@
+import React, { useEffect } from 'react';
+import Layout from 'components/Layout';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useParams } from '@tanstack/react-router';
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+} from '@material-ui/core';
+import config from 'config';
+import styled from '@emotion/styled';
+import Header from 'components/Header';
+import LocalTime from 'components/LocalTime';
+import Kuski from 'components/Kuski';
+import Tags from 'components/Tags';
+import { Text } from 'components/Containers';
+import LGRComments from 'features/LGRComments';
+import AddComment from 'components/AddComment';
+import { ExpandMore } from '@material-ui/icons';
+
+const LGR = () => {
+  const { lgr } = useStoreState(state => state.LGR);
+  const { getLGR } = useStoreActions(actions => actions.LGR);
+
+  const { LGRName } = useParams({ strict: false });
+  useEffect(() => {
+    getLGR(LGRName);
+  }, []);
+
+  return (
+    <Layout edge t="LGRs">
+      {!LGRName && <Typography>Please add an LGR name to the url.</Typography>}
+      {lgr && (
+        <>
+          <PreviewContainer>
+            <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+              <img src={`${config.api}lgr/preview/${lgr.LGRName}`} />
+            </a>
+          </PreviewContainer>
+          <RightBarContainer>
+            <Accordion defaultExpanded>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Header h3>{`${lgr.LGRName}.lgr`}</Header>
+              </AccordionSummary>
+              <AccordionDetails style={{ flexDirection: 'column' }}>
+                <LGRInfo>
+                  <Text>{lgr.LGRDesc}</Text>
+                  <Text>
+                    <UploadedBy>
+                      Uploaded by <Kuski kuskiData={lgr.KuskiData} />{' '}
+                      <LocalTime
+                        date={lgr.Added}
+                        format="yyyy-MM-dd HH:mm:ss"
+                        parse="X"
+                      />
+                    </UploadedBy>
+                  </Text>
+                  <Text>
+                    {lgr.Downloads} download{lgr.Downloads !== 1 ? 's' : ''}
+                  </Text>
+                  <Tags tags={lgr.Tags.map(tag => tag.Name)} />
+                </LGRInfo>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion defaultExpanded>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Header h3>Comments</Header>
+              </AccordionSummary>
+              <AccordionDetails style={{ flexDirection: 'column' }}>
+                <AddComment type="lgr" index={lgr.LGRIndex} />
+                <LGRComments LGRIndex={lgr.LGRIndex} />
+              </AccordionDetails>
+            </Accordion>
+          </RightBarContainer>
+        </>
+      )}
+    </Layout>
+  );
+};
+
+const PreviewContainer = styled.div`
+  width: ${p => (p.theater ? '100%' : '70%')};
+  float: left;
+  padding: 7px;
+  box-sizing: border-box;
+  text-align: center;
+  @media (max-width: 1100px) {
+    float: none;
+    width: 100%;
+  }
+`;
+
+const RightBarContainer = styled.div`
+  float: right;
+  width: 30%;
+  padding: 7px;
+  box-sizing: border-box;
+  @media (max-width: 1100px) {
+    float: none;
+    width: 100%;
+  }
+`;
+
+const LGRInfo = styled.div`
+  font-size: 14px;
+`;
+
+const UploadedBy = styled.div`
+  color: #7d7d7d;
+`;
+export default LGR;
