@@ -1,9 +1,9 @@
 import React from 'react';
+import { formatDistanceStrict } from 'date-fns';
 import { ListCell, ListRow } from 'components/List';
 import Tags from 'components/Tags';
-import { formatDistanceStrict } from 'date-fns';
-import config from 'config';
 import Kuski from 'components/Kuski';
+import config from 'config';
 
 const LGRListItem = ({ lgr }) => {
   const url = `/l/${lgr.LGRName}`;

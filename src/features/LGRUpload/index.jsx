@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import Dropzone from 'components/Dropzone';
+import Alert from 'components/Alert';
 import { Text, Column } from 'components/Containers';
+import Dropzone from 'components/Dropzone';
 import Header from 'components/Header';
 import styled from '@emotion/styled';
 import {
@@ -14,7 +15,6 @@ import {
   Chip,
 } from '@material-ui/core';
 import { NewLGR, EditLGR } from 'api';
-import Alert from 'components/Alert';
 import { xor } from 'lodash';
 import { mod } from 'utils/nick';
 

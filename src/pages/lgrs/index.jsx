@@ -1,8 +1,8 @@
-import Layout from 'components/Layout';
-import { Tab, Tabs } from '@material-ui/core';
 import { useNavigate, useParams } from '@tanstack/react-router';
-import LGRUpload from 'features/LGRUpload';
+import Layout from 'components/Layout';
 import styled from '@emotion/styled';
+import { Tab, Tabs } from '@material-ui/core';
+import LGRUpload from 'features/LGRUpload';
 import LGRList from 'features/LGRList';
 
 const LGRs = () => {

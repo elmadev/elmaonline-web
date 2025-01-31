@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Layout from 'components/Layout';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useParams } from '@tanstack/react-router';
+import { ExpandMore } from '@material-ui/icons';
+import Layout from 'components/Layout';
 import {
   Accordion,
   AccordionSummary,
@@ -10,19 +11,18 @@ import {
   TextField,
   Button,
 } from '@material-ui/core';
-import config from 'config';
 import styled from '@emotion/styled';
 import Header from 'components/Header';
 import LocalTime from 'components/LocalTime';
 import Kuski from 'components/Kuski';
 import Tags from 'components/Tags';
 import { Text } from 'components/Containers';
-import LGRComments from 'features/LGRComments';
 import AddComment from 'components/AddComment';
-import { ExpandMore } from '@material-ui/icons';
+import LGRComments from 'features/LGRComments';
+import LGRUpload from 'features/LGRUpload';
 import { mod, nickId } from 'utils/nick';
 import { DeleteLGR } from 'api';
-import LGRUpload from 'features/LGRUpload';
+import config from 'config';
 
 const LGR = () => {
   const { lgr } = useStoreState(state => state.LGR);

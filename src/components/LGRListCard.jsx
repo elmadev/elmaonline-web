@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatDistanceStrict } from 'date-fns';
 import styled from '@emotion/styled';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -8,9 +9,8 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Link from 'components/Link';
-import config from 'config';
-import { formatDistanceStrict } from 'date-fns';
 import Tags from 'components/Tags';
+import config from 'config';
 
 const LGRListCard = ({ lgr }) => {
   const [raised, setRaised] = useState(false);

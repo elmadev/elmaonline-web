@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import styled from '@emotion/styled';
 import LGRListItem from 'components/LGRListItem';
 import LGRListCard from 'components/LGRListCard';
 import TagFilter from 'components/TagFilter';
-import styled from '@emotion/styled';
 import Loading from 'components/Loading';
+import { ListContainer, ListHeader, ListCell } from 'components/List';
 import ListIcon from '@material-ui/icons/List';
 import AppsIcon from '@material-ui/icons/Apps';
 import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
@@ -13,7 +14,6 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import GetAppOutlinedIcon from '@material-ui/icons/GetAppOutlined';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { ListContainer, ListHeader, ListCell } from 'components/List';
 
 const LGRList = () => {
   const { lgrs, settings, tagOptions } = useStoreState(state => state.LGRList);
