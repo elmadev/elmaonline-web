@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from 'components/Layout';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useParams } from '@tanstack/react-router';
@@ -7,6 +7,8 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
+  TextField,
+  Button,
 } from '@material-ui/core';
 import config from 'config';
 import styled from '@emotion/styled';
@@ -18,15 +20,30 @@ import { Text } from 'components/Containers';
 import LGRComments from 'features/LGRComments';
 import AddComment from 'components/AddComment';
 import { ExpandMore } from '@material-ui/icons';
+import { mod } from 'utils/nick';
+import { DeleteLGR } from 'api';
 
 const LGR = () => {
   const { lgr } = useStoreState(state => state.LGR);
   const { getLGR } = useStoreActions(actions => actions.LGR);
+  const [modDelete, setModDelete] = useState('');
 
   const { LGRName } = useParams({ strict: false });
   useEffect(() => {
     getLGR(LGRName);
   }, []);
+
+  // mod feature
+  const deleteLGR = async () => {
+    const res = await DeleteLGR(lgr.LGRName);
+    if (res.ok) {
+      window.location.href = `${window.location.origin}/lgrs`;
+    } else {
+      setModDelete('Unexpected error, see console');
+      // eslint-disable-next-line no-console
+      console.log(res);
+    }
+  };
 
   return (
     <Layout edge t="LGRs">
@@ -72,6 +89,37 @@ const LGR = () => {
                 <LGRComments LGRIndex={lgr.LGRIndex} />
               </AccordionDetails>
             </Accordion>
+            {mod() === 1 && (
+              <Accordion defaultExpanded>
+                <AccordionSummary expandIcon={<ExpandMore />}>
+                  <Header h3>Delete LGR</Header>
+                </AccordionSummary>
+                <AccordionDetails style={{ flexDirection: 'column' }}>
+                  <Text>
+                    Type "delete delete" in this box to enable the delete button
+                  </Text>
+                  {modDelete !== 'delete delete' ? (
+                    <TextField
+                      fullWidth
+                      id="Delete"
+                      multiline
+                      label=""
+                      value={modDelete}
+                      onChange={event => setModDelete(event.target.value)}
+                      margin="dense"
+                    />
+                  ) : (
+                    <Button
+                      onClick={deleteLGR}
+                      variant="contained"
+                      color="primary"
+                    >
+                      DELETE
+                    </Button>
+                  )}
+                </AccordionDetails>
+              </Accordion>
+            )}
           </RightBarContainer>
         </>
       )}

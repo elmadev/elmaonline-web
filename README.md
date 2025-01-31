@@ -115,6 +115,7 @@ The config is set up to use a test database. Bear in mind the following:
 - Test database is a copy of live from end june 2020
 - time, battle and allfinished tables only have a subset of live (last year or two) to keep size down
 - Passwords, emails and private comments have been stripped
+- You can rename .env.test -> VITE_API_URL=http://localhost:3003/ if you are developing the backend at the same time.
 
 ## Communication
 
