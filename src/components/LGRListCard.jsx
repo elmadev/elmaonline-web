@@ -15,8 +15,12 @@ import Tags from 'components/Tags';
 const LGRListCard = ({ lgr }) => {
   const [raised, setRaised] = useState(false);
 
+  const download = event => {
+    event.stopPropagation();
+  };
+
   return (
-    <Link to={`../l/${lgr.LGRName}`} underline="none">
+    <Link to={`../l/${lgr.LGRName}`}>
       <LGRCard
         raised={raised}
         onMouseOver={() => setRaised(true)}
@@ -29,7 +33,7 @@ const LGRListCard = ({ lgr }) => {
           })}
           action={
             <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
-              <IconButton aria-label="Download LGR">
+              <IconButton aria-label="Download LGR" onClick={download}>
                 <GetAppIcon />
               </IconButton>
             </a>
