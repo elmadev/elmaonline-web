@@ -9,6 +9,7 @@ export default {
     state.lgr = payload;
   }),
   getLGR: thunk(async (actions, payload) => {
+    actions.setLGR(null);
     const get = await LGR(payload);
     if (get.ok) {
       actions.setLGR(get.data);

@@ -22,6 +22,7 @@ import { mod } from 'utils/nick';
 const LGRUpload = ({ lgrToEdit }) => {
   const { tagOptions } = useStoreState(state => state.LGRUpload);
   const { getTagOptions } = useStoreActions(actions => actions.LGRUpload);
+  const { getLGR } = useStoreActions(actions => actions.LGR);
 
   const defaultLgrData = lgrToEdit
     ? {
@@ -223,7 +224,12 @@ const LGRUpload = ({ lgrToEdit }) => {
     try {
       const res = await EditLGR(lgrToEdit.LGRName, formData);
       if (res.data && !res.data.error) {
-        window.location.href = `${window.location.origin}/l/${lgrData.filename}`;
+        if (lgrData.filename !== lgrToEdit.LGRName) {
+          window.location.href = `${window.location.origin}/l/${lgrData.filename}`;
+        } else {
+          // refresh the page data
+          getLGR(lgrData.filename);
+        }
       } else {
         setAlert({
           ...alert,
