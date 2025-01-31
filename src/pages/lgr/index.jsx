@@ -20,8 +20,9 @@ import { Text } from 'components/Containers';
 import LGRComments from 'features/LGRComments';
 import AddComment from 'components/AddComment';
 import { ExpandMore } from '@material-ui/icons';
-import { mod } from 'utils/nick';
+import { mod, nickId } from 'utils/nick';
 import { DeleteLGR } from 'api';
+import LGRUpload from 'features/LGRUpload';
 
 const LGR = () => {
   const { lgr } = useStoreState(state => state.LGR);
@@ -52,7 +53,10 @@ const LGR = () => {
         <>
           <PreviewContainer>
             <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
-              <img src={`${config.api}lgr/preview/${lgr.LGRName}`} />
+              <img
+                src={`${config.api}lgr/preview/${lgr.LGRName}`}
+                style={{ maxWidth: '100%' }}
+              />
             </a>
           </PreviewContainer>
           <RightBarContainer>
@@ -90,15 +94,16 @@ const LGR = () => {
               </AccordionDetails>
             </Accordion>
             {mod() === 1 && (
-              <Accordion defaultExpanded>
+              <Accordion>
                 <AccordionSummary expandIcon={<ExpandMore />}>
-                  <Header h3>Delete LGR</Header>
+                  <Header h3>Delete LGR (mod-exclusive)</Header>
                 </AccordionSummary>
                 <AccordionDetails style={{ flexDirection: 'column' }}>
                   <Text>
-                    Type "delete delete" in this box to enable the delete button
+                    Danger! Type "delete" in this box to enable the delete
+                    button
                   </Text>
-                  {modDelete !== 'delete delete' ? (
+                  {modDelete !== 'delete' ? (
                     <TextField
                       fullWidth
                       id="Delete"
@@ -121,6 +126,16 @@ const LGR = () => {
               </Accordion>
             )}
           </RightBarContainer>
+          {nickId() === lgr.KuskiIndex && (
+            <Accordion style={{ float: 'left', width: '70%' }}>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Header h3>Edit LGR</Header>
+              </AccordionSummary>
+              <AccordionDetails style={{ flexDirection: 'column' }}>
+                <LGRUpload lgrToEdit={lgr} />
+              </AccordionDetails>
+            </Accordion>
+          )}
         </>
       )}
     </Layout>
@@ -128,7 +143,7 @@ const LGR = () => {
 };
 
 const PreviewContainer = styled.div`
-  width: ${p => (p.theater ? '100%' : '70%')};
+  width: 70%;
   float: left;
   padding: 7px;
   box-sizing: border-box;

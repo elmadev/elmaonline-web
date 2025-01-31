@@ -23,8 +23,8 @@ const LGRs = () => {
         <Tab label="Upload" value="upload" />
       </Tabs>
       <Container>
-        {!tab ? <LGRList /> : null}
-        {tab === 'upload' ? <LGRUpload /> : null}
+        {!tab && <LGRList />}
+        {tab === 'upload' && <LGRUpload />}
       </Container>
     </Layout>
   );

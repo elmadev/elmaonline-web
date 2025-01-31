@@ -11,8 +11,7 @@ export default {
   getTagOptions: thunk(async actions => {
     const get = await GetLGRTags();
     if (get.ok) {
-      const tagOptions = get.data.filter(tag => !tag.Hidden);
-      actions.setTagOptions(tagOptions);
+      actions.setTagOptions(get.data);
     }
   }),
 };

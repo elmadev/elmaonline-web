@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Link from 'components/Link';
 import config from 'config';
 import { formatDistanceStrict } from 'date-fns';
 import Tags from 'components/Tags';
@@ -16,7 +16,7 @@ const LGRListCard = ({ lgr }) => {
   const [raised, setRaised] = useState(false);
 
   return (
-    <Link href={`l/${lgr.LGRName}`} underline="none">
+    <Link to={`../l/${lgr.LGRName}`} underline="none">
       <LGRCard
         raised={raised}
         onMouseOver={() => setRaised(true)}
