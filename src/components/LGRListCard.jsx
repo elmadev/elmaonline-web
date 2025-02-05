@@ -40,7 +40,7 @@ const LGRListCard = ({ lgr }) => {
           }
         />
         <LGRPreviewCard>
-          <LGRPreviewImg src={`${config.api}lgr/preview/${lgr.LGRName}`} />
+          <LGRPreviewImg src={`${config.s3Url}lgr/${lgr.PreviewLink}`} />
           <DownloadsContainer>{lgr.Downloads}</DownloadsContainer>
         </LGRPreviewCard>
         <CardContent>

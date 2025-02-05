@@ -55,7 +55,7 @@ const LGR = () => {
           <PreviewContainer>
             <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
               <img
-                src={`${config.api}lgr/preview/${lgr.LGRName}`}
+                src={`${config.s3Url}lgr/${lgr.PreviewLink}`}
                 style={{ maxWidth: '100%' }}
               />
             </a>
