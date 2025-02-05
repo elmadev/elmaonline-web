@@ -5,9 +5,11 @@ import config from 'config';
 import { nickId } from 'utils/nick';
 
 const types = {
-  '.rec': { 'application/octet-stream': ['.rec'] },
-  '.dat': { 'application/octet-stream': ['.dat'] },
-  '.lgr': { 'application/octet-stream': ['.lgr'] },
+  // Even though */* gives a warning on Firefox and Chrome,
+  // do not change to avoid issues with selecting files for certain users
+  '.rec': { '*/*': ['.rec'] },
+  '.dat': { '*/*': ['.dat'] },
+  '.lgr': { '*/*': ['.lgr'] },
   img: { 'image/*': ['.png', '.gif', '.webp', '.jpg', '.apng', '.svg'] },
 };
 
