@@ -28,6 +28,7 @@ const LGRUpload = ({ lgrToEdit }) => {
     ? {
         file: null,
         filename: lgrToEdit.LGRName,
+        kuskiName: lgrToEdit.KuskiData.Kuski,
         preview: null,
         description: lgrToEdit.LGRDesc,
         tags: lgrToEdit.Tags.map(tag => tag.TagIndex),
@@ -74,10 +75,10 @@ const LGRUpload = ({ lgrToEdit }) => {
   };
 
   const onDropLGR = newFiles => {
+    // Dropzone already limits the file size to 10 MB
     if (lgrToEdit) {
       return;
     }
-    // Dropzone already limits the file size to 10 MB
     if (newFiles.length !== 1) {
       reset();
       return;
@@ -159,6 +160,14 @@ const LGRUpload = ({ lgrToEdit }) => {
     });
   };
 
+  const handleKuskiName = event => {
+    const kuskiName = event.target.value;
+    setLgrData({
+      ...lgrData,
+      kuskiName,
+    });
+  };
+
   const handleTag = tag => {
     setLgrData({
       ...lgrData,
@@ -219,6 +228,7 @@ const LGRUpload = ({ lgrToEdit }) => {
     }
     // body
     formData.append('filename', lgrData.filename);
+    formData.append('kuskiName', lgrData.kuskiName);
     formData.append('description', lgrData.description);
     formData.append('tags', JSON.stringify(lgrData.tags));
     try {
@@ -273,6 +283,17 @@ const LGRUpload = ({ lgrToEdit }) => {
                       label="Change Filename (use with caution - mod-exclusive feature)"
                       value={lgrData.filename}
                       onChange={handleFilename}
+                      margin="dense"
+                    />
+                  )}
+                  {modPrivileges && (
+                    <TextField
+                      fullWidth
+                      id="KuskiName"
+                      multiline
+                      label="Change LGR Ownership (use with caution - mod-exclusive feature)"
+                      value={lgrData.kuskiName}
+                      onChange={handleKuskiName}
                       margin="dense"
                     />
                   )}
