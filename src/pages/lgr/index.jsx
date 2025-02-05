@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { useParams } from '@tanstack/react-router';
+import { useParams, useNavigate } from '@tanstack/react-router';
 import { ExpandMore } from '@material-ui/icons';
 import Layout from 'components/Layout';
 import {
@@ -28,6 +28,7 @@ const LGR = () => {
   const { lgr } = useStoreState(state => state.LGR);
   const { getLGR } = useStoreActions(actions => actions.LGR);
   const [modDelete, setModDelete] = useState('');
+  const navigate = useNavigate();
 
   const { LGRName } = useParams({ strict: false });
   useEffect(() => {
@@ -38,7 +39,7 @@ const LGR = () => {
   const deleteLGR = async () => {
     const res = await DeleteLGR(lgr.LGRName);
     if (res.ok) {
-      window.location.href = `${window.location.origin}/lgrs`;
+      navigate({ to: '/lgrs' });
     } else {
       setModDelete('Unexpected error, see console');
       // eslint-disable-next-line no-console
@@ -126,7 +127,7 @@ const LGR = () => {
               </Accordion>
             )}
           </RightBarContainer>
-          {nickId() === lgr.KuskiIndex && (
+          {(nickId() === lgr.KuskiIndex || mod() === 1) && (
             <Accordion style={{ float: 'left', width: '70%' }}>
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Header h3>Edit LGR</Header>
