@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Alert from 'components/Alert';
 import { Text, Column } from 'components/Containers';
@@ -23,6 +24,7 @@ const LGRUpload = ({ lgrToEdit }) => {
   const { tagOptions } = useStoreState(state => state.LGRUpload);
   const { getTagOptions } = useStoreActions(actions => actions.LGRUpload);
   const { getLGR } = useStoreActions(actions => actions.LGR);
+  const navigate = useNavigate();
 
   const defaultLgrData = lgrToEdit
     ? {
@@ -235,11 +237,10 @@ const LGRUpload = ({ lgrToEdit }) => {
       const res = await EditLGR(lgrToEdit.LGRName, formData);
       if (res.data && !res.data.error) {
         if (lgrData.filename !== lgrToEdit.LGRName) {
-          window.location.href = `${window.location.origin}/l/${lgrData.filename}`;
-        } else {
-          // refresh the page data
-          getLGR(lgrData.filename);
+          navigate({ to: `/l/${lgrData.filename}` });
         }
+        // Get the updated lgr data
+        getLGR(lgrData.filename);
       } else {
         setAlert({
           ...alert,
