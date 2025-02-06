@@ -276,12 +276,24 @@ const LGRUpload = ({ lgrToEdit }) => {
           </Text>
           <Header h3>Tags:</Header>
           <Text>
-            <Chip label="Default" color="primary" style={{ margin: 4 }} />
-            Replaces default.lgr with some small cosmetic changes
+            <Chip label="Bike" color="primary" style={{ margin: 4 }} />
+            Custom bike graphics
           </Text>
           <Text>
-            <Chip label="Theme" color="primary" style={{ margin: 4 }} />
-            Complete graphics overhaul
+            <Chip label="Default" color="primary" style={{ margin: 4 }} />
+            Straightforward modification of default.lgr
+          </Text>
+          <Text>
+            <Chip label="Ghost" color="primary" style={{ margin: 4 }} />
+            The second bike is less visible than the first bike
+          </Text>
+          <Text>
+            <Chip label="Minimum" color="primary" style={{ margin: 4 }} />
+            Simplified LGR for focused hoyling
+          </Text>
+          <Text>
+            <Chip label="Pictures+" color="primary" style={{ margin: 4 }} />
+            More pictures than default.lgr
           </Text>
           <Text>
             <Chip label="Round Obj" color="primary" style={{ margin: 4 }} />
@@ -292,20 +304,12 @@ const LGRUpload = ({ lgrToEdit }) => {
             The kuski's head is a perfect circle
           </Text>
           <Text>
-            <Chip label="Bike" color="primary" style={{ margin: 4 }} />
-            Custom bike graphics
-          </Text>
-          <Text>
-            <Chip label="Ghost" color="primary" style={{ margin: 4 }} />
-            The second bike is less visible than the first bike
-          </Text>
-          <Text>
             <Chip label="Textures+" color="primary" style={{ margin: 4 }} />
             More textures than default.lgr
           </Text>
           <Text>
-            <Chip label="Pictures+" color="primary" style={{ margin: 4 }} />
-            More pictures than default.lgr
+            <Chip label="Theme" color="primary" style={{ margin: 4 }} />
+            Complete graphics overhaul
           </Text>
           <Dropzone filetype={'.lgr'} onDrop={e => onDropLGR(e)} />
         </Column>
