@@ -19,12 +19,14 @@ export default {
         page: payload.page,
         pageSize: payload.pageSize,
         tags: payload.tags,
+        excludedTags: payload.excludedTags,
       });
     } else if (payload.uploadedBy) {
       get = await ReplayUploadedBy(payload.uploadedBy, {
         page: payload.page,
         pageSize: payload.pageSize,
         tags: payload.tags,
+        excludedTags: payload.excludedTags,
       });
     } else {
       get = await Replays(payload);
