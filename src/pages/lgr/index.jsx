@@ -67,7 +67,7 @@ const LGR = () => {
               </AccordionSummary>
               <AccordionDetails style={{ flexDirection: 'column' }}>
                 <LGRInfo>
-                  <Text>{lgr.LGRDesc}</Text>
+                  <Text style={{ whiteSpace: 'pre-line' }}>{lgr.LGRDesc}</Text>
                   <Text>
                     <UploadedBy>
                       Uploaded by <Kuski kuskiData={lgr.KuskiData} />{' '}
