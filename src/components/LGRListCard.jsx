@@ -20,7 +20,7 @@ const LGRListCard = ({ lgr }) => {
   };
 
   return (
-    <Link to={`../l/${lgr.LGRName}`}>
+    <Link to={`../lgr/${lgr.LGRName}`}>
       <LGRCard
         raised={raised}
         onMouseOver={() => setRaised(true)}

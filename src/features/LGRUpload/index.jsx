@@ -195,7 +195,7 @@ const LGRUpload = ({ lgrToEdit }) => {
           open: true,
           title: 'LGR Uploaded!',
           text: `Congratulations, your LGR is uploaded. You can see your LGR here:`,
-          link: `${window.location.origin}/l/${lgrData.filename}`,
+          link: `/lgr/${lgrData.filename}`,
         });
         reset();
       } else {
@@ -237,7 +237,7 @@ const LGRUpload = ({ lgrToEdit }) => {
       const res = await EditLGR(lgrToEdit.LGRName, formData);
       if (res.data && !res.data.error) {
         if (lgrData.filename !== lgrToEdit.LGRName) {
-          navigate({ to: `/l/${lgrData.filename}` });
+          navigate({ to: `/lgr/${lgrData.filename}` });
         }
         // Get the updated lgr data
         getLGR(lgrData.filename);

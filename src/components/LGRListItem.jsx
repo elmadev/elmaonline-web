@@ -6,7 +6,7 @@ import Kuski from 'components/Kuski';
 import config from 'config';
 
 const LGRListItem = ({ lgr }) => {
-  const url = `/l/${lgr.LGRName}`;
+  const url = `/lgr/${lgr.LGRName}`;
   const downloadLink = `${config.api}lgr/get/${lgr.LGRName}`;
   return (
     <ListRow key={`${lgr.LGRIndex}`}>

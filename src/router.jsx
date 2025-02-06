@@ -239,13 +239,13 @@ const kuskisSearchRoute = createRoute({
 
 const lgrNoneRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/l',
+  path: '/lgr',
   component: LGR,
 });
 
 const lgrRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/l/$LGRName',
+  path: '/lgr/$LGRName',
   component: LGR,
 });
 

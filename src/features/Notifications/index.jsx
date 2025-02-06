@@ -102,7 +102,7 @@ const Notifications = ({
         return (
           <div>
             {meta.kuski} added a comment to your lgr{' '}
-            <Link to={`/l/${meta.LGRName}`}>{meta.LGRName}</Link>{' '}
+            <Link to={`/lgr/${meta.LGRName}`}>{meta.LGRName}</Link>{' '}
             <i>"{meta.Text}"</i>
           </div>
         );
