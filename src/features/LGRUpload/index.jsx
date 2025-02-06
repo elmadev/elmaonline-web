@@ -299,6 +299,14 @@ const LGRUpload = ({ lgrToEdit }) => {
             <Chip label="Ghost" color="primary" style={{ margin: 4 }} />
             The second bike is less visible than the first bike
           </Text>
+          <Text>
+            <Chip label="Textures+" color="primary" style={{ margin: 4 }} />
+            More textures than default.lgr
+          </Text>
+          <Text>
+            <Chip label="Pictures+" color="primary" style={{ margin: 4 }} />
+            More pictures than default.lgr
+          </Text>
           <Dropzone filetype={'.lgr'} onDrop={e => onDropLGR(e)} />
         </Column>
       )}
