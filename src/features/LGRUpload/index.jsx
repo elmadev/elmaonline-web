@@ -261,7 +261,44 @@ const LGRUpload = ({ lgrToEdit }) => {
       {!lgrToEdit && (
         <Column p="Large">
           <Header h1>LGR upload</Header>
-          <Text>Upload a fancyboosted lgr here.</Text>
+          <Text>
+            Upload an lgr here. Once uploaded, an lgr{' '}
+            <b>cannot be renamed and cannot be deleted!</b>
+          </Text>
+          <Text>
+            Make sure your lgr is fancyboosted before uploading. Fancyboosting
+            your lgr makes all 256 palette colors available to level editors as
+            images. You can use{' '}
+            <a href="https://up.elma.online/u/0a0a0a0a01/LGR_Utility_64bit_V4.zip">
+              this program
+            </a>{' '}
+            to fancyboost your lgr.
+          </Text>
+          <Header h3>Tags:</Header>
+          <Text>
+            <Chip label="Default" color="primary" style={{ margin: 4 }} />
+            Replaces default.lgr with some small cosmetic changes
+          </Text>
+          <Text>
+            <Chip label="Theme" color="primary" style={{ margin: 4 }} />
+            Complete graphics overhaul
+          </Text>
+          <Text>
+            <Chip label="Round Obj" color="primary" style={{ margin: 4 }} />
+            Apples, killers and flowers are perfect circles
+          </Text>
+          <Text>
+            <Chip label="Round Head" color="primary" style={{ margin: 4 }} />
+            The kuski's head is a perfect circle
+          </Text>
+          <Text>
+            <Chip label="Bike" color="primary" style={{ margin: 4 }} />
+            Custom bike graphics
+          </Text>
+          <Text>
+            <Chip label="Ghost" color="primary" style={{ margin: 4 }} />
+            The second bike is less visible than the first bike
+          </Text>
           <Dropzone filetype={'.lgr'} onDrop={e => onDropLGR(e)} />
         </Column>
       )}
