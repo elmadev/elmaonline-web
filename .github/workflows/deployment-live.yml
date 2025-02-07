@@ -28,7 +28,6 @@ jobs:
           VITE_S3_SUB_FOLDER: ${{ secrets.S3_SUB_FOLDER_LIVE }}
           VITE_UP_URL: ${{ secrets.UP_LIVE }}
           VITE_RECAPTCHA: ${{ secrets.RECAPTCHA_LIVE }}
-          VITE_HOTJAR_ID: ${{ secrets.HOTJAR }}
 
       - name: Deploy to server
         uses: appleboy/scp-action@master
