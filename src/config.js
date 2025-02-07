@@ -2,7 +2,6 @@ const url = import.meta.env.VITE_API_URL;
 const s3SubFolder = import.meta.env.VITE_S3_SUB_FOLDER;
 const upUrl = import.meta.env.VITE_UP_URL;
 const recaptcha = import.meta.env.VITE_RECAPTCHA;
-const hotJarId = import.meta.env.VITE_HOTJAR_ID;
 
 const config = {
   url,
@@ -15,7 +14,6 @@ const config = {
   recaptcha,
   maxUploadSize: 10485760,
   s3Url: `https://space.elma.online/${s3SubFolder}`,
-  hotJarId,
   routerDevTools: false,
   queryDevTools: false,
 };

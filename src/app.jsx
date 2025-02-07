@@ -1,11 +1,10 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { StoreProvider, createStore } from 'easy-peasy';
 import { HelmetProvider } from 'react-helmet-async';
 import Router from './router';
 import model from './easypeasy';
 import { queryClient } from './react-query';
 import { QueryClientProvider } from '@tanstack/react-query';
-import Hotjar from '@hotjar/browser';
 import config from 'config';
 
 const ReactQueryDevtools =
@@ -23,11 +22,6 @@ const easyPeasyStore = createStore(model, {
 });
 
 function App() {
-  useEffect(() => {
-    if (config.hotJarId) {
-      Hotjar.init(config.hotJarId, 6);
-    }
-  }, []);
   return (
     <StoreProvider store={easyPeasyStore}>
       <QueryClientProvider client={queryClient}>
