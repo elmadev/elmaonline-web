@@ -43,6 +43,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Row, Column } from 'components/Containers';
 import { pts } from 'utils/cups';
 import { mod } from 'utils/nick';
+import { getReplayLink } from 'utils/nick';
 
 const RecTime = ({ type, replay }) => {
   if (type === 'cup') {
@@ -52,29 +53,6 @@ const RecTime = ({ type, replay }) => {
     return <Time time={replay.ReplayTime / 10} apples={replay.Apples} />;
   }
   return <Time thousands time={replay.ReplayTime} />;
-};
-
-const getLink = replay => {
-  let link = '';
-  let type = 'replay';
-  if (replay.UUID.substring(0, 5) === 'local') {
-    link = `${config.url}temp/${replay.UUID}-${replay.RecFileName}`;
-  } else if (replay.UUID.substring(0, 2) === 'c-') {
-    link = `${config.dlUrl}cupreplay/${replay.UUID.split('-')[1]}/${
-      replay.RecFileName
-    }`.replace('.rec', '');
-    type = 'cup';
-  } else if (replay.UUID.substring(0, 2) === 'b-') {
-    link = `${config.dlUrl}battlereplay/${replay.UUID.split('-')[1]}`;
-    type = 'winner';
-  } else if (replay.UUID.includes('_')) {
-    const [UUID, MD5, TimeIndex] = replay.UUID.split('_');
-    link = `${config.s3Url}time/${UUID}-${MD5}/${TimeIndex}.rec`;
-    type = 'timefile';
-  } else {
-    link = `${config.s3Url}replays/${replay.UUID}/${replay.RecFileName}`;
-  }
-  return { link, type };
 };
 
 const Replay = () => {
@@ -148,13 +126,13 @@ const Replay = () => {
 
   if (isWindow) {
     uuidarray.push(replay.UUID);
-    const linkType = getLink(replay);
+    const linkType = getReplayLink(replay);
     link = linkType.link;
     type = linkType.type;
     if (replays.length > 0) {
       uuidarray = [];
       replays.forEach(r => {
-        linkArray.push(getLink(r).link);
+        linkArray.push(getReplayLink(r).link);
         uuidarray.push(r.UUID);
       });
       link = linkArray.join(';');
