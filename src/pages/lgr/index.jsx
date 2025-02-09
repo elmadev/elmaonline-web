@@ -16,11 +16,14 @@ import Header from 'components/Header';
 import LocalTime from 'components/LocalTime';
 import Kuski from 'components/Kuski';
 import Tags from 'components/Tags';
+import Recplayer from 'components/Recplayer';
 import { Text } from 'components/Containers';
 import AddComment from 'components/AddComment';
+import ReplaySettings from 'features/ReplaySettings';
 import LGRComments from 'features/LGRComments';
 import LGRUpload from 'features/LGRUpload';
 import { mod, nickId } from 'utils/nick';
+import { getReplayLink, getLgrPreviewLink, getLgrLink } from 'utils/link';
 import { DeleteLGR } from 'api';
 import config from 'config';
 
@@ -29,6 +32,10 @@ const LGR = () => {
   const { getLGR } = useStoreActions(actions => actions.LGR);
   const [modDelete, setModDelete] = useState('');
   const navigate = useNavigate();
+
+  const {
+    settings: { theater },
+  } = useStoreState(state => state.ReplaySettings);
 
   const { LGRName } = useParams({ strict: false });
   useEffect(() => {
@@ -52,15 +59,26 @@ const LGR = () => {
       {!LGRName && <Typography>Please add an LGR name to the url.</Typography>}
       {lgr && (
         <>
-          <PreviewContainer>
-            <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
-              <img
-                src={`${config.s3Url}lgr/${lgr.PreviewLink}`}
-                style={{ maxWidth: '100%' }}
-              />
-            </a>
+          <PreviewContainer theater={theater}>
+            <Recplayer
+              rec={getReplayLink(lgr.ReplayData).link}
+              lev={`${config.dlUrl}level/${lgr.ReplayData.LevelIndex}`}
+              lgr={getLgrLink(lgr)}
+              controls
+            />
+            <ReplaySettings lgrPage={true} />
           </PreviewContainer>
           <RightBarContainer>
+            <Accordion defaultExpanded>
+              <AccordionDetails style={{ flexDirection: 'column' }}>
+                <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+                  <img
+                    src={getLgrPreviewLink(lgr)}
+                    style={{ maxWidth: '100%' }}
+                  />
+                </a>
+              </AccordionDetails>
+            </Accordion>
             <Accordion defaultExpanded>
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Header h3>{`${lgr.LGRName}.lgr`}</Header>
@@ -144,7 +162,7 @@ const LGR = () => {
 };
 
 const PreviewContainer = styled.div`
-  width: 70%;
+  width: ${p => (p.theater ? '100%' : '70%')};
   float: left;
   padding: 7px;
   box-sizing: border-box;

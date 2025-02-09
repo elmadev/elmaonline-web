@@ -43,7 +43,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Row, Column } from 'components/Containers';
 import { pts } from 'utils/cups';
 import { mod } from 'utils/nick';
-import { getReplayLink } from 'utils/nick';
+import { getReplayLink } from 'utils/link';
 
 const RecTime = ({ type, replay }) => {
   if (type === 'cup') {

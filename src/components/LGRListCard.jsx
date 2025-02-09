@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Link from 'components/Link';
 import Tags from 'components/Tags';
+import { getLgrPreviewLink } from 'utils/link';
 import config from 'config';
 
 const LGRListCard = ({ lgr }) => {
@@ -40,7 +41,7 @@ const LGRListCard = ({ lgr }) => {
           }
         />
         <LGRPreviewCard>
-          <LGRPreviewImg src={`${config.s3Url}lgr/${lgr.PreviewLink}`} />
+          <LGRPreviewImg src={getLgrPreviewLink(lgr)} />
           <DownloadsContainer>{lgr.Downloads}</DownloadsContainer>
         </LGRPreviewCard>
         <CardContent>

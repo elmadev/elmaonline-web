@@ -22,3 +22,11 @@ export const getReplayLink = replay => {
   }
   return { link, type };
 };
+
+export const getLgrLink = lgr => {
+  return `${config.s3Url}lgr/${lgr.FileLink}`;
+};
+
+export const getLgrPreviewLink = lgr => {
+  return `${config.s3Url}lgr/${lgr.PreviewLink}`;
+};

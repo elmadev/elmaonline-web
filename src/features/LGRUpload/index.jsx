@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import Alert from 'components/Alert';
 import { Text, Column } from 'components/Containers';
 import Dropzone from 'components/Dropzone';
 import Header from 'components/Header';
+import Link from 'components/Link';
 import styled from '@emotion/styled';
 import {
   Button,
@@ -18,6 +20,33 @@ import {
 import { NewLGR, EditLGR } from 'api';
 import { xor } from 'lodash';
 import { mod } from 'utils/nick';
+
+const tagDescriptions = [
+  { label: 'Bike', description: 'Custom bike graphics' },
+  {
+    label: 'Default',
+    description: 'Alternative to default.lgr',
+  },
+  {
+    label: "Don't Use",
+    description: 'Deprecated LGR as newer version exists or duplicate',
+  },
+  {
+    label: 'Ghost',
+    description: 'Ghost or wireframe second bike',
+  },
+  { label: 'Minimal', description: 'Simplified LGR for focused hoyling' },
+  { label: 'Pictures+', description: 'More pictures than default.lgr' },
+  {
+    label: 'Round Obj',
+    description: 'Apples, killers and flowers are perfect circles',
+  },
+  { label: 'Round Head', description: "The kuski's head is a perfect circle" },
+  { label: 'Textures+', description: 'More textures than default.lgr' },
+  { label: 'Theme', description: 'Complete graphics overhaul' },
+];
+
+const defaultReplay = 'hzynbftauw'; // Zweq Warm Up 14.00 replay
 
 // Used for new uploads if lgrToEdit is undefined, as well as editing an existing lgr if it is not
 const LGRUpload = ({ lgrToEdit }) => {
@@ -33,6 +62,7 @@ const LGRUpload = ({ lgrToEdit }) => {
         kuskiName: lgrToEdit.KuskiData.Kuski,
         preview: null,
         description: lgrToEdit.LGRDesc,
+        replayUuid: lgrToEdit.ReplayData?.UUID || defaultReplay,
         tags: lgrToEdit.Tags.map(tag => tag.TagIndex),
       }
     : {
@@ -40,6 +70,7 @@ const LGRUpload = ({ lgrToEdit }) => {
         filename: null,
         preview: null,
         description: '',
+        replayUuid: '',
         tags: [],
       };
 
@@ -53,6 +84,31 @@ const LGRUpload = ({ lgrToEdit }) => {
     link: '',
     options: ['Close'],
   });
+
+  const { getReplayByUUID } = useStoreActions(state => state.ReplayByUUID);
+  const { replay, loading } = useStoreState(state => state.ReplayByUUID);
+  const fingerprint = useRef('');
+  useEffect(() => {
+    const getReplay = async ReplayUuid => {
+      if (ReplayUuid === '') {
+        return;
+      }
+      if (!fingerprint.current) {
+        const fp = await FingerprintJS.load();
+        const { visitorId } = await fp.get();
+        fingerprint.current = visitorId;
+      }
+      getReplayByUUID({
+        ReplayUuid: ReplayUuid,
+        Fingerprint: fingerprint.current,
+      });
+    };
+    getReplay(lgrData.replayUuid);
+  }, [lgrData.replayUuid]);
+  const replayValid = lgrData.replayUuid && !loading && replay;
+  const replayLink =
+    replayValid && `${location.origin}/r/${replay.UUID}/${replay.RecFileName}`;
+  const replayInvalid = lgrData.replayUuid && !loading && !replay;
 
   useEffect(() => {
     getTagOptions(mod());
@@ -115,6 +171,7 @@ const LGRUpload = ({ lgrToEdit }) => {
       filename: filename.slice(0, -4),
       preview: null,
       description: '',
+      replayUuid: defaultReplay,
       tags: [],
     });
   };
@@ -146,27 +203,10 @@ const LGRUpload = ({ lgrToEdit }) => {
     return () => URL.revokeObjectURL(url);
   }, [lgrData.preview]);
 
-  const handleDescription = event => {
-    const description = event.target.value;
+  const handleString = property => event => {
     setLgrData({
       ...lgrData,
-      description,
-    });
-  };
-
-  const handleFilename = event => {
-    const filename = event.target.value;
-    setLgrData({
-      ...lgrData,
-      filename,
-    });
-  };
-
-  const handleKuskiName = event => {
-    const kuskiName = event.target.value;
-    setLgrData({
-      ...lgrData,
-      kuskiName,
+      [property]: event.target.value,
     });
   };
 
@@ -178,6 +218,26 @@ const LGRUpload = ({ lgrToEdit }) => {
   };
 
   const upload = async () => {
+    if (!lgrData.preview) {
+      setAlert({
+        ...alert,
+        open: true,
+        title: 'Error',
+        text: `Both an lgr and an image file must be provided to create new lgr!`,
+        link: '',
+      });
+      return;
+    }
+    if (!replayValid) {
+      setAlert({
+        ...alert,
+        open: true,
+        title: 'Error',
+        text: `A valid replay must be linked!`,
+        link: '',
+      });
+      return;
+    }
     setIsUploading(true);
     const formData = new FormData();
     // files
@@ -187,6 +247,7 @@ const LGRUpload = ({ lgrToEdit }) => {
     formData.append('filename', lgrData.filename);
     formData.append('description', lgrData.description);
     formData.append('tags', JSON.stringify(lgrData.tags));
+    formData.append('replay', replay.ReplayIndex);
     try {
       const res = await NewLGR(formData);
       if (res.data && !res.data.error) {
@@ -233,6 +294,9 @@ const LGRUpload = ({ lgrToEdit }) => {
     formData.append('kuskiName', lgrData.kuskiName);
     formData.append('description', lgrData.description);
     formData.append('tags', JSON.stringify(lgrData.tags));
+    if (replayValid) {
+      formData.append('replay', replay.ReplayIndex);
+    }
     try {
       const res = await EditLGR(lgrToEdit.LGRName, formData);
       if (res.data && !res.data.error) {
@@ -275,42 +339,17 @@ const LGRUpload = ({ lgrToEdit }) => {
             to fancyboost your lgr.
           </Text>
           <Header h3>Tags:</Header>
-          <Text>
-            <Chip label="Bike" color="primary" style={{ margin: 4 }} />
-            Custom bike graphics
-          </Text>
-          <Text>
-            <Chip label="Default" color="primary" style={{ margin: 4 }} />
-            Straightforward modification of default.lgr
-          </Text>
-          <Text>
-            <Chip label="Ghost" color="primary" style={{ margin: 4 }} />
-            The second bike is less visible than the first bike
-          </Text>
-          <Text>
-            <Chip label="Minimum" color="primary" style={{ margin: 4 }} />
-            Simplified LGR for focused hoyling
-          </Text>
-          <Text>
-            <Chip label="Pictures+" color="primary" style={{ margin: 4 }} />
-            More pictures than default.lgr
-          </Text>
-          <Text>
-            <Chip label="Round Obj" color="primary" style={{ margin: 4 }} />
-            Apples, killers and flowers are perfect circles
-          </Text>
-          <Text>
-            <Chip label="Round Head" color="primary" style={{ margin: 4 }} />
-            The kuski's head is a perfect circle
-          </Text>
-          <Text>
-            <Chip label="Textures+" color="primary" style={{ margin: 4 }} />
-            More textures than default.lgr
-          </Text>
-          <Text>
-            <Chip label="Theme" color="primary" style={{ margin: 4 }} />
-            Complete graphics overhaul
-          </Text>
+          {tagDescriptions.map(({ label, description }) => (
+            <Text>
+              <Chip
+                label={label}
+                key={label}
+                color="primary"
+                style={{ margin: 4 }}
+              />
+              {description}
+            </Text>
+          ))}
           <Dropzone filetype={'.lgr'} onDrop={e => onDropLGR(e)} />
         </Column>
       )}
@@ -329,10 +368,9 @@ const LGRUpload = ({ lgrToEdit }) => {
                     <TextField
                       fullWidth
                       id="Filename"
-                      multiline
                       label="Change Filename (use with caution - mod-exclusive feature)"
                       value={lgrData.filename}
-                      onChange={handleFilename}
+                      onChange={handleString('filename')}
                       margin="dense"
                     />
                   )}
@@ -340,10 +378,9 @@ const LGRUpload = ({ lgrToEdit }) => {
                     <TextField
                       fullWidth
                       id="KuskiName"
-                      multiline
                       label="Change LGR Ownership (use with caution - mod-exclusive feature)"
                       value={lgrData.kuskiName}
-                      onChange={handleKuskiName}
+                      onChange={handleString('kuskiName')}
                       margin="dense"
                     />
                   )}
@@ -353,7 +390,7 @@ const LGRUpload = ({ lgrToEdit }) => {
                     multiline
                     label="Description"
                     value={lgrData.description}
-                    onChange={handleDescription}
+                    onChange={handleString('description')}
                     margin="dense"
                   />
                 </CardContent>
@@ -381,6 +418,28 @@ const LGRUpload = ({ lgrToEdit }) => {
                       );
                     }
                   })}
+                </CardContent>
+                <CardContent>
+                  <TextField
+                    fullWidth
+                    id="Replay"
+                    label="Replay UUID"
+                    error={replayInvalid}
+                    helperText={replayInvalid && 'Replay not found'}
+                    value={lgrData.replayUuid}
+                    onChange={handleString('replayUuid')}
+                    margin="dense"
+                  />
+                  {replayValid && (
+                    <Typography>
+                      <Link to={replayLink} target="_blank">
+                        {replayLink}
+                      </Link>
+                      {replay.DrivenByData &&
+                        ` by ${replay.DrivenByData.Kuski}`}
+                      {replay.LevelData && ` in ${replay.LevelData.LevelName}`}
+                    </Typography>
+                  )}
                 </CardContent>
                 <CardContent>
                   <Typography color="primary">
