@@ -29,12 +29,13 @@ const tagDescriptions = [
   },
   {
     label: "Don't Use",
-    description: 'Deprecated LGR as newer version exists or duplicate',
+    description: 'Newer or better version exists',
   },
   {
     label: 'Ghost',
     description: 'Ghost or wireframe second bike',
   },
+  { label: 'Grass', description: 'Improved grass' },
   { label: 'Minimal', description: 'Simplified LGR for focused hoyling' },
   { label: 'Pictures+', description: 'More pictures than default.lgr' },
   {
@@ -43,6 +44,7 @@ const tagDescriptions = [
   },
   { label: 'Round Head', description: "The kuski's head is a perfect circle" },
   { label: 'Textures+', description: 'More textures than default.lgr' },
+  { label: 'Tool', description: 'Moviemaking LGR or other tools' },
   { label: 'Theme', description: 'Complete graphics overhaul' },
 ];
 
@@ -330,13 +332,9 @@ const LGRUpload = ({ lgrToEdit }) => {
             <b>cannot be renamed and cannot be deleted!</b>
           </Text>
           <Text>
-            Make sure your lgr is fancyboosted before uploading. Fancyboosting
-            your lgr makes all 256 palette colors available to level editors as
-            images. You can use{' '}
-            <a href="https://up.elma.online/u/0a0a0a0a01/LGR_Utility_64bit_V4.zip">
-              this program
-            </a>{' '}
-            to fancyboost your lgr.
+            Your lgr will be automatically fancyboosted after being uploaded.
+            Fancyboosting your lgr makes all 256 palette colors available as
+            images to level designers.
           </Text>
           <Header h3>Tags:</Header>
           {tagDescriptions.map(({ label, description }) => (
