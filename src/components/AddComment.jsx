@@ -9,8 +9,11 @@ import { nick } from 'utils/nick';
 
 const AddComment = ({ type, index, add }) => {
   const [text, setText] = useState('');
-  const addComment = useStoreActions(
+  const addReplayComment = useStoreActions(
     actions => actions.ReplayComments.addComment,
+  );
+  const addLGRComment = useStoreActions(
+    actions => actions.LGRComments.addComment,
   );
 
   const addText = () => {
@@ -19,9 +22,15 @@ const AddComment = ({ type, index, add }) => {
     }
     setText('');
     if (type === 'replay') {
-      addComment({
+      addReplayComment({
         ReplayIndex: index,
         Entered: format(new Date(), 't'),
+        Text: text,
+      });
+    }
+    if (type === 'lgr') {
+      addLGRComment({
+        LGRIndex: index,
         Text: text,
       });
     }

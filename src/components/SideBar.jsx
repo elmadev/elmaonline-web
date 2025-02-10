@@ -13,6 +13,7 @@ const items = {
     { name: 'Battles', to: '/battles' },
     { name: 'Levels', to: '/levels' },
     { name: 'Replays', to: '/replays' },
+    { name: 'LGRs', to: '/lgrs' },
     { name: 'Ranking', to: '/ranking' },
   ],
   Community: [

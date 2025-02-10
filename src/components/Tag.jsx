@@ -4,11 +4,16 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 const colors = {
+  // replay +- level/levelpack:
   TAS: 'red',
   DNF: 'gray',
   Bug: 'brown',
   Nitro: 'blue',
   Unlisted: 'gray',
+  // lgr:
+  'Alt Palette': 'red',
+  Default: 'blue',
+  Theme: 'purple',
 };
 
 const StyledTag = styled(Chip)`

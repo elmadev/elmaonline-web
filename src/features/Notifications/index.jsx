@@ -50,6 +50,7 @@ const Notifications = ({
   const getIcon = type => {
     switch (type) {
       case 'comment':
+      case 'lgr_comment':
         return (
           <CommentAvatar>
             <CommentIcon />
@@ -85,7 +86,7 @@ const Notifications = ({
       case 'comment':
         return (
           <div>
-            {meta.kuski} added comment to your replay{' '}
+            {meta.kuski} added a comment to your replay{' '}
             <Link
               to={`/r/${meta.replayUUID}/${meta.replayName.replace(
                 '.rec',
@@ -94,6 +95,14 @@ const Notifications = ({
             >
               {meta.replayName}
             </Link>{' '}
+            <i>"{meta.Text}"</i>
+          </div>
+        );
+      case 'lgr_comment':
+        return (
+          <div>
+            {meta.kuski} added a comment to your lgr{' '}
+            <Link to={`/lgr/${meta.LGRName}`}>{meta.LGRName}</Link>{' '}
             <i>"{meta.Text}"</i>
           </div>
         );

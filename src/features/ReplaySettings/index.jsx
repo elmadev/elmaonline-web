@@ -4,8 +4,9 @@ import styled from '@emotion/styled';
 import { CropLandscape, Settings, Crop75, Close } from '@material-ui/icons';
 import { Row, Text } from 'components/Containers';
 import FieldBoolean from 'components/FieldBoolean';
+import { TextField, Typography } from '@material-ui/core';
 
-const ReplaySettings = ({ battle = false }) => {
+const ReplaySettings = ({ battle = false, lgrPage = false }) => {
   const [openSettings, setSettings] = useState(false);
   const {
     settings: {
@@ -16,9 +17,21 @@ const ReplaySettings = ({ battle = false }) => {
       customSkyGround,
       theater,
       arrows,
+      lgrOverride,
     },
   } = useStoreState(state => state.ReplaySettings);
-  const { toggleSetting } = useStoreActions(actions => actions.ReplaySettings);
+  const { toggleSetting, setLgrOverride } = useStoreActions(
+    actions => actions.ReplaySettings,
+  );
+
+  const { lgr } = useStoreState(state => state.LGR);
+  const { getLGR } = useStoreActions(actions => actions.LGR);
+  useEffect(() => {
+    if (!lgrPage && lgrOverride !== '' && lgrOverride !== 'legacy') {
+      getLGR(lgrOverride);
+    }
+  }, [lgrOverride]);
+  const lgrInvalid = lgrOverride && !lgr && lgrOverride !== 'legacy';
 
   useEffect(() => {
     // triggers autoResize in recplayer-react
@@ -70,6 +83,19 @@ const ReplaySettings = ({ battle = false }) => {
             label="Custom sky/ground"
             onChange={() => toggleSetting('customSkyGround')}
           />
+          {!lgrPage && (
+            <>
+              <Typography>Override all levels with lgr:&nbsp;</Typography>
+              <TextField
+                error={lgrInvalid}
+                helperText={lgrInvalid && 'LGR not found'}
+                id="Lgr"
+                value={lgrOverride}
+                onChange={event => setLgrOverride(event.target.value)}
+                margin="dense"
+              />
+            </>
+          )}
         </SettingsContainer>
       )}
       <Icon onClick={() => setSettings(!openSettings)}>

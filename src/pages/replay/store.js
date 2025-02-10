@@ -9,6 +9,15 @@ export default {
     Unlisted: 0,
   },
   setReplayByUUID: action((state, payload) => {
+    if (!payload) {
+      state.replay = null;
+      state.edit = {
+        Comment: '',
+        DrivenBy: '',
+        Unlisted: 0,
+      };
+      return;
+    }
     state.replay = payload;
     state.edit = {
       Comment: payload.Comment,

@@ -80,7 +80,7 @@ export default function Mod() {
               onChange={ev => setForm({ ...form, Name: ev.target.value })}
             />
             <Field
-              label="Type (level, levelpack or replay)"
+              label="Type (level, levelpack, replay or lgr)"
               value={form.Type}
               placeholder=""
               onChange={ev => setForm({ ...form, Type: ev.target.value })}
