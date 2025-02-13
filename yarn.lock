@@ -12292,10 +12292,10 @@ rechoir@^0.8.0:
   dependencies:
     resolve "^1.20.0"
 
-recplayer-react@^1.7.3:
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/recplayer-react/-/recplayer-react-1.7.3.tgz#261aaa155d73a63e4d77e0ab45f0488ab056715d"
-  integrity sha512-NKJME9DXRzXMG/NFeu+m+ZzLayFKSM9lnLzX9hBqsLwDjsXLP+uHhFInkBZ4zwWF2qDEevvUz8PTKOECpiGkfg==
+recplayer-react@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/recplayer-react/-/recplayer-react-2.0.0.tgz#3e8cce9e0a7bdc18af86c9c1bf686d0a77df6df1"
+  integrity sha512-wxuLX2qxxbUmFLtRDAtiGMLFwEj2ujcg0b29DlRpPE5lSbYi+0RzknxYjycqP3np2Y6zL7eo3JplWh3DEuwq2w==
 
 recursive-readdir@2.2.2:
   version "2.2.2"
