@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useStoreState } from 'easy-peasy';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import RecPlayerReact from 'recplayer-react';
+import config from 'config';
 
 const Recplayer = props => {
   const {
@@ -12,10 +13,10 @@ const Recplayer = props => {
     width = 'auto',
     height = 'auto',
     controls = true,
-    imageUrl = 'https://api.elma.online/recplayer',
     autoPlay = 'if-visible',
     merge = false,
     forceRefresh = false,
+    lgr,
   } = props;
   const {
     settings: {
@@ -25,6 +26,7 @@ const Recplayer = props => {
       zoomScale,
       arrows,
       autoPlay: autoPlaySetting,
+      lgrOverride,
     },
   } = useStoreState(state => state.ReplaySettings);
 
@@ -62,6 +64,22 @@ const Recplayer = props => {
     shouldAutoPlay = true;
   }
 
+  // If neither the page nor the settings specify an lgr, get the lgr from the level file
+  let lgrUrl = `${config.url}api/lgr/get/`;
+  let lgrFrom = 'level';
+  // If the page specifically requests an lgr, load that lgr
+  if (lgr) {
+    lgrFrom = 'file';
+    lgrUrl = lgr;
+    // If the settings specifies an lgr, load that lgr (legacy)
+  } else if (lgrOverride === 'legacy') {
+    lgrFrom = 'legacy';
+    // If the settings specifies an lgr, load that lgr (other)
+  } else if (lgrOverride !== '') {
+    lgrFrom = 'file';
+    lgrUrl = `${config.url}api/lgr/get/${lgrOverride}`;
+  }
+
   return (
     <>
       {RecPlayerReact && lev ? (
@@ -73,7 +91,6 @@ const Recplayer = props => {
           height={height}
           zoom={zoom}
           controls={controls}
-          imageUrl={imageUrl}
           autoPlay={shouldAutoPlay}
           merge={merge}
           levelOptions={{
@@ -87,7 +104,11 @@ const Recplayer = props => {
           showZoomBtns
           showPlaybackBtns={Boolean(rec)}
           key={forceRefresh ? rec + shirt : undefined}
-        />
+          lgrUrl={lgrUrl}
+          lgrFrom={lgrFrom}
+          defaultLgrUrl={`${config.url}api/lgr/get/default`} // TODO replace with space.elma.online url once it is added to the database
+          legacyLgrUrl={`${config.url}recplayer`}
+          />
       ) : (
         <span>Loading..</span>
       )}

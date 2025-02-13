@@ -45,7 +45,7 @@ const Comments = ({ comments = [], loading = false }) => {
   return (
     <Column>
       {comments.sort(sortByEntered).map(c => (
-        <Row key={c.ReplayCommentIndex}>
+        <Row key={c.ReplayCommentIndex || c.LGRCommentIndex}>
           <Timestamp>
             <LocalTime date={c.Entered} format="d MMM yyyy" parse="X" />
           </Timestamp>{' '}

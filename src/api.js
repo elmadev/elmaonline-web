@@ -461,6 +461,15 @@ export const TeamMembers = Team => api.get(`teams/${Team}`);
 export const SearchChat = data =>
   api.get('chatlog', { params: JSON.stringify(data) });
 
+// lgr
+export const LGR = LGRName => api.get(`lgr/info/${LGRName}`);
+export const LGRs = () => api.get(`lgr/info`);
+export const NewLGR = formData => apiUpload.post('api/lgr/add', formData);
+export const EditLGR = (LGRName, formData) => apiUpload.post(`api/lgr/info/${LGRName}`, formData);
+export const DeleteLGR = LGRName => api.delete(`lgr/del/${LGRName}`);
+export const LGRComments = LGRIndex => api.get(`lgr_comment/get/${LGRIndex}`);
+export const NewLGRComment = data => api.post(`lgr_comment/add`, data);
+
 // level
 export const Level = (LevelIndex, withLevelStats = false) =>
   api.get(`level/${LevelIndex}`, { stats: withLevelStats ? '1' : '' });
@@ -550,6 +559,7 @@ export const GetDatInfo = data => apiUpload.post(`api/taswr/getdatinfo`, data);
 export const GetReplayTags = () => api.get(`tag?type=replay`);
 export const GetLevelTags = () => api.get(`tag?type=level`);
 export const GetLevelPackTags = () => api.get(`tag?type=levelpack`);
+export const GetLGRTags = () => api.get(`tag?type=lgr`);
 export const GetTags = () => api.get(`tag`);
 export const CreateTag = data => api.post(`tag`, data);
 export const UpdateTag = (TagIndex, data) => api.put(`tag/${TagIndex}`, data);
