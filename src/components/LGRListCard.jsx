@@ -50,9 +50,14 @@ const LGRListCard = ({ lgr }) => {
           </TagsContainer>
         </CardContent>
         <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Desc
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            title={lgr.LGRDesc}
+          >
             {lgr.LGRDesc}
-          </Typography>
+          </Desc>
         </CardContent>
       </LGRCard>
     </Link>
@@ -63,6 +68,11 @@ const LGRCard = styled(Card)`
   :hover {
     cursor: pointer;
   }
+  height: 380px;
+`;
+
+const Desc = styled(Typography)`
+  white-space: pre-line;
 `;
 
 const LGRPreviewCard = styled(CardMedia)`
