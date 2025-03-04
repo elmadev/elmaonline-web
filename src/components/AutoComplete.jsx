@@ -20,6 +20,8 @@ const AutoComplete = ({
   groupBy,
   getOptionSelected,
   renderOption,
+  onOpen,
+  loading = false,
 }) => {
   const acClasses = useStyles();
   return (
@@ -39,6 +41,8 @@ const AutoComplete = ({
       ListboxComponent={ListboxComponent}
       classes={acClasses}
       renderOption={renderOption}
+      onOpen={onOpen}
+      loading={loading}
     />
   );
 };

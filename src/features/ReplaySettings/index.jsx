@@ -4,7 +4,8 @@ import styled from '@emotion/styled';
 import { CropLandscape, Settings, Crop75, Close } from '@material-ui/icons';
 import { Row, Text } from 'components/Containers';
 import FieldBoolean from 'components/FieldBoolean';
-import { TextField, Typography } from '@material-ui/core';
+import AutoComplete from 'components/AutoComplete';
+import { Typography } from '@material-ui/core';
 
 const ReplaySettings = ({ battle = false, lgrPage = false }) => {
   const [openSettings, setSettings] = useState(false);
@@ -23,15 +24,8 @@ const ReplaySettings = ({ battle = false, lgrPage = false }) => {
   const { toggleSetting, setLgrOverride } = useStoreActions(
     actions => actions.ReplaySettings,
   );
-
-  const { lgr } = useStoreState(state => state.LGR);
-  const { getLGR } = useStoreActions(actions => actions.LGR);
-  useEffect(() => {
-    if (!lgrPage && lgrOverride !== '' && lgrOverride !== 'legacy') {
-      getLGR(lgrOverride);
-    }
-  }, [lgrOverride]);
-  const lgrInvalid = lgrOverride && !lgr && lgrOverride !== 'legacy';
+  const { lgrs } = useStoreState(state => state.LGRList);
+  const { getLGRs } = useStoreActions(actions => actions.LGRList);
 
   useEffect(() => {
     // triggers autoResize in recplayer-react
@@ -86,14 +80,33 @@ const ReplaySettings = ({ battle = false, lgrPage = false }) => {
           {!lgrPage && (
             <>
               <Typography>Override all levels with lgr:&nbsp;</Typography>
-              <TextField
-                error={lgrInvalid}
-                helperText={lgrInvalid && 'LGR not found'}
-                id="Lgr"
-                value={lgrOverride}
-                onChange={event => setLgrOverride(event.target.value)}
-                margin="dense"
-              />
+              <LgrSelect>
+                <AutoComplete
+                  options={lgrs.map(lgr => ({
+                    label: lgr.LGRName,
+                    id: lgr.LGRIndex,
+                    key: lgr.LGRName,
+                  }))}
+                  value={lgrOverride || null}
+                  onChange={value => setLgrOverride(value?.key || '')}
+                  getOptionLabel={option => {
+                    if (typeof option === 'string') {
+                      return option;
+                    }
+                    if (option) {
+                      return option.label;
+                    }
+                    return '';
+                  }}
+                  getOptionSelected={(o, v) => (v ? o.key === v : false)}
+                  onOpen={() => {
+                    if (!lgrs?.length) {
+                      getLGRs();
+                    }
+                  }}
+                  loading={!lgrs?.length}
+                />
+              </LgrSelect>
             </>
           )}
         </SettingsContainer>
@@ -115,6 +128,7 @@ const SettingsContainer = styled.div`
   @media (max-width: 1100px) {
     flex-direction: column;
   }
+  margin-top: 14px;
 `;
 
 const Icon = styled.div`
@@ -126,6 +140,10 @@ const IconTheater = styled(Icon)`
   @media (max-width: 1100px) {
     display: none;
   }
+`;
+
+const LgrSelect = styled.div`
+  width: 200px;
 `;
 
 export default ReplaySettings;
