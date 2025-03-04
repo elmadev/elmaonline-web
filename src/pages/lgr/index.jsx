@@ -26,10 +26,14 @@ import { mod, nickId } from 'utils/nick';
 import { getReplayLink, getLgrPreviewLink, getLgrLink } from 'utils/link';
 import { DeleteLGR } from 'api';
 import config from 'config';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import { Row } from 'components/Containers';
+import Portal from 'components/Portal';
 
 const LGR = () => {
   const { lgr } = useStoreState(state => state.LGR);
   const { getLGR } = useStoreActions(actions => actions.LGR);
+  const [fullscreen, setFullscreen] = useState(false);
   const [modDelete, setModDelete] = useState('');
   const navigate = useNavigate();
 
@@ -71,17 +75,33 @@ const LGR = () => {
           <RightBarContainer>
             <Accordion defaultExpanded>
               <AccordionDetails style={{ flexDirection: 'column' }}>
-                <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+                <Name>
+                  <Header h2>{`${lgr.LGRName}.lgr`}</Header>
+                  <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+                    <GetAppIcon fontSize="large" />
+                  </a>
+                </Name>
+                {fullscreen ? (
+                  <Portal>
+                    <ImageFullscreen onClick={() => setFullscreen(false)}>
+                      <img
+                        src={getLgrPreviewLink(lgr)}
+                        style={{ maxWidth: '100%', maxHeight: '100%' }}
+                      />
+                    </ImageFullscreen>
+                  </Portal>
+                ) : null}
+                <Image onClick={() => setFullscreen(true)}>
                   <img
                     src={getLgrPreviewLink(lgr)}
                     style={{ maxWidth: '100%' }}
                   />
-                </a>
+                </Image>
               </AccordionDetails>
             </Accordion>
             <Accordion defaultExpanded>
               <AccordionSummary expandIcon={<ExpandMore />}>
-                <Header h3>{`${lgr.LGRName}.lgr`}</Header>
+                <Header h3>Description</Header>
               </AccordionSummary>
               <AccordionDetails style={{ flexDirection: 'column' }}>
                 <LGRInfo>
@@ -96,9 +116,14 @@ const LGR = () => {
                       />
                     </UploadedBy>
                   </Text>
-                  <Text>
-                    {lgr.Downloads} download{lgr.Downloads !== 1 ? 's' : ''}
-                  </Text>
+                  <Row>
+                    <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+                      <GetAppIcon />
+                    </a>
+                    <Text>
+                      {lgr.Downloads} download{lgr.Downloads !== 1 ? 's' : ''}
+                    </Text>
+                  </Row>
                   <Tags tags={lgr.Tags.map(tag => tag.Name)} />
                 </LGRInfo>
               </AccordionDetails>
@@ -146,20 +171,54 @@ const LGR = () => {
             )}
           </RightBarContainer>
           {(nickId() === lgr.KuskiIndex || mod() === 1) && (
-            <Accordion style={{ float: 'left', width: '70%' }}>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Header h3>Edit LGR</Header>
-              </AccordionSummary>
-              <AccordionDetails style={{ flexDirection: 'column' }}>
-                <LGRUpload lgrToEdit={lgr} />
-              </AccordionDetails>
-            </Accordion>
+            <EditLgr>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMore />}>
+                  <Header h3>Edit LGR</Header>
+                </AccordionSummary>
+                <AccordionDetails style={{ flexDirection: 'column' }}>
+                  <LGRUpload lgrToEdit={lgr} />
+                </AccordionDetails>
+              </Accordion>
+            </EditLgr>
           )}
         </>
       )}
     </Layout>
   );
 };
+
+const ImageFullscreen = styled.div`
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+`;
+
+const Image = styled.div`
+  cursor: pointer;
+`;
+
+const EditLgr = styled.div`
+  width: 70%;
+  float: left;
+  padding-left: 7px;
+  box-sizing: border-box;
+`;
+
+const Name = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: ${p => p.theme.padSmall};
+`;
 
 const PreviewContainer = styled.div`
   width: ${p => (p.theater ? '100%' : '70%')};
