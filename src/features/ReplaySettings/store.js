@@ -12,6 +12,7 @@ export default {
       theater: false,
       // scaling (%) for default zoom on page load
       zoomScale: 100,
+      lgrOverride: '',
     },
     { storage: 'localStorage' },
   ),
@@ -20,5 +21,8 @@ export default {
   }),
   setZoomScale: action((state, payload) => {
     state.settings.zoomScale = parseInt(payload, 10);
+  }),
+  setLgrOverride: action((state, payload) => {
+    state.settings.lgrOverride = payload;
   }),
 };

@@ -21,7 +21,7 @@ React based frontend for the [elmaonline site](https://elma.online). The backend
 3. Run `yarn` in terminal to install depedencies
 4. Run `yarn start` in terminal to start development server
 
-- You can connect to the test server backend or run [elmaonline-site](https://github.com/elmadev/elmaonline-site) locally, use config.js to change this.
+- Instead of connecting to the test server backend, if you want to run [elmaonline-site](https://github.com/elmadev/elmaonline-site) locally, run `yarn start:dev` instead.
 
 - Run `yarn build` in terminal to make a production build.
 
