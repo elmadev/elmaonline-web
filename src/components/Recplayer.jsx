@@ -27,6 +27,7 @@ const Recplayer = props => {
       arrows,
       autoPlay: autoPlaySetting,
       lgrOverride,
+      lgrUrl: lgrOverrideUrl,
     },
   } = useStoreState(state => state.ReplaySettings);
 
@@ -77,7 +78,7 @@ const Recplayer = props => {
     // If the settings specifies an lgr, load that lgr (other)
   } else if (lgrOverride !== '') {
     lgrFrom = 'file';
-    lgrUrl = `${config.url}api/lgr/get/${lgrOverride}`;
+    lgrUrl = `${config.s3Url}lgr/${lgrOverrideUrl}`;
   }
 
   return (
@@ -106,9 +107,9 @@ const Recplayer = props => {
           key={forceRefresh ? rec + shirt : undefined}
           lgrUrl={lgrUrl}
           lgrFrom={lgrFrom}
-          defaultLgrUrl={`${config.url}api/lgr/get/default`} // TODO replace with space.elma.online url once it is added to the database
+          defaultLgrUrl={`https://space.elma.online/lgr/cr6m27a3t1/default.lgr`}
           legacyLgrUrl={`${config.url}recplayer`}
-          />
+        />
       ) : (
         <span>Loading..</span>
       )}
