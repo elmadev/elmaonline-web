@@ -326,7 +326,7 @@ const LGRUpload = ({ lgrToEdit }) => {
     <>
       {!lgrToEdit && (
         <Column p="Large">
-          <Header h1>LGR upload</Header>
+          <Header h1>LGR Upload</Header>
           <Text>
             Upload an lgr here. Once uploaded, an lgr{' '}
             <b>cannot be renamed and cannot be deleted!</b>
