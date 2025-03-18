@@ -2,6 +2,7 @@ import { useNavigate, useParams } from '@tanstack/react-router';
 import Layout from 'components/Layout';
 import styled from '@emotion/styled';
 import { Tab, Tabs } from '@material-ui/core';
+import LGRGuide from 'features/LGRGuide';
 import LGRUpload from 'features/LGRUpload';
 import LGRList from 'features/LGRList';
 import { nick } from 'utils/nick';
@@ -22,10 +23,12 @@ const LGRs = () => {
       >
         <Tab label="Repository" value="" />
         {nick() && <Tab label="Upload" value="upload" />}
+        <Tab label="Development Guide" value="guide" />
       </Tabs>
       <Container>
         {!tab && <LGRList />}
         {tab === 'upload' && <LGRUpload />}
+        {tab === 'guide' && <LGRGuide />}
       </Container>
     </Layout>
   );
