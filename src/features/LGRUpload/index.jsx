@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 import { NewLGR, EditLGR } from 'api';
 import { xor } from 'lodash';
-import { mod } from 'utils/nick';
+import { mod, nick } from 'utils/nick';
 
 const tagDescriptions = [
   { label: 'Bike', description: 'Custom bike graphics' },
@@ -326,29 +326,38 @@ const LGRUpload = ({ lgrToEdit }) => {
     <>
       {!lgrToEdit && (
         <Column p="Large">
-          <Header h1>LGR Upload</Header>
-          <Text>
-            Upload an lgr here. Once uploaded, an lgr{' '}
-            <b>cannot be renamed and cannot be deleted!</b>
-          </Text>
-          <Text>
-            Your lgr will be automatically fancyboosted after being uploaded.
-            Fancyboosting your lgr makes all 256 palette colors available as
-            images to level designers.
-          </Text>
-          <Header h3>Tags:</Header>
-          {tagDescriptions.map(({ label, description }) => (
-            <Text>
-              <Chip
-                label={label}
-                key={label}
-                color="primary"
-                style={{ margin: 4 }}
-              />
-              {description}
-            </Text>
-          ))}
-          <Dropzone filetype={'.lgr'} onDrop={e => onDropLGR(e)} />
+          {nick() ? (
+            <>
+              <Header h1>LGR Upload</Header>
+              <Text>
+                Upload an lgr here. Once uploaded, an lgr{' '}
+                <b>cannot be renamed and cannot be deleted!</b>
+              </Text>
+              <Text>
+                Your lgr will be automatically fancyboosted after being
+                uploaded. Fancyboosting your lgr makes all 256 palette colors
+                available as images to level designers.
+              </Text>
+              <Header h3>Tags:</Header>
+              {tagDescriptions.map(({ label, description }) => (
+                <Text>
+                  <Chip
+                    label={label}
+                    key={label}
+                    color="primary"
+                    style={{ margin: 4 }}
+                  />
+                  {description}
+                </Text>
+              ))}
+              <Dropzone filetype={'.lgr'} onDrop={e => onDropLGR(e)} />
+            </>
+          ) : (
+            <>
+              <Header h1>LGR Upload</Header>
+              <Text>Please sign in to upload an lgr.</Text>
+            </>
+          )}
         </Column>
       )}
       <Alert {...alert} onClose={closeAlert} />
