@@ -33,10 +33,11 @@ const LGRGuide = () => {
       </Text>
       <Header h3>Image Properties</Header>
       <Text>
-        Most images have these properties: image type (picture, texture, mask),
-        default distance, default clipping and transparency (topleft, topright,
-        bottomleft, bottomright, palette id 0, none). Special images start with
-        "Q". Textures ignore transparency. Only masks may have a transparency of
+        Image names are limited to max 8 characters. Most images have these
+        properties: image type (picture, texture, mask), default distance,
+        default clipping and transparency (topleft, topright, bottomleft,
+        bottomright, palette id 0, none). Special images start with "Q".
+        Textures ignore transparency. Only masks may have a transparency of
         "none"
       </Text>
       <Header h3>Special Images</Header>
@@ -107,14 +108,9 @@ const LGRGuide = () => {
       <Text>
         The image names are case-insensitive. However, many third-party programs
         unfortunately are case-sensitive. To avoid bugs with third-party
-        programs, it is best practice to put all the "Q" files in uppercase
-        except for qfood1-qfood9 which should be in lowercase. All other image
-        files should be lowercase.
-      </Text>
-      <Text>
-        Although technically you can have a picture, texture and mask with the
-        same name, you should avoid doing so to avoid bugs with third-party
-        programs. Image names are restricted to a max of 8 characters.
+        programs, it is best practice to copy default.lgr and put all the "Q"
+        files in uppercase except for qfood1-qfood9 which should be in
+        lowercase. All other image files should be lowercase.
       </Text>
       <Header h3>LGR file restrictions</Header>
       <Text>
