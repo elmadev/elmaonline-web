@@ -64,7 +64,7 @@ const LGRUpload = ({ lgrToEdit }) => {
         kuskiName: lgrToEdit.KuskiData.Kuski,
         preview: null,
         description: lgrToEdit.LGRDesc,
-        replayUuid: lgrToEdit.ReplayData?.UUID || defaultReplay,
+        replayUuid: lgrToEdit.ReplayUUID || defaultReplay,
         tags: lgrToEdit.Tags.map(tag => tag.TagIndex),
       }
     : {
