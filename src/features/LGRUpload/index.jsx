@@ -249,7 +249,7 @@ const LGRUpload = ({ lgrToEdit }) => {
     formData.append('filename', lgrData.filename);
     formData.append('description', lgrData.description);
     formData.append('tags', JSON.stringify(lgrData.tags));
-    formData.append('replay', replay.ReplayIndex);
+    formData.append('replay', replay.UUID);
     try {
       const res = await NewLGR(formData);
       if (res.data && !res.data.error) {
@@ -297,7 +297,7 @@ const LGRUpload = ({ lgrToEdit }) => {
     formData.append('description', lgrData.description);
     formData.append('tags', JSON.stringify(lgrData.tags));
     if (replayValid) {
-      formData.append('replay', replay.ReplayIndex);
+      formData.append('replay', replay.UUID);
     }
     try {
       const res = await EditLGR(lgrToEdit.LGRName, formData);
