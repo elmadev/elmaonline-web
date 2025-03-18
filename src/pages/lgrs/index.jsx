@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { Tab, Tabs } from '@material-ui/core';
 import LGRUpload from 'features/LGRUpload';
 import LGRList from 'features/LGRList';
+import { nick } from 'utils/nick';
 
 const LGRs = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const LGRs = () => {
         }
       >
         <Tab label="Repository" value="" />
-        <Tab label="Upload" value="upload" />
+        {nick() && <Tab label="Upload" value="upload" />}
       </Tabs>
       <Container>
         {!tab && <LGRList />}
