@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import styled from '@emotion/styled';
 import { CropLandscape, Settings, Crop75, Close } from '@material-ui/icons';
@@ -31,6 +31,17 @@ const ReplaySettings = ({ battle = false, lgrPage = false }) => {
     // triggers autoResize in recplayer-react
     window.dispatchEvent(new Event('resize'));
   }, [theater]);
+
+  const lgrList = useMemo(() => {
+    const list = lgrs.map(lgr => ({
+      label: lgr.LGRName,
+      id: lgr.LGRIndex,
+      key: lgr.LGRName,
+      url: lgr.FileLink,
+    }));
+    list.push({ label: `legacy (png's)`, id: 0, key: 'legacy', url: '' });
+    return list;
+  }, [lgrs]);
 
   return (
     <Row jc="flex-end" ai="center">
@@ -82,13 +93,14 @@ const ReplaySettings = ({ battle = false, lgrPage = false }) => {
               <Typography>Override all levels with lgr:&nbsp;</Typography>
               <LgrSelect>
                 <AutoComplete
-                  options={lgrs.map(lgr => ({
-                    label: lgr.LGRName,
-                    id: lgr.LGRIndex,
-                    key: lgr.LGRName,
-                  }))}
+                  options={lgrList}
                   value={lgrOverride || null}
-                  onChange={value => setLgrOverride(value?.key || '')}
+                  onChange={value =>
+                    setLgrOverride({
+                      name: value?.key || '',
+                      url: value?.url || '',
+                    })
+                  }
                   getOptionLabel={option => {
                     if (typeof option === 'string') {
                       return option;
