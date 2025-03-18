@@ -106,9 +106,9 @@ const Recplayer = props => {
           key={forceRefresh ? rec + shirt : undefined}
           lgrUrl={lgrUrl}
           lgrFrom={lgrFrom}
-          defaultLgrUrl={`${config.url}api/lgr/get/default`} // TODO replace with space.elma.online url once it is added to the database
+          defaultLgrUrl={`http://space.elma.online/lgr/cr6m27a3t1/default.lgr`}
           legacyLgrUrl={`${config.url}recplayer`}
-          />
+        />
       ) : (
         <span>Loading..</span>
       )}
