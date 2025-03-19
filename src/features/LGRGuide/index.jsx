@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import { Text, Column } from 'components/Containers';
 import Header from 'components/Header';
 
@@ -6,12 +7,15 @@ const LGRGuide = () => {
     <Column p="Large">
       <Header h1>LGR Development Guide</Header>
       <Text>This is a quick guide on developing your own LGR file.</Text>
+
       <Header h2>Tools</Header>
+
       <Header h3>Image Editing Software</Header>
       <Text>
         Photoshop or GIMP are good choices. These programs support the LGR
         files' 256-color index palette and can open .pcx files.
       </Text>
+
       <Header h3>LGR Programs</Header>
       <Text>
         Quick and minimal LGR alterations can be made using{' '}
@@ -23,6 +27,7 @@ const LGRGuide = () => {
         is recommended. It also automatically fixes/converts palette issues and
         allows the use of BMP files instead of PCX files.
       </Text>
+
       <Header h2>Making Your LGR</Header>
       <Text>
         The easiest way to create an LGR is to download default.lgr, extract the
@@ -37,6 +42,7 @@ const LGRGuide = () => {
         user - modifying the palette may alter in-game text colors and kuski
         shirts.
       </Text>
+
       <Header h3>Image Properties</Header>
       <Text>
         Image names are limited to max 8 characters. Most images have these
@@ -46,6 +52,7 @@ const LGRGuide = () => {
         Textures ignore transparency. Only masks may have a transparency of
         "none"
       </Text>
+
       <Header h3>Special Images</Header>
       <Text>
         None of the special images prefixed with "Q" use image properties. For
@@ -86,6 +93,7 @@ const LGRGuide = () => {
           </li>
         </ul>
       </Text>
+
       <Header h3>QUP_XXXX.pcx/QDOWN_XX.pcx</Header>
       <Text>
         If you have at least 2 grass pictures and QGRASS.pcx, then grass will be
@@ -113,6 +121,7 @@ const LGRGuide = () => {
           </li>
         </ul>
       </Text>
+
       <Header h3>Image Name Best Practices</Header>
       <Text>
         The image names are case-insensitive. However, many third-party programs
@@ -121,6 +130,7 @@ const LGRGuide = () => {
         Put all the "Q" files in uppercase except for qfood1-qfood9 which should
         be in lowercase. All other image files should be lowercase.
       </Text>
+
       <Header h3>LGR file restrictions</Header>
       <Text>
         <ul>
@@ -135,7 +145,22 @@ const LGRGuide = () => {
           </li>
         </ul>
       </Text>
+
       <Header h2>Advanced Topics</Header>
+
+      <Header h3>Fancyboosting</Header>
+      <Text>
+        LGRs can be fancyboosted using LGR Utility, or are automatically
+        fancyboosted when uploaded to elma.online. Fancyboosting adds all 256
+        palette colors, available as 200x200 pixel images, which can be used for
+        custom art in levels. The images are all named zz??????, where ??????
+        corresponds to the hex RGB color (if using the default palette colors).
+      </Text>
+      <Text>
+        An example can be seen from World Cup 9:{' '}
+        <Link to={'/r/c-166361/WC907Smibu'}>WC907Smibu.rec</Link>
+      </Text>
+
       <Header h3>Palette</Header>
       <Text>
         If you do modify the palette, keep in mind that the kuski's shirts can
