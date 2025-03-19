@@ -22,27 +22,28 @@ import { xor } from 'lodash';
 import { mod, nick } from 'utils/nick';
 
 const tagDescriptions = [
-  { label: 'Bike', description: 'Custom bike graphics' },
+  { label: 'Bike', description: 'Modified bike' },
   {
     label: 'Default',
-    description: 'Alternative to default.lgr',
+    description: 'default.lgr replacement',
   },
   {
     label: "Don't Use",
-    description: 'Newer or better version exists',
+    description: 'Deprecated file',
   },
   {
     label: 'Ghost',
     description: 'Ghost or wireframe second bike',
   },
-  { label: 'Grass', description: 'Improved grass' },
+  { label: 'Grass', description: 'Modified grass' },
+  { label: 'Masks+', description: 'More masks than default.lgr' },
   { label: 'Minimal', description: 'Simplified LGR for focused hoyling' },
   { label: 'Pictures+', description: 'More pictures than default.lgr' },
   {
     label: 'Round Obj',
     description: 'Apples, killers and flowers are perfect circles',
   },
-  { label: 'Round Head', description: "The kuski's head is a perfect circle" },
+  { label: 'Round Head', description: "Kuski's head is a perfect circle" },
   { label: 'Textures+', description: 'More textures than default.lgr' },
   { label: 'Tool', description: 'Moviemaking LGR or other tools' },
   { label: 'Theme', description: 'Complete graphics overhaul' },
