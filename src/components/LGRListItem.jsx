@@ -7,7 +7,7 @@ import config from 'config';
 
 const LGRListItem = ({ lgr }) => {
   const url = `/lgr/${lgr.LGRName}`;
-  const downloadLink = `${config.api}lgr/get/${lgr.LGRName}`;
+  const downloadLink = `${config.api}lgr/get/${lgr.LGRName}?dl`;
   return (
     <ListRow key={`${lgr.LGRIndex}`}>
       <ListCell to={url}>

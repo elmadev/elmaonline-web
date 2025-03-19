@@ -93,7 +93,7 @@ const LGR = () => {
               <AccordionDetails style={{ flexDirection: 'column' }}>
                 <Name>
                   <Header h2>{`${lgr.LGRName}.lgr`}</Header>
-                  <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+                  <a href={`${config.api}lgr/get/${lgr.LGRName}?dl`}>
                     <GetAppIcon fontSize="large" />
                   </a>
                 </Name>
@@ -133,7 +133,7 @@ const LGR = () => {
                     </UploadedBy>
                   </Text>
                   <Row>
-                    <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+                    <a href={`${config.api}lgr/get/${lgr.LGRName}?dl`}>
                       <GetAppIcon />
                     </a>
                     <Text>
