@@ -14,7 +14,7 @@ const LGRGuide = () => {
       </Text>
       <Header h3>LGR Programs</Header>
       <Text>
-        Quick and minor LGR alterations can be made using{' '}
+        Quick and minimal LGR alterations can be made using{' '}
         <a href="https://lgrstudio.janka.la/">LGR Studio</a>. For more advanced
         work,{' '}
         <a href="https://up.elma.online/u/0a0a0a0a01/LGR_Utility_64bit_V4.zip">
@@ -27,9 +27,15 @@ const LGRGuide = () => {
       <Text>
         The easiest way to create an LGR is to download default.lgr, extract the
         images using an LGR program, and edit them using an image editing
-        software. Ensure all images use the same palette - the game copies the
-        palette stored in Q1BIKE.pcx. Modifying the palette may alter in-game
-        text colors and kuski shirts.
+        software. You can also open other LGRs for ideas and inspiration.
+      </Text>
+      <Text>
+        Ensure all images use the same palette - the game copies the palette
+        stored in Q1BIKE.pcx and applies it to all the other images in the lgr.
+        The large majority of LGRs use the palette that exists in default.lgr.
+        You probably should not modify this palette unless you are an advanced
+        user - modifying the palette may alter in-game text colors and kuski
+        shirts.
       </Text>
       <Header h3>Image Properties</Header>
       <Text>
@@ -87,7 +93,8 @@ const LGRGuide = () => {
         the game predicts the slope of each grass picture based on if it is an
         up or down picture and based on the height. The height of each image
         should be at least 41. The slope of the grass is calculated as
-        HEIGHT-41.
+        HEIGHT-41. Grass pictures should have 20 pixels of space between the top
+        and the bottom of each picture. See the provided example.
         <ul>
           <li>
             QDOWN_XX: The grass starts on pixel (x, y) = (0, 20) and ends on
@@ -101,6 +108,8 @@ const LGRGuide = () => {
             QUP_0: If you have a perfectly even grass, you should probably
             follow default.lgr and put it as a QUP and not a QDOWN to avoid
             unintended behaviour
+            <br />
+            <img src="https://up.elma.online/u/nrqbmjwnps/Grass.png" />
           </li>
         </ul>
       </Text>
@@ -108,9 +117,9 @@ const LGRGuide = () => {
       <Text>
         The image names are case-insensitive. However, many third-party programs
         unfortunately are case-sensitive. To avoid bugs with third-party
-        programs, it is best practice to copy default.lgr and put all the "Q"
-        files in uppercase except for qfood1-qfood9 which should be in
-        lowercase. All other image files should be lowercase.
+        programs, it is best practice to copy the letter case of default.lgr:
+        Put all the "Q" files in uppercase except for qfood1-qfood9 which should
+        be in lowercase. All other image files should be lowercase.
       </Text>
       <Header h3>LGR file restrictions</Header>
       <Text>
