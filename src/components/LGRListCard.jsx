@@ -33,7 +33,7 @@ const LGRListCard = ({ lgr }) => {
             addSuffix: true,
           })}
           action={
-            <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+            <a href={`${config.api}lgr/get/${lgr.LGRName}?dl`}>
               <IconButton aria-label="Download LGR" onClick={download}>
                 <GetAppIcon />
               </IconButton>

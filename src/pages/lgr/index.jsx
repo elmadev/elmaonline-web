@@ -24,7 +24,7 @@ import LGRComments from 'features/LGRComments';
 import LGRUpload from 'features/LGRUpload';
 import { mod, nickId } from 'utils/nick';
 import { getReplayLink, getLgrPreviewLink, getLgrLink } from 'utils/link';
-import { DeleteLGR } from 'api';
+import { DeleteLGR, ReplayByUUID } from 'api';
 import config from 'config';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { Row } from 'components/Containers';
@@ -46,6 +46,18 @@ const LGR = () => {
     getLGR(LGRName);
   }, []);
 
+  const [replayData, setReplayData] = useState(null);
+  useEffect(() => {
+    (async () => {
+      if (lgr?.ReplayUUID) {
+        const res = await ReplayByUUID(lgr.ReplayUUID);
+        if (res.ok) {
+          setReplayData(res.data);
+        }
+      }
+    })();
+  }, [lgr]);
+
   // mod feature
   const deleteLGR = async () => {
     const res = await DeleteLGR(lgr.LGRName);
@@ -64,20 +76,24 @@ const LGR = () => {
       {lgr && (
         <>
           <PreviewContainer theater={theater}>
-            <Recplayer
-              rec={getReplayLink(lgr.ReplayData).link}
-              lev={`${config.dlUrl}level/${lgr.ReplayData.LevelIndex}`}
-              lgr={getLgrLink(lgr)}
-              controls
-            />
-            <ReplaySettings lgrPage={true} />
+            {replayData && (
+              <>
+                <Recplayer
+                  rec={getReplayLink(replayData).link}
+                  lev={`${config.dlUrl}level/${replayData.LevelIndex}`}
+                  lgr={getLgrLink(lgr)}
+                  controls
+                />
+                <ReplaySettings lgrPage={true} />
+              </>
+            )}
           </PreviewContainer>
           <RightBarContainer>
             <Accordion defaultExpanded>
               <AccordionDetails style={{ flexDirection: 'column' }}>
                 <Name>
                   <Header h2>{`${lgr.LGRName}.lgr`}</Header>
-                  <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+                  <a href={`${config.api}lgr/get/${lgr.LGRName}?dl`}>
                     <GetAppIcon fontSize="large" />
                   </a>
                 </Name>
@@ -117,7 +133,7 @@ const LGR = () => {
                     </UploadedBy>
                   </Text>
                   <Row>
-                    <a href={`${config.api}lgr/get/${lgr.LGRName}`}>
+                    <a href={`${config.api}lgr/get/${lgr.LGRName}?dl`}>
                       <GetAppIcon />
                     </a>
                     <Text>

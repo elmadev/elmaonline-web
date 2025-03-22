@@ -19,30 +19,31 @@ import {
 } from '@material-ui/core';
 import { NewLGR, EditLGR } from 'api';
 import { xor } from 'lodash';
-import { mod } from 'utils/nick';
+import { mod, nick } from 'utils/nick';
 
 const tagDescriptions = [
-  { label: 'Bike', description: 'Custom bike graphics' },
+  { label: 'Bike', description: 'Modified bike' },
   {
     label: 'Default',
-    description: 'Alternative to default.lgr',
+    description: 'default.lgr replacement',
   },
   {
     label: "Don't Use",
-    description: 'Newer or better version exists',
+    description: 'Deprecated file',
   },
   {
     label: 'Ghost',
     description: 'Ghost or wireframe second bike',
   },
-  { label: 'Grass', description: 'Improved grass' },
+  { label: 'Grass', description: 'Modified grass' },
+  { label: 'Masks+', description: 'More masks than default.lgr' },
   { label: 'Minimal', description: 'Simplified LGR for focused hoyling' },
   { label: 'Pictures+', description: 'More pictures than default.lgr' },
   {
     label: 'Round Obj',
     description: 'Apples, killers and flowers are perfect circles',
   },
-  { label: 'Round Head', description: "The kuski's head is a perfect circle" },
+  { label: 'Round Head', description: "Kuski's head is a perfect circle" },
   { label: 'Textures+', description: 'More textures than default.lgr' },
   { label: 'Tool', description: 'Moviemaking LGR or other tools' },
   { label: 'Theme', description: 'Complete graphics overhaul' },
@@ -64,7 +65,7 @@ const LGRUpload = ({ lgrToEdit }) => {
         kuskiName: lgrToEdit.KuskiData.Kuski,
         preview: null,
         description: lgrToEdit.LGRDesc,
-        replayUuid: lgrToEdit.ReplayData?.UUID || defaultReplay,
+        replayUuid: lgrToEdit.ReplayUUID || defaultReplay,
         tags: lgrToEdit.Tags.map(tag => tag.TagIndex),
       }
     : {
@@ -249,7 +250,7 @@ const LGRUpload = ({ lgrToEdit }) => {
     formData.append('filename', lgrData.filename);
     formData.append('description', lgrData.description);
     formData.append('tags', JSON.stringify(lgrData.tags));
-    formData.append('replay', replay.ReplayIndex);
+    formData.append('replay', replay.UUID);
     try {
       const res = await NewLGR(formData);
       if (res.data && !res.data.error) {
@@ -297,7 +298,7 @@ const LGRUpload = ({ lgrToEdit }) => {
     formData.append('description', lgrData.description);
     formData.append('tags', JSON.stringify(lgrData.tags));
     if (replayValid) {
-      formData.append('replay', replay.ReplayIndex);
+      formData.append('replay', replay.UUID);
     }
     try {
       const res = await EditLGR(lgrToEdit.LGRName, formData);
@@ -326,29 +327,38 @@ const LGRUpload = ({ lgrToEdit }) => {
     <>
       {!lgrToEdit && (
         <Column p="Large">
-          <Header h1>LGR upload</Header>
-          <Text>
-            Upload an lgr here. Once uploaded, an lgr{' '}
-            <b>cannot be renamed and cannot be deleted!</b>
-          </Text>
-          <Text>
-            Your lgr will be automatically fancyboosted after being uploaded.
-            Fancyboosting your lgr makes all 256 palette colors available as
-            images to level designers.
-          </Text>
-          <Header h3>Tags:</Header>
-          {tagDescriptions.map(({ label, description }) => (
-            <Text>
-              <Chip
-                label={label}
-                key={label}
-                color="primary"
-                style={{ margin: 4 }}
-              />
-              {description}
-            </Text>
-          ))}
-          <Dropzone filetype={'.lgr'} onDrop={e => onDropLGR(e)} />
+          {nick() ? (
+            <>
+              <Header h1>LGR Upload</Header>
+              <Text>
+                Upload an lgr here. Once uploaded, an lgr{' '}
+                <b>cannot be renamed and cannot be deleted!</b>
+              </Text>
+              <Text>
+                Your lgr will be automatically fancyboosted after being
+                uploaded. Fancyboosting your lgr makes all 256 palette colors
+                available as images to level designers.
+              </Text>
+              <Header h3>Tags:</Header>
+              {tagDescriptions.map(({ label, description }) => (
+                <Text>
+                  <Chip
+                    label={label}
+                    key={label}
+                    color="primary"
+                    style={{ margin: 4 }}
+                  />
+                  {description}
+                </Text>
+              ))}
+              <Dropzone filetype={'.lgr'} onDrop={e => onDropLGR(e)} />
+            </>
+          ) : (
+            <>
+              <Header h1>LGR Upload</Header>
+              <Text>Please sign in to upload an lgr.</Text>
+            </>
+          )}
         </Column>
       )}
       <Alert {...alert} onClose={closeAlert} />
