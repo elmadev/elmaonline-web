@@ -27,6 +27,7 @@ import RChat from '../../images/rights/RChat.png';
 import RBan from '../../images/rights/RBan.png';
 import RMod from '../../images/rights/RMod.png';
 import RAdmin from '../../images/rights/RAdmin.png';
+import Confirm from '../../images/rights/Confirm.png';
 
 const Info = ({ kuskiInfo }) => {
   const { giveRights, getIplogs, setIplogs, getKuskiBans, banKuski } =
@@ -94,6 +95,20 @@ const Info = ({ kuskiInfo }) => {
         <Paper padding top>
           <Header h3>Give Rights</Header>
           <Rights>
+            {kuskiInfo.Confirmed === 0 && (
+              <GiveImg
+                onClick={() =>
+                  giveRights({
+                    Right: 'Confirm',
+                    KuskiIndex: kuskiInfo.KuskiIndex,
+                    name: kuskiInfo.Kuski,
+                  })
+                }
+                src={Confirm}
+                alt="Confirm"
+                title="Confirm"
+              />
+            )}
             {kuskiInfo.RStartBattle === 0 && (
               <GiveImg
                 onClick={() =>
