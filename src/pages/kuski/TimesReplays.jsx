@@ -38,9 +38,11 @@ import { xor } from 'lodash';
 import Preview from './Preview';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { downloadRec } from 'utils/misc';
+import Feedback from 'components/Feedback';
 
 const TimesReplays = ({ KuskiIndex, collapse }) => {
   const [type, setType] = useState('timesAndReplays');
+  const [feedback, setFeedback] = useState('');
   const [hover, setHover] = useState(0);
   const [replay, openReplay] = useState(null);
   const [replayIndex, setReplayIndex] = useState(0);
@@ -129,8 +131,8 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
     });
   };
 
-  const shareReplay = () => {
-    shareTimeFile({
+  const shareReplay = async () => {
+    const res = await shareTimeFile({
       ...share.time,
       Unlisted: share.unlisted,
       Hide: share.hide,
@@ -140,6 +142,14 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
       KuskiIndex,
     });
     setShare(null);
+    if (res.status === 401) {
+      setFeedback(`You're not logged in or this is not your replay.`);
+      return;
+    }
+    if (res.data?.error === 'duplicate') {
+      setFeedback('Replay is already uploaded manually.');
+      return;
+    }
   };
 
   const replayUrl = time => {
@@ -427,6 +437,12 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
           </Container>
         </Backdrop>
       )}
+      <Feedback
+        open={feedback !== ''}
+        text={feedback}
+        type="error"
+        close={() => setFeedback('')}
+      />
     </>
   );
 };
