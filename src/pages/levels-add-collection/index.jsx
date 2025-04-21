@@ -8,6 +8,7 @@ import Header from 'components/Header';
 import Link from 'components/Link';
 import { nickId } from 'utils/nick';
 import Layout from 'components/Layout';
+import Feedback from 'components/Feedback';
 
 const schema = yup.object().shape({
   CollectionName: yup
@@ -20,8 +21,10 @@ const schema = yup.object().shape({
 });
 
 const LevelsAddCollection = () => {
-  const { addSuccess } = useStoreState(state => state.LevelsAddCollection);
-  const { addCollection } = useStoreActions(
+  const { addSuccess, error } = useStoreState(
+    state => state.LevelsAddCollection,
+  );
+  const { addCollection, setError } = useStoreActions(
     actions => actions.LevelsAddCollection,
   );
   const formal = useFormal(
@@ -69,6 +72,12 @@ const LevelsAddCollection = () => {
           )}
         </Grid>
       </Grid>
+      <Feedback
+        open={error !== ''}
+        text={error}
+        type="error"
+        close={() => setError('')}
+      />
     </Layout>
   );
 };

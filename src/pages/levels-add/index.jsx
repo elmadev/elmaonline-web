@@ -8,6 +8,7 @@ import Header from 'components/Header';
 import Link from 'components/Link';
 import { nickId } from 'utils/nick';
 import Layout from 'components/Layout';
+import Feedback from 'components/Feedback';
 
 const schema = yup.object().shape({
   LevelPackName: yup
@@ -24,8 +25,10 @@ const schema = yup.object().shape({
 });
 
 const LevelsAdd = () => {
-  const { addSuccess } = useStoreState(state => state.LevelsAdd);
-  const { addLevelPack } = useStoreActions(actions => actions.LevelsAdd);
+  const { addSuccess, error } = useStoreState(state => state.LevelsAdd);
+  const { addLevelPack, setError } = useStoreActions(
+    actions => actions.LevelsAdd,
+  );
   const formal = useFormal(
     {},
     {
@@ -73,6 +76,12 @@ const LevelsAdd = () => {
           )}
         </Grid>
       </Grid>
+      <Feedback
+        open={error !== ''}
+        text={error}
+        type="error"
+        close={() => setError('')}
+      />
     </Layout>
   );
 };

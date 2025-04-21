@@ -155,6 +155,7 @@ export default {
         KuskiIndex: payload.KuskiIndex,
       });
     }
+    return post;
   }),
   search: {
     level: '',
