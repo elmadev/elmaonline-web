@@ -68,17 +68,16 @@ const Replay = () => {
   const location = useLocation();
   const { merge } = location.search;
 
-  const { getReplayByUUID, setEdit, submitEdit, getCupEvent, setCupEvent } =
-    useStoreActions(state => state.ReplayByUUID);
-  const { userid } = useStoreState(state => state.Login);
-  const { replay, loading, replays, edit, cupEvent } = useStoreState(
+  const { getReplayByUUID, getCupEvent, setCupEvent } = useStoreActions(
+    state => state.ReplayByUUID,
+  );
+  const { replay, loading, replays, cupEvent } = useStoreState(
     state => state.ReplayByUUID,
   );
   const {
     settings: { theater },
   } = useStoreState(state => state.ReplaySettings);
   const { getTagOptions } = useStoreActions(actions => actions.Upload);
-  const { tagOptions } = useStoreState(state => state.Upload);
 
   const getReplay = async () => {
     if (!fingerprint.current) {
@@ -273,87 +272,7 @@ const Replay = () => {
               />
             </AccordionDetails>
           </Accordion>
-          {(userid === replay.UploadedBy || mod() === 1) &&
-            type === 'replay' && (
-              <Accordion>
-                <AccordionSummary expandIcon={<ExpandMore />}>
-                  <Header h3>Edit replay</Header>
-                </AccordionSummary>
-                <AccordionDetails style={{ flexDirection: 'column' }}>
-                  {userid === replay.UploadedBy && (
-                    <TextField
-                      name="Comment"
-                      value={edit.Comment}
-                      onChange={value => setEdit({ field: 'Comment', value })}
-                    />
-                  )}
-                  <TextField
-                    name="Driven by"
-                    value={edit.DrivenBy}
-                    onChange={value => setEdit({ field: 'DrivenBy', value })}
-                  />
-                  {userid === replay.UploadedBy && (
-                    <FieldBoolean
-                      label="Unlisted"
-                      value={edit.Unlisted}
-                      onChange={() =>
-                        setEdit({ field: 'Unlisted', value: 1 - edit.Unlisted })
-                      }
-                    />
-                  )}
-                  <div style={{ padding: '16px' }}>
-                    <Typography color="textSecondary">Tags</Typography>
-                    {tagOptions.map(option => {
-                      if (edit.Tags.includes(option.TagIndex)) {
-                        return (
-                          <Chip
-                            label={option.Name}
-                            onDelete={() =>
-                              setEdit({
-                                field: 'Tags',
-                                value: xor(edit.Tags, [option.TagIndex]),
-                              })
-                            }
-                            color="primary"
-                            style={{ margin: 4 }}
-                          />
-                        );
-                      } else {
-                        return (
-                          <Chip
-                            label={option.Name}
-                            onClick={() =>
-                              setEdit({
-                                field: 'Tags',
-                                value: xor(edit.Tags, [option.TagIndex]),
-                              })
-                            }
-                            style={{ margin: 4 }}
-                          />
-                        );
-                      }
-                    })}
-                  </div>
-                  <Button
-                    onClick={() =>
-                      submitEdit({
-                        edit: {
-                          ...edit,
-                          Tags: tagOptions.filter(option =>
-                            edit.Tags.includes(option.TagIndex),
-                          ),
-                        },
-                        ReplayUuid,
-                        merge,
-                        RecFileName,
-                      })
-                    }
-                  >
-                    Edit
-                  </Button>
-                </AccordionDetails>
-              </Accordion>
-            )}
+          <EditReplay replay={replay} type={type} />
         </ChatContainer>
       </RightBarContainer>
       {eventRecs ? (
@@ -480,6 +399,121 @@ const Replay = () => {
         </Accordion>
       </LevelStatsContainer>
     </Layout>
+  );
+};
+
+const EditReplay = ({ replay, type }) => {
+  const { userid } = useStoreState(state => state.Login);
+  const [edit, setEdit] = useState();
+  const { submitEdit } = useStoreActions(state => state.ReplayByUUID);
+  const { tagOptions } = useStoreState(state => state.Upload);
+  const { ReplayUuid, RecFileName } = useParams({ strict: false });
+  const location = useLocation();
+  const { merge } = location.search;
+
+  const onOpen = expanded => {
+    if (expanded) {
+      setEdit({
+        Comment: replay.Comment,
+        DrivenBy: replay.DrivenByData
+          ? replay.DrivenByData.Kuski
+          : replay.DrivenByText,
+        Unlisted: replay.Unlisted,
+        Tags: replay.Tags.map(tag => tag.TagIndex),
+      });
+    }
+  };
+
+  if (userid !== replay.UploadedBy || mod() !== 1 || type !== 'replay') {
+    return null;
+  }
+  return (
+    <Accordion onChange={(e, expanded) => onOpen(expanded)}>
+      <AccordionSummary expandIcon={<ExpandMore />}>
+        <Header h3>Edit replay</Header>
+      </AccordionSummary>
+      {edit ? (
+        <>
+          <AccordionDetails style={{ flexDirection: 'column' }}>
+            {userid === replay.UploadedBy && (
+              <TextField
+                name="Comment"
+                value={edit.Comment}
+                onChange={value =>
+                  setEdit(prev => ({ ...prev, Comment: value }))
+                }
+              />
+            )}
+            <TextField
+              name="Driven by"
+              value={edit.DrivenBy}
+              onChange={value =>
+                setEdit(prev => ({ ...prev, DrivenBy: value }))
+              }
+            />
+            {userid === replay.UploadedBy && (
+              <FieldBoolean
+                label="Unlisted"
+                value={edit.Unlisted}
+                onChange={() =>
+                  setEdit(prev => ({ ...prev, Unlisted: 1 - prev.Unlisted }))
+                }
+              />
+            )}
+            <div style={{ padding: '16px' }}>
+              <Typography color="textSecondary">Tags</Typography>
+              {tagOptions.map(option => {
+                if (edit.Tags.includes(option.TagIndex)) {
+                  return (
+                    <Chip
+                      label={option.Name}
+                      onDelete={() =>
+                        setEdit(prev => ({
+                          ...prev,
+                          Tags: xor(prev.Tags, [option.TagIndex]),
+                        }))
+                      }
+                      color="primary"
+                      style={{ margin: 4 }}
+                    />
+                  );
+                } else {
+                  return (
+                    <Chip
+                      label={option.Name}
+                      onClick={() =>
+                        setEdit(prev => ({
+                          ...prev,
+                          Tags: xor(edit.Tags, [option.TagIndex]),
+                        }))
+                      }
+                      style={{ margin: 4 }}
+                    />
+                  );
+                }
+              })}
+            </div>
+            <Button
+              onClick={() =>
+                submitEdit({
+                  edit: {
+                    ...edit,
+                    Tags: tagOptions.filter(option =>
+                      edit.Tags.includes(option.TagIndex),
+                    ),
+                  },
+                  ReplayUuid,
+                  merge,
+                  RecFileName,
+                })
+              }
+            >
+              Edit
+            </Button>
+          </AccordionDetails>
+        </>
+      ) : null}
+    </Accordion>
   );
 };
 
