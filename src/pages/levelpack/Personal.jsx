@@ -17,6 +17,7 @@ import AutoComplete, { KuskiAutoComplete } from 'components/AutoComplete';
 import FieldBoolean from 'components/FieldBoolean';
 import { highlightTime } from 'utils/misc';
 import { useEffect } from 'react';
+import TotalTimeChart from './Graph';
 
 const OtherKuskiLink = ({ otherKuski, getTimes, selectLevel }) => {
   return (
@@ -63,6 +64,7 @@ const targetsOptionsThree = [
 ];
 
 const Personal = ({ name, player }) => {
+  const [showGraph, setShowGraph] = useState(false);
   const [level, selectLevel] = useState(-1);
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
@@ -349,7 +351,25 @@ const Personal = ({ name, player }) => {
             label="Highlight targets"
           />
         </div>
+        <div>
+          <FieldBoolean
+            onChange={() => setShowGraph(!showGraph)}
+            value={showGraph}
+            label="Historical TT"
+          />
+        </div>
       </ChoosePlayer>
+      {showGraph && (
+        <TotalTimeChart
+          players={[
+            { KuskiIndex: times.KuskiIndex, Kuski: kuski },
+            ...compares
+              .filter(c => c.type === 'Players')
+              .map(c => ({ KuskiIndex: c.KuskiIndex, Kuski: c.Kuski })),
+          ]}
+          LevelPackName={levelPackInfo.LevelPackName}
+        />
+      )}
       <ListContainer>
         <ListHeader>
           <ListCell width={100}>Filename</ListCell>

@@ -306,6 +306,8 @@ export const PersonalWithMulti = data =>
   api.get(
     `levelpack/${data.name}/personalwithmulti/${data.PersonalKuskiIndex}/${data.eolOnly}`,
   );
+export const HistoricTT = data =>
+  api.get(`levelpack/${data.LevelPackName}/historic/${data.KuskiIndex}`);
 export const LevelPackStats = data =>
   api.get(`levelpack/${data.name}/stats/${data.eolOnly}`, null, {
     timeout: 60000,
@@ -465,7 +467,8 @@ export const SearchChat = data =>
 export const LGR = LGRName => api.get(`lgr/info/${LGRName}`);
 export const LGRs = () => api.get(`lgr/info`);
 export const NewLGR = formData => apiUpload.post('api/lgr/add', formData);
-export const EditLGR = (LGRName, formData) => apiUpload.post(`api/lgr/info/${LGRName}`, formData);
+export const EditLGR = (LGRName, formData) =>
+  apiUpload.post(`api/lgr/info/${LGRName}`, formData);
 export const DeleteLGR = LGRName => api.delete(`lgr/del/${LGRName}`);
 export const LGRComments = LGRIndex => api.get(`lgr_comment/get/${LGRIndex}`);
 export const NewLGRComment = data => api.post(`lgr_comment/add`, data);
