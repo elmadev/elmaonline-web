@@ -23,6 +23,30 @@ export const BattleTime = ({ time, apples, thousands, color, battleType }) => {
   );
 };
 
+export const formatTime = (time, apples, thousands) => {
+  // for cup results
+  if (apples === -1) {
+    if (time === 9999100 || time === 10000000) {
+      return '0 apples';
+    }
+    if (time >= 999900 && time <= 999999) {
+      return `${1000000 - time} apple${1000000 - time !== 1 ? `s` : ``}`;
+    }
+    if (time >= 9999000 && time <= 9999999) {
+      return `${10000000 - time} apple${10000000 - time !== 1 ? `s` : ``}`;
+    }
+  }
+  if (time === 0) {
+    return `${apples} apple${apples !== 1 ? `s` : ``}`;
+  }
+
+  if (thousands) {
+    return parsedTimeToString(parseTimeThousands(time), true);
+  } else {
+    return parsedTimeToString(parseTimeHundreds(time), false);
+  }
+};
+
 class Time extends React.Component {
   static propTypes = {
     time: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})])
@@ -30,30 +54,6 @@ class Time extends React.Component {
     apples: PropTypes.number,
     thousands: PropTypes.bool,
     color: PropTypes.string,
-  };
-
-  static formatTime = (time, apples, thousands) => {
-    // for cup results
-    if (apples === -1) {
-      if (time === 9999100 || time === 10000000) {
-        return '0 apples';
-      }
-      if (time >= 999900 && time <= 999999) {
-        return `${1000000 - time} apple${1000000 - time !== 1 ? `s` : ``}`;
-      }
-      if (time >= 9999000 && time <= 9999999) {
-        return `${10000000 - time} apple${10000000 - time !== 1 ? `s` : ``}`;
-      }
-    }
-    if (time === 0) {
-      return `${apples} apple${apples !== 1 ? `s` : ``}`;
-    }
-
-    if (thousands) {
-      return parsedTimeToString(parseTimeThousands(time), true);
-    } else {
-      return parsedTimeToString(parseTimeHundreds(time), false);
-    }
   };
 
   render() {
@@ -70,11 +70,11 @@ class Time extends React.Component {
         );
       }
       return (
-        <Span color={color}>{Time.formatTime(time.tt, apples, thousands)}</Span>
+        <Span color={color}>{formatTime(time.tt, apples, thousands)}</Span>
       );
     }
     return (
-      <Span color={color}>{Time.formatTime(time || 0, apples, thousands)}</Span>
+      <Span color={color}>{formatTime(time || 0, apples, thousands)}</Span>
     );
   }
 }

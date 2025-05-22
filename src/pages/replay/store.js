@@ -3,33 +3,12 @@ import { ReplayByUUID, EditReplay, CupEventByTimeIndex } from 'api';
 
 export default {
   replay: null,
-  edit: {
-    Comment: '',
-    DrivenBy: '',
-    Unlisted: 0,
-  },
   setReplayByUUID: action((state, payload) => {
     if (!payload) {
       state.replay = null;
-      state.edit = {
-        Comment: '',
-        DrivenBy: '',
-        Unlisted: 0,
-      };
       return;
     }
     state.replay = payload;
-    state.edit = {
-      Comment: payload.Comment,
-      DrivenBy: payload.DrivenByData
-        ? payload.DrivenByData.Kuski
-        : payload.DrivenByText,
-      Unlisted: payload.Unlisted,
-      Tags: payload.Tags.map(tag => tag.TagIndex),
-    };
-  }),
-  setEdit: action((state, payload) => {
-    state.edit[payload.field] = payload.value;
   }),
   submitEdit: thunk(async (actions, payload) => {
     const post = await EditReplay(payload);
