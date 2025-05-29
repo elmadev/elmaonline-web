@@ -20,20 +20,17 @@ const generateTicksFromData = data => {
   if (!data || data.length === 0) return [];
   let step = 15000; // 2.5 minutes
 
-  const minValue = Math.min(
-    ...data.flatMap(d =>
-      Object.entries(d)
-        .filter(([key]) => key !== 'date')
-        .map(([, value]) => value),
-    ),
+  // Filter out null/undefined values
+  const values = data.flatMap(d =>
+    Object.entries(d)
+      .filter(([key, value]) => key !== 'date' && value != null)
+      .map(([, value]) => value),
   );
-  const maxValue = Math.max(
-    ...data.flatMap(d =>
-      Object.entries(d)
-        .filter(([key]) => key !== 'date')
-        .map(([, value]) => value),
-    ),
-  );
+
+  if (values.length === 0) return [];
+
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
 
   if (maxValue - minValue < step) {
     step = 6000; // 1 minute
@@ -94,7 +91,7 @@ const getYearTicks = data => {
 const TotalTimeChart = ({ players, LevelPackName }) => {
   const queries = useQueries({
     queries: players.map(player => ({
-      queryKey: ['historicGraph2', LevelPackName, player.KuskiIndex],
+      queryKey: ['historicGraph', LevelPackName, player.KuskiIndex],
       queryFn: () =>
         HistoricTT({
           LevelPackName,
@@ -107,9 +104,14 @@ const TotalTimeChart = ({ players, LevelPackName }) => {
     const dateMap = new Map();
     const addData = (playerData, key) => {
       playerData.forEach(d => {
-        const date = new Date(d.timestamp * 1000).getTime();
+        // Normalize date to midnight UTC
+        const dateObj = new Date(d.timestamp * 1000);
+        dateObj.setUTCHours(0, 0, 0, 0);
+        const date = dateObj.getTime();
         if (!dateMap.has(date)) dateMap.set(date, { date });
-        dateMap.get(date)[key] = d.totalTime;
+        if (!(key in dateMap.get(date))) {
+          dateMap.get(date)[key] = d.totalTime;
+        }
       });
     };
     queries.forEach((query, index) => {
@@ -117,8 +119,25 @@ const TotalTimeChart = ({ players, LevelPackName }) => {
         addData(query.data.data, players[index].KuskiIndex);
       }
     });
-    return Array.from(dateMap.values());
-  }, [queries]);
+    // Forward fill each player's value
+    const allDates = Array.from(dateMap.keys()).sort((a, b) => a - b);
+    const playerKeys = players.map(p => p.KuskiIndex);
+    const lastValues = {};
+    return allDates.map(date => {
+      const entry = { date };
+      playerKeys.forEach(key => {
+        if (dateMap.get(date)[key] !== undefined) {
+          lastValues[key] = dateMap.get(date)[key];
+          entry[key] = lastValues[key];
+        } else if (lastValues[key] !== undefined) {
+          entry[key] = lastValues[key];
+        } else {
+          entry[key] = null;
+        }
+      });
+      return entry;
+    });
+  }, [queries, players]);
 
   const yTicks = useMemo(() => generateTicksFromData(historic), [historic]);
 
