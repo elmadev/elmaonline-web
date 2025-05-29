@@ -2,6 +2,45 @@ import { unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-u
 
 const pad = 4;
 
+const lineColors = [
+  '#e6194b', // red
+  '#3cb44b', // green
+  '#4363d8', // blue
+  '#f58231', // orange
+  '#911eb4', // purple
+  '#46f0f0', // cyan
+  '#f032e6', // magenta
+  '#bcf60c', // lime
+  '#fabebe', // pink
+  '#008080', // teal
+  '#e6beff', // lavender
+  '#9a6324', // brown
+  '#800000', // maroon
+  '#808000', // olive
+  '#000075', // navy
+  '#808080', // grey
+  '#2979ff', // vivid blue
+];
+const darkLineColors = [
+  '#ff5252', // bright red
+  '#40c4ff', // light blue
+  '#ffd740', // yellow
+  '#69f0ae', // light green
+  '#ff4081', // pink
+  '#7c4dff', // purple
+  '#18ffff', // cyan
+  '#ffe082', // light yellow
+  '#b388ff', // lavender
+  '#00e676', // green
+  '#ffab40', // orange
+  '#fff176', // lemon
+  '#f50057', // magenta
+  '#00b8d4', // teal
+  '#ff6d00', // deep orange
+  '#64dd17', // lime
+  '#00e5ff', // aqua
+];
+
 const elmaGreenLight = {
   name: 'Elma Green (Light)',
   // colors
@@ -25,6 +64,7 @@ const elmaGreenLight = {
   highlightColor: '#dddddd',
   borderColor: '#e2e3e4',
   errorColor: '#a20e2f',
+  lineColors,
 
   // battles
   ongoing: '#bae1ff',
@@ -73,6 +113,7 @@ const powerPinkDark = {
   hoverColor: '#0C191E',
   borderColor: '#37474f',
   errorColor: '#b0ffbf',
+  lineColors: darkLineColors,
 
   //battles
   ongoing: 'rgba(186, 225, 255, .2)',

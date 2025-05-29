@@ -15,6 +15,7 @@ import { formatTime } from 'components/Time';
 import { format } from 'date-fns';
 import Loading from 'components/Loading';
 import { useQueries } from '@tanstack/react-query';
+import { useTheme } from '@emotion/react';
 
 const generateTicksFromData = data => {
   if (!data || data.length === 0) return [];
@@ -89,6 +90,8 @@ const getYearTicks = data => {
 };
 
 const TotalTimeChart = ({ players, LevelPackName }) => {
+  const theme = useTheme();
+
   const queries = useQueries({
     queries: players.map(player => ({
       queryKey: ['historicGraph', LevelPackName, player.KuskiIndex],
@@ -156,7 +159,7 @@ const TotalTimeChart = ({ players, LevelPackName }) => {
       <Header h3>Historical Total Time</Header>
       <ResponsiveContainer width="100%" height={600}>
         <LineChart data={historic}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke={theme.borderColor} />
           <XAxis
             dataKey="date"
             type="number"
@@ -172,12 +175,14 @@ const TotalTimeChart = ({ players, LevelPackName }) => {
               }
             }}
             ticks={xTicks[0]}
+            tick={{ fill: theme.fontColor }}
           />
           <YAxis
             label={{
               value: 'Total Time',
               angle: -90,
               position: 'insideLeft',
+              style: { fill: theme.fontColor },
             }}
             tickFormatter={value => {
               const time = parseInt(value, 10);
@@ -186,6 +191,7 @@ const TotalTimeChart = ({ players, LevelPackName }) => {
             ticks={yTicks}
             domain={[yTicks[0], yTicks[yTicks.length - 1]]}
             width={90}
+            tick={{ fill: theme.fontColor }}
           />
           <Tooltip
             labelFormatter={value => {
@@ -199,13 +205,19 @@ const TotalTimeChart = ({ players, LevelPackName }) => {
                 players?.find(p => p.KuskiIndex === name)?.Kuski,
               ];
             }}
+            contentStyle={{
+              backgroundColor: theme.paperBackground,
+              color: theme.fontColor,
+              border: `1px solid ${theme.borderColor}`,
+            }}
+            labelStyle={{ color: theme.fontColor }}
           />
           {players.map((p, index) => (
             <Line
               key={p.KuskiIndex}
               type="monotone"
               dataKey={p.KuskiIndex}
-              stroke={`hsl(${(index * 360) / players.length}, 100%, 50%)`}
+              stroke={theme.lineColors[index % theme.lineColors.length]}
               strokeWidth={2}
               dot={false}
               connectNulls={true}
