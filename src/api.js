@@ -338,6 +338,8 @@ export const LevelsSearchAll = data =>
 export const AddLevelPack = data => api.post('levelpack/add', data);
 export const UpdateLevelPack = (index, data) =>
   api.post(`levelpack/update/${index}`, data);
+export const LevelPackUpdateLevel = data =>
+  api.post('levelpack/admin/updateLevel', data);
 export const LevelPackDeleteLevel = data =>
   api.post('levelpack/admin/deleteLevel', data);
 export const LevelPackAddLevel = data =>

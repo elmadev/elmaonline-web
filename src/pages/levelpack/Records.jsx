@@ -82,7 +82,11 @@ const TableRow = ({
           </KuskiCell>
 
           <ListCell highlight={isHighlight}>
-            <Time time={r.Time} />
+            {level.ExcludeFromTotal ? (
+              <span>-</span>
+            ) : (
+              <Time time={r.Time} />
+            )}
             {isLegacy && (
               <span style={{ marginLeft: 10 }}>
                 <LegacyIcon source={r.Source} show={showLegacyIcon} />
@@ -95,7 +99,9 @@ const TableRow = ({
       {!hasRecord && (
         <>
           <ListCell />
-          <ListCell />
+          <ListCell>
+            {level.ExcludeFromTotal ? <span>-</span> : null}
+          </ListCell>
         </>
       )}
 
@@ -151,6 +157,7 @@ const Records = ({ levelStats }) => {
     ? { tt: 0 }
     : recordsTT(
         levelPackInfo.levels.map(l => ({
+          Level: l,
           record: isEmpty(records?.[l.LevelIndex])
             ? null
             : [records[l.LevelIndex]],
