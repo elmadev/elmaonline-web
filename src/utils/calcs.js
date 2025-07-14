@@ -73,6 +73,10 @@ export const recordsTT = (levels, timeObj) => {
   let finished = 0;
   let unfinished = false;
   forEach(levels, l => {
+    if (l.Level && l.Level.ExcludeFromTotal === 1) {
+      return true;
+    }
+    
     if (l[timeObj]) {
       if (Array.isArray(l[timeObj])) {
         if (l[timeObj].length > 0) {
@@ -103,6 +107,10 @@ export const combinedTT = (levels, timeObjs) => {
   let finished = 0;
   let unfinished = false;
   forEach(levels, l => {
+    if (l.Level && l.Level.ExcludeFromTotal === 1) {
+      return true;
+    }
+
     let bestTime;
     timeObjs.forEach(b => {
       if (l[b]) {

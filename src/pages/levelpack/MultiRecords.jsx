@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { ListCell, ListContainer, ListHeader, ListRow } from 'components/List';
@@ -15,7 +15,7 @@ const Records = ({ highlight, highlightWeeks, name }) => {
   const [level, selectLevel] = useState(-1);
   const [longName, setLongName] = useState('');
   const [levelName, setLevelName] = useState('');
-  const { multiRecords, multiRecordsLoading } = useStoreState(
+  const { multiRecords, multiRecordsLoading, levelPackInfo } = useStoreState(
     state => state.LevelPack,
   );
   const { getMultiRecords } = useStoreActions(actions => actions.LevelPack);
@@ -23,6 +23,23 @@ const Records = ({ highlight, highlightWeeks, name }) => {
   useEffect(() => {
     getMultiRecords(name);
   }, [name]);
+
+  const enhancedMultiRecords = useMemo(() => {
+    if (!levelPackInfo?.levels || !multiRecords.length) {
+      return multiRecords;
+    }
+    
+    return multiRecords.map(record => {
+      const levelInfo = levelPackInfo.levels.find(l => l.LevelIndex === record.LevelIndex);
+      return {
+        ...record,
+        Level: {
+          ...record.Level,
+          ExcludeFromTotal: levelInfo?.ExcludeFromTotal || 0
+        }
+      };
+    });
+  }, [multiRecords, levelPackInfo]);
 
   if (multiRecordsLoading) {
     return <Loading />;
@@ -41,7 +58,7 @@ const Records = ({ highlight, highlightWeeks, name }) => {
           <ListCell width={200}>Kuski</ListCell>
           <ListCell>Time</ListCell>
         </ListHeader>
-        {multiRecords.map(r => (
+        {enhancedMultiRecords.map(r => (
           <TimeRow
             key={r.LevelIndex}
             onClick={e => {
@@ -96,7 +113,7 @@ const Records = ({ highlight, highlightWeeks, name }) => {
           <ListCell />
           <ListCell>Total Time</ListCell>
           <ListCell>
-            <Time time={recordsTT(multiRecords, 'LevelMultiBesttime')} />
+            <Time time={recordsTT(enhancedMultiRecords, 'LevelMultiBesttime')} />
           </ListCell>
         </TTRow>
       </ListContainer>
