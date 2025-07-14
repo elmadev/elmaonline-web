@@ -17,6 +17,7 @@ import {
   LevelPackSort,
   LevelPack,
   UpdateLevelPack,
+  LevelPackUpdateLevel,
   LevelPackRecords,
   LevelPackRecordsFilter,
   GetLevelPackTags,
@@ -314,6 +315,12 @@ export default {
       });
     } else {
       actions.setAdminLoading(false);
+    }
+  }),
+  updateLevel: thunk(async (actions, payload) => {
+    const update = await LevelPackUpdateLevel(payload);
+    if (update.ok) {
+      actions.getLevelPackInfo(payload.name);
     }
   }),
   team: '',

@@ -403,7 +403,7 @@ const Personal = ({ name, player }) => {
                 <ListCell
                   highlight={r.single.TimeIndex >= highlight[highlightWeeks]}
                 >
-                  {r.single.Time && (
+                  {r.single.Time && !r.Level.ExcludeFromTotal && (
                     <Time
                       time={r.single.Time}
                       color={
@@ -417,6 +417,7 @@ const Personal = ({ name, player }) => {
                       }
                     />
                   )}
+                  {r.Level.ExcludeFromTotal === 1 && <span>-</span>}
                   {r.single.Source !== null && (
                     <LegacyContainer>
                       <LegacyIcon
@@ -437,7 +438,7 @@ const Personal = ({ name, player }) => {
                             multiHighlight[highlightWeeks]
                           }
                         >
-                          {r.multi.Time && (
+                          {r.multi.Time && !r.Level.ExcludeFromTotal && (
                             <>
                               <Time time={r.multi.Time} />{' '}
                               <Compare
@@ -448,6 +449,7 @@ const Personal = ({ name, player }) => {
                               />
                             </>
                           )}
+                          {r.Level.ExcludeFromTotal === 1 && <span>-</span>}
                           {typeof r.multi.OtherKuski === 'object' ? (
                             <OtherKuskiLink
                               otherKuski={r.multi.OtherKuski.Kuski}
@@ -470,7 +472,7 @@ const Personal = ({ name, player }) => {
                     if (compare.key === 'both') {
                       return (
                         <ListCell key={compare.key}>
-                          {r.both.Time && (
+                          {r.both.Time && !r.Level.ExcludeFromTotal && (
                             <>
                               <Time time={r.both.Time} />{' '}
                               <Compare
@@ -481,6 +483,7 @@ const Personal = ({ name, player }) => {
                               />
                             </>
                           )}
+                          {r.Level.ExcludeFromTotal === 1 && <span>-</span>}
                           {typeof r.both.OtherKuski === 'object' ? (
                             <OtherKuskiLink
                               otherKuski={r.both.OtherKuski.Kuski}
@@ -508,7 +511,7 @@ const Personal = ({ name, player }) => {
                             r.record.TimeIndex >= highlight[highlightWeeks]
                           }
                         >
-                          {r.record.Time && (
+                          {r.record.Time && !r.Level.ExcludeFromTotal && (
                             <>
                               <Time time={r.record.Time} />{' '}
                               <Compare
@@ -519,6 +522,7 @@ const Personal = ({ name, player }) => {
                               <Kuski kuskiData={r.record.KuskiData} />
                             </>
                           )}
+                          {r.Level.ExcludeFromTotal === 1 && <span>-</span>}
                           {r.record.Source !== null && (
                             <LegacyContainer>
                               <LegacyIcon

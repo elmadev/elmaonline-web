@@ -6,6 +6,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Checkbox,
 } from '@material-ui/core';
 import styled from '@emotion/styled';
 import {
@@ -29,7 +30,7 @@ const Admin = () => {
     settings: { showLegacy },
     levelPackInfo,
   } = useStoreState(state => state.LevelPack);
-  const { deleteLevel, searchLevel, addLevel, sortLevel, sortPack } =
+  const { deleteLevel, searchLevel, addLevel, sortLevel, sortPack, updateLevel } =
     useStoreActions(actions => actions.LevelPack);
 
   useEffect(() => {
@@ -86,6 +87,7 @@ const Admin = () => {
           <ListHeader>
             <ListCell width={70}>Filename</ListCell>
             <ListCell width={300}>Level name</ListCell>
+            <ListCell width={120}>Exclude From Total</ListCell>
             <ListCell width={180}>Remove</ListCell>
             <ListCell>Sort</ListCell>
           </ListHeader>
@@ -114,6 +116,18 @@ const Admin = () => {
                         >
                           <ListCell width={70}>{l.LevelName}</ListCell>
                           <ListCell width={300}>{l.LongName}</ListCell>
+                          <ListCell width={120}>
+                            <Checkbox
+                              checked={Boolean(l.ExcludeFromTotal)}
+                              onChange={e =>
+                                updateLevel({
+                                  LevelPackLevelIndex: l.LevelPackLevelIndex,
+                                  ExcludeFromTotal: e.target.checked ? 1 : 0,
+                                  name: levelPackInfo.LevelPackName,
+                                })
+                              }
+                            />
+                          </ListCell>
                           <ListCell width={180}>
                             <Delete
                               onClick={() =>
