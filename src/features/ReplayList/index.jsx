@@ -171,28 +171,28 @@ export default function ReplayList({
               style={{ alignSelf: 'center', marginRight: '12px' }}
               onChange={(ev, value) => setSettings({ sortBy: value })}
             >
-              <ToggleButton value="">
+              <ToggleButton title="Sort by uploaded" value="">
                 {settings.sortBy === '' ? (
                   <CalendarTodayIcon fontSize="small" />
                 ) : (
                   <CalendarTodayOutlinedIcon fontSize="small" />
                 )}
               </ToggleButton>
-              <ToggleButton value="time">
+              <ToggleButton title="Sort by time" value="time">
                 {settings.sortBy === 'time' ? (
                   <WatchLaterIcon fontSize="small" />
                 ) : (
                   <AccessTimeIcon fontSize="small" />
                 )}
               </ToggleButton>
-              <ToggleButton value="rating">
+              <ToggleButton title="Sort by rating" value="rating">
                 {settings.sortBy === 'rating' ? (
                   <StarIcon fontSize="small" />
                 ) : (
                   <StarBorderIcon fontSize="small" />
                 )}
               </ToggleButton>
-              <ToggleButton value="views">
+              <ToggleButton title="Sort by views" value="views">
                 {settings.sortBy === 'views' ? (
                   <VisibilityIcon fontSize="small" />
                 ) : (
@@ -207,10 +207,10 @@ export default function ReplayList({
               style={{ alignSelf: 'center', marginRight: '12px' }}
               onChange={(ev, value) => setSettings({ grid: value })}
             >
-              <ToggleButton value={false}>
+              <ToggleButton title="List view" value={false}>
                 <ListIcon fontSize="small" />
               </ToggleButton>
-              <ToggleButton value={true}>
+              <ToggleButton title="Thumbnail view" value={true}>
                 <AppsIcon fontSize="small" />
               </ToggleButton>
             </ToggleButtonGroup>
