@@ -109,6 +109,12 @@ export default function Preview({
                       <br />
                     </>
                   )}
+                  {previewRec.FPSLimit ? (
+                    <>
+                      FPS Limit: {previewRec.FPSLimit}
+                      <br />
+                    </>
+                  ) : null}
                   {previewRec.Drunk === 1 && <>Drunk</>}
                 </Comment>
               )}

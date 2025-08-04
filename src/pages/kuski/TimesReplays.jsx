@@ -174,8 +174,11 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
         <ListHeader>
           <ListCell width={120}>Level</ListCell>
           <ListCell width={120}>Time</ListCell>
-          <ListCell width={100}>Driven</ListCell>
-          <ListCell width={100}></ListCell>
+          <ListCell width={155}>Driven</ListCell>
+          <ListCell width={155}></ListCell>
+          {type !== 'PRsAndReplays' ? (
+            <ListCell width={100}>FPS Limit</ListCell>
+          ) : null}
           <ListCell width={300}>Replay</ListCell>
           <ListCell>
             <RadioGroup
@@ -238,6 +241,7 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
           />
           <ListCell />
           <ListCell />
+          {type !== 'PRsAndReplays' ? <ListCell /> : null}
         </ListRow>
       </ListContainer>
       {data?.length > 0 && (
@@ -270,14 +274,17 @@ const TimesReplays = ({ KuskiIndex, collapse }) => {
                     <ListCell width={120}>
                       <Time time={time.Time} />
                     </ListCell>
-                    <ListCell width={200}>
+                    <ListCell width={300}>
                       <LocalTime
                         date={time.Driven}
                         format="eee d MMM yyyy HH:mm:ss"
                         parse="X"
                       />
                     </ListCell>
-                    <ListCell width={50} />
+                    <ListCell width={10} />
+                    {type !== 'PRsAndReplays' ? (
+                      <ListCell width={100}>{time.FPSLimit || '-'}</ListCell>
+                    ) : null}
                     <ListCell>
                       {(isMobile || hover === time.TimeIndex) &&
                         time.TimeFileData && (
