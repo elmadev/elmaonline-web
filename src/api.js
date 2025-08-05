@@ -3,7 +3,7 @@ import config from 'config';
 import { authToken } from 'utils/nick';
 import assert from 'assert';
 import { isObjectLike, isArray, mapValues, meanBy } from 'lodash';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 let baseURL = config.api;
 const api = create({
@@ -85,6 +85,8 @@ export const useQueryAlt = (
     ...queryOpts,
   });
 };
+
+export { keepPreviousData };
 
 // replays
 export const ReplayComment = replayIndex =>
