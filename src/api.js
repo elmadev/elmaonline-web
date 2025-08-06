@@ -3,7 +3,7 @@ import config from 'config';
 import { authToken } from 'utils/nick';
 import assert from 'assert';
 import { isObjectLike, isArray, mapValues, meanBy } from 'lodash';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 let baseURL = config.api;
 const api = create({
@@ -86,6 +86,8 @@ export const useQueryAlt = (
   });
 };
 
+export { keepPreviousData };
+
 // replays
 export const ReplayComment = replayIndex =>
   api.get(`replay_comment/${replayIndex}`);
@@ -101,6 +103,7 @@ export const ReplayUploadedBy = (kuskiIndex, query = {}) =>
   api.get(`replay/uploaded_by/${kuskiIndex}`, query);
 export const ReplayByUUID = (UUID, Fingerprint) =>
   api.get(`replay/byUUID/${UUID}?f=${Fingerprint}`);
+export const RandomReplay = () => api.get('replay/random');
 export const ReplaysSearchByDriven = data =>
   api.get(`replay/search/byDriven/${data.q}/${data.offset}`);
 export const ReplaysSearchByLevel = data =>

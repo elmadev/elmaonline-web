@@ -424,7 +424,7 @@ const EditReplay = ({ replay, type }) => {
     }
   };
 
-  if (userid !== replay.UploadedBy || mod() !== 1 || type !== 'replay') {
+  if ((userid !== replay.UploadedBy && mod() !== 1) || type !== 'replay') {
     return null;
   }
   return (

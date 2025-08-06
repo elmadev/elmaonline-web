@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useStoreState } from 'easy-peasy';
 import { TablePagination } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
@@ -9,27 +9,30 @@ import LocalTime from 'components/LocalTime';
 import { Level, BattleType } from 'components/Names';
 import { sortResults } from 'utils/battle';
 import { ListCell, ListHeader, ListContainer, ListRow } from 'components/List';
+import { useQueryAlt, BattlesByPlayer, keepPreviousData } from 'api';
 
 const PlayedBattles = ({ KuskiIndex }) => {
-  const { getPlayedBattles } = useStoreActions(state => state.Kuski);
-  const { playedBattles, ranking } = useStoreState(state => state.Kuski);
+  const { ranking } = useStoreState(state => state.Kuski);
   let battleCount = 0;
   if (ranking) if (ranking[0]) battleCount = ranking[0].PlayedAll;
 
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(25);
 
+  const { data: playedBattles } = useQueryAlt(
+    ['PlayedBattles', KuskiIndex, page, pageSize],
+    async () =>
+      BattlesByPlayer({
+        KuskiIndex,
+        page,
+        pageSize,
+      }),
+    { placeholderData: keepPreviousData },
+  );
+
   useEffect(() => {
     setPage(0);
   }, [KuskiIndex]);
-
-  useEffect(() => {
-    getPlayedBattles({
-      KuskiIndex,
-      page,
-      pageSize,
-    });
-  }, [page, pageSize, KuskiIndex]);
 
   const handleChangeRowsPerPage = e => {
     setPage(0);
@@ -48,7 +51,7 @@ const PlayedBattles = ({ KuskiIndex }) => {
           <ListCell width={60}>#</ListCell>
           <ListCell>Started</ListCell>
         </ListHeader>
-        {playedBattles.rows.map((b, i) => {
+        {playedBattles?.rows.map((b, i) => {
           const sorted = playedBattles.Results[i].sort(
             sortResults(b.BattleType),
           );
