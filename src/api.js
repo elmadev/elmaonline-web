@@ -103,6 +103,7 @@ export const ReplayUploadedBy = (kuskiIndex, query = {}) =>
   api.get(`replay/uploaded_by/${kuskiIndex}`, query);
 export const ReplayByUUID = (UUID, Fingerprint) =>
   api.get(`replay/byUUID/${UUID}?f=${Fingerprint}`);
+export const RandomReplay = () => api.get('replay/random');
 export const ReplaysSearchByDriven = data =>
   api.get(`replay/search/byDriven/${data.q}/${data.offset}`);
 export const ReplaysSearchByLevel = data =>

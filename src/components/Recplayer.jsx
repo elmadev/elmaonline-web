@@ -17,6 +17,7 @@ const Recplayer = props => {
     merge = false,
     forceRefresh = false,
     lgr,
+    onEnd,
   } = props;
   const {
     settings: {
@@ -109,6 +110,7 @@ const Recplayer = props => {
           lgrFrom={lgrFrom}
           defaultLgrUrl={`https://space.elma.online/lgr/cr6m27a3t1/default.lgr`}
           legacyLgrUrl={`${config.url}recplayer`}
+          onEnd={onEnd}
         />
       ) : (
         <span>Loading..</span>
@@ -128,6 +130,7 @@ Recplayer.propTypes = {
   autoPlay: PropTypes.oneOf(['if-visible', 'yes', 'no']),
   merge: PropTypes.bool,
   forceRefresh: PropTypes.bool,
+  onEnd: PropTypes.func,
 };
 
 export default Recplayer;
