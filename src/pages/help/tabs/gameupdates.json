@@ -1,6 +1,66 @@
 [
   {
     "type": "both",
+    "date": "31 Aug 2025",
+    "version": "1.0.15",
+    "highlights": [
+      "This update adds a couple of new features (like an option for showing the actual FPS ingame), and includes many FPS limiter fixes and checkpoint fixes."
+    ],
+    "changes": [
+      {
+        "section": "New features",
+        "changes": [
+          "Show actual FPS ingame. Toggle on/off with the `!fps` command ingame, or with the 'Show FPS info' checkbox in eolconf (renamed from 'Show FPS limit'). If the FPS limiter is on, the limit is shown in parentheses after the actual FPS.",
+          "Add a `!clear` command for clearing the chat log",
+          "Show FPS info also in F1-enter and F2-enter",
+          "Show battle countdown text also in F1-enter and F2-enter"
+        ]
+      },
+      {
+        "section": "FPS fixes",
+        "changes": [
+          "Fix FPS limiter breaking on very long runs (where the FPS used to drop to around 30 somewhere between 30 and 60 minutes into the run depending on the FPS limit)",
+          "Fix FPS limiter not working on the first frame",
+          "Fix FPS limiter not working properly in the editor after the first run. The frame counter was not reset between in-editor runs, causing the FPS to be limited to around 30 on most subsequent runs. Ingame runs were not affected."
+        ]
+      },
+      {
+        "section": "Checkpoint fixes",
+        "changes": [
+          "Fix unidirectional only-from-left and only-from-below checkpoints not working properly. They were just triggered from either direction.",
+          "Fix the positioning of horizontal checkpoints. The vertical offset of the '-' glyph was not taken into account when drawing the checkpoint line, so the line was drawn 8 pixels higher than where the checkpoint actually was.",
+          "Fix inaccurate checkpoint triggering. Triggering from left happened slightly too late: right wheel needed to go past the checkpoint by `(wheel radius - head radius)` before triggering. Also, kuski position was accidentally used instead of head position, so triggering by head was inaccurate (even though the wheel radius bug made it less obvious).",
+          "Reduce checkpoint editing speed to 1/10th for the first 100 ms. This allows for much more fine-grained control of moving/scaling the checkpoint.",
+          "Don't save apple checkpoint times when apple checkpoints are disabled. This fixes apple takes knocking other checkpoints off the checkpoint table when `(taken apples + taken checkpoints)` exceeds the max checkpoint amount to show. It also fixes an empty checkpoint table with just the column names showing up when taking an apple before any checkpoint."
+        ]
+      },
+      {
+        "section": "eolconf fixes",
+        "changes": [
+          "Show scrollbars if the window doesn't fit in the visible area of the screen",
+          "Fix crash and eolconf.json corruption when trying to save text fields that include non-ascii characters. Block non-ascii input for Nick, Player 2 nick, Hostname, Chat timestamp, and lev pack name/pattern/stats fields."
+        ]
+      },
+      {
+        "section": "Other client fixes",
+        "changes": [
+          "Fix unfiltered finished times list restricting the item count on filtered lists. That means external times can't anymore knock internals off the internal list and vice versa, even if they do so on the unfiltered main list.",
+          "If kuski changed nick capitalization mid-battle, the old result was not removed from the battle results table. Just a clientside display bug; the results were correctly updated on the serverside.",
+          "Update wxWidgets from 3.1.4 to 3.2.8.1. Fixes eolconf input validators accepting pasted invalid characters, and may improve high-DPI and dark mode compatibility for both eolconf and startballe."
+        ]
+      },
+      {
+        "section": "Server fixes",
+        "changes": [
+          "Fix duplicate results in a multi battle if one of the multiplaying kuskis changes nick capitalization mid-battle and rejoins",
+          "Fix a queued unlocked battle level being downloadable if you capitalize it differently in Ctrl-F4. Note that a queued level is typically locked, in which case this was not an issue."
+        ]
+      }
+    ],
+    "file": "https://up.elma.online/u/qm49ekjw1y/EOL_update_2025-08-31_v1.0.15.zip"
+  },
+  {
+    "type": "both",
     "date": "31 Aug 2024",
     "version": "1.0.14",
     "highlights": [
