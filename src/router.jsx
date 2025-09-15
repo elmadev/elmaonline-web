@@ -46,6 +46,7 @@ import Team from 'pages/team';
 import Teams from 'pages/teams';
 import Upload from 'pages/upload';
 import Recap from 'pages/recap';
+import ShirtEditor from 'pages/shirt';
 import styled from '@emotion/styled';
 import { ThemeProvider } from '@emotion/react';
 import { useStoreState, useStoreRehydrated } from 'easy-peasy';
@@ -377,6 +378,12 @@ const recapRoute = createRoute({
   component: Recap,
 });
 
+const shirtRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/shirt',
+  component: ShirtEditor,
+});
+
 const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/register',
@@ -504,6 +511,7 @@ const routeTree = rootRoute.addChildren([
   modRoute,
   rankingRoute,
   recapRoute,
+  shirtRoute,
   registerRoute,
   standaloneReplayRoute,
   replayRoute,
