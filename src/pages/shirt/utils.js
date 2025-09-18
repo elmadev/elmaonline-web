@@ -1,12 +1,12 @@
 import { nick } from 'utils/nick';
 
-// Convert hex color to RGB (BMP format)
+// convert hex color to RGB (BMP format)
 export const hexToRgb = hex => {
   const bigint = parseInt(hex.slice(1), 16);
   return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
 };
 
-// Convert the color palette to BMP-compatible format (RGBA)
+// convert the color palette to BMP-compatible format (RGBA)
 export const convertToBMPColorTable = colors => {
   const palette = new Uint8Array(256 * 4); // 256 colors * 4 bytes (Blue, Green, Red, Reserved)
   colors.forEach((hex, i) => {
@@ -20,7 +20,7 @@ export const convertToBMPColorTable = colors => {
   return palette;
 };
 
-// Flood fill algorithm
+// flood fill algorithm
 export const floodFill = (canvas, x, y, targetColor, fillColor) => {
   const ctx = canvas.getContext('2d');
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -147,7 +147,7 @@ export const downloadBmp = canvas => {
   view.setUint32(46, 256, true); // Colors in palette
   view.setUint32(50, 0, true); // Important colors
 
-  // Color Table (Custom Palette)
+  // color Table (Custom Palette)
   const bmpPalette = convertToBMPColorTable(colors);
   for (let i = 0; i < 256; i++) {
     const baseIndex = 54 + i * 4; // Start of palette in BMP header
@@ -157,18 +157,18 @@ export const downloadBmp = canvas => {
     view.setUint8(baseIndex + 3, bmpPalette[i * 4 + 3]); // Reserved
   }
 
-  // Pixel Array (Use palette indices)
+  // pixel Array (Use palette indices)
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const canvasY = height - 1 - y; // BMP is bottom-up
       const pixelIndex = canvasY * width + x;
 
-      // Get canvas pixel data (RGB)
+      // get canvas pixel data (RGB)
       const r = imageData.data[pixelIndex * 4];
       const g = imageData.data[pixelIndex * 4 + 1];
       const b = imageData.data[pixelIndex * 4 + 2];
 
-      // Find the closest matching palette index
+      // find the closest matching palette index
       let paletteIndex = -1;
       for (let i = 0; i < 256; i++) {
         const paletteR = bmpPalette[i * 4 + 2]; // Red
@@ -180,7 +180,7 @@ export const downloadBmp = canvas => {
         }
       }
 
-      // If no match, default to 0 (black)
+      // if no match, default to 0 (black)
       view.setUint8(
         1078 + y * rowSize + x,
         paletteIndex === -1 ? 0 : paletteIndex,
@@ -188,11 +188,11 @@ export const downloadBmp = canvas => {
     }
   }
 
-  // Optional padding
+  // optional padding
   view.setUint8(1078 + pixelArraySize, 0);
   view.setUint8(1078 + pixelArraySize + 1, 0);
 
-  // Create and download the file
+  // create and download the file
   const blob = new Blob([header], { type: 'image/bmp' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
@@ -200,7 +200,7 @@ export const downloadBmp = canvas => {
   link.click();
 };
 
-// Available font options
+// available font options
 export const fontOptions = [
   { value: 'Arial', label: 'Arial' },
   { value: 'Verdana', label: 'Verdana' },
@@ -212,161 +212,129 @@ export const fontOptions = [
   { value: 'Trebuchet MS', label: 'Trebuchet MS' },
 ];
 
-export const colors = [
-  '#000000',
-  '#782000',
-  '#200000',
-  '#b4c4ac',
-  '#9c0000',
-  '#a40000',
-  '#606040',
-  '#000808',
-  '#080000',
-  '#380000',
-  '#688060',
-  '#606868',
-  '#9c1808',
-  '#500848',
-  '#f47000',
-  '#500000',
-  '#9c2808',
-  '#b40000',
-  '#9c2800',
-  '#780000',
-  '#880400',
-  '#9c1008',
-  '#280800',
-  '#008000',
-  '#008000',
-  '#f4e416',
-  '#800000',
-  '#383838',
-  '#202030',
-  '#009600',
-  '#bcccbc',
-  '#000030',
-  '#882800',
-  '#401800',
-  '#b4c4b4',
-  '#380000',
-  '#2800b4',
-  '#c46010',
-  '#000800',
-  '#88b4d4',
-  '#00b800',
-  '#680800',
-  '#9c6808',
-  '#882400',
-  '#9c9c48',
-  '#dce4dc',
-  '#009608',
-  '#600000',
-  '#808080',
-  '#888860',
-  '#7880a4',
-  '#482020',
-  '#00d418',
-  '#606060',
-  '#686060',
-  '#943000',
-  '#8828c4',
-  '#780800',
-  '#9c9c60',
-  '#888c50',
-  '#8884cc',
-  '#003080',
-  '#008000',
-  '#30a030',
-  '#687060',
-  '#484848',
-  '#687060',
-  '#bcc4b4',
-  '#fc7000',
-  '#008018',
-  '#6084c4',
-  '#6084cc',
-  '#608494',
-  '#1060ac',
-  '#a44008',
-  '#94b4d4',
-  '#c40000',
-  '#003000',
-  '#940000',
-  '#ac0000',
-  '#880800',
-  '#002000',
-  '#401000',
-  '#b4bcbc',
-  '#00b808',
-  '#489648',
-  '#00ac00',
-  '#9400c4',
-  '#f4d418',
-  '#780028',
-  '#940800',
-  '#b00008',
-  '#8080a4',
-  '#940800',
-  '#180800',
-  '#502400',
-  '#080000',
-  '#8e08d0',
-  '#080080',
-  '#8a3840',
-  '#240000',
-  '#600000',
-  '#000000',
-  '#f4fcfc',
-  '#fcfcfc',
-  '#00a4d8',
-  '#0000a4',
-  '#000000',
-  '#a400c4',
-  '#200020',
-  '#d0d0d0',
-  '#c0a0d0',
-  '#200000',
-  '#b0a0a0',
-  '#303030',
-  '#a0c0c0',
-  '#0000c0',
-  '#f0f0f0',
-  '#00c000',
-  '#00c0c0',
-  '#00c0c0',
-  '#8000d0',
-  '#00c000',
-  '#b0c0c0',
-  '#a000c0',
-  '#000000',
-  '#ff8080',
-  '#ff00ff',
-  '#505050',
-  '#600000',
-  '#8000c0',
-  '#a0c0c0',
-  '#700000',
-  '#c000c0',
-  '#0090d0',
-  '#200000',
-  '#908080',
-  '#300000',
-  '#b00000',
-  '#0048a0',
-  '#404080',
-  '#600000',
-  '#400080',
-  '#c4c4c4',
-  '#000c00',
-  '#b0c0c0',
-  '#200000',
-  '#00d0d0',
-  '#000000',
-  '#f4f4f4',
-  '#c0c0c0',
-  '#00a8a8',
-  '#c0c0c0',
-  '#e0e0e0',
-  '#c4c4c4',
-  '#e0e0e0',
-];
+const DefaultLGRPalette = new Uint8Array([
+  0, 0, 0, 120, 48, 0, 32, 0, 0, 180, 196, 172, 156, 0, 0, 164, 0, 0, 96, 96,
+  56, 0, 8, 8, 8, 0, 8, 56, 0, 0, 104, 96, 104, 96, 104, 104, 156, 24, 8, 80, 8,
+  72, 244, 112, 0, 80, 0, 0, 156, 40, 8, 180, 0, 0, 156, 40, 0, 120, 0, 0, 136,
+  64, 16, 156, 16, 8, 40, 8, 0, 0, 128, 8, 0, 128, 0, 244, 228, 16, 128, 0, 0,
+  56, 48, 48, 32, 32, 48, 0, 96, 0, 188, 204, 188, 0, 0, 48, 136, 40, 0, 64, 24,
+  8, 180, 196, 180, 56, 16, 0, 40, 112, 180, 196, 96, 16, 0, 8, 0, 136, 180,
+  212, 0, 104, 0, 104, 40, 0, 156, 104, 8, 136, 24, 0, 156, 156, 72, 220, 228,
+  220, 0, 96, 8, 96, 0, 0, 128, 128, 128, 136, 136, 96, 120, 128, 148, 72, 64,
+  32, 0, 212, 24, 96, 96, 96, 104, 96, 96, 148, 48, 0, 136, 48, 196, 120, 32, 0,
+  156, 156, 96, 136, 156, 80, 136, 164, 204, 0, 48, 120, 0, 80, 0, 48, 156, 48,
+  104, 112, 96, 72, 72, 72, 104, 112, 112, 188, 196, 180, 252, 112, 0, 0, 128,
+  24, 96, 148, 196, 96, 148, 204, 96, 148, 148, 16, 96, 172, 164, 64, 8, 148,
+  180, 212, 196, 0, 0, 0, 48, 0, 148, 0, 0, 172, 0, 0, 136, 48, 0, 0, 32, 0, 64,
+  16, 0, 180, 188, 188, 0, 136, 8, 72, 96, 72, 0, 172, 0, 148, 16, 196, 244,
+  212, 16, 120, 48, 16, 148, 40, 0, 196, 0, 8, 128, 128, 148, 148, 16, 0, 24, 8,
+  0, 80, 24, 0, 8, 8, 80, 16, 56, 24, 180, 180, 172, 24, 96, 172, 156, 32, 136,
+  56, 8, 0, 40, 56, 64, 128, 48, 8, 120, 164, 204, 120, 164, 112, 16, 0, 0, 188,
+  180, 64, 236, 188, 56, 32, 32, 32, 164, 180, 172, 0, 120, 8, 80, 80, 80, 0,
+  120, 0, 136, 0, 0, 24, 96, 180, 0, 120, 16, 104, 156, 204, 16, 112, 0, 104,
+  156, 180, 204, 220, 196, 16, 112, 16, 88, 8, 0, 104, 0, 8, 8, 112, 0, 0, 112,
+  8, 88, 0, 0, 72, 40, 0, 0, 112, 0, 104, 104, 96, 8, 96, 0, 104, 120, 120, 196,
+  8, 8, 56, 64, 64, 0, 64, 0, 148, 104, 96, 56, 64, 32, 96, 0, 164, 228, 96, 8,
+  16, 16, 8, 16, 16, 16, 32, 104, 180, 112, 156, 204, 180, 156, 48, 16, 24, 16,
+  148, 16, 204, 32, 0, 8, 148, 56, 8, 24, 16, 72, 80, 136, 196, 80, 88, 88, 56,
+  120, 188, 120, 16, 0, 64, 128, 188, 72, 128, 188, 148, 188, 212, 48, 136, 40,
+  48, 120, 188, 120, 32, 8, 120, 8, 0, 80, 80, 56, 72, 0, 0, 64, 64, 64, 96, 96,
+  88, 136, 24, 8, 16, 32, 8, 40, 0, 0, 72, 80, 64, 40, 48, 40, 16, 120, 8, 48,
+  104, 188, 0, 16, 8, 88, 136, 196, 156, 8, 0, 96, 128, 80, 120, 120, 120, 72,
+  136, 196, 56, 24, 0, 180, 8, 8, 120, 120, 72, 120, 96, 32, 8, 180, 8, 72, 128,
+  196, 136, 72, 32, 0, 112, 32, 24, 104, 180, 88, 24, 16, 96, 64, 24, 188, 204,
+  180, 136, 136, 148, 48, 112, 180, 24, 24, 24, 16, 56, 0, 120, 172, 204, 8, 16,
+  24, 80, 212, 40, 104, 212, 244, 0, 96, 204, 104, 48, 16, 96, 96, 204, 104, 0,
+  0, 80, 136, 188, 164, 156, 164, 148, 0, 80, 188, 32, 48, 8, 88, 172, 32, 112,
+  24, 56, 72, 56, 0, 80, 172, 252, 164, 32, 220, 164, 24, 16, 96, 112, 8, 88,
+  180, 32, 24, 24, 136, 252, 0, 40, 112, 188, 120, 136, 128, 236, 220, 72, 32,
+  40, 64, 120, 48, 8, 104, 164, 196, 244, 164, 120, 236, 156, 120, 120, 64, 16,
+  188, 16, 8, 96, 24, 0, 40, 16, 8, 64, 120, 188, 0, 16, 0, 64, 212, 24, 72,
+  228, 8, 56, 40, 212, 32, 228, 40, 104, 148, 196, 0, 88, 172, 16, 128, 16, 196,
+  204, 196, 8, 80, 16, 220, 244, 220, 236, 16, 48, 40, 16, 0, 40, 104, 180, 120,
+  156, 220, 88, 16, 212, 48, 48, 80, 88, 148, 196, 220, 0, 0, 212, 212, 212, 0,
+  8, 156, 0, 148, 196, 88, 80, 80, 72, 220, 40, 16, 80, 172, 228, 128, 96, 204,
+  64, 24, 252, 252, 252,
+]);
+
+// convert DefaultLGRPalette to array of hex colors
+export const convertDefaultLGRPaletteToHex = () => {
+  const hexColors = [];
+  for (let i = 0; i < DefaultLGRPalette.length; i += 3) {
+    const r = DefaultLGRPalette[i];
+    const g = DefaultLGRPalette[i + 1];
+    const b = DefaultLGRPalette[i + 2];
+    const hex = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    hexColors.push(hex);
+  }
+  return hexColors;
+};
+
+export const colors = convertDefaultLGRPaletteToHex();
+
+// convert hex to HSL for sorting
+const hexToHsl = hex => {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h,
+    s,
+    l = (max + min) / 2;
+  if (max === min) {
+    h = s = 0; // achromatic
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+  return { h: h * 360, s: s * 100, l: l * 100 };
+};
+
+// sort colors by hue (rainbow pattern)
+export const sortColorsByRainbow = colors => {
+  return colors
+    .map(color => ({ color, hsl: hexToHsl(color) }))
+    .sort((a, b) => {
+      const aHsl = a.hsl;
+      const bHsl = b.hsl;
+      // handle grayscale colors (low saturation) - put them at the end
+      const aIsGray = aHsl.s < 10;
+      const bIsGray = bHsl.s < 10;
+      if (aIsGray && !bIsGray) return 1;
+      if (!aIsGray && bIsGray) return -1;
+      if (aIsGray && bIsGray) {
+        // sort grays by lightness (dark to light)
+        return aHsl.l - bHsl.l;
+      }
+      // for colored pixels, sort by hue with some tolerance
+      const hueDiff = Math.abs(aHsl.h - bHsl.h);
+      // if hues are very close (within 15 degrees), sort by saturation then lightness
+      if (hueDiff < 15 || hueDiff > 345) {
+        // handle wraparound (red-purple transition)
+        if (Math.abs(aHsl.s - bHsl.s) > 5) {
+          return bHsl.s - aHsl.s; // higher saturation first
+        }
+        return aHsl.l - bHsl.l; // lower lightness first
+      }
+      // otherwise sort by hue
+      return aHsl.h - bHsl.h;
+    })
+    .map(item => item.color);
+};
+
+export const colorsRainbow = sortColorsByRainbow(
+  convertDefaultLGRPaletteToHex(),
+);
