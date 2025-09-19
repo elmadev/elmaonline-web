@@ -5,12 +5,14 @@ import {
   floodFill,
   fontOptions,
   colorsRainbow,
+  loadAndQuantizeImage,
 } from './utils';
 import Layout from 'components/Layout';
 import Header from 'components/Header';
 import styled from '@emotion/styled';
 import { Paper } from 'components/Paper';
 import Button from 'components/Buttons';
+import Feedback from 'components/Feedback';
 import { Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
 import Sky from '../../images/sky.png';
 
@@ -24,6 +26,12 @@ const ShirtEditor = () => {
   const [history, setHistory] = useState([]); // Canvas history for undo functionality
   const [historyIndex, setHistoryIndex] = useState(-1); // Current position in history
   const canvasRef = useRef(null); // Reference to the canvas for drawing
+  const fileInputRef = useRef(null); // Reference to the file input
+  const [feedback, setFeedback] = useState({
+    open: false,
+    text: '',
+    type: 'info',
+  }); // Feedback state
 
   // Initialize canvas on component mount
   useEffect(() => {
@@ -59,16 +67,15 @@ const ShirtEditor = () => {
     setHistory(newHistory);
   };
 
-  // Initialize canvas with empty state
-  const initializeCanvas = () => {
+  // Initialize canvas with shirt shadow background
+  const initializeCanvas = async () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // Don't save initial empty state to history
   };
 
-  // Clear the canvas
-  const resetCanvas = () => {
+  // Clear the canvas and redraw shadow
+  const resetCanvas = async () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -84,6 +91,44 @@ const ShirtEditor = () => {
 
       ctx.putImageData(previousState, 0, 0);
       setHistoryIndex(historyIndex - 1);
+    }
+  };
+
+  // Show feedback message
+  const showFeedback = (text, type = 'info') => {
+    setFeedback({ open: true, text, type });
+  };
+
+  // Close feedback
+  const closeFeedback = () => {
+    setFeedback({ open: false, text: '', type: 'info' });
+  };
+
+  // Load outline image with async/await
+  const loadOutlineImage = async imagePath => {
+    await loadAndQuantizeImage(imagePath, colorsRainbow, canvasRef.current);
+    saveToHistory();
+  };
+
+  // handle file upload for PNG images
+  const handleFileUpload = async event => {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.type !== 'image/png') {
+      showFeedback('Please select a PNG file only.', 'error');
+      return;
+    }
+    const imageUrl = URL.createObjectURL(file);
+    try {
+      await loadAndQuantizeImage(imageUrl, colorsRainbow, canvasRef.current);
+      saveToHistory();
+    } catch {
+      showFeedback('Error loading the image. Please try again.', 'error');
+    } finally {
+      URL.revokeObjectURL(imageUrl);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -148,6 +193,46 @@ const ShirtEditor = () => {
               <Button secondary onClick={resetCanvas}>
                 Reset
               </Button>
+            </Buttons>
+            <Buttons>
+              Add outline:
+              <Button
+                naked
+                onClick={() =>
+                  loadOutlineImage('/src/images/outline-gradient.png')
+                }
+              >
+                White gradient
+              </Button>
+              <Button
+                naked
+                onClick={() =>
+                  loadOutlineImage('/src/images/outline-black.png')
+                }
+              >
+                Black
+              </Button>
+              <Button
+                naked
+                onClick={() =>
+                  loadOutlineImage('/src/images/outline-white.png')
+                }
+              >
+                White background
+              </Button>
+            </Buttons>
+            <Buttons>
+              Add PNG image:
+              <Button secondary onClick={() => fileInputRef.current?.click()}>
+                Upload
+              </Button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".png,image/png"
+                onChange={handleFileUpload}
+                style={{ display: 'none' }}
+              />
             </Buttons>
             <SelectedColorContainer>
               <p>Selected Color: {colorsRainbow[selectedColor]}</p>
@@ -262,11 +347,30 @@ const ShirtEditor = () => {
               The bmp file needs to be saved in the bmp folder of eol, called
               Yournick.bmp
             </li>
-            <li>The kuski head will be on the right of the canvas.</li>
-            <li>The shirt will be placed upside down when on the bike.</li>
+            <li>
+              The shirt is placed with the kuski driving to the right, with the
+              head being on the right side of the canvas.
+            </li>
+            <li>
+              The shirt will be placed upside down when the bike is up right.
+            </li>
+            <li>
+              The color options are what they are because this is what the game
+              expects.
+            </li>
+            <li>
+              Colors in uploaded images will be changed to the closest color in
+              the palette. 149x101 or similar ratio is recommended.
+            </li>
           </ul>
         </div>
       </Paper>
+      <Feedback
+        open={feedback.open}
+        text={feedback.text}
+        type={feedback.type}
+        close={closeFeedback}
+      />
     </Layout>
   );
 };
@@ -292,6 +396,7 @@ const Buttons = styled.div`
   display: flex;
   flex-direction: row;
   gap: 8px;
+  align-items: center;
 `;
 
 const SelectedColorContainer = styled.div`

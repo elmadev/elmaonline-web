@@ -338,3 +338,83 @@ export const sortColorsByRainbow = colors => {
 export const colorsRainbow = sortColorsByRainbow(
   convertDefaultLGRPaletteToHex(),
 );
+
+// Color quantization function to convert image to use only palette colors
+export const quantizeImageToPalette = (imageData, palette) => {
+  const data = imageData.data;
+  const quantizedData = new Uint8ClampedArray(data.length);
+
+  // Convert palette colors to RGB arrays for comparison
+  const paletteRgb = palette.map(hex => hexToRgb(hex));
+
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const a = data[i + 3];
+
+    // If pixel is transparent, keep it transparent
+    if (a === 0 || (r === 255 && g === 255 && b === 255)) {
+      quantizedData[i] = 0;
+      quantizedData[i + 1] = 0;
+      quantizedData[i + 2] = 0;
+      quantizedData[i + 3] = 0;
+      continue;
+    }
+
+    // Find the closest color in the palette
+    let closestColor = paletteRgb[0];
+    let minDistance = Infinity;
+
+    for (const paletteColor of paletteRgb) {
+      const distance = Math.sqrt(
+        Math.pow(r - paletteColor[0], 2) +
+          Math.pow(g - paletteColor[1], 2) +
+          Math.pow(b - paletteColor[2], 2),
+      );
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestColor = paletteColor;
+      }
+    }
+
+    quantizedData[i] = closestColor[0]; // R
+    quantizedData[i + 1] = closestColor[1]; // G
+    quantizedData[i + 2] = closestColor[2]; // B
+    quantizedData[i + 3] = a; // A
+  }
+
+  return new ImageData(quantizedData, imageData.width, imageData.height);
+};
+
+// Load and quantize an image to use only palette colors
+export const loadAndQuantizeImage = (imageSrc, palette, canvas) => {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const ctx = canvas.getContext('2d');
+
+      // Create a temporary canvas to get image data
+      const tempCanvas = document.createElement('canvas');
+      const tempCtx = tempCanvas.getContext('2d');
+      tempCanvas.width = canvas.width;
+      tempCanvas.height = canvas.height;
+
+      // Draw the image to the temporary canvas
+      tempCtx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      // Get the image data
+      const imageData = tempCtx.getImageData(0, 0, canvas.width, canvas.height);
+
+      // Quantize the image data to use only palette colors
+      const quantizedData = quantizeImageToPalette(imageData, palette);
+
+      // Draw the quantized image to the main canvas
+      ctx.putImageData(quantizedData, 0, 0);
+
+      resolve();
+    };
+    img.src = imageSrc;
+  });
+};
