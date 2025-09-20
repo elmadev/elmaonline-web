@@ -14,7 +14,10 @@ import { Paper } from 'components/Paper';
 import Button from 'components/Buttons';
 import Feedback from 'components/Feedback';
 import { Radio, RadioGroup, FormControlLabel } from '@material-ui/core';
-import Sky from '../../images/sky.png';
+import Sky from 'images/sky.png';
+import OutlineGradient from 'images/outline-gradient.png';
+import OutlineBlack from 'images/outline-black.png';
+import OutlineWhite from 'images/outline-white.png';
 
 const ShirtEditor = () => {
   const [selectedColor, setSelectedColor] = useState(0); // Initial color index
@@ -196,28 +199,13 @@ const ShirtEditor = () => {
             </Buttons>
             <Buttons>
               Add outline:
-              <Button
-                naked
-                onClick={() =>
-                  loadOutlineImage('/src/images/outline-gradient.png')
-                }
-              >
+              <Button naked onClick={() => loadOutlineImage(OutlineGradient)}>
                 White gradient
               </Button>
-              <Button
-                naked
-                onClick={() =>
-                  loadOutlineImage('/src/images/outline-black.png')
-                }
-              >
+              <Button naked onClick={() => loadOutlineImage(OutlineBlack)}>
                 Black
               </Button>
-              <Button
-                naked
-                onClick={() =>
-                  loadOutlineImage('/src/images/outline-white.png')
-                }
-              >
+              <Button naked onClick={() => loadOutlineImage(OutlineWhite)}>
                 White background
               </Button>
             </Buttons>
