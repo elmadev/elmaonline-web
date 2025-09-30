@@ -19,10 +19,86 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import Link from 'components/Link';
 import Header from 'components/Header';
 import UpdateForm from './UpdateForm';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { ListCell, ListContainer, ListHeader } from 'components/List';
 import { Row as ContainerRow } from 'components/Containers';
 import Button from 'components/Buttons';
+
+const SortableItem = ({
+  level,
+  updateLevel,
+  deleteLevel,
+  levelPackInfo,
+  showLegacy,
+}) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: `${level.LevelIndex}${level.LevelName}` });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <Row ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <ListCell width={70}>{level.LevelName}</ListCell>
+      <ListCell width={300}>{level.LongName}</ListCell>
+      <ListCell width={120}>
+        <CheckboxCon>
+          <Checkbox
+            checked={Boolean(level.ExcludeFromTotal)}
+            onChange={e =>
+              updateLevel({
+                LevelPackLevelIndex: level.LevelPackLevelIndex,
+                ExcludeFromTotal: e.target.checked ? 1 : 0,
+                name: levelPackInfo.LevelPackName,
+              })
+            }
+          />
+        </CheckboxCon>
+      </ListCell>
+      <ListCell width={180}>
+        <Delete
+          onClick={() =>
+            deleteLevel({
+              LevelIndex: level.LevelIndex,
+              LevelPackIndex: levelPackInfo.LevelPackIndex,
+              name: levelPackInfo.LevelPackName,
+              showLegacy,
+            })
+          }
+        />
+      </ListCell>
+      <ListCell>
+        <DragCon>
+          <DragHandle />
+        </DragCon>
+      </ListCell>
+    </Row>
+  );
+};
 
 const Admin = () => {
   const [search, setSearch] = useState('');
@@ -36,20 +112,32 @@ const Admin = () => {
   const { deleteLevel, searchLevel, addLevel, sortPack, updateLevel } =
     useStoreActions(actions => actions.LevelPack);
 
-  const onDragEnd = result => {
-    if (
-      result.destination &&
-      result.destination.index !== result.source.index
-    ) {
-      // Enter sorting mode on first drag
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  const onDragEnd = event => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      const currentLevels = sortedLevels || levelPackInfo.levels;
+      const oldIndex = currentLevels.findIndex(
+        level => `${level.LevelIndex}${level.LevelName}` === active.id,
+      );
+      const newIndex = currentLevels.findIndex(
+        level => `${level.LevelIndex}${level.LevelName}` === over.id,
+      );
+
+      // enter sorting mode on first drag
       if (sortedLevels === null) {
         setSortedLevels([...levelPackInfo.levels]);
       }
 
-      // Update the local sorted levels array
-      const newSortedLevels = Array.from(sortedLevels || levelPackInfo.levels);
-      const [reorderedItem] = newSortedLevels.splice(result.source.index, 1);
-      newSortedLevels.splice(result.destination.index, 0, reorderedItem);
+      // update the local sorted levels array using arrayMove
+      const newSortedLevels = arrayMove(currentLevels, oldIndex, newIndex);
       setSortedLevels(newSortedLevels);
     }
   };
@@ -59,6 +147,8 @@ const Admin = () => {
     sortPack({
       LevelPackIndex: levelPackInfo.LevelPackIndex,
       levelOrder,
+      name: levelPackInfo.LevelPackName,
+      showLegacy,
     });
     setSortedLevels(null);
   };
@@ -115,70 +205,32 @@ const Admin = () => {
             <ListCell>Sort</ListCell>
           </ListHeader>
         </ListContainer>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="levels">
-            {provided => (
-              <div
-                style={{ position: 'relative' }}
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                <ListContainer chin>
-                  {levels?.map((l, index) => (
-                    <Draggable
-                      key={l.LevelIndex}
-                      draggableId={`${l.LevelIndex}${l.LevelName}`}
-                      index={index}
-                    >
-                      {Dragprovided => (
-                        <Row
-                          key={`${l.LevelIndex}${l.LevelName}`}
-                          ref={Dragprovided.innerRef}
-                          {...Dragprovided.draggableProps}
-                          {...Dragprovided.dragHandleProps}
-                        >
-                          <ListCell width={70}>{l.LevelName}</ListCell>
-                          <ListCell width={300}>{l.LongName}</ListCell>
-                          <ListCell width={120}>
-                            <CheckboxCon>
-                              <Checkbox
-                                checked={Boolean(l.ExcludeFromTotal)}
-                                onChange={e =>
-                                  updateLevel({
-                                    LevelPackLevelIndex: l.LevelPackLevelIndex,
-                                    ExcludeFromTotal: e.target.checked ? 1 : 0,
-                                    name: levelPackInfo.LevelPackName,
-                                  })
-                                }
-                              />
-                            </CheckboxCon>
-                          </ListCell>
-                          <ListCell width={180}>
-                            <Delete
-                              onClick={() =>
-                                deleteLevel({
-                                  LevelIndex: l.LevelIndex,
-                                  LevelPackIndex: levelPackInfo.LevelPackIndex,
-                                  name: levelPackInfo.LevelPackName,
-                                  showLegacy,
-                                })
-                              }
-                            />
-                          </ListCell>
-                          <ListCell>
-                            <DragHandle />
-                          </ListCell>
-                        </Row>
-                      )}
-                    </Draggable>
-                  ))}
-                </ListContainer>
-                {adminLoading && <Overlay />}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={onDragEnd}
+        >
+          <div style={{ position: 'relative' }}>
+            <SortableContext
+              items={levels?.map(l => `${l.LevelIndex}${l.LevelName}`) || []}
+              strategy={verticalListSortingStrategy}
+            >
+              <ListContainer chin>
+                {levels?.map(l => (
+                  <SortableItem
+                    key={`${l.LevelIndex}${l.LevelName}`}
+                    level={l}
+                    updateLevel={updateLevel}
+                    deleteLevel={deleteLevel}
+                    levelPackInfo={levelPackInfo}
+                    showLegacy={showLegacy}
+                  />
+                ))}
+              </ListContainer>
+            </SortableContext>
+            {adminLoading && <Overlay />}
+          </div>
+        </DndContext>
       </Grid>
       <Grid item xs={12} md={6}>
         <Accordion>
@@ -271,6 +323,13 @@ const Admin = () => {
 const CheckboxCon = styled.span`
   .MuiButtonBase-root {
     padding: 0;
+  }
+`;
+
+const DragCon = styled.span`
+  cursor: grab;
+  &:active {
+    cursor: grabbing;
   }
 `;
 
