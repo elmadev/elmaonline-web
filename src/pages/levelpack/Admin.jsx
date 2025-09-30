@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Grid,
   Typography,
@@ -21,44 +21,50 @@ import Header from 'components/Header';
 import UpdateForm from './UpdateForm';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ListCell, ListContainer, ListHeader } from 'components/List';
+import { Row as ContainerRow } from 'components/Containers';
+import Button from 'components/Buttons';
 
 const Admin = () => {
   const [search, setSearch] = useState('');
+  const [sortedLevels, setSortedLevels] = useState(null);
   const {
     levelsFound,
     adminLoading,
     settings: { showLegacy },
     levelPackInfo,
   } = useStoreState(state => state.LevelPack);
-  const { deleteLevel, searchLevel, addLevel, sortLevel, sortPack, updateLevel } =
+  const { deleteLevel, searchLevel, addLevel, sortPack, updateLevel } =
     useStoreActions(actions => actions.LevelPack);
-
-  useEffect(() => {
-    if (levelPackInfo?.levels) {
-      const emptySort = levelPackInfo.levels.filter(r => r.Sort === '');
-      if (emptySort.length > 0) {
-        sortPack({
-          LevelPackIndex: levelPackInfo.LevelPackIndex,
-          name: levelPackInfo.LevelPackName,
-          showLegacy,
-        });
-      }
-    }
-  }, [levelPackInfo]);
 
   const onDragEnd = result => {
     if (
       result.destination &&
       result.destination.index !== result.source.index
     ) {
-      sortLevel({
-        LevelPackIndex: levelPackInfo.LevelPackIndex,
-        source: result.source,
-        destination: result.destination,
-        name: levelPackInfo.LevelPackName,
-        showLegacy,
-      });
+      // Enter sorting mode on first drag
+      if (sortedLevels === null) {
+        setSortedLevels([...levelPackInfo.levels]);
+      }
+
+      // Update the local sorted levels array
+      const newSortedLevels = Array.from(sortedLevels || levelPackInfo.levels);
+      const [reorderedItem] = newSortedLevels.splice(result.source.index, 1);
+      newSortedLevels.splice(result.destination.index, 0, reorderedItem);
+      setSortedLevels(newSortedLevels);
     }
+  };
+
+  const handleSaveSorting = () => {
+    const levelOrder = sortedLevels.map(level => level.LevelIndex);
+    sortPack({
+      LevelPackIndex: levelPackInfo.LevelPackIndex,
+      levelOrder,
+    });
+    setSortedLevels(null);
+  };
+
+  const handleCancelSorting = () => {
+    setSortedLevels(null);
   };
 
   const isAlreadyAdded = level => {
@@ -77,12 +83,29 @@ const Admin = () => {
     return '';
   };
 
+  const levels = sortedLevels !== null ? sortedLevels : levelPackInfo?.levels;
+
   return (
     <Grid container spacing={3} style={{ padding: '0 8px' }}>
       <Grid item xs={12} md={6}>
-        <Header h2 mLeft>
+        <Header h2 mLeft top>
           Current levels
         </Header>
+        {sortedLevels !== null && (
+          <SortingModeContainer>
+            You are currently sorting levels, continue sorting until you're
+            satisfied and click save when you're done. If you don't click save
+            the sorting will be discarded.
+            <ContainerRow t={2}>
+              <Button onClick={handleSaveSorting} right={1}>
+                Save
+              </Button>
+              <Button onClick={handleCancelSorting} naked>
+                Cancel
+              </Button>
+            </ContainerRow>
+          </SortingModeContainer>
+        )}
         <ListContainer>
           <ListHeader>
             <ListCell width={70}>Filename</ListCell>
@@ -101,7 +124,7 @@ const Admin = () => {
                 {...provided.droppableProps}
               >
                 <ListContainer chin>
-                  {levelPackInfo?.levels?.map((l, index) => (
+                  {levels?.map((l, index) => (
                     <Draggable
                       key={l.LevelIndex}
                       draggableId={`${l.LevelIndex}${l.LevelName}`}
@@ -117,16 +140,18 @@ const Admin = () => {
                           <ListCell width={70}>{l.LevelName}</ListCell>
                           <ListCell width={300}>{l.LongName}</ListCell>
                           <ListCell width={120}>
-                            <Checkbox
-                              checked={Boolean(l.ExcludeFromTotal)}
-                              onChange={e =>
-                                updateLevel({
-                                  LevelPackLevelIndex: l.LevelPackLevelIndex,
-                                  ExcludeFromTotal: e.target.checked ? 1 : 0,
-                                  name: levelPackInfo.LevelPackName,
-                                })
-                              }
-                            />
+                            <CheckboxCon>
+                              <Checkbox
+                                checked={Boolean(l.ExcludeFromTotal)}
+                                onChange={e =>
+                                  updateLevel({
+                                    LevelPackLevelIndex: l.LevelPackLevelIndex,
+                                    ExcludeFromTotal: e.target.checked ? 1 : 0,
+                                    name: levelPackInfo.LevelPackName,
+                                  })
+                                }
+                              />
+                            </CheckboxCon>
                           </ListCell>
                           <ListCell width={180}>
                             <Delete
@@ -243,6 +268,12 @@ const Admin = () => {
   );
 };
 
+const CheckboxCon = styled.span`
+  .MuiButtonBase-root {
+    padding: 0;
+  }
+`;
+
 const Overlay = styled.div`
   position: absolute;
   left: 0;
@@ -275,6 +306,17 @@ const Row = styled.div`
   :hover {
     background: ${p => p.theme.hoverColor};
   }
+`;
+
+const SortingModeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${p => p.theme.padSmall};
+  margin: ${p => p.theme.padSmall};
+  padding: ${p => p.theme.padSmall};
+  border-radius: ${p => p.theme.padXSmall};
+  background-color: ${p => p.theme.primaryAlpha};
+  border: 1px solid ${p => p.theme.primaryAlpha3};
 `;
 
 export default Admin;
