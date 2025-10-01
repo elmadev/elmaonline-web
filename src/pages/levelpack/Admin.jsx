@@ -62,7 +62,7 @@ const SortableItem = ({
   };
 
   return (
-    <Row ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <Row ref={setNodeRef} style={style} {...attributes}>
       <ListCell width={70}>{level.LevelName}</ListCell>
       <ListCell width={300}>{level.LongName}</ListCell>
       <ListCell width={120}>
@@ -92,7 +92,7 @@ const SortableItem = ({
         />
       </ListCell>
       <ListCell>
-        <DragCon>
+        <DragCon {...listeners}>
           <DragHandle />
         </DragCon>
       </ListCell>
@@ -122,6 +122,9 @@ const Admin = () => {
   const onDragEnd = event => {
     const { active, over } = event;
 
+    if (!active || !over) {
+      return;
+    }
     if (active.id !== over.id) {
       const currentLevels = sortedLevels || levelPackInfo.levels;
       const oldIndex = currentLevels.findIndex(
