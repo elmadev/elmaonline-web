@@ -238,7 +238,9 @@ const Admin = () => {
       <Grid item xs={12} md={6}>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMore />}>
-            <Typography variant="body2">Edit Level Pack Details</Typography>
+            <Header h2 mLeft>
+              Edit Level Pack Details
+            </Header>
           </AccordionSummary>
           <AccordionDetails>
             <UpdateForm />
@@ -261,6 +263,7 @@ const Admin = () => {
                 margin="normal"
                 variant="outlined"
                 fullWidth
+                helperText="Enter to search"
                 onKeyUp={e => {
                   if (e.key === 'Enter') {
                     if (e.target.value === '') {
