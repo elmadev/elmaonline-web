@@ -31,6 +31,7 @@ const items = {
     { name: 'Get dat info', to: '/dat/info' },
     { name: 'Help', to: '/help' },
     { name: 'Editor', to: '/editor' },
+    { name: 'Shirt editor', to: '/shirt' },
   ],
 };
 

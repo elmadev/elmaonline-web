@@ -13,7 +13,6 @@ import {
   LevelPackDeleteLevel,
   LevelsSearchAll,
   LevelPackAddLevel,
-  LevelPackSortLevel,
   LevelPackSort,
   LevelPack,
   UpdateLevelPack,
@@ -33,6 +32,7 @@ export default {
     if (get.ok) {
       actions.setLevelPackInfo(get.data);
     }
+    actions.setAdminLoading(false);
   }),
   // update long name, desc.
   updateLevelPack: thunk(async (actions, payload, { getState }) => {
@@ -228,7 +228,6 @@ export default {
       }
     }
     actions.setRecordsLoading(false);
-    actions.setAdminLoading(false);
   }),
   recordsOnly: [],
   setRecordsOnly: action((state, payload) => {
@@ -293,26 +292,11 @@ export default {
       actions.getLevelPackInfo(payload.name);
     }
   }),
-  sortLevel: thunk(async (actions, payload) => {
-    actions.setAdminLoading(true);
-    const sort = await LevelPackSortLevel(payload);
-    if (sort.ok) {
-      actions.getStats({
-        name: payload.name,
-        eolOnly: payload.showLegacy ? 0 : 1,
-      });
-    } else {
-      actions.setAdminLoading(false);
-    }
-  }),
   sortPack: thunk(async (actions, payload) => {
     actions.setAdminLoading(true);
     const sort = await LevelPackSort(payload);
     if (sort.ok) {
-      actions.getStats({
-        name: payload.name,
-        eolOnly: payload.showLegacy ? 0 : 1,
-      });
+      actions.getLevelPackInfo(payload.name);
     } else {
       actions.setAdminLoading(false);
     }
