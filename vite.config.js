@@ -26,6 +26,19 @@ export default defineConfig(() => {
           plugins: ['@emotion/babel-plugin'],
         },
       }),
+      {
+        name: 'leaflet-css-fix',
+        enforce: 'pre',
+        transform(code, id) {
+          // Fix Leaflet CSS image paths
+          if (id.includes('node_modules/leaflet/dist/leaflet.css')) {
+            return code
+              .replace(/url\(images\//g, 'url(/leaflet/images/')
+              .replace(/url\("images\//g, 'url("/leaflet/images/')
+              .replace(/url\('images\//g, "url('/leaflet/images/");
+          }
+        },
+      },
     ],
     resolve: {
       alias: {

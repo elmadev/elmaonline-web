@@ -18,6 +18,16 @@ import {
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import styled from '@emotion/styled';
+
+// Fix for Leaflet icon paths in production build
+import L from 'leaflet';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconUrl: '/leaflet/images/marker-icon.png',
+  iconRetinaUrl: '/leaflet/images/marker-icon-2x.png',
+  shadowUrl: '/leaflet/images/marker-shadow.png',
+});
 import { format } from 'date-fns';
 import { nickId } from 'utils/nick';
 import Layout from 'components/Layout';
