@@ -8,6 +8,8 @@ import useElementSize from 'utils/useWindowSize';
 import FavStar from './FavStar';
 import { formatTimeSpent, formatAttempts, formatPct } from 'utils/format';
 
+const disableTT = true;
+
 const LevelpacksDetailed = ({
   levelpacksSorted,
   stats,
@@ -22,6 +24,9 @@ const LevelpacksDetailed = ({
   // Create a map from LevelPackIndex to stats for quick lookup
   const statsMap = React.useMemo(() => {
     const map = {};
+    if (disableTT) {
+      return map;
+    }
     if (Array.isArray(levelpackStats)) {
       levelpackStats.forEach(stat => {
         map[stat.LevelPackIndex] = stat;
@@ -41,7 +46,7 @@ const LevelpacksDetailed = ({
           <ListCell>
             <NewLineWrapper>Favorite</NewLineWrapper>
           </ListCell>
-          {loggedIn && (
+          {loggedIn && !disableTT && (
             <ListCell>
               <NewLineWrapper>My total</NewLineWrapper>
             </ListCell>
@@ -95,7 +100,7 @@ const LevelpacksDetailed = ({
                   <ListCell>
                     <FavStar pack={p} {...{ loggedIn, addFav, removeFav }} />
                   </ListCell>
-                  {loggedIn && (
+                  {loggedIn && !disableTT && (
                     <ListCell>
                       {statsMap[p.LevelPackIndex]?.TotalTime &&
                       finished === countAll ? (
