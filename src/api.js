@@ -358,6 +358,8 @@ export const LevelPackFavs = () => api.get('levelpack/favourite');
 export const IntBestTimes = kuskiIndex => {
   return api.get(`levelpack/internals/besttimes/${kuskiIndex}`);
 };
+export const LevelPackStatsKuski = KuskiIndex =>
+  api.get(`levelpackstats/kuski/${KuskiIndex}`);
 export const LevelPacksByLevel = LevelIndex =>
   api.get(`levelpack/byLevel/${+LevelIndex}`);
 export const CupsByLevel = LevelIndex => api.get(`cups/byLevel/${+LevelIndex}`);

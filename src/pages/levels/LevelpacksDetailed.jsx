@@ -8,15 +8,32 @@ import useElementSize from 'utils/useWindowSize';
 import FavStar from './FavStar';
 import { formatTimeSpent, formatAttempts, formatPct } from 'utils/format';
 
+const disableTT = true;
+
 const LevelpacksDetailed = ({
   levelpacksSorted,
   stats,
   loggedIn,
   addFav,
   removeFav,
+  levelpackStats = [],
 }) => {
   const windowSize = useElementSize();
   const listHeight = windowSize.height - 264;
+
+  // Create a map from LevelPackIndex to stats for quick lookup
+  const statsMap = React.useMemo(() => {
+    const map = {};
+    if (disableTT) {
+      return map;
+    }
+    if (Array.isArray(levelpackStats)) {
+      levelpackStats.forEach(stat => {
+        map[stat.LevelPackIndex] = stat;
+      });
+    }
+    return map;
+  }, [levelpackStats]);
 
   return (
     <Root>
@@ -29,6 +46,11 @@ const LevelpacksDetailed = ({
           <ListCell>
             <NewLineWrapper>Favorite</NewLineWrapper>
           </ListCell>
+          {loggedIn && !disableTT && (
+            <ListCell>
+              <NewLineWrapper>My total</NewLineWrapper>
+            </ListCell>
+          )}
           <ListCell>
             <NewLineWrapper># Attempts</NewLineWrapper>
             <NewLineWrapper>Total Time Played</NewLineWrapper>
@@ -65,6 +87,9 @@ const LevelpacksDetailed = ({
 
             const url = `/levels/packs/${p.LevelPackName}`;
 
+            const countAll = st?.LevelCountAll || 0;
+            const finished = statsMap[p.LevelPackIndex]?.LevelsFinished || 0;
+
             return (
               <div style={style} key={p.LevelPackIndex}>
                 <Row style={style} key={p.LevelPackIndex}>
@@ -75,6 +100,21 @@ const LevelpacksDetailed = ({
                   <ListCell>
                     <FavStar pack={p} {...{ loggedIn, addFav, removeFav }} />
                   </ListCell>
+                  {loggedIn && !disableTT && (
+                    <ListCell>
+                      {statsMap[p.LevelPackIndex]?.TotalTime &&
+                      finished === countAll ? (
+                        <NewLineWrapper>
+                          <Time time={statsMap[p.LevelPackIndex].TotalTime} />
+                        </NewLineWrapper>
+                      ) : null}
+                      {finished !== countAll ? (
+                        <NewLineWrapper>
+                          {finished}/{countAll}
+                        </NewLineWrapper>
+                      ) : null}
+                    </ListCell>
+                  )}
 
                   {!st && (
                     <>

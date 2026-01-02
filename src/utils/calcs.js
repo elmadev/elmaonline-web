@@ -76,7 +76,7 @@ export const recordsTT = (levels, timeObj) => {
     if (l.Level && l.Level.ExcludeFromTotal === 1) {
       return true;
     }
-    
+
     if (l[timeObj]) {
       if (Array.isArray(l[timeObj])) {
         if (l[timeObj].length > 0) {

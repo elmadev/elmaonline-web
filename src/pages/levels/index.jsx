@@ -14,6 +14,8 @@ import Controls from './Controls';
 import FavStar from './FavStar';
 import RecordsCard from './RecordsCard';
 import LevelList from '../../features/LevelList';
+import { useQueryAlt, LevelPackStatsKuski } from 'api';
+import { nickId } from 'utils/nick';
 
 const getColumnCount = window_width => {
   if (window_width > 1300) {
@@ -59,6 +61,15 @@ const Levels = ({ tab, detailed }) => {
     getFavs,
     getCollections,
   } = useStoreActions(actions => actions.Levels);
+
+  const kuskiIndex = nickId();
+  const { data: levelpackStats = [] } = useQueryAlt(
+    ['LevelPackStatsKuski', kuskiIndex],
+    async () => LevelPackStatsKuski(kuskiIndex),
+    {
+      enabled: loggedIn && Boolean(detailed),
+    },
+  );
 
   const location = useLocation();
   const urlArgs = location.search;
@@ -118,6 +129,7 @@ const Levels = ({ tab, detailed }) => {
               addFav={addFav}
               removeFav={removeFav}
               loggedIn={loggedIn}
+              levelpackStats={levelpackStats}
             />
           )}
           {!detailed && (

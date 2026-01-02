@@ -8,13 +8,40 @@ import {
   Button,
   DialogTitle,
 } from '@material-ui/core';
-import GoogleMapReact from 'google-map-react';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
+} from 'react-leaflet';
+import { Icon } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import styled from '@emotion/styled';
+
+// Fix for Leaflet icon paths in production build
+import L from 'leaflet';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconUrl: '/leaflet/images/marker-icon.png',
+  iconRetinaUrl: '/leaflet/images/marker-icon-2x.png',
+  shadowUrl: '/leaflet/images/marker-shadow.png',
+});
 import { format } from 'date-fns';
 import { nickId } from 'utils/nick';
-import config from 'config';
 import Layout from 'components/Layout';
 import MarkerBike from '../../images/marker-bike.png';
+
+// Custom component to handle map clicks
+function MapClickHandler({ onMapClick }) {
+  useMapEvents({
+    click: e => {
+      onMapClick(e.latlng);
+    },
+  });
+  return null;
+}
 
 const Map = () => {
   const [open, setOpen] = useState(false);
@@ -36,7 +63,20 @@ const Map = () => {
     });
     setOpen(false);
   };
-  const isWindow = typeof window !== 'undefined';
+
+  const handleMapClick = ({ lat, lng }) => {
+    if (nickId() !== 0) {
+      setLnglat({ lng, lat });
+      setOpen(true);
+    }
+  };
+
+  // Custom icon for markers
+  const bikeIcon = new Icon({
+    iconUrl: MarkerBike,
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  });
 
   return (
     <Layout t="Kuski Map">
@@ -49,35 +89,31 @@ const Map = () => {
             you&apos;re logged in and then simply click on the map.
           </TextContainer>
         </HeaderContainer>
-        <MapContainer>
-          {isWindow && (
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: config.maps }}
-              defaultCenter={{ lat: 51, lng: 15 }}
-              defaultZoom={4}
-              onClick={({ lat, lng }) => {
-                if (nickId() !== 0) {
-                  setLnglat({ lng, lat });
-                  setOpen(true);
-                }
-              }}
-            >
-              {markerList.map(m => (
-                <Marker
-                  title={`${
-                    m.KuskiData !== null && m.KuskiData.Kuski
-                  } (Added: ${format(
-                    new Date(m.LastUpdated * 1000),
-                    'd LLL y',
-                  )})`}
-                  key={`${m.Lat}${m.Lng}`}
-                  lat={m.Lat}
-                  lng={m.Lng}
-                />
-              ))}
-            </GoogleMapReact>
-          )}
-        </MapContainer>
+        <StyledMapContainer>
+          <MapContainer
+            center={[51, 15]}
+            zoom={4}
+            style={{ height: '100%', width: '100%' }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <MapClickHandler onMapClick={handleMapClick} />
+            {markerList.map(m => (
+              <Marker
+                key={`${m.Lat}${m.Lng}`}
+                position={[m.Lat, m.Lng]}
+                icon={bikeIcon}
+              >
+                <Popup>
+                  {m.KuskiData !== null && m.KuskiData.Kuski} (Added:{' '}
+                  {format(new Date(m.LastUpdated * 1000), 'd LLL y')})
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </StyledMapContainer>
         <Dialog open={open} onClose={() => setOpen(false)}>
           <DialogTitle>Add Marker</DialogTitle>
           <DialogContent>
@@ -103,7 +139,7 @@ const Map = () => {
   );
 };
 
-const MapContainer = styled.div`
+const StyledMapContainer = styled.div`
   display: flex;
   flex-grow: 1;
   height: calc(100vh - 98px);
@@ -125,17 +161,6 @@ const HeadlineContainer = styled.div`
 
 const TextContainer = styled.div`
   min-width: 300px;
-`;
-
-const Marker = styled.div`
-  height: 40px;
-  width: 40px;
-  background-color: transparent;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  transform: translate(-20px, -40px);
-  background-image: url('${MarkerBike}');
 `;
 
 const Container = styled.div`
