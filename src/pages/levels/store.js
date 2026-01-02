@@ -18,7 +18,7 @@ export default {
       actions.setStats,
       actions.setSort,
     ],
-    (state) => {
+    state => {
       state.levelpacksSorted = cachedSort(
         state.levelpacks,
         state.favs,

@@ -28,15 +28,17 @@ const Records = ({ highlight, highlightWeeks, name }) => {
     if (!levelPackInfo?.levels || !multiRecords.length) {
       return multiRecords;
     }
-    
+
     return multiRecords.map(record => {
-      const levelInfo = levelPackInfo.levels.find(l => l.LevelIndex === record.LevelIndex);
+      const levelInfo = levelPackInfo.levels.find(
+        l => l.LevelIndex === record.LevelIndex,
+      );
       return {
         ...record,
         Level: {
           ...record.Level,
-          ExcludeFromTotal: levelInfo?.ExcludeFromTotal || 0
-        }
+          ExcludeFromTotal: levelInfo?.ExcludeFromTotal || 0,
+        },
       };
     });
   }, [multiRecords, levelPackInfo]);
@@ -113,7 +115,9 @@ const Records = ({ highlight, highlightWeeks, name }) => {
           <ListCell />
           <ListCell>Total Time</ListCell>
           <ListCell>
-            <Time time={recordsTT(enhancedMultiRecords, 'LevelMultiBesttime')} />
+            <Time
+              time={recordsTT(enhancedMultiRecords, 'LevelMultiBesttime')}
+            />
           </ListCell>
         </TTRow>
       </ListContainer>

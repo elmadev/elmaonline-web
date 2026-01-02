@@ -17,9 +17,10 @@ const TotalTimes = ({ highlight, highlightWeeks, name }) => {
   const windowSize = useElementSize();
   const listHeight = windowSize.height - 319;
 
-  const tts = useMemo(() => totaltimes.sort((a, b) => a.tt - b.tt), [
-    totaltimes,
-  ]);
+  const tts = useMemo(
+    () => totaltimes.sort((a, b) => a.tt - b.tt),
+    [totaltimes],
+  );
 
   if (recordsLoading) {
     return <Loading />;

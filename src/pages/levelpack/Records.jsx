@@ -82,11 +82,7 @@ const TableRow = ({
           </KuskiCell>
 
           <ListCell highlight={isHighlight}>
-            {level.ExcludeFromTotal ? (
-              <span>-</span>
-            ) : (
-              <Time time={r.Time} />
-            )}
+            {level.ExcludeFromTotal ? <span>-</span> : <Time time={r.Time} />}
             {isLegacy && (
               <span style={{ marginLeft: 10 }}>
                 <LegacyIcon source={r.Source} show={showLegacyIcon} />
@@ -99,9 +95,7 @@ const TableRow = ({
       {!hasRecord && (
         <>
           <ListCell />
-          <ListCell>
-            {level.ExcludeFromTotal ? <span>-</span> : null}
-          </ListCell>
+          <ListCell>{level.ExcludeFromTotal ? <span>-</span> : null}</ListCell>
         </>
       )}
 
