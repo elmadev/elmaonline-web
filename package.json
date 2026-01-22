@@ -30,7 +30,7 @@
     "flag-icons": "^7.2.3",
     "leaflet": "^1.9.4",
     "level-editor-gui": "https://github.com/elmadev/level-editor-gui.git",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "memoizee": "^0.4.17",
     "nanoid": "^5.0.9",
     "query-string": "9.1.1",
