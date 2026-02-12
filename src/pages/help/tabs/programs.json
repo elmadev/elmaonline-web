@@ -51,7 +51,7 @@
     { "n": "LGRDK", "d": "Official Elma LGR development kit for DOS, with the original 24-bit TGA images.", "l": "https://up.elma.online/u/ml08qxhgqu/elma_lgrdk.zip" },
     { "n": "LGR Loader", "d": "Change easily lgr before entering Elma.", "l": "https://up.elma.online/u/c3mcy5oae0/lgr_loader.zip" },
     { "n": "LGR Selector", "d": "Change easily lgr before entering Elma.", "l": "https://up.elma.online/u/5uxzt66dok/LGRselector.exe" },
-    { "n": "LGR Utility", "d": "Modify LGR files. Automatically fixes palette issues and reports LGR errors. Made by sunl.", "l": "https://up.elma.online/u/0a0a0a0a01/LGR_Utility_64bit_V4.zip" },
+    { "n": "LGR Utility", "d": "Modify LGR files. Automatically fixes palette issues and reports LGR errors. Made by sunl.", "l": "https://up.elma.online/u/0a0a0a0a01/LGR_Utility_64bit_V5.zip" },
     { "n": "Prop Replacer", "d": "Change properties of internal levels (only for Elma 1.0).", "l": "https://up.elma.online/u/5qpeb7jerz/PropReplacer.rar" }
   ] },
   { "name": "Replay", "items": [
