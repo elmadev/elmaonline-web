@@ -39,7 +39,7 @@
     { "n": "SLE", "d": "Smibu's Level Editor, Replay Manager and Level Manager.", "l": "https://m-l.fi/files/Elmanager.zip" },
     { "n": "Vectrast", "d": "Makes bmp from lev file and back.", "l": "https://up.elma.online/u/lqrhf9h280/vectrast.zip" },
     { "n": "Verzio Maker", "d": "Converts Elma levs to Across levs in the Verzio file format - Moving objects. Made by sunl.", "l": "https://up.elma.online/u/59w4avs59h/Verzio_Maker.zip" },
-    { "n": "ZLE (v1.1)", "d": "Zebra's Level Editor.", "l": "https://up.elma.online/u/3hh7dzheve/ZLE_v1.1.zip" }
+    { "n": "ZLE (v1.3)", "d": "Zebra's Level Editor.", "l": "https://up.elma.online/u/rud8moetcs/ZLE_v1.3.zip" }
   ] },
   { "name": "LGR", "items": [
     { "n": "Default LGR", "d": "The recommended original Default.lgr file with fixed sky tiling. Fancy boosted (= includes 256 additional single-color pictures, one for each color in the LGR palette).", "l": "https://up.elma.online/u/ly8259kxy2/Default.lgr" },
