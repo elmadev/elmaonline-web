@@ -7,6 +7,12 @@
     { "n": "Elma Shooter", "d": "Elma related game.", "l": "https://up.elma.online/u/o5ff6yh8qq/shooter.fixed.zip" },
     { "n": "Elma Slot Machine", "d": "Elma related game.", "l": "https://up.elma.online/u/v61ebjran4/elma%20slot%20machine%20-%20one_armed_elma.zip" },
     { "n": "EOL Plus", "d": "Meme Elma made by jonsykkel.", "l": "https://up.elma.online/u/y1cnz1ugua/eolplus.rar" },
+    { "n": "EOL Plus+", "d": "An updated meme Elma made by bene.", "l": [
+      { "t": "Windows", "l": "https://up.elma.online/u/k52xmv8kjd/eolplusplus_windows.zip" },
+      { "t": "Linux", "l": "https://up.elma.online/u/terjsrjxjm/eolplusplus_linux.zip" },
+      { "t": "macOS", "l": "https://up.elma.online/u/b2rvaqxy0c/eolplusplus_macos.zip" },
+      { "t": "macOS-ARM", "l": "https://up.elma.online/u/f0ybfq6123/eolplusplus_macos_arm.zip" }
+    ] },
     { "n": "Kuski Doll", "d": "Elma related game.", "l": "https://up.elma.online/u/4z2fy0x8xo/Kuski_doll.zip" },
     { "n": "IncrElastoMania", "d": "Elma Simulation - Browser Game 2020 by ribot.", "l": "https://robinmanoli.github.io/IncrElastoMania/" }
   ] },
