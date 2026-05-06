@@ -111,8 +111,8 @@
   ] },
   { "name": "Save/Load", "items": [
     { "n": "milatools", "d": "Save Load patch made by milagros. Patched to work with levels that have up to 20k vertices.", "l": "https://up.elma.online/u/qlt7ca0rbl/milatools.zip" },
-    { "n": "okeSL (v0.09)", "d": "New save load tool made by jonsykkel. Patched to work with levels that have up to 20k vertices.", "l": "https://up.elma.online/u/t8wr7syzok/okesl009.zip" },
-    { "n": "okeSL (v0.09) - Linux", "d": "Native Linux build of okeSL. Works at least on Ubuntu 24.04 after installing dependencies (see readmy.txt).", "l": "https://up.elma.online/u/mdf4kk7kmj/okesl%20v0.09.tar.xz" },
+    { "n": "okeSL (v0.10)", "d": "A modern and versatile save load tool. Originally made by jonsykkel, improved by bene, joey and others.", "l": "https://up.elma.online/u/01x3mnq1rl/okesl%200.10.0%20windows.zip" },
+    { "n": "okeSL (v0.10) - Linux", "d": "Native Linux build of okeSL. Works at least on Ubuntu 24.04 and newer.", "l": "https://up.elma.online/u/envco5ki36/okesl%200.10.0%20linux.zip" },
     { "n": "SL Key", "d": "Makes Smibu's Save Load patch keys to be configurable.", "l": "https://up.elma.online/u/uuu2g3rrvp/slkey.zip" },
     { "n": "Smibu's Save Load Patch", "d": "Save Load patch made by Smibu. Patched to work with levels that have up to 20k vertices.", "l": "https://up.elma.online/u/5sab3e5vxg/smibu_saveload_patch.zip" }
   ] }
