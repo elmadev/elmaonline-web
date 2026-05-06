@@ -7,6 +7,12 @@
     { "n": "Elma Shooter", "d": "Elma related game.", "l": "https://up.elma.online/u/o5ff6yh8qq/shooter.fixed.zip" },
     { "n": "Elma Slot Machine", "d": "Elma related game.", "l": "https://up.elma.online/u/v61ebjran4/elma%20slot%20machine%20-%20one_armed_elma.zip" },
     { "n": "EOL Plus", "d": "Meme Elma made by jonsykkel.", "l": "https://up.elma.online/u/y1cnz1ugua/eolplus.rar" },
+    { "n": "EOL Plus+", "d": "An updated meme Elma made by bene.", "l": [
+      { "t": "Windows", "l": "https://up.elma.online/u/k52xmv8kjd/eolplusplus_windows.zip" },
+      { "t": "Linux", "l": "https://up.elma.online/u/terjsrjxjm/eolplusplus_linux.zip" },
+      { "t": "macOS", "l": "https://up.elma.online/u/b2rvaqxy0c/eolplusplus_macos.zip" },
+      { "t": "macOS-ARM", "l": "https://up.elma.online/u/f0ybfq6123/eolplusplus_macos_arm.zip" }
+    ] },
     { "n": "Kuski Doll", "d": "Elma related game.", "l": "https://up.elma.online/u/4z2fy0x8xo/Kuski_doll.zip" },
     { "n": "IncrElastoMania", "d": "Elma Simulation - Browser Game 2020 by ribot.", "l": "https://robinmanoli.github.io/IncrElastoMania/" }
   ] },
@@ -105,8 +111,8 @@
   ] },
   { "name": "Save/Load", "items": [
     { "n": "milatools", "d": "Save Load patch made by milagros. Patched to work with levels that have up to 20k vertices.", "l": "https://up.elma.online/u/qlt7ca0rbl/milatools.zip" },
-    { "n": "okeSL (v0.09)", "d": "New save load tool made by jonsykkel. Patched to work with levels that have up to 20k vertices.", "l": "https://up.elma.online/u/t8wr7syzok/okesl009.zip" },
-    { "n": "okeSL (v0.09) - Linux", "d": "Native Linux build of okeSL. Works at least on Ubuntu 24.04 after installing dependencies (see readmy.txt).", "l": "https://up.elma.online/u/mdf4kk7kmj/okesl%20v0.09.tar.xz" },
+    { "n": "okeSL (v0.10)", "d": "A modern and versatile save load tool. Originally made by jonsykkel, improved by bene, joey and others.", "l": "https://up.elma.online/u/01x3mnq1rl/okesl%200.10.0%20windows.zip" },
+    { "n": "okeSL (v0.10) - Linux", "d": "Native Linux build of okeSL. Works at least on Ubuntu 24.04 and newer.", "l": "https://up.elma.online/u/envco5ki36/okesl%200.10.0%20linux.zip" },
     { "n": "SL Key", "d": "Makes Smibu's Save Load patch keys to be configurable.", "l": "https://up.elma.online/u/uuu2g3rrvp/slkey.zip" },
     { "n": "Smibu's Save Load Patch", "d": "Save Load patch made by Smibu. Patched to work with levels that have up to 20k vertices.", "l": "https://up.elma.online/u/5sab3e5vxg/smibu_saveload_patch.zip" }
   ] }
