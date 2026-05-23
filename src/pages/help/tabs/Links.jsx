@@ -31,7 +31,7 @@ const Links = ({ hideHeader = false }) => {
           community when it comes to web sites since 1998.
         </Grid>
         <Grid>
-          <a href="http://stats.sshoyer.net/">Elmastats</a> A site made by
+          <a href="https://stats.elma.online/">Elmastats</a> A site made by
           jonsykkel dedicated to keep the community up to date with internal
           times, total times etc. You can also restore your old state.dat, find
           replays and much more.
