@@ -19,6 +19,14 @@ import { sortResults } from 'utils/battle';
 import { nickId } from 'utils/nick';
 import Admin from './Admin';
 
+const getBattleLeaguePoints = (resultCount, index, isFinished) => {
+  if (!isFinished || resultCount <= 0) {
+    return 0;
+  }
+  const peopleBeaten = Math.max(resultCount - 1 - index, 0);
+  return peopleBeaten + 1 + (index === 0 ? 1 : 0);
+};
+
 const BattleLeague = () => {
   const { ShortName } = useParams({ strict: false });
   const [selected, setSelected] = useState(-1);
@@ -40,11 +48,46 @@ const BattleLeague = () => {
     pointsEnum = top20points;
   }
 
+  const whitelist = Array.isArray(data?.Settings?.whitelist)
+    ? data.Settings.whitelist
+    : [];
+  const isWhitelistActive = whitelist.length > 0;
+  const filteredBattles = React.useMemo(() => {
+    if (!data?.Battles) {
+      return [];
+    }
+
+    return data.Battles.map(battle => {
+      if (!battle.BattleData?.Results) {
+        return battle;
+      }
+
+      const filteredResults = isWhitelistActive
+        ? battle.BattleData.Results.filter(result =>
+            whitelist.includes(result.KuskiIndex),
+          )
+        : battle.BattleData.Results;
+
+      return {
+        ...battle,
+        BattleData: {
+          ...battle.BattleData,
+          Results: filteredResults,
+        },
+      };
+    });
+  }, [data?.Battles, data?.Settings?.whitelist, isWhitelistActive, whitelist]);
+
   let standings = [];
   const seasons = [];
   const seasonStandings = {};
+  let referenceResultCount = 0;
   if (data) {
-    data.Battles.forEach(battle => {
+    const firstBattleWithResults = filteredBattles.find(
+      battle => battle.BattleData?.Results?.length > 0,
+    );
+    referenceResultCount = firstBattleWithResults?.BattleData?.Results?.length;
+    filteredBattles.forEach(battle => {
       if (battle.Season && seasons.indexOf(battle.Season) === -1) {
         seasons.push(battle.Season);
         seasonStandings[battle.Season] = [];
@@ -56,16 +99,27 @@ const BattleLeague = () => {
         sortResults(battle.BattleType),
       );
       results.forEach((r, i) => {
+        const isFinished =
+          Number.isFinite(Number(r.Time)) && Number(r.Time) > 0;
+        const pointsForPlacement =
+          data?.PointSystem === 3
+            ? getBattleLeaguePoints(
+                referenceResultCount || results.length,
+                i,
+                isFinished,
+              )
+            : pointsEnum[i]
+              ? pointsEnum[i]
+              : 0;
         const id = standings.findIndex(s => s.KuskiIndex === r.KuskiIndex);
         if (id === -1) {
           standings.push({
             KuskiIndex: r.KuskiIndex,
-            Points: pointsEnum[i] ? pointsEnum[i] : 0,
+            Points: pointsForPlacement,
             KuskiData: r.KuskiData,
           });
         } else {
-          standings[id].Points =
-            standings[id].Points + (pointsEnum[i] ? pointsEnum[i] : 0);
+          standings[id].Points = standings[id].Points + pointsForPlacement;
         }
         if (battle.Season) {
           const seasonId = seasonStandings[battle.Season].findIndex(
@@ -74,13 +128,13 @@ const BattleLeague = () => {
           if (seasonId === -1) {
             seasonStandings[battle.Season].push({
               KuskiIndex: r.KuskiIndex,
-              Points: pointsEnum[i] ? pointsEnum[i] : 0,
+              Points: pointsForPlacement,
               KuskiData: r.KuskiData,
             });
           } else {
             seasonStandings[battle.Season][seasonId].Points =
               seasonStandings[battle.Season][seasonId].Points +
-              (pointsEnum[i] ? pointsEnum[i] : 0);
+              pointsForPlacement;
           }
         }
       });
@@ -89,7 +143,9 @@ const BattleLeague = () => {
 
   let battleData = [];
   if (selected > 0) {
-    battleData = data.Battles.find(b => b.BattleIndex === selected).BattleData;
+    battleData = filteredBattles.find(
+      b => b.BattleIndex === selected,
+    )?.BattleData;
   }
   if (selectedSeason !== 'overall' && seasonStandings[selectedSeason]) {
     standings = seasonStandings[selectedSeason];
@@ -138,7 +194,7 @@ const BattleLeague = () => {
       {tab === 'events' && (
         <Grid container spacing={0}>
           <Grid item xs={12} sm={6}>
-            {data.Battles.map((b, i) => (
+            {filteredBattles.map((b, i) => (
               <EventItem
                 key={`${b.BattleIndex}${i}`}
                 i={i}
@@ -231,7 +287,18 @@ const BattleLeague = () => {
                           <ListCell width={150}>
                             <Time time={r.Time} apples={r.Apples} />
                           </ListCell>
-                          {pointsEnum[i] ? (
+                          {data?.PointSystem === 3 ? (
+                            <ListCell>
+                              {getBattleLeaguePoints(
+                                referenceResultCount ||
+                                  battleData.Results.length,
+                                i,
+                                Number.isFinite(Number(r.Time)) &&
+                                  Number(r.Time) > 0,
+                              )}{' '}
+                              pts.
+                            </ListCell>
+                          ) : pointsEnum[i] ? (
                             <ListCell>{pointsEnum[i]} pts.</ListCell>
                           ) : (
                             <ListCell />

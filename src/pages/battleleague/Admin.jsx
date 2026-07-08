@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Paper } from 'components/Paper';
 import Header from 'components/Header';
@@ -16,6 +16,8 @@ import Loading from 'components/Loading';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { ListRow, ListCell } from 'components/List';
 import DerpTable from 'components/Table/DerpTable';
+import { KuskiAutoComplete } from 'components/AutoComplete';
+import { UpdateBattleLeagueWhitelist } from 'api';
 
 const schema = yup.object().shape({
   LevelName: yup.string().required().max(8),
@@ -33,6 +35,7 @@ const Admin = ({ BattleLeagueIndex }) => {
   const [type, setType] = useState('NM');
   const [addSeason, setAddSeason] = useState('');
   const [selectedBattle, setSelectedBattle] = useState(0);
+  const [whitelist, setWhitelist] = useState([]);
   const {
     battleList,
     league: { loading, data },
@@ -41,6 +44,42 @@ const Admin = ({ BattleLeagueIndex }) => {
     league: { create, update, remove },
     findBattles,
   } = useStoreActions(actions => actions.BattleLeague);
+
+  useEffect(() => {
+    if (Array.isArray(data?.Settings?.whitelist)) {
+      const whitelistEntries = [];
+      const seen = new Set();
+
+      const addEntry = entry => {
+        if (!entry?.KuskiIndex || seen.has(entry.KuskiIndex)) {
+          return;
+        }
+        seen.add(entry.KuskiIndex);
+        whitelistEntries.push(entry);
+      };
+      data.Settings.whitelist.forEach(kuskiIndex => {
+        const matchingEntry = (data?.Battles || []).reduce((found, battle) => {
+          if (found) {
+            return found;
+          }
+          const resultMatch = (battle.BattleData?.Results || []).find(
+            result => result.KuskiData?.KuskiIndex === kuskiIndex,
+          );
+          return resultMatch?.KuskiData || null;
+        }, null);
+
+        addEntry(
+          matchingEntry || {
+            KuskiIndex: kuskiIndex,
+            Kuski: `#${kuskiIndex}`,
+          },
+        );
+      });
+      setWhitelist(whitelistEntries);
+    } else {
+      setWhitelist([]);
+    }
+  }, [data?.Settings?.whitelist, data?.Battles]);
 
   const formal = useFormal(
     {},
@@ -56,6 +95,34 @@ const Admin = ({ BattleLeagueIndex }) => {
       BattleIndex: selectedBattle,
       Season: addSeason,
       BattleLeagueIndex,
+    });
+  };
+
+  const whitelistOptions = React.useMemo(() => {
+    const options = [];
+    const seen = new Set();
+    const addOption = item => {
+      if (!item?.KuskiIndex || seen.has(item.KuskiIndex)) {
+        return;
+      }
+      seen.add(item.KuskiIndex);
+      options.push(item);
+    };
+
+    whitelist.forEach(addOption);
+    (data?.Battles || []).forEach(battle => {
+      (battle.BattleData?.Results || []).forEach(result => {
+        addOption(result.KuskiData);
+      });
+    });
+
+    return options;
+  }, [data?.Battles, whitelist]);
+
+  const saveWhitelist = async () => {
+    await UpdateBattleLeagueWhitelist({
+      BattleLeagueIndex,
+      whitelist: whitelist.map(kuski => kuski.KuskiIndex),
     });
   };
 
@@ -209,6 +276,29 @@ const Admin = ({ BattleLeagueIndex }) => {
                 </ListRow>
               ))}
             </DerpTable>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <Paper padding top>
+            <Header h2>Whitelist</Header>
+            <p>
+              Leave the list empty to allow everyone. Select players to restrict
+              participation.
+            </p>
+            <KuskiAutoComplete
+              label="Allowed players"
+              list={whitelistOptions}
+              selected={whitelist}
+              onChange={(_ids, newValue) => setWhitelist(newValue || [])}
+              multiple
+            />
+            <Button
+              variant="contained"
+              onClick={() => saveWhitelist()}
+              style={{ marginTop: 12 }}
+            >
+              Save whitelist
+            </Button>
           </Paper>
         </Grid>
       </Grid>
