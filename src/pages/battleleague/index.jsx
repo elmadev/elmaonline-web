@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from '@emotion/styled';
 import Layout from 'components/Layout';
 import { Grid, Tabs, Tab } from '@material-ui/core';
@@ -18,6 +18,8 @@ import { Link } from '@tanstack/react-router';
 import { sortResults } from 'utils/battle';
 import { nickId } from 'utils/nick';
 import Admin from './Admin';
+import ResultEditor from './ResultEditor';
+import { getFilteredBattleLeagueBattles } from './utils';
 
 const getBattleLeaguePoints = (resultCount, index, isFinished) => {
   if (!isFinished || resultCount <= 0) {
@@ -51,32 +53,31 @@ const BattleLeague = () => {
   const whitelist = Array.isArray(data?.Settings?.whitelist)
     ? data.Settings.whitelist
     : [];
+  const overrides = data?.Settings?.override || {};
   const isWhitelistActive = whitelist.length > 0;
-  const filteredBattles = React.useMemo(() => {
+  const filteredBattles = useMemo(() => {
+    if (!isWhitelistActive && !Object.keys(overrides).length) {
+      return data?.Battles || [];
+    }
     if (!data?.Battles) {
       return [];
     }
 
-    return data.Battles.map(battle => {
-      if (!battle.BattleData?.Results) {
-        return battle;
-      }
-
-      const filteredResults = isWhitelistActive
-        ? battle.BattleData.Results.filter(result =>
-            whitelist.includes(result.KuskiIndex),
-          )
-        : battle.BattleData.Results;
-
-      return {
-        ...battle,
-        BattleData: {
-          ...battle.BattleData,
-          Results: filteredResults,
-        },
-      };
+    return getFilteredBattleLeagueBattles({
+      battles: data.Battles,
+      whitelist,
+      overrides,
+      pointSystem: data?.PointSystem,
     });
-  }, [data?.Battles, data?.Settings?.whitelist, isWhitelistActive, whitelist]);
+  }, [
+    data?.Battles,
+    data?.Settings?.whitelist,
+    data?.Settings?.override,
+    data?.PointSystem,
+    isWhitelistActive,
+    whitelist,
+    overrides,
+  ]);
 
   let standings = [];
   const seasons = [];
@@ -141,11 +142,11 @@ const BattleLeague = () => {
     });
   }
 
+  let selectedBattle = null;
   let battleData = [];
   if (selected > 0) {
-    battleData = filteredBattles.find(
-      b => b.BattleIndex === selected,
-    )?.BattleData;
+    selectedBattle = filteredBattles.find(b => b.BattleIndex === selected);
+    battleData = selectedBattle?.BattleData;
   }
   if (selectedSeason !== 'overall' && seasonStandings[selectedSeason]) {
     standings = seasonStandings[selectedSeason];
@@ -285,7 +286,19 @@ const BattleLeague = () => {
                             <Kuski kuskiData={r.KuskiData} flag team />
                           </ListCell>
                           <ListCell width={150}>
-                            <Time time={r.Time} apples={r.Apples} />
+                            {data?.PointSystem === 3 ? (
+                              <ResultEditor
+                                result={r}
+                                canEdit={nickId() === data.KuskiIndex}
+                                battleLeagueBattleIndex={
+                                  selectedBattle?.BattleLeagueBattleIndex
+                                }
+                                battleLeagueIndex={data.BattleLeagueIndex}
+                                onSaved={() => fetch(ShortName)}
+                              />
+                            ) : (
+                              <Time time={r.Time} apples={r.Apples} />
+                            )}
                           </ListCell>
                           {data?.PointSystem === 3 ? (
                             <ListCell>
@@ -305,6 +318,26 @@ const BattleLeague = () => {
                           )}
                         </ListRow>
                       ))}
+                  {data?.PointSystem === 3 && (
+                    <ListRow key="new-result-row">
+                      <ListCell right width={30}>
+                        +
+                      </ListCell>
+                      <ListCell width={200}>
+                        <ResultEditor
+                          canEdit={nickId() === data.KuskiIndex}
+                          battleLeagueBattleIndex={
+                            selectedBattle?.BattleLeagueBattleIndex
+                          }
+                          battleLeagueIndex={data.BattleLeagueIndex}
+                          onSaved={() => fetch(ShortName)}
+                          isNewEntry
+                        />
+                      </ListCell>
+                      <ListCell width={150} />
+                      <ListCell />
+                    </ListRow>
+                  )}
                 </ListContainer>
               </Paper>
             </Grid>

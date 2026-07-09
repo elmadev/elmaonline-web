@@ -594,6 +594,8 @@ export const UpdateBattleLeagueBattle = data =>
   api.post('battleleague/update/battle', data);
 export const UpdateBattleLeagueWhitelist = data =>
   api.post('battleleague/update/whitelist', data);
+export const UpdateBattleLeagueResultOverride = data =>
+  api.post('battleleague/update/override', data);
 export const DeleteBattleLeagueBattle = id =>
   api.delete(`battleleague/delete/battle/${id}`);
 
