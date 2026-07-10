@@ -1,53 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { ListContainer, ListHeader, ListRow, ListCell } from 'components/List';
 import Kuski from 'components/Kuski';
 import Time from 'components/Time';
-import { sortResults } from 'utils/battle';
 import { Paper } from 'components/Paper';
-import { getBattleLeaguePoints } from './utils';
+import { getSortedResultsWithPoints } from './utils';
 
 const getLevelName = battle =>
   battle.BattleData ? battle.BattleData.LevelData?.LevelName : battle.LevelName;
-
-const getPlayerResult = (battle, kuskiIndex) => {
-  if (!battle.BattleData?.Results?.length) {
-    return null;
-  }
-  const sorted = [...battle.BattleData.Results].sort(
-    sortResults(battle.BattleType),
-  );
-  const position = sorted.findIndex(r => r.KuskiIndex === kuskiIndex);
-  if (position === -1) {
-    return null;
-  }
-  return {
-    result: sorted[position],
-    position: position + 1,
-    resultCount: sorted.length,
-  };
-};
-
-const getRoundPoints = (
-  playerResult,
-  pointSystem,
-  pointsEnum,
-  referenceResultCount,
-) => {
-  const index = playerResult.position - 1;
-  const isFinished =
-    Number.isFinite(Number(playerResult.result.Time)) &&
-    Number(playerResult.result.Time) > 0;
-  if (pointSystem === 3) {
-    return getBattleLeaguePoints(
-      referenceResultCount || playerResult.resultCount,
-      index,
-      isFinished,
-    );
-  }
-  return pointsEnum[index] ? pointsEnum[index] : 0;
-};
 
 const Detailed = ({
   battles,
@@ -57,6 +18,22 @@ const Detailed = ({
   referenceResultCount,
 }) => {
   const sortedStandings = [...standings].sort((a, b) => b.Points - a.Points);
+
+  const battleResults = useMemo(
+    () =>
+      battles.map(b =>
+        b.BattleData?.Results?.length
+          ? getSortedResultsWithPoints({
+              results: b.BattleData.Results,
+              battleType: b.BattleType,
+              pointSystem,
+              pointsEnum,
+              referenceResultCount,
+            })
+          : [],
+      ),
+    [battles, pointSystem, pointsEnum, referenceResultCount],
+  );
 
   return (
     <Paper>
@@ -85,31 +62,25 @@ const Detailed = ({
               </ListCell>
               <ListCell width={80}>{s.Points} pts.</ListCell>
               {battles.map((b, bi) => {
-                const playerResult = getPlayerResult(b, s.KuskiIndex);
+                const playerResult = battleResults[bi].find(
+                  r => r.KuskiIndex === s.KuskiIndex,
+                );
                 return (
                   <RoundCell
                     key={`${b.BattleIndex}${bi}`}
-                    place={playerResult?.position}
+                    place={playerResult?.Position}
                   >
                     {playerResult && (
                       <ResultCell>
-                        {playerResult.result.Time === 0 ||
-                        playerResult.result.DNF ? (
+                        {playerResult.Time === 0 || playerResult.DNF ? (
                           'DNF'
                         ) : (
                           <Time
-                            time={playerResult.result.Time}
-                            apples={playerResult.result.Apples}
+                            time={playerResult.Time}
+                            apples={playerResult.Apples}
                           />
                         )}
-                        <Position>
-                          {getRoundPoints(
-                            playerResult,
-                            pointSystem,
-                            pointsEnum,
-                            referenceResultCount,
-                          )}
-                        </Position>
+                        <Position>{playerResult.Points}</Position>
                       </ResultCell>
                     )}
                   </RoundCell>

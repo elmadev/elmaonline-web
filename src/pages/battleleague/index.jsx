@@ -15,13 +15,15 @@ import { Paper } from 'components/Paper';
 import { points, mopoPoints, top20points } from 'utils/cups';
 import { BATTLETYPES_LONG } from 'constants/ranking';
 import { Link } from '@tanstack/react-router';
-import { sortResults } from 'utils/battle';
 import { nickId } from 'utils/nick';
 import Admin from './Admin';
 import ResultEditor from './ResultEditor';
 import BattleStatus from './BattleStatus';
 import Detailed from './Detailed';
-import { getFilteredBattleLeagueBattles, getBattleLeaguePoints } from './utils';
+import {
+  getFilteredBattleLeagueBattles,
+  getSortedResultsWithPoints,
+} from './utils';
 
 const BattleLeague = () => {
   const { ShortName } = useParams({ strict: false });
@@ -91,22 +93,15 @@ const BattleLeague = () => {
       if (!battle.BattleData) {
         return;
       }
-      const results = battle.BattleData.Results.sort(
-        sortResults(battle.BattleType),
-      );
-      results.forEach((r, i) => {
-        const isFinished =
-          Number.isFinite(Number(r.Time)) && Number(r.Time) > 0;
-        const pointsForPlacement =
-          data?.PointSystem === 3
-            ? getBattleLeaguePoints(
-                referenceResultCount || results.length,
-                i,
-                isFinished,
-              )
-            : pointsEnum[i]
-              ? pointsEnum[i]
-              : 0;
+      const results = getSortedResultsWithPoints({
+        results: battle.BattleData.Results,
+        battleType: battle.BattleType,
+        pointSystem: data?.PointSystem,
+        pointsEnum,
+        referenceResultCount,
+      });
+      results.forEach(r => {
+        const pointsForPlacement = r.Points;
         const id = standings.findIndex(s => s.KuskiIndex === r.KuskiIndex);
         if (id === -1) {
           standings.push({
@@ -277,49 +272,44 @@ const BattleLeague = () => {
                     <ListCell>Points</ListCell>
                   </ListHeader>
                   {battleData?.Results?.length > 0 &&
-                    [...battleData.Results]
-                      .sort(sortResults(battleData.BattleType))
-                      .map((r, i) => (
-                        <ListRow key={r.BattleTimeIndex}>
-                          <ListCell right width={30}>
-                            {i + 1}.
-                          </ListCell>
-                          <ListCell width={200}>
-                            <Kuski kuskiData={r.KuskiData} flag team />
-                          </ListCell>
-                          <ListCell width={150}>
-                            {data?.PointSystem === 3 ? (
-                              <ResultEditor
-                                result={r}
-                                canEdit={nickId() === data.KuskiIndex}
-                                battleLeagueBattleIndex={
-                                  selectedBattle?.BattleLeagueBattleIndex
-                                }
-                                battleLeagueIndex={data.BattleLeagueIndex}
-                                onSaved={() => fetch(ShortName)}
-                              />
-                            ) : (
-                              <Time time={r.Time} apples={r.Apples} />
-                            )}
-                          </ListCell>
+                    getSortedResultsWithPoints({
+                      results: battleData.Results,
+                      battleType: battleData.BattleType,
+                      pointSystem: data?.PointSystem,
+                      pointsEnum,
+                      referenceResultCount,
+                    }).map(r => (
+                      <ListRow key={r.BattleTimeIndex}>
+                        <ListCell right width={30}>
+                          {r.Position}.
+                        </ListCell>
+                        <ListCell width={200}>
+                          <Kuski kuskiData={r.KuskiData} flag team />
+                        </ListCell>
+                        <ListCell width={150}>
                           {data?.PointSystem === 3 ? (
-                            <ListCell>
-                              {getBattleLeaguePoints(
-                                referenceResultCount ||
-                                  battleData.Results.length,
-                                i,
-                                Number.isFinite(Number(r.Time)) &&
-                                  Number(r.Time) > 0,
-                              )}{' '}
-                              pts.
-                            </ListCell>
-                          ) : pointsEnum[i] ? (
-                            <ListCell>{pointsEnum[i]} pts.</ListCell>
+                            <ResultEditor
+                              result={r}
+                              canEdit={nickId() === data.KuskiIndex}
+                              battleLeagueBattleIndex={
+                                selectedBattle?.BattleLeagueBattleIndex
+                              }
+                              battleLeagueIndex={data.BattleLeagueIndex}
+                              onSaved={() => fetch(ShortName)}
+                            />
                           ) : (
-                            <ListCell />
+                            <Time time={r.Time} apples={r.Apples} />
                           )}
-                        </ListRow>
-                      ))}
+                        </ListCell>
+                        {data?.PointSystem === 3 ? (
+                          <ListCell>{r.Points} pts.</ListCell>
+                        ) : r.Points ? (
+                          <ListCell>{r.Points} pts.</ListCell>
+                        ) : (
+                          <ListCell />
+                        )}
+                      </ListRow>
+                    ))}
                   {data?.PointSystem === 3 && (
                     <ListRow key="new-result-row">
                       <ListCell right width={30}>

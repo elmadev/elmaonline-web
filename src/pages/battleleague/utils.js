@@ -1,9 +1,46 @@
+import { sortResults } from 'utils/battle';
+
 export const getBattleLeaguePoints = (resultCount, index, isFinished) => {
   if (!isFinished || resultCount <= 0) {
     return 0;
   }
   const peopleBeaten = Math.max(resultCount - 1 - index, 0);
   return peopleBeaten + 1 + (index === 0 ? 1 : 0);
+};
+
+// Sorts a battle's results and assigns Points/Position, with players who tied
+// on the exact same finish Time sharing the better (higher) placement.
+export const getSortedResultsWithPoints = ({
+  results,
+  battleType,
+  pointSystem,
+  pointsEnum,
+  referenceResultCount,
+}) => {
+  const sorted = [...results].sort(sortResults(battleType));
+  const resultCount = referenceResultCount || sorted.length;
+
+  let placementIndex = -1;
+  let placementTime = null;
+
+  return sorted.map((r, i) => {
+    const time = Number(r.Time);
+    const isFinished = Number.isFinite(time) && time > 0;
+
+    if (!isFinished || time !== placementTime) {
+      placementIndex = i;
+      placementTime = isFinished ? time : null;
+    }
+
+    const points =
+      pointSystem === 3
+        ? getBattleLeaguePoints(resultCount, placementIndex, isFinished)
+        : pointsEnum?.[i]
+          ? pointsEnum[i]
+          : 0;
+
+    return { ...r, Points: points, Position: placementIndex + 1 };
+  });
 };
 
 export const getFilteredBattleLeagueBattles = ({
