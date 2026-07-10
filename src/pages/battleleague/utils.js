@@ -1,3 +1,11 @@
+export const getBattleLeaguePoints = (resultCount, index, isFinished) => {
+  if (!isFinished || resultCount <= 0) {
+    return 0;
+  }
+  const peopleBeaten = Math.max(resultCount - 1 - index, 0);
+  return peopleBeaten + 1 + (index === 0 ? 1 : 0);
+};
+
 export const getFilteredBattleLeagueBattles = ({
   battles,
   whitelist,
@@ -10,6 +18,19 @@ export const getFilteredBattleLeagueBattles = ({
 
   const dnfPlayerIndexes = new Set();
   const generatedKuskiNameMap = new Map();
+  const realKuskiIndexByName = new Map();
+
+  battles.forEach(battle => {
+    (battle.BattleData?.Results || []).forEach(result => {
+      if (
+        result.KuskiData?.Kuski &&
+        result.KuskiIndex &&
+        !realKuskiIndexByName.has(result.KuskiData.Kuski)
+      ) {
+        realKuskiIndexByName.set(result.KuskiData.Kuski, result.KuskiIndex);
+      }
+    });
+  });
 
   return battles.map(battle => {
     if (!battle.BattleData?.Results) {
@@ -44,8 +65,10 @@ export const getFilteredBattleLeagueBattles = ({
       const existingGeneratedKuskiIndex = generatedKuskiNameMap.get(
         override.Kuski,
       );
+      const knownRealKuskiIndex = realKuskiIndexByName.get(override.Kuski);
       const generatedKuskiIndex = shouldGenerateKuskiIndex
         ? existingGeneratedKuskiIndex ||
+          knownRealKuskiIndex ||
           Number(
             `${battle.BattleLeagueBattleIndex}${generatedKuskiNameMap.size + 1}`,
           )

@@ -6,6 +6,7 @@ import Kuski from 'components/Kuski';
 import Time from 'components/Time';
 import { sortResults } from 'utils/battle';
 import { Paper } from 'components/Paper';
+import { getBattleLeaguePoints } from './utils';
 
 const getLevelName = battle =>
   battle.BattleData ? battle.BattleData.LevelData?.LevelName : battle.LevelName;
@@ -21,10 +22,40 @@ const getPlayerResult = (battle, kuskiIndex) => {
   if (position === -1) {
     return null;
   }
-  return { result: sorted[position], position: position + 1 };
+  return {
+    result: sorted[position],
+    position: position + 1,
+    resultCount: sorted.length,
+  };
 };
 
-const Detailed = ({ battles, standings }) => {
+const getRoundPoints = (
+  playerResult,
+  pointSystem,
+  pointsEnum,
+  referenceResultCount,
+) => {
+  const index = playerResult.position - 1;
+  const isFinished =
+    Number.isFinite(Number(playerResult.result.Time)) &&
+    Number(playerResult.result.Time) > 0;
+  if (pointSystem === 3) {
+    return getBattleLeaguePoints(
+      referenceResultCount || playerResult.resultCount,
+      index,
+      isFinished,
+    );
+  }
+  return pointsEnum[index] ? pointsEnum[index] : 0;
+};
+
+const Detailed = ({
+  battles,
+  standings,
+  pointSystem,
+  pointsEnum,
+  referenceResultCount,
+}) => {
   const sortedStandings = [...standings].sort((a, b) => b.Points - a.Points);
 
   return (
@@ -71,7 +102,14 @@ const Detailed = ({ battles, standings }) => {
                             apples={playerResult.result.Apples}
                           />
                         )}
-                        <Position>{playerResult.position}</Position>
+                        <Position>
+                          {getRoundPoints(
+                            playerResult,
+                            pointSystem,
+                            pointsEnum,
+                            referenceResultCount,
+                          )}
+                        </Position>
                       </ResultCell>
                     )}
                   </RoundCell>
@@ -134,6 +172,9 @@ const Position = styled.span`
 Detailed.propTypes = {
   battles: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   standings: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  pointSystem: PropTypes.number,
+  pointsEnum: PropTypes.arrayOf(PropTypes.number),
+  referenceResultCount: PropTypes.number,
 };
 
 export default Detailed;

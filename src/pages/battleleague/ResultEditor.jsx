@@ -60,6 +60,25 @@ const ResultEditor = ({
     onSaved?.();
   };
 
+  const handleDelete = async () => {
+    if (!battleLeagueBattleIndex) {
+      return;
+    }
+
+    setIsSaving(true);
+    await UpdateBattleLeagueResultOverride({
+      BattleLeagueBattleIndex: battleLeagueBattleIndex,
+      KuskiIndex: result?.KuskiIndex || 0,
+      Time: -1,
+      DNF: false,
+      BattleLeagueIndex: battleLeagueIndex,
+      Kuski: '',
+    });
+    setIsSaving(false);
+    setIsEditing(false);
+    onSaved?.();
+  };
+
   if (isEditing) {
     return (
       <EditResult>
@@ -106,6 +125,16 @@ const ResultEditor = ({
         >
           Cancel
         </Button>
+        {!isNewEntry && (
+          <Button
+            size="small"
+            color="secondary"
+            onClick={handleDelete}
+            disabled={isSaving}
+          >
+            Delete
+          </Button>
+        )}
       </EditResult>
     );
   }

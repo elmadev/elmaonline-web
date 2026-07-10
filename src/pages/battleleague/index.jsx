@@ -21,15 +21,7 @@ import Admin from './Admin';
 import ResultEditor from './ResultEditor';
 import BattleStatus from './BattleStatus';
 import Detailed from './Detailed';
-import { getFilteredBattleLeagueBattles } from './utils';
-
-const getBattleLeaguePoints = (resultCount, index, isFinished) => {
-  if (!isFinished || resultCount <= 0) {
-    return 0;
-  }
-  const peopleBeaten = Math.max(resultCount - 1 - index, 0);
-  return peopleBeaten + 1 + (index === 0 ? 1 : 0);
-};
+import { getFilteredBattleLeagueBattles, getBattleLeaguePoints } from './utils';
 
 const BattleLeague = () => {
   const { ShortName } = useParams({ strict: false });
@@ -403,7 +395,13 @@ const BattleLeague = () => {
         </Grid>
       )}
       {tab === 'detailed' && (
-        <Detailed battles={filteredBattles} standings={overallStandings} />
+        <Detailed
+          battles={filteredBattles}
+          standings={overallStandings}
+          pointSystem={data?.PointSystem}
+          pointsEnum={pointsEnum}
+          referenceResultCount={referenceResultCount}
+        />
       )}
       {tab === 'admin' && <Admin BattleLeagueIndex={data.BattleLeagueIndex} />}
     </Layout>
