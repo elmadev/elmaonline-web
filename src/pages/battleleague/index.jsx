@@ -19,6 +19,7 @@ import { sortResults } from 'utils/battle';
 import { nickId } from 'utils/nick';
 import Admin from './Admin';
 import ResultEditor from './ResultEditor';
+import BattleStatus from './BattleStatus';
 import { getFilteredBattleLeagueBattles } from './utils';
 
 const getBattleLeaguePoints = (resultCount, index, isFinished) => {
@@ -262,7 +263,11 @@ const BattleLeague = () => {
               />
             ))}
           </Grid>
-          {selected !== -1 && (
+          {selected === -1 ? (
+            <Grid item xs={12} sm={6}>
+              <BattleStatus battles={filteredBattles} />
+            </Grid>
+          ) : (
             <Grid item xs={12} sm={6}>
               <Paper width="auto">
                 <ListContainer>
