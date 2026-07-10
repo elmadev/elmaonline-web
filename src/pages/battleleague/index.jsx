@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from '@emotion/styled';
 import Layout from 'components/Layout';
 import { Grid, Tabs, Tab } from '@material-ui/core';
@@ -15,9 +15,15 @@ import { Paper } from 'components/Paper';
 import { points, mopoPoints, top20points } from 'utils/cups';
 import { BATTLETYPES_LONG } from 'constants/ranking';
 import { Link } from '@tanstack/react-router';
-import { sortResults } from 'utils/battle';
 import { nickId } from 'utils/nick';
 import Admin from './Admin';
+import ResultEditor from './ResultEditor';
+import BattleStatus from './BattleStatus';
+import Detailed from './Detailed';
+import {
+  getFilteredBattleLeagueBattles,
+  getSortedResultsWithPoints,
+} from './utils';
 
 const BattleLeague = () => {
   const { ShortName } = useParams({ strict: false });
@@ -40,11 +46,46 @@ const BattleLeague = () => {
     pointsEnum = top20points;
   }
 
+  const whitelist = Array.isArray(data?.Settings?.whitelist)
+    ? data.Settings.whitelist
+    : [];
+  const overrides = data?.Settings?.override || {};
+  const isWhitelistActive = whitelist.length > 0;
+  const filteredBattles = useMemo(() => {
+    if (!isWhitelistActive && !Object.keys(overrides).length) {
+      return data?.Battles || [];
+    }
+    if (!data?.Battles) {
+      return [];
+    }
+
+    return getFilteredBattleLeagueBattles({
+      battles: data.Battles,
+      whitelist,
+      overrides,
+      pointSystem: data?.PointSystem,
+    });
+  }, [
+    data?.Battles,
+    data?.Settings?.whitelist,
+    data?.Settings?.override,
+    data?.PointSystem,
+    isWhitelistActive,
+    whitelist,
+    overrides,
+  ]);
+
   let standings = [];
+  let overallStandings = [];
   const seasons = [];
   const seasonStandings = {};
+  let referenceResultCount = 0;
   if (data) {
-    data.Battles.forEach(battle => {
+    const firstBattleWithResults = filteredBattles.find(
+      battle => battle.BattleData?.Results?.length > 0,
+    );
+    referenceResultCount = firstBattleWithResults?.BattleData?.Results?.length;
+    filteredBattles.forEach(battle => {
       if (battle.Season && seasons.indexOf(battle.Season) === -1) {
         seasons.push(battle.Season);
         seasonStandings[battle.Season] = [];
@@ -52,20 +93,24 @@ const BattleLeague = () => {
       if (!battle.BattleData) {
         return;
       }
-      const results = battle.BattleData.Results.sort(
-        sortResults(battle.BattleType),
-      );
-      results.forEach((r, i) => {
+      const results = getSortedResultsWithPoints({
+        results: battle.BattleData.Results,
+        battleType: battle.BattleType,
+        pointSystem: data?.PointSystem,
+        pointsEnum,
+        referenceResultCount,
+      });
+      results.forEach(r => {
+        const pointsForPlacement = r.Points;
         const id = standings.findIndex(s => s.KuskiIndex === r.KuskiIndex);
         if (id === -1) {
           standings.push({
             KuskiIndex: r.KuskiIndex,
-            Points: pointsEnum[i] ? pointsEnum[i] : 0,
+            Points: pointsForPlacement,
             KuskiData: r.KuskiData,
           });
         } else {
-          standings[id].Points =
-            standings[id].Points + (pointsEnum[i] ? pointsEnum[i] : 0);
+          standings[id].Points = standings[id].Points + pointsForPlacement;
         }
         if (battle.Season) {
           const seasonId = seasonStandings[battle.Season].findIndex(
@@ -74,22 +119,25 @@ const BattleLeague = () => {
           if (seasonId === -1) {
             seasonStandings[battle.Season].push({
               KuskiIndex: r.KuskiIndex,
-              Points: pointsEnum[i] ? pointsEnum[i] : 0,
+              Points: pointsForPlacement,
               KuskiData: r.KuskiData,
             });
           } else {
             seasonStandings[battle.Season][seasonId].Points =
               seasonStandings[battle.Season][seasonId].Points +
-              (pointsEnum[i] ? pointsEnum[i] : 0);
+              pointsForPlacement;
           }
         }
       });
     });
+    overallStandings = standings;
   }
 
+  let selectedBattle = null;
   let battleData = [];
   if (selected > 0) {
-    battleData = data.Battles.find(b => b.BattleIndex === selected).BattleData;
+    selectedBattle = filteredBattles.find(b => b.BattleIndex === selected);
+    battleData = selectedBattle?.BattleData;
   }
   if (selectedSeason !== 'overall' && seasonStandings[selectedSeason]) {
     standings = seasonStandings[selectedSeason];
@@ -123,6 +171,7 @@ const BattleLeague = () => {
       >
         <Tab label="Events" value="events" />
         <Tab label="Standings" value="standings" />
+        <Tab label="Detailed" value="detailed" />
         {nickId() === data.KuskiIndex && <Tab label="Admin" value="admin" />}
       </Tabs>
       <LeagueName>
@@ -138,7 +187,7 @@ const BattleLeague = () => {
       {tab === 'events' && (
         <Grid container spacing={0}>
           <Grid item xs={12} sm={6}>
-            {data.Battles.map((b, i) => (
+            {filteredBattles.map((b, i) => (
               <EventItem
                 key={`${b.BattleIndex}${i}`}
                 i={i}
@@ -205,8 +254,13 @@ const BattleLeague = () => {
               />
             ))}
           </Grid>
-          {selected !== -1 && (
-            <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6}>
+            <BattleStatus
+              battles={filteredBattles}
+              breakMinutes={data?.Settings?.break}
+              onBattleEnd={() => fetch(ShortName)}
+            />
+            {selected !== -1 ? (
               <Paper width="auto">
                 <ListContainer>
                   <ListHeader>
@@ -218,30 +272,68 @@ const BattleLeague = () => {
                     <ListCell>Points</ListCell>
                   </ListHeader>
                   {battleData?.Results?.length > 0 &&
-                    [...battleData.Results]
-                      .sort(sortResults(battleData.BattleType))
-                      .map((r, i) => (
-                        <ListRow key={r.BattleTimeIndex}>
-                          <ListCell right width={30}>
-                            {i + 1}.
-                          </ListCell>
-                          <ListCell width={200}>
-                            <Kuski kuskiData={r.KuskiData} flag team />
-                          </ListCell>
-                          <ListCell width={150}>
-                            <Time time={r.Time} apples={r.Apples} />
-                          </ListCell>
-                          {pointsEnum[i] ? (
-                            <ListCell>{pointsEnum[i]} pts.</ListCell>
+                    getSortedResultsWithPoints({
+                      results: battleData.Results,
+                      battleType: battleData.BattleType,
+                      pointSystem: data?.PointSystem,
+                      pointsEnum,
+                      referenceResultCount,
+                    }).map(r => (
+                      <ListRow key={r.BattleTimeIndex}>
+                        <ListCell right width={30}>
+                          {r.Position}.
+                        </ListCell>
+                        <ListCell width={200}>
+                          <Kuski kuskiData={r.KuskiData} flag team />
+                        </ListCell>
+                        <ListCell width={150}>
+                          {data?.PointSystem === 3 ? (
+                            <ResultEditor
+                              result={r}
+                              canEdit={nickId() === data.KuskiIndex}
+                              battleLeagueBattleIndex={
+                                selectedBattle?.BattleLeagueBattleIndex
+                              }
+                              battleLeagueIndex={data.BattleLeagueIndex}
+                              onSaved={() => fetch(ShortName)}
+                            />
                           ) : (
-                            <ListCell />
+                            <Time time={r.Time} apples={r.Apples} />
                           )}
-                        </ListRow>
-                      ))}
+                        </ListCell>
+                        {data?.PointSystem === 3 ? (
+                          <ListCell>{r.Points} pts.</ListCell>
+                        ) : r.Points ? (
+                          <ListCell>{r.Points} pts.</ListCell>
+                        ) : (
+                          <ListCell />
+                        )}
+                      </ListRow>
+                    ))}
+                  {data?.PointSystem === 3 && (
+                    <ListRow key="new-result-row">
+                      <ListCell right width={30}>
+                        +
+                      </ListCell>
+                      <ListCell width={200}>
+                        <ResultEditor
+                          canEdit={nickId() === data.KuskiIndex}
+                          battleLeagueBattleIndex={
+                            selectedBattle?.BattleLeagueBattleIndex
+                          }
+                          battleLeagueIndex={data.BattleLeagueIndex}
+                          onSaved={() => fetch(ShortName)}
+                          isNewEntry
+                        />
+                      </ListCell>
+                      <ListCell width={150} />
+                      <ListCell />
+                    </ListRow>
+                  )}
                 </ListContainer>
               </Paper>
-            </Grid>
-          )}
+            ) : null}
+          </Grid>
         </Grid>
       )}
       {tab === 'standings' && (
@@ -291,6 +383,15 @@ const BattleLeague = () => {
             )}
           </Grid>
         </Grid>
+      )}
+      {tab === 'detailed' && (
+        <Detailed
+          battles={filteredBattles}
+          standings={overallStandings}
+          pointSystem={data?.PointSystem}
+          pointsEnum={pointsEnum}
+          referenceResultCount={referenceResultCount}
+        />
       )}
       {tab === 'admin' && <Admin BattleLeagueIndex={data.BattleLeagueIndex} />}
     </Layout>

@@ -102,6 +102,10 @@ const BattleLeagues = () => {
                           id: '2',
                           name: 'Top 20 points (25, 20, 18, 17, 16, ...)',
                         },
+                        {
+                          id: '3',
+                          name: 'Beer battle (beat count +1)',
+                        },
                       ]}
                       selected={ps}
                       update={v => setPs(v)}

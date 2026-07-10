@@ -10,6 +10,7 @@ import { Level, BattleType } from 'components/Names';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { sortResults, battleStatus, battleStatusBgColor } from 'utils/battle';
 import { ListRow, ListCell, ListContainer, ListHeader } from 'components/List';
+import { estimateBattleStarts } from './estimateStarts';
 
 const BattleList = ({
   start = null,
@@ -39,38 +40,7 @@ const BattleList = ({
     }
   }, [latest]);
 
-  const battlesData = useMemo(() => {
-    if (battles.length) {
-      const inQueue = battles.filter(b => b.InQueue && !b.Aborted);
-      if (inQueue.length === 0) {
-        return battles;
-      }
-      const started = battles.filter(b => !b.InQueue && !b.Aborted);
-      if (started.length === 0) {
-        return battles;
-      }
-      const battles2 = [...battles];
-      const remaining = started[0].Finished
-        ? 120 -
-          (Math.floor(Date.now() / 1000) -
-            (parseInt(started[0].Started) + started[0].Duration * 60))
-        : 120 +
-          (parseInt(started[0].Started) +
-            started[0].Duration * 60 -
-            Math.floor(Date.now() / 1000));
-      let inQueueTime = 0;
-      inQueue.reverse().forEach((b, index) => {
-        const ogIndex = inQueue.length - 1 - index;
-        battles2[ogIndex] = {
-          ...battles2[ogIndex],
-          Starts: Math.floor(Date.now() / 1000) + remaining + inQueueTime,
-        };
-        inQueueTime += 120 + b.Duration * 60 + b.Countdown;
-      });
-      return battles2;
-    }
-    return [];
-  }, [battles]);
+  const battlesData = useMemo(() => estimateBattleStarts(battles), [battles]);
 
   return (
     <Container>
