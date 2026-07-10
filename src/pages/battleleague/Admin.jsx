@@ -17,7 +17,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { ListRow, ListCell } from 'components/List';
 import DerpTable from 'components/Table/DerpTable';
 import { KuskiAutoComplete } from 'components/AutoComplete';
-import { UpdateBattleLeagueWhitelist } from 'api';
+import { UpdateBattleLeagueWhitelist, UpdateBattleLeagueBreak } from 'api';
 
 const schema = yup.object().shape({
   LevelName: yup.string().required().max(8),
@@ -26,6 +26,8 @@ const schema = yup.object().shape({
   StartDate: yup.date(),
   StartHour: yup.number().min(0).max(23),
 });
+
+const DEFAULT_BREAK_MINUTES = 2;
 
 const battleTypes = Object.keys(BATTLETYPES_LONG).map(short => {
   return { id: short, name: BATTLETYPES_LONG[short] };
@@ -36,6 +38,7 @@ const Admin = ({ BattleLeagueIndex }) => {
   const [addSeason, setAddSeason] = useState('');
   const [selectedBattle, setSelectedBattle] = useState(0);
   const [whitelist, setWhitelist] = useState([]);
+  const [breakLength, setBreakLength] = useState('');
   const {
     battleList,
     league: { loading, data },
@@ -81,6 +84,12 @@ const Admin = ({ BattleLeagueIndex }) => {
     }
   }, [data?.Settings?.whitelist, data?.Battles]);
 
+  useEffect(() => {
+    setBreakLength(
+      Number.isFinite(data?.Settings?.break) ? String(data.Settings.break) : '',
+    );
+  }, [data?.Settings?.break]);
+
   const formal = useFormal(
     {},
     {
@@ -123,6 +132,13 @@ const Admin = ({ BattleLeagueIndex }) => {
     await UpdateBattleLeagueWhitelist({
       BattleLeagueIndex,
       whitelist: whitelist.map(kuski => kuski.KuskiIndex),
+    });
+  };
+
+  const saveBreak = async () => {
+    await UpdateBattleLeagueBreak({
+      BattleLeagueIndex,
+      break: Number(breakLength) || 0,
     });
   };
 
@@ -298,6 +314,27 @@ const Admin = ({ BattleLeagueIndex }) => {
               style={{ marginTop: 12 }}
             >
               Save whitelist
+            </Button>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <Paper padding top>
+            <Header h2>Break length</Header>
+            <p>
+              Minutes of break kept between battles, used to estimate battle
+              start times. Default is {DEFAULT_BREAK_MINUTES} minutes.
+            </p>
+            <TextField
+              name="Break (minutes)"
+              value={breakLength}
+              onChange={v => setBreakLength(v.replace(/\D/g, ''))}
+            />
+            <Button
+              variant="contained"
+              onClick={() => saveBreak()}
+              style={{ marginTop: 12 }}
+            >
+              Save break length
             </Button>
           </Paper>
         </Grid>

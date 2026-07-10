@@ -263,12 +263,13 @@ const BattleLeague = () => {
               />
             ))}
           </Grid>
-          {selected === -1 ? (
-            <Grid item xs={12} sm={6}>
-              <BattleStatus battles={filteredBattles} />
-            </Grid>
-          ) : (
-            <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6}>
+            <BattleStatus
+              battles={filteredBattles}
+              breakMinutes={data?.Settings?.break}
+              onBattleEnd={() => fetch(ShortName)}
+            />
+            {selected !== -1 ? (
               <Paper width="auto">
                 <ListContainer>
                   <ListHeader>
@@ -345,8 +346,8 @@ const BattleLeague = () => {
                   )}
                 </ListContainer>
               </Paper>
-            </Grid>
-          )}
+            ) : null}
+          </Grid>
         </Grid>
       )}
       {tab === 'standings' && (

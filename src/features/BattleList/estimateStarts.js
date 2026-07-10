@@ -1,6 +1,7 @@
 // Estimates the start time (`Starts`) of queued battles based on the
 // currently running/last battle and the queue order returned by the API.
-export const estimateBattleStarts = battles => {
+// `breakSeconds` is the gap kept between battles (default 2 minutes).
+export const estimateBattleStarts = (battles, breakSeconds = 120) => {
   if (!battles.length) {
     return battles;
   }
@@ -14,10 +15,10 @@ export const estimateBattleStarts = battles => {
   }
   const battles2 = [...battles];
   const remaining = started[0].Finished
-    ? 120 -
+    ? breakSeconds -
       (Math.floor(Date.now() / 1000) -
         (parseInt(started[0].Started) + started[0].Duration * 60))
-    : 120 +
+    : breakSeconds +
       (parseInt(started[0].Started) +
         started[0].Duration * 60 -
         Math.floor(Date.now() / 1000));
@@ -28,7 +29,7 @@ export const estimateBattleStarts = battles => {
       ...battles2[ogIndex],
       Starts: Math.floor(Date.now() / 1000) + remaining + inQueueTime,
     };
-    inQueueTime += 120 + b.Duration * 60 + b.Countdown;
+    inQueueTime += breakSeconds + b.Duration * 60 + b.Countdown;
   });
   return battles2;
 };

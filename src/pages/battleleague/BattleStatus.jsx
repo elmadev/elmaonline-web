@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -31,7 +31,13 @@ const formatTimeLeft = seconds => {
   return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
 };
 
-const BattleStatus = ({ battles }) => {
+const DEFAULT_BREAK_MINUTES = 2;
+
+const BattleStatus = ({
+  battles,
+  breakMinutes = DEFAULT_BREAK_MINUTES,
+  onBattleEnd = null,
+}) => {
   const { battles: liveBattles } = useStoreState(state => state.BattleList);
   const { getBattles } = useStoreActions(actions => actions.BattleList);
 
@@ -41,36 +47,55 @@ const BattleStatus = ({ battles }) => {
 
   useInterval(() => {
     getBattles({ limit: 30, latest: true });
-  }, 15000);
+  }, 60000);
 
   const [, tick] = useState(0);
   useInterval(() => tick(t => t + 1), 1000);
 
+  const breakSeconds =
+    (Number(breakMinutes) > 0 ? Number(breakMinutes) : DEFAULT_BREAK_MINUTES) *
+    60;
+
   const battlesWithStarts = useMemo(
-    () => (Array.isArray(liveBattles) ? estimateBattleStarts(liveBattles) : []),
-    [liveBattles],
+    () =>
+      Array.isArray(liveBattles)
+        ? estimateBattleStarts(liveBattles, breakSeconds)
+        : [],
+    [liveBattles, breakSeconds],
   );
 
   const ongoing = battlesWithStarts.find(
     b => b.Aborted === 0 && b.InQueue === 0 && b.Finished === 0,
   );
+  const ongoingMatch =
+    ongoing && battles.find(b => matchesLiveBattle(b, ongoing));
+  const ongoingSecondsLeft = ongoing
+    ? parseInt(ongoing.Started) +
+      (ongoing.Countdown || 0) +
+      ongoing.Duration * 60 -
+      Math.floor(Date.now() / 1000)
+    : null;
+  const isOngoingActive = Boolean(ongoingMatch) && ongoingSecondsLeft > 0;
+
   const nextQueued = battlesWithStarts
     .filter(b => b.Aborted === 0 && b.InQueue === 1 && b.Starts)
     .sort((a, b) => a.Starts - b.Starts)[0];
-
-  const ongoingMatch =
-    ongoing && battles.find(b => matchesLiveBattle(b, ongoing));
   const nextMatch =
-    !ongoingMatch && nextQueued
+    !isOngoingActive && nextQueued
       ? battles.find(b => matchesLiveBattle(b, nextQueued))
       : null;
 
-  if (ongoingMatch) {
-    const end =
-      parseInt(ongoing.Started) +
-      (ongoing.Countdown || 0) +
-      ongoing.Duration * 60;
-    const secondsLeft = end - Math.floor(Date.now() / 1000);
+  const status = isOngoingActive ? 'ongoing' : nextMatch ? 'break' : 'none';
+  const prevStatusRef = useRef(status);
+  useEffect(() => {
+    if (prevStatusRef.current === 'ongoing' && status !== 'ongoing') {
+      onBattleEnd?.();
+    }
+    prevStatusRef.current = status;
+  }, [status]);
+
+  if (isOngoingActive) {
+    const secondsLeft = ongoingSecondsLeft;
     return (
       <Margin>
         <Paper padding highlight>
@@ -129,6 +154,8 @@ const Container = styled.div`
 
 BattleStatus.propTypes = {
   battles: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  breakMinutes: PropTypes.number,
+  onBattleEnd: PropTypes.func,
 };
 
 export default BattleStatus;
