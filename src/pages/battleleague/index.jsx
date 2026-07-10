@@ -20,6 +20,7 @@ import { nickId } from 'utils/nick';
 import Admin from './Admin';
 import ResultEditor from './ResultEditor';
 import BattleStatus from './BattleStatus';
+import Detailed from './Detailed';
 import { getFilteredBattleLeagueBattles } from './utils';
 
 const getBattleLeaguePoints = (resultCount, index, isFinished) => {
@@ -81,6 +82,7 @@ const BattleLeague = () => {
   ]);
 
   let standings = [];
+  let overallStandings = [];
   const seasons = [];
   const seasonStandings = {};
   let referenceResultCount = 0;
@@ -141,6 +143,7 @@ const BattleLeague = () => {
         }
       });
     });
+    overallStandings = standings;
   }
 
   let selectedBattle = null;
@@ -181,6 +184,7 @@ const BattleLeague = () => {
       >
         <Tab label="Events" value="events" />
         <Tab label="Standings" value="standings" />
+        <Tab label="Detailed" value="detailed" />
         {nickId() === data.KuskiIndex && <Tab label="Admin" value="admin" />}
       </Tabs>
       <LeagueName>
@@ -397,6 +401,9 @@ const BattleLeague = () => {
             )}
           </Grid>
         </Grid>
+      )}
+      {tab === 'detailed' && (
+        <Detailed battles={filteredBattles} standings={overallStandings} />
       )}
       {tab === 'admin' && <Admin BattleLeagueIndex={data.BattleLeagueIndex} />}
     </Layout>
