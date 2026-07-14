@@ -385,13 +385,20 @@ const BattleLeague = () => {
         </Grid>
       )}
       {tab === 'detailed' && (
-        <Detailed
-          battles={filteredBattles}
-          standings={overallStandings}
-          pointSystem={data?.PointSystem}
-          pointsEnum={pointsEnum}
-          referenceResultCount={referenceResultCount}
-        />
+        <Grid container spacing={0}>
+          <BattleStatus
+            battles={filteredBattles}
+            breakMinutes={data?.Settings?.break}
+            onBattleEnd={() => fetch(ShortName)}
+          />
+          <Detailed
+            battles={filteredBattles}
+            standings={overallStandings}
+            pointSystem={data?.PointSystem}
+            pointsEnum={pointsEnum}
+            referenceResultCount={referenceResultCount}
+          />
+        </Grid>
       )}
       {tab === 'admin' && <Admin BattleLeagueIndex={data.BattleLeagueIndex} />}
     </Layout>
