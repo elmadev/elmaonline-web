@@ -1,5 +1,7 @@
 # Elmaonline site web frontend
 
+This repo is archived and moved to monorepo [elmaonline-site](https://github.com/elmadev/elmaonline-site).
+
 React based frontend for the [elmaonline site](https://elma.online). The backend is found in the [elmaonline-site repo](https://github.com/elmadev/elmaonline-site).
 
 - [test.elma.online](http://test.elma.online) New features will be tested here first, this site uses a secondary copy of the database, so you can mess up as much as you want here, and nothing you do here will be saved on the real site.
